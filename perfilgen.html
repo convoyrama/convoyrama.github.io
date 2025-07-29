@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador de Perfil CN</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    input, select, button {
+      margin: 10px;
+      padding: 8px;
+      font-size: 16px;
+    }
+    canvas {
+      border: 1px solid #444;
+      margin-top: 15px;
+    }
+    .fondos-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .fondo-thumb {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border 0.3s;
+    }
+    .fondo-thumb.seleccionado {
+      border: 2px solid #00f2ff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Generador de Perfil VTC</h1>
+
+  <input type="text" id="nombre" placeholder="Tu nombre"><br>
+<label for="size">Tamaño del nombre: <span id="sizeValue">100</span> px</label><br>
+<input type="range" id="size" min="30" max="150" value="100" oninput="document.getElementById('sizeValue').innerText = this.value;"><br>
+
+  <label for="pais">País (solo bandera):</label><br>
+<select id="pais">
+  <!-- América del Norte -->
+  <option value="🇨🇦">🇨🇦</option> <!-- Canadá -->
+  <option value="🇺🇸">🇺🇸</option> <!-- Estados Unidos -->
+  <option value="🇲🇽">🇲🇽</option> <!-- México -->
+
+  <!-- América Central -->
+  <option value="🇧🇿">🇧🇿</option> <!-- Belice -->
+  <option value="🇨🇷">🇨🇷</option> <!-- Costa Rica -->
+  <option value="🇸🇻">🇸🇻</option> <!-- El Salvador -->
+  <option value="🇬🇹">🇬🇹</option> <!-- Guatemala -->
+  <option value="🇭🇳">🇭🇳</option> <!-- Honduras -->
+  <option value="🇳🇮">🇳🇮</option> <!-- Nicaragua -->
+  <option value="🇵🇦">🇵🇦</option> <!-- Panamá -->
+
+  <!-- Caribe -->
+  <option value="🇨🇺">🇨🇺</option> <!-- Cuba -->
+  <option value="🇩🇴">🇩🇴</option> <!-- República Dominicana -->
+  <option value="🇭🇹">🇭🇹</option> <!-- Haití -->
+  <option value="🇯🇲">🇯🇲</option> <!-- Jamaica -->
+  <option value="🇧🇸">🇧🇸</option> <!-- Bahamas -->
+  <option value="🇹🇹">🇹🇹</option> <!-- Trinidad y Tobago -->
+  <option value="🇧🇧">🇧🇧</option> <!-- Barbados -->
+
+  <!-- América del Sur -->
+  <option value="🇦🇷">🇦🇷</option> <!-- Argentina -->
+  <option value="🇧🇴">🇧🇴</option> <!-- Bolivia -->
+  <option value="🇧🇷">🇧🇷</option> <!-- Brasil -->
+  <option value="🇨🇱">🇨🇱</option> <!-- Chile -->
+  <option value="🇨🇴">🇨🇴</option> <!-- Colombia -->
+  <option value="🇪🇨">🇪🇨</option> <!-- Ecuador -->
+  <option value="🇬🇾">🇬🇾</option> <!-- Guyana -->
+  <option value="🇵🇾">🇵🇾</option> <!-- Paraguay -->
+  <option value="🇵🇪">🇵🇪</option> <!-- Perú -->
+  <option value="🇸🇷">🇸🇷</option> <!-- Surinam -->
+  <option value="🇺🇾">🇺🇾</option> <!-- Uruguay -->
+  <option value="🇻🇪">🇻🇪</option> <!-- Venezuela -->
+
+  <!-- España y Portugal -->
+  <option value="🇪🇸">🇪🇸</option> <!-- España -->
+  <option value="🇵🇹">🇵🇹</option> <!-- Portugal -->
+</select><br>
+  <select id="rol">
+    <option value="Conductor">Conductor</option>
+    <option value="Staff">Staff</option>
+    <option value="Retirado">Retirado</option>
+    <option value="Honorario">Honorario</option>
+    <option value="">Ninguno</option>
+  </select><br>
+  <!-- lo dejo hasta saber como bejor usarlo
+  <label for="avatar">Subí tu foto/avatar (opcional):</label><br>
+  <input type="file" id="avatar" accept="image/*"><br>
+ -->
+  <h3>Elegí un fondo:</h3>
+  <div class="fondos-grid" id="fondos">
+    <img src="fondos/fondo1.png" class="fondo-thumb seleccionado" data-src="fondos/fondo1.png">
+    <img src="fondos/fondo2.png" class="fondo-thumb" data-src="fondos/fondo2.png">
+    <img src="fondos/fondo3.png" class="fondo-thumb" data-src="fondos/fondo3.png">
+    <img src="fondos/fondo4.png" class="fondo-thumb" data-src="fondos/fondo4.png">
+    <img src="fondos/fondo5.png" class="fondo-thumb" data-src="fondos/fondo5.png">
+  </div>
+
+  <button onclick="generarImagen()">Generar Imagen</button>
+<a id="descargar" download="perfil_vtc.png"></a><br><br>
+
+  <canvas id="canvas" width="512" height="512"></canvas>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    let fondoSeleccionado = "fondos/fondo1.png";
+    let imagenAvatar = null;
+
+    // Selector visual de fondo
+    document.querySelectorAll(".fondo-thumb").forEach(img => {
+      img.addEventListener("click", () => {
+        document.querySelectorAll(".fondo-thumb").forEach(i => i.classList.remove("seleccionado"));
+        img.classList.add("seleccionado");
+        fondoSeleccionado = img.getAttribute("data-src");
+      });
+    });
+
+    // Cargar avatar personalizado
+    document.getElementById("avatar").addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagenAvatar = new Image();
+          imagenAvatar.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function generarImagen() {
+      const nombre = document.getElementById("nombre").value || "Sin nombre";
+      const pais = document.getElementById("pais").value || "";
+      const rol = document.getElementById("rol").value || "";
+      const size = parseInt(document.getElementById("size").value);
+
+      const fondo = new Image();
+      fondo.src = fondoSeleccionado;
+
+      fondo.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(fondo, 0, 0, canvas.width, canvas.height);
+
+        // Dibujo del avatar (circular)
+        if (imagenAvatar && imagenAvatar.complete) {
+          const centerX = canvas.width / 2;
+          const centerY = 180;
+          const radius = 70;
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+          ctx.closePath();
+          ctx.clip();
+          ctx.drawImage(imagenAvatar, centerX - radius, centerY - radius, radius * 2, radius * 2);
+          ctx.restore();
+        }
+
+        // Bandera del país (solo el emoji)
+        ctx.fillStyle = "white";
+        ctx.font = "bold 36px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(pais, canvas.width / 2, 75);
+
+        // Nombre en tamaño variable
+        // Sombra, prueba
+        ctx.shadowColor = "black";
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.font = `bold ${size}px didot`;
+        ctx.fillText(nombre, canvas.width / 2, 320);
+
+        // Rol abajo
+        ctx.font = "bold 30px verdana";
+ //       ctx.fillText(rol, canvas.width / 2, 470);
+        ctx.fillText(rol, canvas.width / 2, 210);
+
+        // Descargar
+        document.getElementById("descargar").href = canvas.toDataURL("image/png");
+      };
+    }
+  </script>
+
+</body>
+</html>
