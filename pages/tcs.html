@@ -97,11 +97,11 @@
 
     <h3>Elegí un fondo:</h3>
     <div class="fondos-grid" id="fondos">
-      <img src="fondos/fondo1.png" class="fondo-thumb seleccionado" data-src="fondos/fondo1.png">
-      <img src="fondos/fondo2.png" class="fondo-thumb" data-src="fondos/fondo2.png">
-      <img src="fondos/fondo3.png" class="fondo-thumb" data-src="fondos/fondo3.png">
-      <img src="fondos/fondo4.png" class="fondo-thumb" data-src="fondos/fondo4.png">
-      <img src="fondos/fondo5.png" class="fondo-thumb" data-src="fondos/fondo5.png">
+      <img src="fondostcs/fondo1.png" class="fondo-thumb seleccionado" data-src="fondostcs/fondo1.png">
+      <img src="fondostcs/fondo2.png" class="fondo-thumb" data-src="fondostcs/fondo2.png">
+      <img src="fondostcs/fondo3.png" class="fondo-thumb" data-src="fondostcs/fondo3.png">
+      <img src="fondostcs/fondo4.png" class="fondo-thumb" data-src="fondostcs/fondo4.png">
+      <img src="fondostcs/fondo5.png" class="fondo-thumb" data-src="fondostcs/fondo5.png">
     </div>
 
     <button onclick="generarImagen()">Generar Imagen</button>
@@ -119,7 +119,7 @@
   <script>
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
-    let fondoSeleccionado = "fondos/fondo1.png";
+    let fondoSeleccionado = "fondostcs/fondo1.png";
 
     document.querySelectorAll(".fondo-thumb").forEach(img => {
       img.addEventListener("click", () => {
