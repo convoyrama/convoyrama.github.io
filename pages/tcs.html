@@ -48,8 +48,8 @@
   <main>
     <input type="text" id="nombre" placeholder="Tu nombre"><br>
 
-    <label for="size">Tamaño del nombre: <span id="sizeValue">100</span> px</label><br>
-    <input type="range" id="size" min="30" max="150" value="100"
+    <label for="size">Tamaño del nombre: <span id="sizeValue">90</span> px</label><br>
+    <input type="range" id="size" min="30" max="150" value="90"
            oninput="document.getElementById('sizeValue').innerText = this.value;"><br>
 
     <label for="pais">País (solo bandera):</label><br>
@@ -146,18 +146,18 @@
         ctx.fillStyle = "white";
         ctx.font = "bold 36px sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText(pais, canvas.width / 2, 75);
+        ctx.fillText(pais, canvas.width / 2, 200);
 
         // Nombre
         ctx.shadowColor = "black";
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 2;
         ctx.font = `bold ${size}px didot`;
-        ctx.fillText(nombre, canvas.width / 2, 320);
+        ctx.fillText(nombre, canvas.width / 2, 430);
 
         // Rol
         ctx.font = "bold 30px verdana";
-        ctx.fillText(rol, canvas.width / 2, 210);
+        ctx.fillText(rol, canvas.width / 2, 480);
 
         // Descargar imagen con nombre personalizado
         const enlaceDescarga = document.getElementById("descargar");
