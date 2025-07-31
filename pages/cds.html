@@ -127,7 +127,8 @@
     });
 
     function generarImagen() {
-      const nombre = document.getElementById("nombre").value.trim() || "Sin_nombre";
+let nombre = document.getElementById("nombre").value.trim() || "Sin_nombre";
+nombre = `·${nombre}·`;
       const pais = document.getElementById("pais").value || "";
       const rol = document.getElementById("rol").value || "";
       const size = parseInt(document.getElementById("size").value);
