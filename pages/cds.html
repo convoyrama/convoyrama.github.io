@@ -98,11 +98,7 @@
 
     <h3>Elegí un fondo:</h3>
     <div class="fondos-grid" id="fondos">
-      <img src="fondos/fondo1.png" class="fondo-thumb seleccionado" data-src="fondos/fondo1.png">
-      <img src="fondos/fondo2.png" class="fondo-thumb" data-src="fondos/fondo2.png">
-      <img src="fondos/fondo3.png" class="fondo-thumb" data-src="fondos/fondo3.png">
-      <img src="fondos/fondo4.png" class="fondo-thumb" data-src="fondos/fondo4.png">
-      <img src="fondos/fondo5.png" class="fondo-thumb" data-src="fondos/fondo5.png">
+      <img src="fondos/fondo6.png" class="fondo-thumb seleccionado" data-src="fondos/fondo6.png">
     </div>
 
     <button onclick="generarImagen()">Generar Imagen</button>
@@ -120,7 +116,7 @@
   <script>
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
-    let fondoSeleccionado = "fondos/fondo1.png";
+    let fondoSeleccionado = "fondos/fondo6.png";
 
     document.querySelectorAll(".fondo-thumb").forEach(img => {
       img.addEventListener("click", () => {
@@ -145,20 +141,28 @@
 
         // Bandera
         ctx.fillStyle = "white";
-        ctx.font = "bold 50px sans-serif";
+        ctx.font = "bold 80px sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText(pais, canvas.width / 2, 75);
+        ctx.fillText(pais, canvas.width / 2, 350);
 
         // Nombre
-        ctx.shadowColor = "black";
+        ctx.shadowColor = "white";      // Sombra blanca
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 2;
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = "#222222";      // Gris oscuro para el texto
         ctx.font = `bold ${size}px didot`;
-        ctx.fillText(nombre, canvas.width / 2, 320);
+        ctx.textAlign = "center";
+        ctx.fillText(nombre, canvas.width / 2, 250);
 
         // Rol
         ctx.font = "bold 30px verdana";
-        ctx.fillText(rol, canvas.width / 2, 210);
+        ctx.shadowColor = "black";      // Sombra negra
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillText(rol, canvas.width / 2, 460);
 
         // Descargar imagen con nombre personalizado
         const enlaceDescarga = document.getElementById("descargar");
