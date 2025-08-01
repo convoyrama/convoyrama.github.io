@@ -1,63 +1,89 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <style>
-    body { background: #111; display: flex; justify-content: center; align-items: center; height: 100vh; }
-
-    .scene {
-      width: 200px;
-      height: 200px;
-      perspective: 600px;
-    }
-
-    .cube {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      transform: rotateX(-30deg) rotateY(30deg);
-      transition: transform 1s;
-    }
-
-    .face {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      border: 2px solid #fff;
-      background-size: cover;
-      background-position: center;
-      background-color: white;
-    }
-
-    .front  { transform: rotateY(  0deg) translateZ(100px); background-image: url("cara1.png"); }
-    .back   { transform: rotateY(180deg) translateZ(100px); background-image: url("cara2.png"); }
-    .right  { transform: rotateY( 90deg) translateZ(100px); background-image: url("cara3.png"); }
-    .left   { transform: rotateY(-90deg) translateZ(100px); background-image: url("cara4.png"); }
-    .top    { transform: rotateX( 90deg) translateZ(100px); background-image: url("cara5.png"); }
-    .bottom { transform: rotateX(-90deg) translateZ(100px); background-image: url("cara6.png"); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dado 3D Interactivo</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            perspective: 1000px;
+        }
+        .cube-container {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s;
+        }
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+        }
+        .face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-size: cover;
+            border: 2px solid #333;
+            box-sizing: border-box;
+        }
+        .face.front  { transform: rotateY(0deg) translateZ(100px); background-image: url('cara1.png'); }
+        .face.back   { transform: rotateY(180deg) translateZ(100px); background-image: url('cara2.png'); }
+        .face.right  { transform: rotateY(90deg) translateZ(100px); background-image: url('cara3.png'); }
+        .face.left   { transform: rotateY(-90deg) translateZ(100px); background-image: url('cara4.png'); }
+        .face.top    { transform: rotateX(90deg) translateZ(100px); background-image: url('cara5.png'); }
+        .face.bottom { transform: rotateX(-90deg) translateZ(100px); background-image: url('cara6.png'); }
+    </style>
 </head>
 <body>
-  <div class="scene">
-    <div class="cube" id="cube">
-      <div class="face front"></div>
-      <div class="face back"></div>
-      <div class="face right"></div>
-      <div class="face left"></div>
-      <div class="face top"></div>
-      <div class="face bottom"></div>
+    <div class="cube-container" id="cube-container">
+        <div class="cube" id="cube">
+            <div class="face front"></div>
+            <div class="face back"></div>
+            <div class="face right"></div>
+            <div class="face left"></div>
+            <div class="face top"></div>
+            <div class="face bottom"></div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Gira aleatoriamente el dado al hacer clic
-    document.querySelector('.scene').addEventListener('click', () => {
-      const cube = document.getElementById('cube');
-      const randX = Math.floor(Math.random() * 4) * 90;
-      const randY = Math.floor(Math.random() * 4) * 90;
-      cube.style.transform = `rotateX(${randX}deg) rotateY(${randY}deg)`;
-    });
-  </script>
+    <script>
+        const cube = document.getElementById('cube');
+        const rotations = [
+            { x: 0, y: 0 },    // cara1 (front)
+            { x: 0, y: 180 },  // cara2 (back)
+            { x: 0, y: 90 },   // cara3 (right)
+            { x: 0, y: -90 },  // cara4 (left)
+            { x: 90, y: 0 },   // cara5 (top)
+            { x: -90, y: 0 }   // cara6 (bottom)
+        ];
+
+        function getRandomFace() {
+            return Math.floor(Math.random() * 6);
+        }
+
+        function rotateCube() {
+            const faceIndex = getRandomFace();
+            const rotation = rotations[faceIndex];
+            cube.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
+        }
+
+        // Rotar al hacer clic
+        cube.addEventListener('click', () => {
+            cube.style.transition = 'transform 1s';
+            rotateCube();
+        });
+
+        // Mostrar una cara inicial aleatoria
+        rotateCube();
+    </script>
 </body>
 </html>
