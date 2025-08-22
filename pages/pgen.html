@@ -35,12 +35,12 @@
   <header>
     <nav>
       <a href="../index.html">Home</a>
-      <a href="pgen.html">CN</a>
+      <a href="pgen.html">Gen</a>
     </nav>
   </header>
 
   <header>
-    <h1>PGen</h1>
+  <!--     <h1>PGen</h1> -->
     <p>Generador de imágenes de perfil</p>
   </header>
 
@@ -85,7 +85,7 @@
       <label>Tamaño nombre: <span id="sizeValue">100</span>px</label><br>
       <input type="range" id="size" min="30" max="150">
     </div>
-
+  <!-- Luego buscar forma de dejar bandera por defecto en cookie -->
     <div class="input-group">
       <label>País:</label><br>
       <select id="pais" style="width:100%">
@@ -158,9 +158,9 @@
 
   // Configs por empresa
   const empresas = {
-    "CN":  { fondo: "fondos/cn.png",  color: "white", sombra: "black", size:100, flagSize:50, by:80, ny:300, outSize:500 },
-    "CDS": { fondo: "fondos/cds.png", color: "black", sombra: "white", size:90,  flagSize:60, by:100, ny:320, outSize:500 },
-    "TCS": { fondo: "fondos/tcs.png", color: "white", sombra: "black", size:110, flagSize:55, by:70,  ny:280, outSize:500 },
+    "CN":  { fondo: "fondos/cn.png",  color: "white", sombra: "black", size:100, flagSize:50, by:80, ny:290, outSize:500 },
+    "CDS": { fondo: "fondos/cds.png", color: "rgb(20,20,20)", sombra: "white", size:90,  flagSize:60, by:350, ny:260, outSize:500 },
+    "TCS": { fondo: "fondos/tcs.png", color: "white", sombra: "black", size:90, flagSize:55, by:60,  ny:435, outSize:500 },
     "LS":  { fondo: "fondos/ls.png",  color: "black", sombra: "white", size:95,  flagSize:50, by:90,  ny:310, outSize:500 }
   };
 
