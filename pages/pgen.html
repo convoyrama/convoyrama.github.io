@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convoyrama | Home</title>
+  <meta name="description" content="Convoyrama">
+  <link rel="stylesheet" href="./assets/style.css">
+  <link rel="icon" href="./assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="./assets/images/favicon.png">
+  <style>
+    .fondos-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2px;
+      margin: 2px 0;
+    }
+    .fondo-thumb {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border 0.3s;
+    }
+    .fondo-thumb.seleccionado {
+      border: 2px solid #00f2ff;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="pgen.html">CN</a>
+    </nav>
+  </header>
+
+  <header>
+    <h1>PGen</h1>
+    <p>Generador de imágenes de perfil</p>
+  </header>
+
+ <style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+  .contenedor {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    align-items: flex-start;
+  }
+  .panel {
+    flex: 1;
+    max-width: 300px;
+    font-size: 14px;
+  }
+  .panel h3 { margin: 10px 0 5px; font-size: 14px; }
+  .input-group { margin: 6px 0; }
+  canvas { border: 1px solid #000; display: block; max-width: 100%; height: auto; }
+  #preview { flex: 1; text-align: center; }
+  button { padding: 6px 12px; font-size: 14px; margin-top: 10px; }
+</style>
+
+<div class="contenedor">
+  <!-- Panel de controles -->
+  <div class="panel">
+    <div class="input-group">
+      <label>Empresa:</label><br>
+      <select id="empresa">
+        <option value="CN">CN</option>
+        <option value="CDS">CDS</option>
+        <option value="TCS">TCS</option>
+        <option value="LS">LS</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <input type="text" id="nombre" placeholder="Nombre">
+    </div>
+
+    <div class="input-group">
+      <label>Tamaño nombre: <span id="sizeValue">100</span>px</label><br>
+      <input type="range" id="size" min="30" max="150">
+    </div>
+
+    <div class="input-group">
+      <label>País:</label><br>
+      <select id="pais" style="width:100%">
+        <option value="🇦🇷">Argentina</option>
+        <option value="🇧🇴">Bolivia</option>
+        <option value="🇧🇷">Brasil</option>
+        <option value="🇨🇦">Canadá</option>
+        <option value="🇨🇱">Chile</option>
+        <option value="🇨🇴">Colombia</option>
+        <option value="🇨🇷">Costa Rica</option>
+        <option value="🇨🇺">Cuba</option>
+        <option value="🇩🇴">República Dominicana</option>
+        <option value="🇪🇨">Ecuador</option>
+        <option value="🇸🇻">El Salvador</option>
+        <option value="🇪🇸">España</option>
+        <option value="🇬🇹">Guatemala</option>
+        <option value="🇭🇳">Honduras</option>
+        <option value="🇲🇽">México</option>
+        <option value="🇳🇮">Nicaragua</option>
+        <option value="🇵🇦">Panamá</option>
+        <option value="🇵🇾">Paraguay</option>
+        <option value="🇵🇪">Perú</option>
+        <option value="🇵🇹">Portugal</option>
+        <option value="🇺🇸">Estados Unidos</option>
+        <option value="🇺🇾">Uruguay</option>
+        <option value="🇻🇪">Venezuela</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label>Tamaño bandera: <span id="flagSizeValue">50</span>px</label><br>
+      <input type="range" id="flagSize" min="30" max="120">
+    </div>
+
+    <h3>Posiciones Verticales</h3>
+    <div class="input-group">
+      <label>Bandera Y: <span id="byValue">80</span></label><br>
+      <input type="range" id="by" min="30" max="480">
+    </div>
+    <div class="input-group">
+      <label>Nombre Y: <span id="nyValue">300</span></label><br>
+      <input type="range" id="ny" min="30" max="480">
+    </div>
+
+    <h3>Opciones de salida</h3>
+    <div class="input-group">
+      <label>Tamaño final: <span id="outSizeValue">500</span>px</label><br>
+      <input type="range" id="outSize" min="256" max="1024" step="64">
+    </div>
+    <div class="input-group">
+      <label><input type="checkbox" id="circular"> Circular</label>
+    </div>
+
+    <button onclick="generarImagen()">Generar</button>
+  </div>
+
+  <!-- Preview -->
+  <div id="preview">
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <br>
+    <a id="descargar" download="perfil.png">
+      <button id="botonDescargar">Descargar</button>
+    </a>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+
+  // Configs por empresa
+  const empresas = {
+    "CN":  { fondo: "fondos/cn.png",  color: "white", sombra: "black", size:100, flagSize:50, by:80, ny:300, outSize:500 },
+    "CDS": { fondo: "fondos/cds.png", color: "black", sombra: "white", size:90,  flagSize:60, by:100, ny:320, outSize:500 },
+    "TCS": { fondo: "fondos/tcs.png", color: "white", sombra: "black", size:110, flagSize:55, by:70,  ny:280, outSize:500 },
+    "LS":  { fondo: "fondos/ls.png",  color: "black", sombra: "white", size:95,  flagSize:50, by:90,  ny:310, outSize:500 }
+  };
+
+  // Inputs
+  const empresa = document.getElementById("empresa");
+  const nombreInput = document.getElementById("nombre");
+  const pais = document.getElementById("pais");
+  const sizeInput = document.getElementById("size");
+  const flagSizeInput = document.getElementById("flagSize");
+  const byInput = document.getElementById("by");
+  const nyInput = document.getElementById("ny");
+  const outSizeInput = document.getElementById("outSize");
+  const circularInput = document.getElementById("circular");
+
+  const sizeValue = document.getElementById("sizeValue");
+  const flagSizeValue = document.getElementById("flagSizeValue");
+  const byValue = document.getElementById("byValue");
+  const nyValue = document.getElementById("nyValue");
+  const outSizeValue = document.getElementById("outSizeValue");
+
+  // Aplica defaults por empresa
+  function aplicarConfigEmpresa() {
+    const emp = empresas[empresa.value];
+    sizeInput.value = emp.size;
+    flagSizeInput.value = emp.flagSize;
+    byInput.value = emp.by;
+    nyInput.value = emp.ny;
+    outSizeInput.value = emp.outSize;
+    sizeValue.textContent = emp.size;
+    flagSizeValue.textContent = emp.flagSize;
+    byValue.textContent = emp.by;
+    nyValue.textContent = emp.ny;
+    outSizeValue.textContent = emp.outSize;
+    generarImagen();
+  }
+
+  // Generar/preview
+  function generarImagen() {
+    const emp = empresas[empresa.value];
+    const nombre = nombreInput.value || "Sin_nombre";
+    const bandera = pais.value || "";
+    const size = parseInt(sizeInput.value);
+    const flagSize = parseInt(flagSizeInput.value);
+    const by = parseInt(byInput.value);
+    const ny = parseInt(nyInput.value);
+    const outSize = parseInt(outSizeInput.value);
+    const circular = circularInput.checked;
+
+    // Actualizar labels
+    sizeValue.textContent = size;
+    flagSizeValue.textContent = flagSize;
+    byValue.textContent = by;
+    nyValue.textContent = ny;
+    outSizeValue.textContent = outSize;
+
+    canvas.width = outSize;
+    canvas.height = outSize;
+
+    const fondo = new Image();
+    fondo.src = emp.fondo;
+
+    fondo.onload = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (circular) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(outSize/2, outSize/2, outSize/2, 0, Math.PI*2);
+        ctx.closePath();
+        ctx.clip();
+      }
+
+      ctx.drawImage(fondo, 0, 0, canvas.width, canvas.height);
+      ctx.textAlign = "center";
+
+      // Bandera
+      ctx.font = `${flagSize}px sans-serif`;
+      ctx.fillStyle = "white";
+      ctx.shadowColor = "black";
+      ctx.fillText(bandera, canvas.width/2, by);
+
+      // Nombre
+      ctx.font = `bold ${size}px didot`;
+      ctx.fillStyle = emp.color;
+      ctx.shadowColor = emp.sombra;
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 2;
+      ctx.fillText(nombre, canvas.width/2, ny);
+
+      if (circular) ctx.restore();
+
+      const enlace = document.getElementById("descargar");
+      enlace.href = canvas.toDataURL("image/png");
+      enlace.download = "perfil_" + empresa.value + "_" + nombre + ".png";
+    };
+  }
+
+  // Eventos para preview en vivo
+  [empresa, nombreInput, pais, sizeInput, flagSizeInput, byInput, nyInput, outSizeInput, circularInput]
+    .forEach(el => el.addEventListener("input", generarImagen));
+
+  empresa.addEventListener("change", aplicarConfigEmpresa);
+
+  // Inicializar
+  aplicarConfigEmpresa();
+</script>
+
+
+</body>
+</html>
