@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convoyrama | Home</title>
+  <meta name="description" content="Convoyrama">
+  <link rel="stylesheet" href="./assets/style.css">
+  <link rel="icon" href="./assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="./assets/images/favicon.png">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto:wght@700&family=Lora:wght@700&display=swap" rel="stylesheet">
+  <style>
+    .fondos-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2px;
+      margin: 2px 0;
+    }
+    .fondo-thumb {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border 0.3s;
+    }
+    .fondo-thumb.seleccionado {
+      border: 2px solid #00f2ff;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .contenedor {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      align-items: flex-start;
+    }
+    .panel {
+      flex: 1;
+      max-width: 300px;
+      font-size: 14px;
+    }
+    .panel h3 {
+      margin: 10px 0 5px;
+      font-size: 14px;
+    }
+    .input-group {
+      margin: 6px 0;
+    }
+    canvas {
+      border: 1px solid #000;
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+    #preview {
+      flex: 1;
+      text-align: center;
+    }
+    button {
+      padding: 6px 12px;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="ls.html">Generador LS</a>
+      <a href="gen.html">Generador TCS/CN/CDS</a>
+    </nav>
+    <p>Generador de imágenes de perfil</p>
+  </header>
+
+  <div class="contenedor">
+    <!-- Panel de controles -->
+    <div class="panel">
+      <div class="input-group">
+        <label for="empresa">Empresa (Fuente: <span id="fontName"></span>):</label><br>
+        <select id="empresa">
+          <option value="CN">CN</option>
+          <option value="CDS">CDS</option>
+          <option value="TCS">TCS</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" placeholder="Nombre">
+      </div>
+
+      <div class="input-group">
+        <label for="size">Tamaño nombre: <output id="sizeValue">100</output>px</label><br>
+        <input type="range" id="size" min="30" max="150" aria-valuenow="100">
+      </div>
+
+      <div class="input-group">
+        <label for="pais">País:</label><br>
+        <select id="pais" style="width:100%">
+          <option value="🇦🇷">Argentina</option>
+          <option value="🇧🇴">Bolivia</option>
+          <option value="🇧🇷">Brasil</option>
+          <option value="🇨🇦">Canadá</option>
+          <option value="🇨🇱">Chile</option>
+          <option value="🇨🇴">Colombia</option>
+          <option value="🇨🇷">Costa Rica</option>
+          <option value="🇨🇺">Cuba</option>
+          <option value="🇩🇴">República Dominicana</option>
+          <option value="🇪🇨">Ecuador</option>
+          <option value="🇸🇻">El Salvador</option>
+          <option value="🇪🇸">España</option>
+          <option value="🇬🇹">Guatemala</option>
+          <option value="🇭🇳">Honduras</option>
+          <option value="🇲🇽">México</option>
+          <option value="🇳🇮">Nicaragua</option>
+          <option value="🇵🇦">Panamá</option>
+          <option value="🇵🇾">Paraguay</option>
+          <option value="🇵🇪">Perú</option>
+          <option value="🇵🇹">Portugal</option>
+          <option value="🇺🇸">Estados Unidos</option>
+          <option value="🇺🇾">Uruguay</option>
+          <option value="🇻🇪">Venezuela</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="flagSize">Tamaño bandera: <output id="flagSizeValue">50</output>px</label><br>
+        <input type="range" id="flagSize" min="30" max="120" aria-valuenow="50">
+      </div>
+
+      <h3>Posiciones Verticales</h3>
+      <div class="input-group">
+        <label for="by">Bandera Y: <output id="byValue">80</output></label><br>
+        <input type="range" id="by" min="30" max="480" aria-valuenow="80">
+      </div>
+      <div class="input-group">
+        <label for="ny">Nombre Y: <output id="nyValue">300</output></label><br>
+        <input type="range" id="ny" min="30" max="480" aria-valuenow="300">
+      </div>
+
+      <h3>Opciones de salida</h3>
+      <div class="input-group">
+        <label for="outSize">Tamaño final: <output id="outSizeValue">500</output>px</label><br>
+        <input type="range" id="outSize" min="256" max="1024" step="64" aria-valuenow="500">
+      </div>
+      <div class="input-group">
+        <label for="circular"><input type="checkbox" id="circular"> Circular</label>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div id="preview">
+      <canvas id="canvas" width="500" height="500"></canvas>
+      <br>
+      <a id="descargar" download="perfil.png">
+        <button id="botonDescargar">Descargar</button>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // Configs por empresa
+    const empresas = {
+      "CN":  { fondo: "fondos/cn.png",  color: "white", sombra: "black", size: 100, flagSize: 50, by: 80, ny: 290, outSize: 500, font: "'Merriweather', serif" },
+      "CDS": { fondo: "fondos/cds.png", color: "rgb(20,20,20)", sombra: "white", size: 90, flagSize: 90, by: 350, ny: 260, outSize: 500, font: "'Roboto', sans-serif" },
+      "TCS": { fondo: "fondos/tcs.png", color: "white", sombra: "black", size: 90, flagSize: 64, by: 200, ny: 435, outSize: 500, font: "'Lora', serif" }
+    };
+
+    // Inputs
+    const empresa = document.getElementById("empresa");
+    const nombreInput = document.getElementById("nombre");
+    const pais = document.getElementById("pais");
+    const sizeInput = document.getElementById("size");
+    const flagSizeInput = document.getElementById("flagSize");
+    const byInput = document.getElementById("by");
+    const nyInput = document.getElementById("ny");
+    const outSizeInput = document.getElementById("outSize");
+    const circularInput = document.getElementById("circular");
+
+    const sizeValue = document.getElementById("sizeValue");
+    const flagSizeValue = document.getElementById("flagSizeValue");
+    const byValue = document.getElementById("byValue");
+    const nyValue = document.getElementById("nyValue");
+    const outSizeValue = document.getElementById("outSizeValue");
+    const fontName = document.getElementById("fontName");
+
+    // Debounce function
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Save and load default country
+    function saveDefaultCountry() {
+      localStorage.setItem("defaultCountry", pais.value);
+    }
+    function loadDefaultCountry() {
+      const saved = localStorage.getItem("defaultCountry");
+      if (saved) pais.value = saved;
+    }
+
+    // Aplica defaults por empresa
+    function aplicarConfigEmpresa() {
+      const emp = empresas[empresa.value];
+      sizeInput.value = emp.size;
+      flagSizeInput.value = emp.flagSize;
+      byInput.value = emp.by;
+      nyInput.value = emp.ny;
+      outSizeInput.value = emp.outSize;
+      sizeValue.textContent = emp.size;
+      flagSizeValue.textContent = emp.flagSize;
+      byValue.textContent = emp.by;
+      nyValue.textContent = emp.ny;
+      outSizeValue.textContent = emp.outSize;
+      fontName.textContent = emp.font.split(",")[0].replace(/'/g, "");
+      generarImagen();
+    }
+
+    // Generar/preview
+    function generarImagen() {
+      const emp = empresas[empresa.value];
+      const nombre = nombreInput.value || "Sin_nombre";
+      const bandera = pais.value || "";
+      const size = parseInt(sizeInput.value);
+      const flagSize = parseInt(flagSizeInput.value);
+      const by = parseInt(byInput.value);
+      const ny = parseInt(nyInput.value);
+      const outSize = parseInt(outSizeInput.value);
+      const circular = circularInput.checked;
+
+      // Actualizar labels and ARIA
+      sizeValue.textContent = size;
+      sizeInput.setAttribute("aria-valuenow", size);
+      flagSizeValue.textContent = flagSize;
+      flagSizeInput.setAttribute("aria-valuenow", flagSize);
+      byValue.textContent = by;
+      byInput.setAttribute("aria-valuenow", by);
+      nyValue.textContent = ny;
+      nyInput.setAttribute("aria-valuenow", ny);
+      outSizeValue.textContent = outSize;
+      outSizeInput.setAttribute("aria-valuenow", outSize);
+
+      canvas.width = outSize;
+      canvas.height = outSize;
+
+      const fondo = new Image();
+      fondo.src = emp.fondo;
+
+      fondo.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (circular) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(outSize / 2, outSize / 2, outSize / 2, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+        }
+
+        // Dibujar fondo
+        ctx.drawImage(fondo, 0, 0, canvas.width, canvas.height);
+        ctx.textAlign = "center";
+
+        // Bandera
+        ctx.font = `${flagSize}px sans-serif`;
+        ctx.fillStyle = "white";
+        ctx.shadowColor = "black";
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowBlur = 0;
+        ctx.fillText(bandera, canvas.width / 2, by);
+
+        // Resetear sombra después de la bandera
+        ctx.shadowColor = "transparent";
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 0;
+
+        // Nombre
+        ctx.font = `bold ${size}px ${emp.font}`;
+        ctx.fillStyle = emp.color;
+        ctx.shadowColor = emp.sombra;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.shadowBlur = 0;
+        ctx.fillText(nombre, canvas.width / 2, ny);
+
+        if (circular) ctx.restore();
+        updateDownloadLink();
+      };
+
+      fondo.onerror = () => {
+        console.error("Failed to load background image for", empresa.value);
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = `bold ${size}px ${emp.font}`;
+        ctx.fillStyle = emp.color;
+        ctx.textAlign = "center";
+        ctx.fillText("Error: Imagen de fondo no cargada", canvas.width / 2, canvas.height / 2);
+        if (circular) ctx.restore();
+        updateDownloadLink();
+      };
+
+      // Actualizar enlace de descarga
+      function updateDownloadLink() {
+        const enlace = document.getElementById("descargar");
+        enlace.href = canvas.toDataURL("image/png");
+        enlace.download = "perfil_" + empresa.value + "_" + nombre + ".png";
+      }
+    }
+
+    // Debounced image generation
+    const debouncedGenerarImagen = debounce(generarImagen, 100);
+
+    // Eventos para preview en vivo
+    [nombreInput, pais, sizeInput, flagSizeInput, byInput, nyInput, outSizeInput, circularInput]
+      .forEach(el => el.addEventListener("input", debouncedGenerarImagen));
+    empresa.addEventListener("change", aplicarConfigEmpresa);
+    pais.addEventListener("change", saveDefaultCountry);
+
+    // Inicializar
+    loadDefaultCountry();
+    aplicarConfigEmpresa();
+  </script>
+
+  <footer>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+  </footer>
+</body>
+</html>
