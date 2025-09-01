@@ -11,6 +11,8 @@
   <link rel="apple-touch-icon" href="./assets/images/favicon.png">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto:wght@700&family=Lora:wght@700&display=swap" rel="stylesheet">
+  <!-- Twemoji Library -->
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
   <style>
     .fondos-grid {
       display: flex;
@@ -280,14 +282,24 @@
         ctx.drawImage(fondo, 0, 0, canvas.width, canvas.height);
         ctx.textAlign = "center";
 
-        // Bandera
-        ctx.font = `${flagSize}px sans-serif`;
-        ctx.fillStyle = "white";
-        ctx.shadowColor = "black";
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-        ctx.shadowBlur = 0;
-        ctx.fillText(bandera, canvas.width / 2, by);
+        // Bandera usando Twemoji
+        if (bandera) {
+          const flagImg = new Image();
+          flagImg.onload = () => {
+            ctx.drawImage(flagImg, canvas.width / 2 - flagSize / 2, by - flagSize, flagSize, flagSize);
+          };
+          flagImg.onerror = () => {
+            console.error("Error loading Twemoji flag");
+            ctx.font = `${flagSize}px sans-serif`;
+            ctx.fillStyle = "white";
+            ctx.shadowColor = "black";
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.shadowBlur = 0;
+            ctx.fillText(bandera, canvas.width / 2, by); // Fallback a texto nativo si falla
+          };
+          flagImg.src = twemoji.parse(bandera, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
+        }
 
         // Resetear sombra después de la bandera
         ctx.shadowColor = "transparent";
