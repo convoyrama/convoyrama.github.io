@@ -79,7 +79,7 @@
 
       <div class="input-group">
         <label for="nombre">Nombre:</label><br>
-        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="text" id="nombre" placeholder="Nombre" required>
       </div>
 
       <div class="input-group">
@@ -89,7 +89,8 @@
 
       <div class="input-group">
         <label for="pais">País:</label><br>
-        <select id="pais" style="width:100%">
+        <select id="pais" style="width:100%" required>
+          <option value="">Seleccione un país</option>
           <option value="AR|🇦🇷|Argentina">🇦🇷 Argentina</option>
           <option value="BO|🇧🇴|Bolivia">🇧🇴 Bolivia</option>
           <option value="BR|🇧🇷|Brasil">🇧🇷 Brasil</option>
@@ -117,8 +118,8 @@
       </div>
 
       <div class="input-group">
-        <label for="truckersmpLink">TruckersMP Link (Opcional):</label><br>
-        <input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link">
+        <label for="truckersmpLink">TruckersMP Link (Requerido):</label><br>
+        <input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link" required>
       </div>
     </div>
 
@@ -147,10 +148,12 @@
       flagSize: 80,
       photoX: 20,
       photoY: 80,
-      textX: 220,
-      textY: 334,
-      qrX: 573,
-      qrY: 101,
+      textX: 220,  // Posición X del texto
+      textY: 334,  // Posición Y inicial del texto
+      qrX: 573,    // Posición X del QR
+      qrY: 101,    // Posición Y del QR
+      flagX: 625,  // Posición X de la bandera (exactamente igual al QR)
+      flagY: 236,  // Posición Y de la bandera (15px arriba de 251, debajo del QR)
       font: "'Open Sans', sans-serif"
     };
 
@@ -187,7 +190,7 @@
     function getExpirationDate() {
       const date = new Date();
       date.setFullYear(date.getFullYear() + 50);
-      return `31/02/${date.getFullYear()}`; // Forzado a 31/02 (no existe)
+      return `31/02/${date.getFullYear()}`; // Sin "Expira:"
     }
 
     // Debounce function
@@ -257,24 +260,28 @@
         }
 
         // Dibujar texto
-        const date = new Date();
-        const licenseNumber = generarLicenseNumber(nombre, paisInput.value, date);
         const currentDate = getCurrentDate();
-        const expirationDate = getExpirationDate();
+        const expirationDate = getExpirationDate(); // Sin "Expira:"
         ctx.font = `bold 24px ${config.font}`;
         ctx.fillStyle = config.color;
         ctx.textAlign = "left";
         const lineHeight = 24 * 1.2; // 28px
         ctx.fillText(nombre, config.textX, config.textY);
-        ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
         ctx.fillText(currentDate, config.textX, config.textY + lineHeight * 2);
         ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
-        ctx.fillText(`Expira: ${expirationDate}`, config.textX, config.textY + lineHeight * 4);
+        ctx.fillText(expirationDate, config.textX, config.textY + lineHeight * 4); // Sin "Expira:"
 
-        // Dibujar bandera (centrada en X)
+        // Mostrar número de licencia solo si nombre, país y TruckersMP link están presentes
+        if (nombre && nombre.trim() !== "" && paisInput.value && truckersmpLink) {
+          const date = new Date();
+          const licenseNumber = generarLicenseNumber(nombre, paisInput.value, date);
+          ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
+        }
+
+        // Dibujar bandera (centrada exactamente en la misma X que el QR)
         ctx.font = `${config.flagSize}px sans-serif`;
         ctx.textAlign = "center";
-        ctx.fillText(flag, canvas.width / 2, 70);
+        ctx.fillText(flag, config.flagX, config.flagY + config.flagSize / 2);
 
         // Dibujar QR code si existe
         if (truckersmpLink && qrCanvas) {
