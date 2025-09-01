@@ -13,6 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
   <!-- QRious Library -->
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  <!-- Twemoji Library -->
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
   <style>
     .contenedor {
       display: flex;
@@ -148,13 +150,16 @@
       flagSize: 80,
       photoX: 20,
       photoY: 80,
-      textX: 220,  // Posición X del texto
-      textY: 334,  // Posición Y inicial del texto
-      qrX: 573,    // Posición X del QR
-      qrY: 101,    // Posición Y del QR
-      flagX: 625,  // Posición X de la bandera (exactamente igual al QR)
-      flagY: 236,  // Posición Y de la bandera (15px arriba de 251, debajo del QR)
-      font: "'Open Sans', sans-serif"
+      labelX: 100,  // Posición X inicial de las etiquetas
+      colonX: 130,  // Posición X de los dos puntos
+      textX: 270,   // Posición X de los datos (actualizado a 270)
+      textY: 334,   // Posición Y inicial del texto
+      qrX: 573,     // Posición X del QR
+      qrY: 101,     // Posición Y del QR
+      flagX: 625,   // Posición X de la bandera
+      flagY: 206,   // Posición Y de la bandera
+      font: "'Open Sans', sans-serif",
+      defaultPhotoSize: 192  // Tamaño de la silueta por defecto
     };
 
     // Inputs
@@ -253,35 +258,66 @@
       };
 
       function drawContent() {
-        // Dibujar imagen subida (opcional)
+        // Dibujar imagen subida (opcional) o silueta por defecto
         if (userImage) {
-          const photoSize = 192; // Fixed 192x192
+          const photoSize = config.defaultPhotoSize; // 192x192
           ctx.drawImage(userImage, config.photoX, config.photoY, photoSize, photoSize);
+        } else {
+          const silhouetteImg = new Image();
+          silhouetteImg.onload = () => {
+            ctx.drawImage(silhouetteImg, config.photoX, config.photoY, config.defaultPhotoSize, config.defaultPhotoSize);
+          };
+          silhouetteImg.onerror = () => {
+            console.error("Error loading default silhouette");
+          };
+          // Usar Twemoji para renderizar el emoji 👤 como SVG
+          silhouetteImg.src = twemoji.parse("👤", { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
         }
 
-        // Dibujar texto
+        // Dibujar texto con etiquetas alineadas
         const currentDate = getCurrentDate();
         const expirationDate = getExpirationDate(); // Sin "Expira:"
         ctx.font = `bold 24px ${config.font}`;
         ctx.fillStyle = config.color;
-        ctx.textAlign = "left";
-        const lineHeight = 24 * 1.2; // 28px
-        ctx.fillText(nombre, config.textX, config.textY);
-        ctx.fillText(currentDate, config.textX, config.textY + lineHeight * 2);
-        ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
-        ctx.fillText(expirationDate, config.textX, config.textY + lineHeight * 4); // Sin "Expira:"
 
-        // Mostrar número de licencia solo si nombre, país y TruckersMP link están presentes
+        // Etiquetas a la izquierda con dos puntos alineados
+        const lineHeight = 24 * 1.2; // 28px
+        ctx.textAlign = "left";
+        ctx.fillText("Nombre", config.labelX, config.textY);
+        ctx.fillText("Licencia", config.labelX, config.textY + lineHeight);
+        ctx.fillText("Fecha", config.labelX, config.textY + lineHeight * 2);
+        ctx.fillText("Nacionalidad", config.labelX, config.textY + lineHeight * 3);
+        ctx.fillText("Fecha Exp.", config.labelX, config.textY + lineHeight * 4);
+        ctx.textAlign = "left"; // Asegurar alineación izquierda para los dos puntos
+        ctx.fillText(":", config.colonX, config.textY);
+        ctx.fillText(":", config.colonX, config.textY + lineHeight);
+        ctx.fillText(":", config.colonX, config.textY + lineHeight * 2);
+        ctx.fillText(":", config.colonX, config.textY + lineHeight * 3);
+        ctx.fillText(":", config.colonX, config.textY + lineHeight * 4);
+
+        // Datos a la derecha
+        ctx.textAlign = "left";
+        ctx.fillText(nombre, config.textX, config.textY);
         if (nombre && nombre.trim() !== "" && paisInput.value && truckersmpLink) {
           const date = new Date();
           const licenseNumber = generarLicenseNumber(nombre, paisInput.value, date);
           ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
         }
+        ctx.fillText(currentDate, config.textX, config.textY + lineHeight * 2);
+        ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
+        ctx.fillText(expirationDate, config.textX, config.textY + lineHeight * 4);
 
-        // Dibujar bandera (centrada exactamente en la misma X que el QR)
-        ctx.font = `${config.flagSize}px sans-serif`;
-        ctx.textAlign = "center";
-        ctx.fillText(flag, config.flagX, config.flagY + config.flagSize / 2);
+        // Dibujar bandera usando Twemoji
+        if (flag) {
+          const flagImg = new Image();
+          flagImg.onload = () => {
+            ctx.drawImage(flagImg, config.flagX - config.flagSize / 2, config.flagY, config.flagSize, config.flagSize);
+          };
+          flagImg.onerror = () => {
+            console.error("Error loading Twemoji flag");
+          };
+          flagImg.src = twemoji.parse(flag, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
+        }
 
         // Dibujar QR code si existe
         if (truckersmpLink && qrCanvas) {
@@ -324,7 +360,7 @@
         reader.readAsDataURL(file);
       } else {
         userImage = null;
-        generarImagen(); // Refrescar sin foto si se quita
+        generarImagen(); // Refrescar con silueta por defecto si se quita la foto
       }
     });
 
