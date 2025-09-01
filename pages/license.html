@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convoyrama | Generador de Licencia</title>
+  <meta name="description" content="Convoyrama">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="icon" href="../assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/images/favicon.png">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
+  <!-- QRious Library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  <style>
+    .contenedor {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      align-items: flex-start;
+      font-family: Arial, sans-serif;
+    }
+    .panel {
+      flex: 1;
+      max-width: 300px;
+      font-size: 14px;
+    }
+    .panel h3 {
+      margin: 10px 0 5px;
+      font-size: 14px;
+    }
+    .input-group {
+      margin: 6px 0;
+    }
+    canvas {
+      border: 1px solid #000;
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+    #preview {
+      flex: 1;
+      text-align: center;
+    }
+    button {
+      padding: 6px 12px;
+      font-size: 14px;
+      margin-top: 10px;
+      background: rgb(90,165,25);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="ls.html">Generador LS</a>
+      <a href="gen.html">Generador TCS/CN/CDS</a>
+      <a href="license.html">Generador de Licencia</a>
+    </nav>
+    <p>Generador de Licencia de Conductor</p>
+  </header>
+
+  <div class="contenedor">
+    <!-- Panel de controles -->
+    <div class="panel">
+      <div class="input-group">
+        <label>Fuente: <span id="fontName">Open Sans</span></label>
+      </div>
+
+      <div class="input-group">
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" placeholder="Nombre">
+      </div>
+
+      <div class="input-group">
+        <label for="foto">Foto (Opcional):</label><br>
+        <input type="file" id="foto" accept="image/*">
+      </div>
+
+      <div class="input-group">
+        <label for="pais">País:</label><br>
+        <select id="pais" style="width:100%">
+          <option value="AR|🇦🇷|Argentina">🇦🇷 Argentina</option>
+          <option value="BO|🇧🇴|Bolivia">🇧🇴 Bolivia</option>
+          <option value="BR|🇧🇷|Brasil">🇧🇷 Brasil</option>
+          <option value="CA|🇨🇦|Canadá">🇨🇦 Canadá</option>
+          <option value="CL|🇨🇱|Chile">🇨🇱 Chile</option>
+          <option value="CO|🇨🇴|Colombia">🇨🇴 Colombia</option>
+          <option value="CR|🇨🇷|Costa Rica">🇨🇷 Costa Rica</option>
+          <option value="CU|🇨🇺|Cuba">🇨🇺 Cuba</option>
+          <option value="DO|🇩🇴|República Dominicana">🇩🇴 República Dominicana</option>
+          <option value="EC|🇪🇨|Ecuador">🇪🇨 Ecuador</option>
+          <option value="SV|🇸🇻|El Salvador">🇸🇻 El Salvador</option>
+          <option value="ES|🇪🇸|España">🇪🇸 España</option>
+          <option value="GT|🇬🇹|Guatemala">🇬🇹 Guatemala</option>
+          <option value="HN|🇭🇳|Honduras">🇭🇳 Honduras</option>
+          <option value="MX|🇲🇽|México">🇲🇽 México</option>
+          <option value="NI|🇳🇮|Nicaragua">🇳🇮 Nicaragua</option>
+          <option value="PA|🇵🇦|Panamá">🇵🇦 Panamá</option>
+          <option value="PY|🇵🇾|Paraguay">🇵🇾 Paraguay</option>
+          <option value="PE|🇵🇪|Perú">🇵🇪 Perú</option>
+          <option value="PT|🇵🇹|Portugal">🇵🇹 Portugal</option>
+          <option value="US|🇺🇸|Estados Unidos">🇺🇸 Estados Unidos</option>
+          <option value="UY|🇺🇾|Uruguay" selected>🇺🇾 Uruguay</option>
+          <option value="VE|🇻🇪|Venezuela">🇻🇪 Venezuela</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="truckersmpLink">TruckersMP Link (Opcional):</label><br>
+        <input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link">
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div id="preview">
+      <canvas id="canvas" width="800" height="500"></canvas>
+      <br>
+      <a id="descargar" download="driver_license.png">
+        <button id="botonDescargar">Descargar Licencia</button>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // Configuración por defecto
+    const config = {
+      template: "assets/images/license_template.png",
+      color: "white",
+      flagSize: 80,
+      photoX: 20,
+      photoY: 80,
+      textX: 220,
+      textY: 334,
+      qrX: 573,
+      qrY: 101,
+      font: "'Open Sans', sans-serif"
+    };
+
+    // Inputs
+    const nombreInput = document.getElementById("nombre");
+    const fotoInput = document.getElementById("foto");
+    const paisInput = document.getElementById("pais");
+    const truckersmpLinkInput = document.getElementById("truckersmpLink");
+
+    // Variable para almacenar la imagen subida y QR
+    let userImage = null;
+    let qrCanvas = null;
+
+    // Generar número de licencia
+    function generarLicenseNumber(nombre, pais, date) {
+      const countryCode = pais.split("|")[0].substring(0, 2) || "XX"; // 2 primeros dígitos del código
+      const currentDate = getCurrentDate().replace(/\//g, ""); // 01092025
+      const dateSum = currentDate.split("").reduce((sum, digit) => sum + parseInt(digit), 0); // 0+1+0+9+2+0+2+5 = 19
+      const nameLength = nombre.replace(/[^a-zA-Z]/g, "").length; // Suma de letras
+      const randomDigit = Math.floor(Math.random() * 10); // 0-9
+      return `${countryCode}${dateSum}${nameLength}-${randomDigit}`;
+    }
+
+    // Formatear fecha actual
+    function getCurrentDate() {
+      const date = new Date();
+      const day = date.getDate().toString().padStart(2, "0");
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    // Formatear fecha de expiración (50 años después, forzada a 31/02)
+    function getExpirationDate() {
+      const date = new Date();
+      date.setFullYear(date.getFullYear() + 50);
+      return `31/02/${date.getFullYear()}`; // Forzado a 31/02 (no existe)
+    }
+
+    // Debounce function
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Save and load default country
+    function saveDefaultCountry() {
+      localStorage.setItem("defaultCountry", paisInput.value);
+    }
+    function loadDefaultCountry() {
+      const saved = localStorage.getItem("defaultCountry");
+      if (saved) paisInput.value = saved;
+    }
+
+    // Aplica defaults
+    function aplicarConfig() {
+      generarImagen();
+    }
+
+    // Generar/preview
+    function generarImagen() {
+      const nombre = nombreInput.value || "Sin nombre";
+      const paisData = paisInput.value.split("|");
+      const countryCode = paisData[0] || "XX";
+      const flag = paisData[1] || "";
+      const countryName = paisData[2] || "Sin país";
+      const truckersmpLink = truckersmpLinkInput.value.trim();
+
+      canvas.width = 800;
+      canvas.height = 500;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Dibujar plantilla
+      const template = new Image();
+      template.src = config.template;
+      template.onload = () => {
+        ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
+        drawContent();
+      };
+      template.onerror = () => {
+        console.error("Failed to load license template image");
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        drawContent();
+        ctx.font = `bold 24px ${config.font}`;
+        ctx.fillStyle = config.color;
+        ctx.textAlign = "center";
+        ctx.fillText("Error: Plantilla no cargada", canvas.width / 2, canvas.height / 2);
+      };
+
+      function drawContent() {
+        // Dibujar imagen subida (opcional)
+        if (userImage) {
+          const photoSize = 192; // Fixed 192x192
+          ctx.drawImage(userImage, config.photoX, config.photoY, photoSize, photoSize);
+        }
+
+        // Dibujar texto
+        const date = new Date();
+        const licenseNumber = generarLicenseNumber(nombre, paisInput.value, date);
+        const currentDate = getCurrentDate();
+        const expirationDate = getExpirationDate();
+        ctx.font = `bold 24px ${config.font}`;
+        ctx.fillStyle = config.color;
+        ctx.textAlign = "left";
+        const lineHeight = 24 * 1.2; // 28px
+        ctx.fillText(nombre, config.textX, config.textY);
+        ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
+        ctx.fillText(currentDate, config.textX, config.textY + lineHeight * 2);
+        ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
+        ctx.fillText(`Expira: ${expirationDate}`, config.textX, config.textY + lineHeight * 4);
+
+        // Dibujar bandera (centrada en X)
+        ctx.font = `${config.flagSize}px sans-serif`;
+        ctx.textAlign = "center";
+        ctx.fillText(flag, canvas.width / 2, 70);
+
+        // Dibujar QR code si existe
+        if (truckersmpLink && qrCanvas) {
+          ctx.drawImage(qrCanvas, config.qrX, config.qrY, 100, 100);
+        }
+
+        updateDownloadLink();
+      }
+
+      // Actualizar enlace de descarga
+      function updateDownloadLink() {
+        const enlace = document.getElementById("descargar");
+        enlace.href = canvas.toDataURL("image/png");
+        enlace.download = `driver_license_${nombre}.png`;
+      }
+
+      // Generar QR code si hay link
+      if (truckersmpLink) {
+        const qr = new QRious({
+          value: truckersmpLink,
+          size: 100,
+          level: 'H' // Nivel de corrección de errores alto
+        });
+        qrCanvas = qr.canvas;
+      } else {
+        qrCanvas = null;
+      }
+    }
+
+    // Manejar carga de imagen (opcional)
+    fotoInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          userImage = new Image();
+          userImage.src = event.target.result;
+          userImage.onload = generarImagen;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        userImage = null;
+        generarImagen(); // Refrescar sin foto si se quita
+      }
+    });
+
+    // Debounced image generation
+    const debouncedGenerarImagen = debounce(generarImagen, 100);
+
+    // Eventos para preview en vivo
+    [nombreInput, paisInput, truckersmpLinkInput]
+      .forEach(el => el.addEventListener("input", debouncedGenerarImagen));
+    paisInput.addEventListener("change", saveDefaultCountry);
+
+    // Inicializar
+    loadDefaultCountry();
+    aplicarConfig();
+  </script>
+</body>
+</html>
