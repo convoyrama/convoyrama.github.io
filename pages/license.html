@@ -120,6 +120,15 @@
       </div>
 
       <div class="input-group">
+        <label for="empresa">Empresa:</label><br>
+        <select id="empresa" style="width:100%" onchange="generarImagen()">
+          <option value="LS" selected>LS</option>
+          <option value="CN">CN</option>
+          <option value="TCS">TCS</option>
+        </select>
+      </div>
+
+      <div class="input-group">
         <label for="truckersmpLink">TruckersMP Link (Requerido):</label><br>
         <input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link" required>
       </div>
@@ -144,18 +153,17 @@
       return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => resolve(img);
-        img.onerror = () => resolve(null); // Fallback si falla
+        img.onerror = () => resolve(null);
         img.src = twemoji.parse(emoji, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
-        img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
+        img.crossOrigin = "anonymous";
       });
     }
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    // Configuración por defecto
     const config = {
-      template: "assets/images/license_template.png",
+      template: "assets/images/license_template_ls.png", // Fondo por defecto (LS)
       color: "white",
       flagSize: 80,
       photoX: 45,
@@ -169,19 +177,19 @@
       flagX: 625,
       flagY: 206,
       font: "'Open Sans', sans-serif",
-      defaultPhotoSize: 192
+      defaultPhotoSize: 192,
+      qrSize: 100,
+      qrSpacing: 10 // Espacio de 10px entre QRs
     };
 
-    // Inputs
     const nombreInput = document.getElementById("nombre");
     const fotoInput = document.getElementById("foto");
     const paisInput = document.getElementById("pais");
+    const empresaInput = document.getElementById("empresa");
     const truckersmpLinkInput = document.getElementById("truckersmpLink");
 
-    // Variable para almacenar la imagen subida
     let userImage = null;
 
-    // Generar número de licencia
     function generarLicenseNumber(nombre, pais, date) {
       const countryCode = pais.split("|")[0].substring(0, 2) || "XX";
       const currentDate = getCurrentDate().replace(/\//g, "");
@@ -191,7 +199,6 @@
       return `${countryCode}${dateSum}${nameLength}-${randomDigit}`;
     }
 
-    // Formatear fecha actual
     function getCurrentDate() {
       const date = new Date();
       const day = date.getDate().toString().padStart(2, "0");
@@ -200,14 +207,12 @@
       return `${day}/${month}/${year}`;
     }
 
-    // Formatear fecha de expiración (50 años después, forzada a 31/02)
     function getExpirationDate() {
       const date = new Date();
       date.setFullYear(date.getFullYear() + 50);
       return `31/02/${date.getFullYear()}`;
     }
 
-    // Debounce function
     function debounce(func, wait) {
       let timeout;
       return function executedFunction(...args) {
@@ -220,7 +225,6 @@
       };
     }
 
-    // Save and load default country
     function saveDefaultCountry() {
       localStorage.setItem("defaultCountry", paisInput.value);
     }
@@ -229,19 +233,21 @@
       if (saved) paisInput.value = saved;
     }
 
-    // Aplica defaults
     function aplicarConfig() {
       generarImagen();
     }
 
-    // Generar/preview
     async function generarImagen() {
       const nombre = nombreInput.value || "Sin nombre";
       const paisData = paisInput.value.split("|");
       const countryCode = paisData[0] || "XX";
       const flag = paisData[1] || "";
       const countryName = paisData[2] || "Sin país";
+      const empresa = empresaInput.value;
       const truckersmpLink = truckersmpLinkInput.value.trim();
+
+      // Cambiar el fondo según la empresa seleccionada
+      config.template = `assets/images/license_template_${empresa.toLowerCase()}.png`;
 
       canvas.width = 800;
       canvas.height = 500;
@@ -266,7 +272,7 @@
 
       // Dibujar contenido
       async function drawContent() {
-        // Dibujar imagen subida (opcional) o silueta por defecto
+        // Dibujar imagen subida o silueta por defecto
         if (userImage) {
           const photoSize = config.defaultPhotoSize;
           ctx.drawImage(userImage, config.photoX, config.photoY, photoSize, photoSize);
@@ -285,7 +291,7 @@
           }
         }
 
-        // Dibujar texto con etiquetas alineadas (cambiado Nacionalidad por País)
+        // Dibujar texto con etiquetas alineadas
         const currentDate = getCurrentDate();
         const expirationDate = getExpirationDate();
         ctx.font = `bold 24px ${config.font}`;
@@ -296,7 +302,7 @@
         ctx.fillText("Nombre :", config.labelX, config.textY);
         ctx.fillText("Núm. Licencia :", config.labelX, config.textY + lineHeight);
         ctx.fillText("Fecha :", config.labelX, config.textY + lineHeight * 2);
-        ctx.fillText("País :", config.labelX, config.textY + lineHeight * 3); // Cambiado a "País :"
+        ctx.fillText("País :", config.labelX, config.textY + lineHeight * 3);
         ctx.fillText("Fecha Exp. :", config.labelX, config.textY + lineHeight * 4);
 
         ctx.textAlign = "left";
@@ -314,30 +320,58 @@
         if (truckersmpLink) {
           const qr = new QRious({
             value: truckersmpLink,
-            size: 100,
+            size: config.qrSize,
             level: 'H'
           });
           const qrCanvas = document.createElement("canvas");
-          qrCanvas.width = 100;
-          qrCanvas.height = 100;
+          qrCanvas.width = config.qrSize;
+          qrCanvas.height = config.qrSize;
           const qrCtx = qrCanvas.getContext("2d");
           qrCtx.drawImage(qr.canvas, 0, 0);
-          ctx.drawImage(qrCanvas, config.qrX, config.qrY, 100, 100);
+          ctx.drawImage(qrCanvas, config.qrX, config.qrY, config.qrSize, config.qrSize);
+
+          // Dibujar qrls.svg a la derecha del QR generado
+          const qrlsImg = new Image();
+          qrlsImg.src = "assets/images/qrls.svg";
+          await new Promise((resolve) => {
+            qrlsImg.onload = () => {
+              ctx.drawImage(qrlsImg, config.qrX + config.qrSize + config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
+              resolve();
+            };
+            qrlsImg.onerror = () => {
+              console.error("Failed to load qrls.svg");
+              resolve();
+            };
+          });
+
+          // Dibujar qrcn.svg o qrtcs.svg a la izquierda según la empresa
+          if (empresa === "CN" || empresa === "TCS") {
+            const leftQrImg = new Image();
+            leftQrImg.src = `assets/images/qr${empresa.toLowerCase()}.svg`;
+            await new Promise((resolve) => {
+              leftQrImg.onload = () => {
+                ctx.drawImage(leftQrImg, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
+                resolve();
+              };
+              leftQrImg.onerror = () => {
+                console.error(`Failed to load qr${empresa.toLowerCase()}.svg`);
+                resolve();
+              };
+            });
+          }
         }
       }
 
       await drawContent();
       updateDownloadLink();
 
-      // Actualizar enlace de descarga
       function updateDownloadLink() {
         const enlace = document.getElementById("descargar");
         enlace.href = canvas.toDataURL("image/png");
-        enlace.download = `driver_license_${nombre}.png`;
+        enlace.download = `driver_license_${nombre}_${empresa}.png`;
       }
     }
 
-    // Manejar carga de imagen (opcional)
     fotoInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (file) {
@@ -354,15 +388,12 @@
       }
     });
 
-    // Debounced image generation
     const debouncedGenerarImagen = debounce(generarImagen, 100);
 
-    // Eventos para preview en vivo
-    [nombreInput, paisInput, truckersmpLinkInput]
+    [nombreInput, paisInput, truckersmpLinkInput, empresaInput]
       .forEach(el => el.addEventListener("input", debouncedGenerarImagen));
     paisInput.addEventListener("change", saveDefaultCountry);
 
-    // Inicializar
     loadDefaultCountry();
     aplicarConfig();
   </script>
