@@ -158,11 +158,11 @@
       template: "assets/images/license_template.png",
       color: "white",
       flagSize: 80,
-      photoX: 20,
+      photoX: 45,
       photoY: 80,
       labelX: 100,
       colonX: 130,
-      textX: 270,
+      textX: 295,
       textY: 334,
       qrX: 573,
       qrY: 101,
@@ -285,7 +285,7 @@
           }
         }
 
-        // Dibujar texto con etiquetas alineadas
+        // Dibujar texto con etiquetas alineadas (cambiado Nacionalidad por País)
         const currentDate = getCurrentDate();
         const expirationDate = getExpirationDate();
         ctx.font = `bold 24px ${config.font}`;
@@ -293,17 +293,11 @@
 
         const lineHeight = 24 * 1.2;
         ctx.textAlign = "left";
-        ctx.fillText("Nombre", config.labelX, config.textY);
-        ctx.fillText("Licencia", config.labelX, config.textY + lineHeight);
-        ctx.fillText("Fecha", config.labelX, config.textY + lineHeight * 2);
-        ctx.fillText("Nacionalidad", config.labelX, config.textY + lineHeight * 3);
-        ctx.fillText("Fecha Exp.", config.labelX, config.textY + lineHeight * 4);
-        ctx.textAlign = "left";
-        ctx.fillText(":", config.colonX, config.textY);
-        ctx.fillText(":", config.colonX, config.textY + lineHeight);
-        ctx.fillText(":", config.colonX, config.textY + lineHeight * 2);
-        ctx.fillText(":", config.colonX, config.textY + lineHeight * 3);
-        ctx.fillText(":", config.colonX, config.textY + lineHeight * 4);
+        ctx.fillText("Nombre :", config.labelX, config.textY);
+        ctx.fillText("Núm. Licencia :", config.labelX, config.textY + lineHeight);
+        ctx.fillText("Fecha :", config.labelX, config.textY + lineHeight * 2);
+        ctx.fillText("País :", config.labelX, config.textY + lineHeight * 3); // Cambiado a "País :"
+        ctx.fillText("Fecha Exp. :", config.labelX, config.textY + lineHeight * 4);
 
         ctx.textAlign = "left";
         ctx.fillText(nombre, config.textX, config.textY);
