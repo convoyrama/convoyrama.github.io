@@ -166,8 +166,8 @@
       textY: 334,
       qrX: 573,
       qrY: 101,
-      flagX: 573,
-      flagY: 236,
+      flagX: 625,
+      flagY: 206,
       font: "'Open Sans', sans-serif",
       defaultPhotoSize: 192
     };
@@ -178,9 +178,8 @@
     const paisInput = document.getElementById("pais");
     const truckersmpLinkInput = document.getElementById("truckersmpLink");
 
-    // Variable para almacenar la imagen subida y QR
+    // Variable para almacenar la imagen subida
     let userImage = null;
-    let qrCanvas = null;
 
     // Generar número de licencia
     function generarLicenseNumber(nombre, pais, date) {
@@ -317,8 +316,18 @@
         ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
         ctx.fillText(expirationDate, config.textX, config.textY + lineHeight * 4);
 
-        // Dibujar QR code si existe
-        if (truckersmpLink && qrCanvas) {
+        // Generar y dibujar QR code si existe
+        if (truckersmpLink) {
+          const qr = new QRious({
+            value: truckersmpLink,
+            size: 100,
+            level: 'H'
+          });
+          const qrCanvas = document.createElement("canvas");
+          qrCanvas.width = 100;
+          qrCanvas.height = 100;
+          const qrCtx = qrCanvas.getContext("2d");
+          qrCtx.drawImage(qr.canvas, 0, 0);
           ctx.drawImage(qrCanvas, config.qrX, config.qrY, 100, 100);
         }
       }
@@ -331,18 +340,6 @@
         const enlace = document.getElementById("descargar");
         enlace.href = canvas.toDataURL("image/png");
         enlace.download = `driver_license_${nombre}.png`;
-      }
-
-      // Generar QR code si hay link
-      if (truckersmpLink) {
-        const qr = new QRious({
-          value: truckersmpLink,
-          size: 100,
-          level: 'H'
-        });
-        qrCanvas = qr.canvas;
-      } else {
-        qrCanvas = null;
       }
     }
 
