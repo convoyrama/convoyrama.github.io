@@ -58,6 +58,9 @@
     button:hover {
       opacity: 0.8;
     }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 
@@ -121,15 +124,21 @@
 
       <div class="input-group">
         <label for="empresa">Empresa:</label><br>
-        <select id="empresa" style="width:100%" onchange="generarImagen()">
+        <select id="empresa" style="width:100%" onchange="updateForm()">
           <option value="LS" selected>LS</option>
           <option value="CN">CN</option>
           <option value="TCS">TCS</option>
+          <option value="Otro">Otro</option>
         </select>
       </div>
 
+      <div class="input-group hidden" id="empresaLinkGroup">
+        <label for="empresaLink">Enlace Perfil Empresa en TMP:</label><br>
+        <input type="text" id="empresaLink" placeholder="TruckersMP Company Profile Link" required>
+      </div>
+
       <div class="input-group">
-        <label for="truckersmpLink">TruckersMP Link (Requerido):</label><br>
+        <label for="truckersmpLink">Enlace Perfil en TMP:</label><br>
         <input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link" required>
       </div>
     </div>
@@ -163,7 +172,7 @@
     const ctx = canvas.getContext("2d");
 
     const config = {
-      template: "assets/images/license_template_ls.png", // Fondo por defecto (LS)
+      template: "assets/images/license_template_ls.png",
       color: "white",
       flagSize: 80,
       photoX: 45,
@@ -179,14 +188,16 @@
       font: "'Open Sans', sans-serif",
       defaultPhotoSize: 192,
       qrSize: 100,
-      qrSpacing: 10 // Espacio de 10px entre QRs
+      qrSpacing: 10
     };
 
     const nombreInput = document.getElementById("nombre");
     const fotoInput = document.getElementById("foto");
     const paisInput = document.getElementById("pais");
     const empresaInput = document.getElementById("empresa");
+    const empresaLinkInput = document.getElementById("empresaLink");
     const truckersmpLinkInput = document.getElementById("truckersmpLink");
+    const empresaLinkGroup = document.getElementById("empresaLinkGroup");
 
     let userImage = null;
 
@@ -233,8 +244,14 @@
       if (saved) paisInput.value = saved;
     }
 
-    function aplicarConfig() {
+    function updateForm() {
+      const empresa = empresaInput.value;
+      empresaLinkGroup.classList.toggle("hidden", empresa !== "Otro");
       generarImagen();
+    }
+
+    function aplicarConfig() {
+      updateForm();
     }
 
     async function generarImagen() {
@@ -245,6 +262,7 @@
       const countryName = paisData[2] || "Sin país";
       const empresa = empresaInput.value;
       const truckersmpLink = truckersmpLinkInput.value.trim();
+      const empresaLink = empresa === "Otro" ? empresaLinkInput.value.trim() : null;
 
       // Cambiar el fondo según la empresa seleccionada
       config.template = `assets/images/license_template_${empresa.toLowerCase()}.png`;
@@ -316,21 +334,22 @@
         ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
         ctx.fillText(expirationDate, config.textX, config.textY + lineHeight * 4);
 
-        // Generar y dibujar QR code si existe
+        // Generar y dibujar QR codes si existen
         if (truckersmpLink) {
-          const qr = new QRious({
+          // QR principal (enlace personal)
+          const qrPersonal = new QRious({
             value: truckersmpLink,
             size: config.qrSize,
             level: 'H'
           });
-          const qrCanvas = document.createElement("canvas");
-          qrCanvas.width = config.qrSize;
-          qrCanvas.height = config.qrSize;
-          const qrCtx = qrCanvas.getContext("2d");
-          qrCtx.drawImage(qr.canvas, 0, 0);
-          ctx.drawImage(qrCanvas, config.qrX, config.qrY, config.qrSize, config.qrSize);
+          const qrPersonalCanvas = document.createElement("canvas");
+          qrPersonalCanvas.width = config.qrSize;
+          qrPersonalCanvas.height = config.qrSize;
+          const qrPersonalCtx = qrPersonalCanvas.getContext("2d");
+          qrPersonalCtx.drawImage(qrPersonal.canvas, 0, 0);
+          ctx.drawImage(qrPersonalCanvas, config.qrX, config.qrY, config.qrSize, config.qrSize);
 
-          // Dibujar qrls.svg a la derecha del QR generado
+          // qrls.svg a la derecha
           const qrlsImg = new Image();
           qrlsImg.src = "assets/images/qrls.svg";
           await new Promise((resolve) => {
@@ -344,8 +363,21 @@
             };
           });
 
-          // Dibujar qrcn.svg o qrtcs.svg a la izquierda según la empresa
-          if (empresa === "CN" || empresa === "TCS") {
+          // QR adicional a la izquierda si es "Otro" y hay enlace de empresa
+          if (empresa === "Otro" && empresaLink) {
+            const qrEmpresa = new QRious({
+              value: empresaLink,
+              size: config.qrSize,
+              level: 'H'
+            });
+            const qrEmpresaCanvas = document.createElement("canvas");
+            qrEmpresaCanvas.width = config.qrSize;
+            qrEmpresaCanvas.height = config.qrSize;
+            const qrEmpresaCtx = qrEmpresaCanvas.getContext("2d");
+            qrEmpresaCtx.drawImage(qrEmpresa.canvas, 0, 0);
+            ctx.drawImage(qrEmpresaCanvas, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
+          } else if (empresa === "CN" || empresa === "TCS") {
+            // Mantener la lógica para CN y TCS con SVGs
             const leftQrImg = new Image();
             leftQrImg.src = `assets/images/qr${empresa.toLowerCase()}.svg`;
             await new Promise((resolve) => {
@@ -390,12 +422,17 @@
 
     const debouncedGenerarImagen = debounce(generarImagen, 100);
 
-    [nombreInput, paisInput, truckersmpLinkInput, empresaInput]
+    [nombreInput, paisInput, truckersmpLinkInput, empresaLinkInput]
       .forEach(el => el.addEventListener("input", debouncedGenerarImagen));
     paisInput.addEventListener("change", saveDefaultCountry);
+    empresaInput.addEventListener("change", updateForm);
 
-    loadDefaultCountry();
-    aplicarConfig();
+    function initialize() {
+      loadDefaultCountry();
+      aplicarConfig();
+    }
+
+    initialize();
   </script>
 </body>
 </html>
