@@ -170,6 +170,16 @@
   </div>
 
   <script>
+    function rasterizeTwemoji(emoji, size) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null); // Fallback si falla
+        img.src = twemoji.parse(emoji, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
+        img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
+      });
+    }
+
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -238,7 +248,7 @@
     }
 
     // Generar/preview
-    function generarImagen() {
+    async function generarImagen() {
       const emp = empresas[empresa.value];
       const nombre = nombreInput.value || "Sin_nombre";
       const bandera = pais.value || "";
@@ -266,39 +276,40 @@
 
       const fondo = new Image();
       fondo.src = emp.fondo;
+      await new Promise((resolve) => {
+        fondo.onload = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      fondo.onload = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+          if (circular) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(outSize / 2, outSize / 2, outSize / 2, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.clip();
+          }
 
-        if (circular) {
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(outSize / 2, outSize / 2, outSize / 2, 0, Math.PI * 2);
-          ctx.closePath();
-          ctx.clip();
-        }
+          // Dibujar fondo
+          ctx.drawImage(fondo, 0, 0, canvas.width, canvas.height);
+          ctx.textAlign = "center";
 
-        // Dibujar fondo
-        ctx.drawImage(fondo, 0, 0, canvas.width, canvas.height);
-        ctx.textAlign = "center";
+          resolve();
+        };
+        fondo.onerror = () => {
+          console.error("Failed to load background image for", empresa.value);
+          ctx.fillStyle = "#fff";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          resolve();
+        };
+      });
 
-        // Bandera usando Twemoji
+      // Dibujar contenido
+      async function drawContent() {
+        // Bandera usando Twemoji rasterizada
         if (bandera) {
-          const flagImg = new Image();
-          flagImg.onload = () => {
+          const flagImg = await rasterizeTwemoji(bandera, flagSize);
+          if (flagImg) {
             ctx.drawImage(flagImg, canvas.width / 2 - flagSize / 2, by - flagSize, flagSize, flagSize);
-          };
-          flagImg.onerror = () => {
-            console.error("Error loading Twemoji flag");
-            ctx.font = `${flagSize}px sans-serif`;
-            ctx.fillStyle = "white";
-            ctx.shadowColor = "black";
-            ctx.shadowOffsetX = 2;
-            ctx.shadowOffsetY = 2;
-            ctx.shadowBlur = 0;
-            ctx.fillText(bandera, canvas.width / 2, by); // Fallback a texto nativo si falla
-          };
-          flagImg.src = twemoji.parse(bandera, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
+          }
         }
 
         // Resetear sombra después de la bandera
@@ -315,22 +326,11 @@
         ctx.shadowOffsetY = 2;
         ctx.shadowBlur = 0;
         ctx.fillText(nombre, canvas.width / 2, ny);
+      }
 
-        if (circular) ctx.restore();
-        updateDownloadLink();
-      };
-
-      fondo.onerror = () => {
-        console.error("Failed to load background image for", empresa.value);
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = `bold ${size}px ${emp.font}`;
-        ctx.fillStyle = emp.color;
-        ctx.textAlign = "center";
-        ctx.fillText("Error: Imagen de fondo no cargada", canvas.width / 2, canvas.height / 2);
-        if (circular) ctx.restore();
-        updateDownloadLink();
-      };
+      await drawContent();
+      if (circular) ctx.restore();
+      updateDownloadLink();
 
       // Actualizar enlace de descarga
       function updateDownloadLink() {

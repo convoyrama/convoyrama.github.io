@@ -171,21 +171,7 @@
     </div>
   </div>
 
-  <footer>
-    <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
-  </footer>
-
   <script>
-    function rasterizeTwemoji(emoji, size) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null); // Fallback si falla
-        img.src = twemoji.parse(emoji, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
-        img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
-      });
-    }
-
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -255,13 +241,13 @@
       byValue.textContent = config.by;
       nyValue.textContent = config.ny;
       outSizeValue.textContent = config.outSize;
-      useBackgroundLayerInput.checked = true;
-      useForegroundLayerInput.checked = false;
+      useBackgroundLayerInput.checked = true; // Capa de fondo activada por defecto
+      useForegroundLayerInput.checked = false; // Capa de superposición desactivada por defecto
       generarImagen();
     }
 
     // Generar/preview
-    async function generarImagen() {
+    function generarImagen() {
       const nombre = nombreInput.value || "Sin_nombre";
       const bandera = pais.value || "";
       const size = parseInt(sizeInput.value);
@@ -302,44 +288,53 @@
       if (useBackgroundLayer && config.backgroundLayer) {
         const backgroundLayer = new Image();
         backgroundLayer.src = config.backgroundLayer;
-        await new Promise((resolve) => {
-          backgroundLayer.onload = () => {
-            ctx.drawImage(backgroundLayer, 0, 0, canvas.width, canvas.height);
-            resolve();
-          };
-          backgroundLayer.onerror = () => {
-            console.error("Failed to load background layer image (lsfondo.png)");
-            resolve();
-          };
-        });
+        backgroundLayer.onload = () => {
+          ctx.drawImage(backgroundLayer, 0, 0, canvas.width, canvas.height);
+          drawMainBackground();
+        };
+        backgroundLayer.onerror = () => {
+          console.error("Failed to load background layer image (lsfondo.png)");
+          drawMainBackground();
+        };
+      } else {
+        drawMainBackground();
       }
 
-      // Dibujar fondo principal
-      const fondo = new Image();
-      fondo.src = config.fondo;
-      await new Promise((resolve) => {
+      function drawMainBackground() {
+        const fondo = new Image();
+        fondo.src = config.fondo;
         fondo.onload = () => {
           ctx.drawImage(fondo, 0, 0, canvas.width, canvas.height);
-          resolve();
+          drawContent();
         };
         fondo.onerror = () => {
           console.error("Failed to load main background image (ls.png)");
           ctx.fillStyle = "#fff";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
-          resolve();
+          drawContent();
+          ctx.font = `bold ${size}px ${config.font}`;
+          ctx.fillStyle = config.color;
+          ctx.textAlign = "center";
+          ctx.fillText("Error: Imagen de fondo no cargada", canvas.width / 2, canvas.height / 2);
         };
-      });
+      }
 
-      // Dibujar contenido
-      async function drawContent() {
+      function drawContent() {
         ctx.textAlign = "center";
 
-        // Bandera usando Twemoji rasterizada
+        // Bandera usando Twemoji
         if (bandera) {
-          const flagImg = await rasterizeTwemoji(bandera, flagSize);
-          if (flagImg) {
+          const flagImg = new Image();
+          flagImg.onload = () => {
             ctx.drawImage(flagImg, canvas.width / 2 - flagSize / 2, by - flagSize, flagSize, flagSize);
-          }
+          };
+          flagImg.onerror = () => {
+            console.error("Error loading Twemoji flag");
+            ctx.font = `${flagSize}px sans-serif`;
+            ctx.fillStyle = "white";
+            ctx.fillText(bandera, canvas.width / 2, by); // Fallback a texto nativo si falla
+          };
+          flagImg.src = twemoji.parse(bandera, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
         }
 
         // Nombre
@@ -351,22 +346,23 @@
         if (useForegroundLayer && config.foregroundLayer) {
           const foregroundLayer = new Image();
           foregroundLayer.src = config.foregroundLayer;
-          await new Promise((resolve) => {
-            foregroundLayer.onload = () => {
-              ctx.drawImage(foregroundLayer, 0, 0, canvas.width, canvas.height);
-              resolve();
-            };
-            foregroundLayer.onerror = () => {
-              console.error("Failed to load foreground layer image (lsplumas.png)");
-              resolve();
-            };
-          });
+          foregroundLayer.onload = () => {
+            ctx.drawImage(foregroundLayer, 0, 0, canvas.width, canvas.height);
+            finalizeRendering();
+          };
+          foregroundLayer.onerror = () => {
+            console.error("Failed to load foreground layer image (lsplumas.png)");
+            finalizeRendering();
+          };
+        } else {
+          finalizeRendering();
         }
       }
 
-      await drawContent();
-      if (circular) ctx.restore();
-      updateDownloadLink();
+      function finalizeRendering() {
+        if (circular) ctx.restore();
+        updateDownloadLink();
+      }
 
       // Actualizar enlace de descarga
       function updateDownloadLink() {
@@ -388,5 +384,9 @@
     loadDefaultCountry();
     aplicarConfig();
   </script>
+
+  <footer>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+  </footer>
 </body>
 </html>

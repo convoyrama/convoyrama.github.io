@@ -140,16 +140,6 @@
   </footer>
 
   <script>
-    function rasterizeTwemoji(emoji, size) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null); // Fallback si falla
-        img.src = twemoji.parse(emoji, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
-        img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
-      });
-    }
-
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -160,16 +150,16 @@
       flagSize: 80,
       photoX: 20,
       photoY: 80,
-      labelX: 100,
-      colonX: 130,
-      textX: 270,
-      textY: 334,
-      qrX: 573,
-      qrY: 101,
-      flagX: 573,
-      flagY: 236,
+      labelX: 100,  // Posición X inicial de las etiquetas
+      colonX: 130,  // Posición X de los dos puntos
+      textX: 270,   // Posición X de los datos (actualizado a 270)
+      textY: 334,   // Posición Y inicial del texto
+      qrX: 573,     // Posición X del QR
+      qrY: 101,     // Posición Y del QR
+      flagX: 625,   // Posición X de la bandera
+      flagY: 206,   // Posición Y de la bandera
       font: "'Open Sans', sans-serif",
-      defaultPhotoSize: 192
+      defaultPhotoSize: 192  // Tamaño de la silueta por defecto
     };
 
     // Inputs
@@ -184,11 +174,11 @@
 
     // Generar número de licencia
     function generarLicenseNumber(nombre, pais, date) {
-      const countryCode = pais.split("|")[0].substring(0, 2) || "XX";
-      const currentDate = getCurrentDate().replace(/\//g, "");
-      const dateSum = currentDate.split("").reduce((sum, digit) => sum + parseInt(digit), 0);
-      const nameLength = nombre.replace(/[^a-zA-Z]/g, "").length;
-      const randomDigit = Math.floor(Math.random() * 10);
+      const countryCode = pais.split("|")[0].substring(0, 2) || "XX"; // 2 primeros dígitos del código
+      const currentDate = getCurrentDate().replace(/\//g, ""); // 01092025
+      const dateSum = currentDate.split("").reduce((sum, digit) => sum + parseInt(digit), 0); // 0+1+0+9+2+0+2+5 = 19
+      const nameLength = nombre.replace(/[^a-zA-Z]/g, "").length; // Suma de letras
+      const randomDigit = Math.floor(Math.random() * 10); // 0-9
       return `${countryCode}${dateSum}${nameLength}-${randomDigit}`;
     }
 
@@ -205,7 +195,7 @@
     function getExpirationDate() {
       const date = new Date();
       date.setFullYear(date.getFullYear() + 50);
-      return `31/02/${date.getFullYear()}`;
+      return `31/02/${date.getFullYear()}`; // Sin "Expira:"
     }
 
     // Debounce function
@@ -236,7 +226,7 @@
     }
 
     // Generar/preview
-    async function generarImagen() {
+    function generarImagen() {
       const nombre = nombreInput.value || "Sin nombre";
       const paisData = paisInput.value.split("|");
       const countryCode = paisData[0] || "XX";
@@ -252,60 +242,60 @@
       // Dibujar plantilla
       const template = new Image();
       template.src = config.template;
-      await new Promise((resolve) => {
-        template.onload = () => {
-          ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
-          resolve();
-        };
-        template.onerror = () => {
-          console.error("Failed to load license template image");
-          ctx.fillStyle = "#fff";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          resolve();
-        };
-      });
+      template.onload = () => {
+        ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
+        drawContent();
+      };
+      template.onerror = () => {
+        console.error("Failed to load license template image");
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        drawContent();
+        ctx.font = `bold 24px ${config.font}`;
+        ctx.fillStyle = config.color;
+        ctx.textAlign = "center";
+        ctx.fillText("Error: Plantilla no cargada", canvas.width / 2, canvas.height / 2);
+      };
 
-      // Dibujar contenido
-      async function drawContent() {
+      function drawContent() {
         // Dibujar imagen subida (opcional) o silueta por defecto
         if (userImage) {
-          const photoSize = config.defaultPhotoSize;
+          const photoSize = config.defaultPhotoSize; // 192x192
           ctx.drawImage(userImage, config.photoX, config.photoY, photoSize, photoSize);
         } else {
-          const silhouetteImg = await rasterizeTwemoji("👤", config.defaultPhotoSize);
-          if (silhouetteImg) {
+          const silhouetteImg = new Image();
+          silhouetteImg.onload = () => {
             ctx.drawImage(silhouetteImg, config.photoX, config.photoY, config.defaultPhotoSize, config.defaultPhotoSize);
-          }
-        }
-
-        // Bandera usando Twemoji rasterizada
-        if (flag) {
-          const flagImg = await rasterizeTwemoji(flag, config.flagSize);
-          if (flagImg) {
-            ctx.drawImage(flagImg, config.flagX - config.flagSize / 2, config.flagY, config.flagSize, config.flagSize);
-          }
+          };
+          silhouetteImg.onerror = () => {
+            console.error("Error loading default silhouette");
+          };
+          // Usar Twemoji para renderizar el emoji 👤 como SVG
+          silhouetteImg.src = twemoji.parse("👤", { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
         }
 
         // Dibujar texto con etiquetas alineadas
         const currentDate = getCurrentDate();
-        const expirationDate = getExpirationDate();
+        const expirationDate = getExpirationDate(); // Sin "Expira:"
         ctx.font = `bold 24px ${config.font}`;
         ctx.fillStyle = config.color;
 
-        const lineHeight = 24 * 1.2;
+        // Etiquetas a la izquierda con dos puntos alineados
+        const lineHeight = 24 * 1.2; // 28px
         ctx.textAlign = "left";
         ctx.fillText("Nombre", config.labelX, config.textY);
         ctx.fillText("Licencia", config.labelX, config.textY + lineHeight);
         ctx.fillText("Fecha", config.labelX, config.textY + lineHeight * 2);
         ctx.fillText("Nacionalidad", config.labelX, config.textY + lineHeight * 3);
         ctx.fillText("Fecha Exp.", config.labelX, config.textY + lineHeight * 4);
-        ctx.textAlign = "left";
+        ctx.textAlign = "left"; // Asegurar alineación izquierda para los dos puntos
         ctx.fillText(":", config.colonX, config.textY);
         ctx.fillText(":", config.colonX, config.textY + lineHeight);
         ctx.fillText(":", config.colonX, config.textY + lineHeight * 2);
         ctx.fillText(":", config.colonX, config.textY + lineHeight * 3);
         ctx.fillText(":", config.colonX, config.textY + lineHeight * 4);
 
+        // Datos a la derecha
         ctx.textAlign = "left";
         ctx.fillText(nombre, config.textX, config.textY);
         if (nombre && nombre.trim() !== "" && paisInput.value && truckersmpLink) {
@@ -317,14 +307,25 @@
         ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
         ctx.fillText(expirationDate, config.textX, config.textY + lineHeight * 4);
 
+        // Dibujar bandera usando Twemoji
+        if (flag) {
+          const flagImg = new Image();
+          flagImg.onload = () => {
+            ctx.drawImage(flagImg, config.flagX - config.flagSize / 2, config.flagY, config.flagSize, config.flagSize);
+          };
+          flagImg.onerror = () => {
+            console.error("Error loading Twemoji flag");
+          };
+          flagImg.src = twemoji.parse(flag, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
+        }
+
         // Dibujar QR code si existe
         if (truckersmpLink && qrCanvas) {
           ctx.drawImage(qrCanvas, config.qrX, config.qrY, 100, 100);
         }
-      }
 
-      await drawContent();
-      updateDownloadLink();
+        updateDownloadLink();
+      }
 
       // Actualizar enlace de descarga
       function updateDownloadLink() {
@@ -338,7 +339,7 @@
         const qr = new QRious({
           value: truckersmpLink,
           size: 100,
-          level: 'H'
+          level: 'H' // Nivel de corrección de errores alto
         });
         qrCanvas = qr.canvas;
       } else {
@@ -359,7 +360,7 @@
         reader.readAsDataURL(file);
       } else {
         userImage = null;
-        generarImagen();
+        generarImagen(); // Refrescar con silueta por defecto si se quita la foto
       }
     });
 
