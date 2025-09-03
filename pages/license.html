@@ -87,6 +87,33 @@
         <input type="text" id="nombre" placeholder="Nombre" required>
       </div>
 
+      <div class="input-group hidden" id="nicknameGroup">
+        <label for="nickname">Apodo Épico:</label><br>
+        <select id="nickname" style="width:100%">
+          <option value="">Seleccione un apodo</option>
+          <option value="ReyDelLag">ReyDelLag</option>
+          <option value="CamioneroSinPesos">CamioneroSinPesos</option>
+          <option value="AsDelVolanteChocado">AsDelVolanteChocado</option>
+          <option value="FrenadorEnCurva">FrenadorEnCurva</option>
+          <option value="SeñorDelLagazo">SeñorDelLagazo</option>
+          <option value="RutaSinPlata">RutaSinPlata</option>
+          <option value="ChoferDeLaCrisis">ChoferDeLaCrisis</option>
+          <option value="BocinaLoca">BocinaLoca</option>
+          <option value="CamiónFantasma">CamiónFantasma</option>
+          <option value="Lagman Latino">Lagman Latino</option>
+          <option value="TransportistaTímido">TransportistaTímido</option>
+          <option value="ReyDelConvoyCaótico">ReyDelConvoyCaótico</option>
+          <option value="CargadorDeDeudas">CargadorDeDeudas</option>
+          <option value="MaestroDelPing500">MaestroDelPing500</option>
+          <option value="FugitivoDeLaRuta">FugitivoDeLaRuta</option>
+          <option value="CamioneroDelApagón">CamioneroDelApagón</option>
+          <option value="LíderDelDescontrol">LíderDelDescontrol</option>
+          <option value="CargaConDrama">CargaConDrama</option>
+          <option value="VolanteVengador">VolanteVengador</option>
+          <option value="RutaSinWiFi">RutaSinWiFi</option>
+        </select>
+      </div>
+
       <div class="input-group">
         <label for="foto">Foto (Opcional):</label><br>
         <input type="file" id="foto" accept="image/*">
@@ -105,7 +132,7 @@
           <option value="CR|🇨🇷|Costa Rica">🇨🇷 Costa Rica</option>
           <option value="CU|🇨🇺|Cuba">🇨🇺 Cuba</option>
           <option value="DO|🇩🇴|República Dominicana">🇩🇴 República Dominicana</option>
-          <option value="EC|🇪🇨|Ecuador">🇪🇨 Ecuador</option>
+          <option value="EC|🇪🇨|Ecuador">🇨🇴 Ecuador</option>
           <option value="SV|🇸🇻|El Salvador">🇸🇻 El Salvador</option>
           <option value="ES|🇪🇸|España">🇪🇸 España</option>
           <option value="GT|🇬🇹|Guatemala">🇬🇹 Guatemala</option>
@@ -194,12 +221,15 @@
     const nombreInput = document.getElementById("nombre");
     const fotoInput = document.getElementById("foto");
     const paisInput = document.getElementById("pais");
+    const nicknameInput = document.getElementById("nickname");
     const empresaInput = document.getElementById("empresa");
     const empresaLinkInput = document.getElementById("empresaLink");
     const truckersmpLinkInput = document.getElementById("truckersmpLink");
     const empresaLinkGroup = document.getElementById("empresaLinkGroup");
+    const nicknameGroup = document.getElementById("nicknameGroup");
 
     let userImage = null;
+    let isNicknameUnlocked = localStorage.getItem("nicknameUnlocked") === "true";
 
     function generarLicenseNumber(nombre, pais, truckersmpLink) {
       // Country code (first two letters)
@@ -250,6 +280,13 @@
     function updateForm() {
       const empresa = empresaInput.value;
       empresaLinkGroup.classList.toggle("hidden", empresa !== "Otro");
+      // Check if nickname should be unlocked
+      const nombre = nombreInput.value.toLowerCase().trim();
+      if (["convoyrama", "nocturnoverso"].includes(nombre)) {
+        isNicknameUnlocked = true;
+        localStorage.setItem("nicknameUnlocked", "true");
+      }
+      nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
       generarImagen();
     }
 
@@ -263,6 +300,7 @@
       const countryCode = paisData[0] || "XX";
       const flag = paisData[1] || "";
       const countryName = paisData[2] || "Sin país";
+      const nickname = nicknameInput.value || "";
       const empresa = empresaInput.value;
       const truckersmpLink = truckersmpLinkInput.value.trim();
       const empresaLink = empresa === "Otro" ? empresaLinkInput.value.trim() : null;
@@ -323,6 +361,9 @@
         ctx.fillText("Núm. Licencia :", config.labelX, config.textY + lineHeight);
         ctx.fillText("Fecha :", config.labelX, config.textY + lineHeight * 2);
         ctx.fillText("País :", config.labelX, config.textY + lineHeight * 3);
+        if (isNicknameUnlocked && nickname) {
+          ctx.fillText("Apodo :", config.labelX, config.textY + lineHeight * 4);
+        }
 
         ctx.textAlign = "left";
         ctx.fillText(nombre, config.textX, config.textY);
@@ -334,6 +375,9 @@
         }
         ctx.fillText(currentDate, config.textX, config.textY + lineHeight * 2);
         ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
+        if (isNicknameUnlocked && nickname) {
+          ctx.fillText(nickname, config.textX, config.textY + lineHeight * 4);
+        }
 
         // Generar y dibujar QR codes si existen
         if (truckersmpLink) {
@@ -423,13 +467,15 @@
 
     const debouncedGenerarImagen = debounce(generarImagen, 100);
 
-    [nombreInput, paisInput, truckersmpLinkInput, empresaLinkInput]
+    [nombreInput, paisInput, nicknameInput, truckersmpLinkInput, empresaLinkInput]
       .forEach(el => el.addEventListener("input", debouncedGenerarImagen));
     paisInput.addEventListener("change", saveDefaultCountry);
     empresaInput.addEventListener("change", updateForm);
+    nombreInput.addEventListener("input", updateForm);
 
     function initialize() {
       loadDefaultCountry();
+      nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
       aplicarConfig();
     }
 
