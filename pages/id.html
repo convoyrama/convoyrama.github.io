@@ -70,7 +70,7 @@
       <a href="../index.html">Home</a>
       <a href="ls.html">LS</a>
       <a href="gen.html">TCS/CN/CDS</a>
-      <a href="license.html">Licencia</a>
+      <a href="id.html">Licencia</a>
     </nav>
     <p>Generador de Licencia de Conductor</p>
   </header>
@@ -390,6 +390,7 @@
         ctx.shadowColor = "transparent"; // Reset shadow
 
         if (truckersmpLink) {
+          // Draw TruckersMP profile QR code (center)
           const qrPersonal = new QRious({
             value: truckersmpLink,
             size: config.qrSize,
@@ -402,32 +403,22 @@
           qrPersonalCtx.drawImage(qrPersonal.canvas, 0, 0);
           ctx.drawImage(qrPersonalCanvas, config.qrX, config.qrY, config.qrSize, config.qrSize);
 
-          const qrlsImg = new Image();
-          qrlsImg.src = "assets/images/qrls.svg";
+          // Draw id.svg on the right
+          const idImg = new Image();
+          idImg.src = "assets/images/id.svg";
           await new Promise((resolve) => {
-            qrlsImg.onload = () => {
-              ctx.drawImage(qrlsImg, config.qrX + config.qrSize + config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
+            idImg.onload = () => {
+              ctx.drawImage(idImg, config.qrX + config.qrSize + config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
               resolve();
             };
-            qrlsImg.onerror = () => {
-              console.error("Failed to load qrls.svg");
+            idImg.onerror = () => {
+              console.error("Failed to load id.svg");
               resolve();
             };
           });
 
-          if (empresa === "Otro" && empresaLink) {
-            const qrEmpresa = new QRious({
-              value: empresaLink,
-              size: config.qrSize,
-              level: 'H'
-            });
-            const qrEmpresaCanvas = document.createElement("canvas");
-            qrEmpresaCanvas.width = config.qrSize;
-            qrEmpresaCanvas.height = config.qrSize;
-            const qrEmpresaCtx = qrEmpresaCanvas.getContext("2d");
-            qrEmpresaCtx.drawImage(qrEmpresa.canvas, 0, 0);
-            ctx.drawImage(qrEmpresaCanvas, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
-          } else if (empresa === "CN" || empresa === "TCS") {
+          // Draw company QR code on the left
+          if (empresa === "LS" || empresa === "CN" || empresa === "TCS") {
             const leftQrImg = new Image();
             leftQrImg.src = `assets/images/qr${empresa.toLowerCase()}.svg`;
             await new Promise((resolve) => {
@@ -440,6 +431,18 @@
                 resolve();
               };
             });
+          } else if (empresa === "Otro" && empresaLink) {
+            const qrEmpresa = new QRious({
+              value: empresaLink,
+              size: config.qrSize,
+              level: 'H'
+            });
+            const qrEmpresaCanvas = document.createElement("canvas");
+            qrEmpresaCanvas.width = config.qrSize;
+            qrEmpresaCanvas.height = config.qrSize;
+            const qrEmpresaCtx = qrEmpresaCanvas.getContext("2d");
+            qrEmpresaCtx.drawImage(qrEmpresa.canvas, 0, 0);
+            ctx.drawImage(qrEmpresaCanvas, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
           }
         }
       }
