@@ -227,12 +227,6 @@
       return `${day}/${month}/${year}`;
     }
 
-    function getExpirationDate() {
-      const date = new Date();
-      date.setFullYear(date.getFullYear() + 50);
-      return `31/02/${date.getFullYear()}`;
-    }
-
     function debounce(func, wait) {
       let timeout;
       return function executedFunction(...args) {
@@ -320,7 +314,6 @@
 
         // Dibujar texto con etiquetas alineadas
         const currentDate = getCurrentDate();
-        const expirationDate = getExpirationDate();
         ctx.font = `bold 24px ${config.font}`;
         ctx.fillStyle = config.color;
 
@@ -330,7 +323,6 @@
         ctx.fillText("Núm. Licencia :", config.labelX, config.textY + lineHeight);
         ctx.fillText("Fecha :", config.labelX, config.textY + lineHeight * 2);
         ctx.fillText("País :", config.labelX, config.textY + lineHeight * 3);
-        ctx.fillText("Fecha Exp. :", config.labelX, config.textY + lineHeight * 4);
 
         ctx.textAlign = "left";
         ctx.fillText(nombre, config.textX, config.textY);
@@ -342,7 +334,6 @@
         }
         ctx.fillText(currentDate, config.textX, config.textY + lineHeight * 2);
         ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
-        ctx.fillText(expirationDate, config.textX, config.textY + lineHeight * 4);
 
         // Generar y dibujar QR codes si existen
         if (truckersmpLink) {
