@@ -88,9 +88,9 @@
       </div>
 
       <div class="input-group hidden" id="nicknameGroup">
-        <label for="nickname">Apodo Épico:</label><br>
+        <label for="nickname">TAG Épico:</label><br>
         <select id="nickname" style="width:100%">
-          <option value="">Seleccione un apodo</option>
+          <option value="">Seleccione un TAG</option>
           <option value="ReyDelLag">ReyDelLag</option>
           <option value="CamioneroSinPesos">CamioneroSinPesos</option>
           <option value="AsDelVolanteChocado">AsDelVolanteChocado</option>
@@ -114,6 +114,11 @@
         </select>
       </div>
 
+      <div class="input-group hidden" id="titleToggleGroup">
+        <label for="titleToggle">Usar título cómico:</label><br>
+        <input type="checkbox" id="titleToggle">
+      </div>
+
       <div class="input-group">
         <label for="foto">Foto (Opcional):</label><br>
         <input type="file" id="foto" accept="image/*">
@@ -132,7 +137,7 @@
           <option value="CR|🇨🇷|Costa Rica">🇨🇷 Costa Rica</option>
           <option value="CU|🇨🇺|Cuba">🇨🇺 Cuba</option>
           <option value="DO|🇩🇴|República Dominicana">🇩🇴 República Dominicana</option>
-          <option value="EC|🇪🇨|Ecuador">🇨🇴 Ecuador</option>
+          <option value="EC|🇪🇨|Ecuador">🇪🇨 Ecuador</option>
           <option value="SV|🇸🇻|El Salvador">🇸🇻 El Salvador</option>
           <option value="ES|🇪🇸|España">🇪🇸 España</option>
           <option value="GT|🇬🇹|Guatemala">🇬🇹 Guatemala</option>
@@ -227,26 +232,23 @@
     const truckersmpLinkInput = document.getElementById("truckersmpLink");
     const empresaLinkGroup = document.getElementById("empresaLinkGroup");
     const nicknameGroup = document.getElementById("nicknameGroup");
+    const titleToggleGroup = document.getElementById("titleToggleGroup");
+    const titleToggleInput = document.getElementById("titleToggle");
 
     let userImage = null;
     let isNicknameUnlocked = localStorage.getItem("nicknameUnlocked") === "true";
 
     function generarLicenseNumber(nombre, pais, truckersmpLink) {
-      // Country code (first two letters)
       const countryCode = pais.split("|")[0].substring(0, 2) || "XX";
-
-      // Extract TruckersMP user ID from the link
       let userId = "";
       if (truckersmpLink) {
         const match = truckersmpLink.match(/truckersmp\.com\/user\/(\d+)/);
         userId = match ? match[1] : "";
       }
-
-      // Combine parts, only if userId is valid
       if (userId) {
         return `${countryCode}${userId}`;
       }
-      return ""; // Return empty string if no valid user ID
+      return "";
     }
 
     function getCurrentDate() {
@@ -280,13 +282,13 @@
     function updateForm() {
       const empresa = empresaInput.value;
       empresaLinkGroup.classList.toggle("hidden", empresa !== "Otro");
-      // Check if nickname should be unlocked
       const nombre = nombreInput.value.toLowerCase().trim();
       if (["convoyrama", "nocturnoverso"].includes(nombre)) {
         isNicknameUnlocked = true;
         localStorage.setItem("nicknameUnlocked", "true");
       }
       nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
+      titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked);
       generarImagen();
     }
 
@@ -305,7 +307,6 @@
       const truckersmpLink = truckersmpLinkInput.value.trim();
       const empresaLink = empresa === "Otro" ? empresaLinkInput.value.trim() : null;
 
-      // Cambiar el fondo según la empresa seleccionada
       config.template = `assets/images/license_template_${empresa.toLowerCase()}.png`;
 
       canvas.width = 800;
@@ -313,7 +314,6 @@
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Dibujar plantilla
       const template = new Image();
       template.src = config.template;
       await new Promise((resolve) => {
@@ -329,9 +329,7 @@
         };
       });
 
-      // Dibujar contenido
       async function drawContent() {
-        // Dibujar imagen subida o silueta por defecto
         if (userImage) {
           const photoSize = config.defaultPhotoSize;
           ctx.drawImage(userImage, config.photoX, config.photoY, photoSize, photoSize);
@@ -342,7 +340,6 @@
           }
         }
 
-        // Bandera usando Twemoji rasterizada
         if (flag) {
           const flagImg = await rasterizeTwemoji(flag, config.flagSize);
           if (flagImg) {
@@ -350,7 +347,6 @@
           }
         }
 
-        // Dibujar texto con etiquetas alineadas
         const currentDate = getCurrentDate();
         ctx.font = `bold 24px ${config.font}`;
         ctx.fillStyle = config.color;
@@ -362,7 +358,7 @@
         ctx.fillText("Fecha :", config.labelX, config.textY + lineHeight * 2);
         ctx.fillText("País :", config.labelX, config.textY + lineHeight * 3);
         if (isNicknameUnlocked && nickname) {
-          ctx.fillText("Apodo :", config.labelX, config.textY + lineHeight * 4);
+          ctx.fillText("TAG :", config.labelX, config.textY + lineHeight * 4);
         }
 
         ctx.textAlign = "left";
@@ -379,9 +375,21 @@
           ctx.fillText(nickname, config.textX, config.textY + lineHeight * 4);
         }
 
-        // Generar y dibujar QR codes si existen
+        // Draw title at the bottom
+        const titleText = isNicknameUnlocked && titleToggleInput.checked ? "PERMISO PARA CHOCAR EN CONVOY" : "PERMISO DE CONDUCCIÓN INTERNACIONAL";
+        const titleY = canvas.height - 5; // 5px from bottom
+        ctx.font = `bold 22px ${config.font}`; // 2px larger than main text
+        ctx.fillStyle = "rgb(240, 240, 240)"; // Nearly white text
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        ctx.shadowColor = "rgb(0, 0, 0)"; // Black shadow
+        ctx.shadowOffsetX = 1;
+        ctx.shadowOffsetY = 1;
+        ctx.shadowBlur = 2;
+        ctx.fillText(titleText, canvas.width / 2, titleY);
+        ctx.shadowColor = "transparent"; // Reset shadow
+
         if (truckersmpLink) {
-          // QR principal (enlace personal)
           const qrPersonal = new QRious({
             value: truckersmpLink,
             size: config.qrSize,
@@ -394,7 +402,6 @@
           qrPersonalCtx.drawImage(qrPersonal.canvas, 0, 0);
           ctx.drawImage(qrPersonalCanvas, config.qrX, config.qrY, config.qrSize, config.qrSize);
 
-          // qrls.svg a la derecha
           const qrlsImg = new Image();
           qrlsImg.src = "assets/images/qrls.svg";
           await new Promise((resolve) => {
@@ -408,7 +415,6 @@
             };
           });
 
-          // QR adicional a la izquierda si es "Otro" y hay enlace de empresa
           if (empresa === "Otro" && empresaLink) {
             const qrEmpresa = new QRious({
               value: empresaLink,
@@ -422,7 +428,6 @@
             qrEmpresaCtx.drawImage(qrEmpresa.canvas, 0, 0);
             ctx.drawImage(qrEmpresaCanvas, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
           } else if (empresa === "CN" || empresa === "TCS") {
-            // Mantener la lógica para CN y TCS con SVGs
             const leftQrImg = new Image();
             leftQrImg.src = `assets/images/qr${empresa.toLowerCase()}.svg`;
             await new Promise((resolve) => {
@@ -467,7 +472,7 @@
 
     const debouncedGenerarImagen = debounce(generarImagen, 100);
 
-    [nombreInput, paisInput, nicknameInput, truckersmpLinkInput, empresaLinkInput]
+    [nombreInput, paisInput, nicknameInput, truckersmpLinkInput, empresaLinkInput, titleToggleInput]
       .forEach(el => el.addEventListener("input", debouncedGenerarImagen));
     paisInput.addEventListener("change", saveDefaultCountry);
     empresaInput.addEventListener("change", updateForm);
@@ -476,7 +481,8 @@
     function initialize() {
       loadDefaultCountry();
       nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
-      aplicarConfig();
+      titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked);
+      generarImagen();
     }
 
     initialize();
