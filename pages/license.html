@@ -201,13 +201,22 @@
 
     let userImage = null;
 
-    function generarLicenseNumber(nombre, pais, date) {
+    function generarLicenseNumber(nombre, pais, truckersmpLink) {
+      // Country code (first two letters)
       const countryCode = pais.split("|")[0].substring(0, 2) || "XX";
-      const currentDate = getCurrentDate().replace(/\//g, "");
-      const dateSum = currentDate.split("").reduce((sum, digit) => sum + parseInt(digit), 0);
-      const nameLength = nombre.replace(/[^a-zA-Z]/g, "").length;
-      const randomDigit = Math.floor(Math.random() * 10);
-      return `${countryCode}${dateSum}${nameLength}-${randomDigit}`;
+
+      // Extract TruckersMP user ID from the link
+      let userId = "";
+      if (truckersmpLink) {
+        const match = truckersmpLink.match(/truckersmp\.com\/user\/(\d+)/);
+        userId = match ? match[1] : "";
+      }
+
+      // Combine parts, only if userId is valid
+      if (userId) {
+        return `${countryCode}${userId}`;
+      }
+      return ""; // Return empty string if no valid user ID
     }
 
     function getCurrentDate() {
@@ -326,9 +335,10 @@
         ctx.textAlign = "left";
         ctx.fillText(nombre, config.textX, config.textY);
         if (nombre && nombre.trim() !== "" && paisInput.value && truckersmpLink) {
-          const date = new Date();
-          const licenseNumber = generarLicenseNumber(nombre, paisInput.value, date);
-          ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
+          const licenseNumber = generarLicenseNumber(nombre, paisInput.value, truckersmpLink);
+          if (licenseNumber) {
+            ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
+          }
         }
         ctx.fillText(currentDate, config.textX, config.textY + lineHeight * 2);
         ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
