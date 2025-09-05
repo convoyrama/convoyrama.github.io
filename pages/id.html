@@ -297,6 +297,7 @@
     }
 
     async function generarImagen() {
+      console.log("Redrawing canvas for empresa:", empresaInput.value); // Debug log
       const nombre = nombreInput.value || "Sin nombre";
       const paisData = paisInput.value.split("|");
       const countryCode = paisData[0] || "XX";
@@ -307,148 +308,163 @@
       const truckersmpLink = truckersmpLinkInput.value.trim();
       const empresaLink = empresa === "Otro" ? empresaLinkInput.value.trim() : null;
 
-      config.template = `assets/images/license_template_${empresa.toLowerCase()}.png`;
+      // Set canvas dimensions only if needed
+      if (canvas.width !== 800 || canvas.height !== 500) {
+        canvas.width = 800;
+        canvas.height = 500;
+      }
 
-      canvas.width = 800;
-      canvas.height = 500;
-
+      // Clear canvas and reset context state
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = null;
+      ctx.fillStyle = null;
+      ctx.textAlign = "start";
+      ctx.textBaseline = "alphabetic";
+      ctx.shadowColor = "transparent";
+      ctx.globalCompositeOperation = "source-over"; // Ensure default composite mode
 
+      // Load template
+      config.template = `assets/images/license_template_${empresa.toLowerCase()}.png`;
       const template = new Image();
       template.src = config.template;
-      await new Promise((resolve) => {
-        template.onload = () => {
-          ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
-          resolve();
-        };
-        template.onerror = () => {
-          console.error("Failed to load license template image");
-          ctx.fillStyle = "#fff";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          resolve();
-        };
-      });
 
-      async function drawContent() {
-        if (userImage) {
-          const photoSize = config.defaultPhotoSize;
-          ctx.drawImage(userImage, config.photoX, config.photoY, photoSize, photoSize);
-        } else {
-          const silhouetteImg = await rasterizeTwemoji("👤", config.defaultPhotoSize);
-          if (silhouetteImg) {
-            ctx.drawImage(silhouetteImg, config.photoX, config.photoY, config.defaultPhotoSize, config.defaultPhotoSize);
+      // Wait for all images to load
+      const [templateImg, silhouetteImg, flagImg, idImg, leftQrImg] = await Promise.all([
+        new Promise((resolve) => {
+          template.onload = () => resolve(template);
+          template.onerror = () => {
+            console.error("Failed to load license template image");
+            resolve(null);
+          };
+        }),
+        userImage ? Promise.resolve(null) : rasterizeTwemoji("👤", config.defaultPhotoSize),
+        flag ? rasterizeTwemoji(flag, config.flagSize) : Promise.resolve(null),
+        truckersmpLink ? new Promise((resolve) => {
+          const img = new Image();
+          img.src = "assets/images/id.svg";
+          img.onload = () => resolve(img);
+          img.onerror = () => {
+            console.error("Failed to load id.svg");
+            resolve(null);
+          };
+        }) : Promise.resolve(null),
+        truckersmpLink && (empresa === "LS" || empresa === "CN" || empresa === "TCS") ? new Promise((resolve) => {
+          const img = new Image();
+          img.src = `assets/images/qr${empresa.toLowerCase()}.svg`;
+          img.onload = () => resolve(img);
+          img.onerror = () => {
+            console.error(`Failed to load qr${empresa.toLowerCase()}.svg`);
+            resolve(null);
+          };
+        }) : Promise.resolve(null)
+      ]);
+
+      // Draw template or fallback
+      if (templateImg) {
+        ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
+      } else {
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      // Draw content
+      // Draw photo or silhouette
+      if (userImage) {
+        const photoSize = config.defaultPhotoSize;
+        ctx.drawImage(userImage, config.photoX, config.photoY, photoSize, photoSize);
+      } else if (silhouetteImg) {
+        ctx.drawImage(silhouetteImg, config.photoX, config.photoY, config.defaultPhotoSize, config.defaultPhotoSize);
+      }
+
+      // Draw flag
+      if (flagImg) {
+        ctx.drawImage(flagImg, config.flagX - config.flagSize / 2, config.flagY, config.flagSize, config.flagSize);
+      }
+
+      // Draw text fields
+      const currentDate = getCurrentDate();
+      ctx.font = `bold 24px ${config.font}`;
+      ctx.fillStyle = config.color;
+      ctx.textAlign = "left";
+
+      const lineHeight = 24 * 1.2;
+      ctx.fillText("Nombre :", config.labelX, config.textY);
+      ctx.fillText("Núm. Licencia :", config.labelX, config.textY + lineHeight);
+      ctx.fillText("Fecha :", config.labelX, config.textY + lineHeight * 2);
+      ctx.fillText("País :", config.labelX, config.textY + lineHeight * 3);
+      if (isNicknameUnlocked && nickname) {
+        ctx.fillText("TAG :", config.labelX, config.textY + lineHeight * 4);
+      }
+
+      ctx.fillText(nombre, config.textX, config.textY);
+      if (nombre && nombre.trim() !== "" && paisInput.value && truckersmpLink) {
+        const licenseNumber = generarLicenseNumber(nombre, paisInput.value, truckersmpLink);
+        if (licenseNumber) {
+          ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
+        }
+      }
+      ctx.fillText(currentDate, config.textX, config.textY + lineHeight * 2);
+      ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
+      if (isNicknameUnlocked && nickname) {
+        ctx.fillText(nickname, config.textX, config.textY + lineHeight * 4);
+      }
+
+      // Draw title at the bottom
+      const titleText = isNicknameUnlocked && titleToggleInput.checked ? "PERMISO PARA CHOCAR EN CONVOY" : "PERMISO DE CONDUCCIÓN INTERNACIONAL";
+      const titleY = canvas.height - 5; // 5px from bottom
+      ctx.font = `bold 26px ${config.font}`; // 26px for consistency
+      ctx.fillStyle = "rgb(240, 240, 240)"; // Nearly white text
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      ctx.shadowColor = "rgb(0, 0, 0)"; // Black shadow
+      ctx.shadowOffsetX = 1;
+      ctx.shadowOffsetY = 1;
+      ctx.shadowBlur = 2;
+      ctx.fillText(titleText, canvas.width / 2, titleY);
+      ctx.shadowColor = "transparent"; // Reset shadow
+
+      // Draw QR codes
+      if (truckersmpLink) {
+        // Draw TruckersMP profile QR code (center)
+        const qrPersonal = new QRious({
+          value: truckersmpLink,
+          size: config.qrSize,
+          level: 'H'
+        });
+        const qrPersonalCanvas = document.createElement("canvas");
+        qrPersonalCanvas.width = config.qrSize;
+        qrPersonalCanvas.height = config.qrSize;
+        const qrPersonalCtx = qrPersonalCanvas.getContext("2d");
+        qrPersonalCtx.drawImage(qrPersonal.canvas, 0, 0);
+        ctx.drawImage(qrPersonalCanvas, config.qrX, config.qrY, config.qrSize, config.qrSize);
+
+        // Draw id.svg on the right
+        if (idImg) {
+          ctx.drawImage(idImg, config.qrX + config.qrSize + config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
+        }
+
+        // Draw company QR code on the left
+        if (empresa === "LS" || empresa === "CN" || empresa === "TCS") {
+          if (leftQrImg) {
+            ctx.drawImage(leftQrImg, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
           }
-        }
-
-        if (flag) {
-          const flagImg = await rasterizeTwemoji(flag, config.flagSize);
-          if (flagImg) {
-            ctx.drawImage(flagImg, config.flagX - config.flagSize / 2, config.flagY, config.flagSize, config.flagSize);
-          }
-        }
-
-        const currentDate = getCurrentDate();
-        ctx.font = `bold 24px ${config.font}`;
-        ctx.fillStyle = config.color;
-
-        const lineHeight = 24 * 1.2;
-        ctx.textAlign = "left";
-        ctx.fillText("Nombre :", config.labelX, config.textY);
-        ctx.fillText("Núm. Licencia :", config.labelX, config.textY + lineHeight);
-        ctx.fillText("Fecha :", config.labelX, config.textY + lineHeight * 2);
-        ctx.fillText("País :", config.labelX, config.textY + lineHeight * 3);
-        if (isNicknameUnlocked && nickname) {
-          ctx.fillText("TAG :", config.labelX, config.textY + lineHeight * 4);
-        }
-
-        ctx.textAlign = "left";
-        ctx.fillText(nombre, config.textX, config.textY);
-        if (nombre && nombre.trim() !== "" && paisInput.value && truckersmpLink) {
-          const licenseNumber = generarLicenseNumber(nombre, paisInput.value, truckersmpLink);
-          if (licenseNumber) {
-            ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
-          }
-        }
-        ctx.fillText(currentDate, config.textX, config.textY + lineHeight * 2);
-        ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
-        if (isNicknameUnlocked && nickname) {
-          ctx.fillText(nickname, config.textX, config.textY + lineHeight * 4);
-        }
-
-        // Draw title at the bottom
-        const titleText = isNicknameUnlocked && titleToggleInput.checked ? "PERMISO PARA CHOCAR EN CONVOY" : "PERMISO DE CONDUCCIÓN INTERNACIONAL";
-        const titleY = canvas.height - 5; // 5px from bottom
-        ctx.font = `bold 22px ${config.font}`; // 2px larger than main text
-        ctx.fillStyle = "rgb(240, 240, 240)"; // Nearly white text
-        ctx.textAlign = "center";
-        ctx.textBaseline = "bottom";
-        ctx.shadowColor = "rgb(0, 0, 0)"; // Black shadow
-        ctx.shadowOffsetX = 1;
-        ctx.shadowOffsetY = 1;
-        ctx.shadowBlur = 2;
-        ctx.fillText(titleText, canvas.width / 2, titleY);
-        ctx.shadowColor = "transparent"; // Reset shadow
-
-        if (truckersmpLink) {
-          // Draw TruckersMP profile QR code (center)
-          const qrPersonal = new QRious({
-            value: truckersmpLink,
+        } else if (empresa === "Otro" && empresaLink) {
+          const qrEmpresa = new QRious({
+            value: empresaLink,
             size: config.qrSize,
             level: 'H'
           });
-          const qrPersonalCanvas = document.createElement("canvas");
-          qrPersonalCanvas.width = config.qrSize;
-          qrPersonalCanvas.height = config.qrSize;
-          const qrPersonalCtx = qrPersonalCanvas.getContext("2d");
-          qrPersonalCtx.drawImage(qrPersonal.canvas, 0, 0);
-          ctx.drawImage(qrPersonalCanvas, config.qrX, config.qrY, config.qrSize, config.qrSize);
-
-          // Draw id.svg on the right
-          const idImg = new Image();
-          idImg.src = "assets/images/id.svg";
-          await new Promise((resolve) => {
-            idImg.onload = () => {
-              ctx.drawImage(idImg, config.qrX + config.qrSize + config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
-              resolve();
-            };
-            idImg.onerror = () => {
-              console.error("Failed to load id.svg");
-              resolve();
-            };
-          });
-
-          // Draw company QR code on the left
-          if (empresa === "LS" || empresa === "CN" || empresa === "TCS") {
-            const leftQrImg = new Image();
-            leftQrImg.src = `assets/images/qr${empresa.toLowerCase()}.svg`;
-            await new Promise((resolve) => {
-              leftQrImg.onload = () => {
-                ctx.drawImage(leftQrImg, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
-                resolve();
-              };
-              leftQrImg.onerror = () => {
-                console.error(`Failed to load qr${empresa.toLowerCase()}.svg`);
-                resolve();
-              };
-            });
-          } else if (empresa === "Otro" && empresaLink) {
-            const qrEmpresa = new QRious({
-              value: empresaLink,
-              size: config.qrSize,
-              level: 'H'
-            });
-            const qrEmpresaCanvas = document.createElement("canvas");
-            qrEmpresaCanvas.width = config.qrSize;
-            qrEmpresaCanvas.height = config.qrSize;
-            const qrEmpresaCtx = qrEmpresaCanvas.getContext("2d");
-            qrEmpresaCtx.drawImage(qrEmpresa.canvas, 0, 0);
-            ctx.drawImage(qrEmpresaCanvas, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
-          }
+          const qrEmpresaCanvas = document.createElement("canvas");
+          qrEmpresaCanvas.width = config.qrSize;
+          qrEmpresaCanvas.height = config.qrSize;
+          const qrEmpresaCtx = qrEmpresaCanvas.getContext("2d");
+          qrEmpresaCtx.drawImage(qrEmpresa.canvas, 0, 0);
+          ctx.drawImage(qrEmpresaCanvas, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
         }
       }
 
-      await drawContent();
       updateDownloadLink();
+      console.log("Canvas redraw complete for empresa:", empresa); // Debug log
 
       function updateDownloadLink() {
         const enlace = document.getElementById("descargar");
@@ -473,7 +489,7 @@
       }
     });
 
-    const debouncedGenerarImagen = debounce(generarImagen, 100);
+    const debouncedGenerarImagen = debounce(generarImagen, 50); // Reduced to 50ms for faster response
 
     [nombreInput, paisInput, nicknameInput, truckersmpLinkInput, empresaLinkInput, titleToggleInput]
       .forEach(el => el.addEventListener("input", debouncedGenerarImagen));
