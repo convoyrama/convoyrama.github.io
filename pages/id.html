@@ -9,11 +9,8 @@
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="icon" href="../assets/images/favicon.png">
   <link rel="apple-touch-icon" href="../assets/images/favicon.png">
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
-  <!-- QRious Library -->
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
-  <!-- Twemoji Library -->
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
   <style>
     .contenedor {
@@ -34,6 +31,14 @@
     }
     .input-group {
       margin: 6px 0;
+    }
+    .toggle-group {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+    .toggle-group .toggle-item {
+      flex: 1;
     }
     canvas {
       border: 1px solid #000;
@@ -61,6 +66,17 @@
     .hidden {
       display: none;
     }
+    #truckersmpStatus {
+      font-size: 12px;
+      color: #555;
+      margin-top: 5px;
+    }
+    .valid {
+      color: green;
+    }
+    .invalid {
+      color: red;
+    }
   </style>
 </head>
 
@@ -76,54 +92,55 @@
   </header>
 
   <div class="contenedor">
-    <!-- Panel de controles -->
     <div class="panel">
       <div class="input-group">
         <label>Fuente: <span id="fontName">Open Sans</span></label>
       </div>
-
       <div class="input-group">
         <label for="nombre">Nombre:</label><br>
         <input type="text" id="nombre" placeholder="Nombre" required>
       </div>
-
       <div class="input-group hidden" id="nicknameGroup">
         <label for="nickname">TAG Épico:</label><br>
         <select id="nickname" style="width:100%">
           <option value="">Seleccione un TAG</option>
           <option value="ReyDelLag">ReyDelLag</option>
-          <option value="CamioneroSinPesos">CamioneroSinPesos</option>
-          <option value="AsDelVolanteChocado">AsDelVolanteChocado</option>
           <option value="FrenadorEnCurva">FrenadorEnCurva</option>
           <option value="SeñorDelLagazo">SeñorDelLagazo</option>
-          <option value="RutaSinPlata">RutaSinPlata</option>
-          <option value="ChoferDeLaCrisis">ChoferDeLaCrisis</option>
           <option value="BocinaLoca">BocinaLoca</option>
-          <option value="CamiónFantasma">CamiónFantasma</option>
-          <option value="Lagman Latino">Lagman Latino</option>
-          <option value="TransportistaTímido">TransportistaTímido</option>
-          <option value="ReyDelConvoyCaótico">ReyDelConvoyCaótico</option>
           <option value="CargadorDeDeudas">CargadorDeDeudas</option>
-          <option value="MaestroDelPing500">MaestroDelPing500</option>
-          <option value="FugitivoDeLaRuta">FugitivoDeLaRuta</option>
           <option value="CamioneroDelApagón">CamioneroDelApagón</option>
-          <option value="LíderDelDescontrol">LíderDelDescontrol</option>
+          <option value="FugitivoDeLaRuta">FugitivoDeLaRuta</option>
+          <option value="MaestroDelPing">MaestroDelPing</option>
+          <option value="ReyDeLaCarretera">ReyDeLaCarretera</option>
+          <option value="LocoDelVolante">LocoDelVolante</option>
+          <option value="SobrevivienteDelBan">SobrevivienteDelBan</option>
+          <option value="BanEvasor">BanEvasor</option>
+          <option value="FrenazoEstelar">FrenazoEstelar</option>
+          <option value="TerrorDeCalais">TerrorDeCalais</option>
+          <option value="LagLegendario">LagLegendario</option>
+          <option value="SobrevivienteDeKirkenes">SobrevivienteDeKirkenes</option>
+          <option value="MaestroDelReckless">MaestroDelReckless</option>
+          <option value="PingParalizante">PingParalizante</option>
+          <option value="RutaSinRetorno">RutaSinRetorno</option>
+          <option value="VolanteEndemoniado">VolanteEndemoniado</option>
+          <option value="AsDelReporte">AsDelReporte</option>
+          <option value="ReyDeDuisburg">ReyDeDuisburg</option>
+          <option value="ReyDeCalais">ReyDeCalais</option>
+          <option value="KaosEnLaRuta">KaosEnLaRuta</option>
+          <option value="CarreteraPerdida">CarreteraPerdida</option>
+          <option value="FrenadorDePánico">FrenadorDePánico</option>
           <option value="CargaConDrama">CargaConDrama</option>
-          <option value="VolanteVengador">VolanteVengador</option>
-          <option value="RutaSinWiFi">RutaSinWiFi</option>
         </select>
       </div>
-
       <div class="input-group hidden" id="titleToggleGroup">
         <label for="titleToggle">Usar título cómico:</label><br>
         <input type="checkbox" id="titleToggle">
       </div>
-
       <div class="input-group">
         <label for="foto">Foto (Opcional):</label><br>
         <input type="file" id="foto" accept="image/*">
       </div>
-
       <div class="input-group">
         <label for="pais">País:</label><br>
         <select id="pais" style="width:100%" required>
@@ -153,7 +170,6 @@
           <option value="VE|🇻🇪|Venezuela">🇻🇪 Venezuela</option>
         </select>
       </div>
-
       <div class="input-group">
         <label for="empresa">Empresa:</label><br>
         <select id="empresa" style="width:100%" onchange="updateForm()">
@@ -163,19 +179,26 @@
           <option value="Otro">Otro</option>
         </select>
       </div>
-
       <div class="input-group hidden" id="empresaLinkGroup">
         <label for="empresaLink">Enlace Perfil Empresa en TMP:</label><br>
         <input type="text" id="empresaLink" placeholder="TruckersMP Company Profile Link" required>
       </div>
-
       <div class="input-group">
         <label for="truckersmpLink">Enlace Perfil en TMP:</label><br>
         <input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link" required>
+        <div id="truckersmpStatus"></div>
+      </div>
+      <div class="input-group toggle-group">
+        <div class="toggle-item">
+          <label for="promodsToggle">ProMods:</label><br>
+          <input type="checkbox" id="promodsToggle">
+        </div>
+        <div class="toggle-item">
+          <label for="dbusworldToggle">DBUS:</label><br>
+          <input type="checkbox" id="dbusworldToggle">
+        </div>
       </div>
     </div>
-
-    <!-- Preview -->
     <div id="preview">
       <canvas id="canvas" width="800" height="500"></canvas>
       <br>
@@ -217,10 +240,16 @@
       qrY: 101,
       flagX: 625,
       flagY: 206,
-      font: "'Open Sans', Arial, sans-serif", // Added Arial as fallback
+      font: "'Open Sans', Arial, sans-serif",
       defaultPhotoSize: 192,
       qrSize: 100,
-      qrSpacing: 10
+      qrSpacing: 10,
+      promodsX: 20,
+      promodsY: 334,
+      dbusworldX: 20,
+      dbusworldY: 394,
+      logoWidth: 67,
+      logoHeight: 50
     };
 
     const nombreInput = document.getElementById("nombre");
@@ -230,16 +259,19 @@
     const empresaInput = document.getElementById("empresa");
     const empresaLinkInput = document.getElementById("empresaLink");
     const truckersmpLinkInput = document.getElementById("truckersmpLink");
+    const truckersmpStatus = document.getElementById("truckersmpStatus");
     const empresaLinkGroup = document.getElementById("empresaLinkGroup");
     const nicknameGroup = document.getElementById("nicknameGroup");
     const titleToggleGroup = document.getElementById("titleToggleGroup");
     const titleToggleInput = document.getElementById("titleToggle");
+    const promodsToggleInput = document.getElementById("promodsToggle");
+    const dbusworldToggleInput = document.getElementById("dbusworldToggle");
 
     let userImage = null;
     let isNicknameUnlocked = localStorage.getItem("nicknameUnlocked") === "true";
     let cachedDate = null;
     let lastDateFetch = 0;
-    const DATE_CACHE_DURATION = 60 * 1000; // Cache date for 60 seconds
+    const DATE_CACHE_DURATION = 60 * 1000;
 
     function generarLicenseNumber(nombre, pais, truckersmpLink) {
       const countryCode = pais.split("|")[0].substring(0, 2) || "XX";
@@ -283,6 +315,18 @@
       }
     }
 
+    function validateTruckersMPLink(link) {
+      const regex = /^https:\/\/truckersmp\.com\/user\/\d+$/;
+      if (!regex.test(link)) {
+        truckersmpStatus.textContent = "Enlace inválido: debe ser https://truckersmp.com/user/[número]";
+        truckersmpStatus.className = "invalid";
+        return false;
+      }
+      truckersmpStatus.textContent = "Enlace válido";
+      truckersmpStatus.className = "valid";
+      return true;
+    }
+
     function debounce(func, wait) {
       let timeout;
       return function executedFunction(...args) {
@@ -304,7 +348,7 @@
     }
 
     function updateForm() {
-      console.log("updateForm triggered"); // Debug log
+      console.log("updateForm triggered");
       const empresa = empresaInput.value;
       empresaLinkGroup.classList.toggle("hidden", empresa !== "Otro");
       const nombre = nombreInput.value.toLowerCase().trim();
@@ -314,14 +358,9 @@
       }
       nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
       titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked);
-      debouncedGenerarImagen(); // Use debounced version
+      debouncedGenerarImagen();
     }
 
-    function aplicarConfig() {
-      updateForm();
-    }
-
-    // Store previous form state to avoid redundant redraws
     let lastFormState = {};
 
     function getFormState() {
@@ -333,12 +372,14 @@
         truckersmpLink: truckersmpLinkInput.value,
         empresaLink: empresaLinkInput.value,
         titleToggle: titleToggleInput.checked,
+        promodsToggle: promodsToggleInput.checked,
+        dbusworldToggle: dbusworldToggleInput.checked,
         userImage: userImage ? userImage.src : null
       };
     }
 
     async function generarImagen() {
-      console.log("generarImagen triggered"); // Debug log
+      console.log("generarImagen triggered");
       const formState = getFormState();
       if (JSON.stringify(formState) === JSON.stringify(lastFormState)) {
         console.log("No changes in form state, skipping redraw");
@@ -355,14 +396,13 @@
       const empresa = empresaInput.value;
       const truckersmpLink = truckersmpLinkInput.value.trim();
       const empresaLink = empresa === "Otro" ? empresaLinkInput.value.trim() : null;
+      const isTruckersMPLinkValid = truckersmpLink ? validateTruckersMPLink(truckersmpLink) : false;
 
-      // Set canvas dimensions only if needed
       if (canvas.width !== 800 || canvas.height !== 500) {
         canvas.width = 800;
         canvas.height = 500;
       }
 
-      // Clear canvas and reset context state
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.font = null;
       ctx.fillStyle = null;
@@ -371,13 +411,11 @@
       ctx.shadowColor = "transparent";
       ctx.globalCompositeOperation = "source-over";
 
-      // Load template
       config.template = `assets/images/license_template_${empresa.toLowerCase()}.png`;
       const template = new Image();
       template.src = config.template;
 
-      // Wait for all images to load
-      const [templateImg, silhouetteImg, flagImg, idImg, leftQrImg] = await Promise.all([
+      const [templateImg, silhouetteImg, flagImg, idImg, leftQrImg, promodsImg, dbusworldImg] = await Promise.all([
         new Promise((resolve) => {
           template.onload = () => resolve(template);
           template.onerror = () => {
@@ -387,7 +425,7 @@
         }),
         userImage ? Promise.resolve(null) : rasterizeTwemoji("👤", config.defaultPhotoSize),
         flag ? rasterizeTwemoji(flag, config.flagSize) : Promise.resolve(null),
-        truckersmpLink ? new Promise((resolve) => {
+        isTruckersMPLinkValid ? new Promise((resolve) => {
           const img = new Image();
           img.src = "assets/images/id.svg";
           img.onload = () => resolve(img);
@@ -396,7 +434,7 @@
             resolve(null);
           };
         }) : Promise.resolve(null),
-        truckersmpLink && (empresa === "LS" || empresa === "CN" || empresa === "TCS") ? new Promise((resolve) => {
+        isTruckersMPLinkValid && (empresa === "LS" || empresa === "CN" || empresa === "TCS") ? new Promise((resolve) => {
           const img = new Image();
           img.src = `assets/images/qr${empresa.toLowerCase()}.svg`;
           img.onload = () => resolve(img);
@@ -404,10 +442,27 @@
             console.error(`Failed to load qr${empresa.toLowerCase()}.svg`);
             resolve(null);
           };
+        }) : Promise.resolve(null),
+        promodsToggleInput.checked ? new Promise((resolve) => {
+          const img = new Image();
+          img.src = "assets/images/promods.png";
+          img.onload = () => resolve(img);
+          img.onerror = () => {
+            console.error("Failed to load promods.png");
+            resolve(null);
+          };
+        }) : Promise.resolve(null),
+        dbusworldToggleInput.checked ? new Promise((resolve) => {
+          const img = new Image();
+          img.src = "assets/images/dbusworld.png";
+          img.onload = () => resolve(img);
+          img.onerror = () => {
+            console.error("Failed to load dbusworld.png");
+            resolve(null);
+          };
         }) : Promise.resolve(null)
       ]);
 
-      // Draw template or fallback
       if (templateImg) {
         ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
       } else {
@@ -415,7 +470,6 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 
-      // Draw content
       if (userImage) {
         const photoSize = config.defaultPhotoSize;
         ctx.drawImage(userImage, config.photoX, config.photoY, photoSize, photoSize);
@@ -442,7 +496,7 @@
       }
 
       ctx.fillText(nombre, config.textX, config.textY);
-      if (nombre && nombre.trim() !== "" && paisInput.value && truckersmpLink) {
+      if (nombre && nombre.trim() !== "" && paisInput.value && isTruckersMPLinkValid) {
         const licenseNumber = generarLicenseNumber(nombre, paisInput.value, truckersmpLink);
         if (licenseNumber) {
           ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
@@ -454,9 +508,17 @@
         ctx.fillText(nickname, config.textX, config.textY + lineHeight * 4);
       }
 
+      if (promodsImg && promodsToggleInput.checked) {
+        ctx.drawImage(promodsImg, config.promodsX, config.promodsY, config.logoWidth, config.logoHeight);
+      }
+      if (dbusworldImg && dbusworldToggleInput.checked) {
+        const dbusworldY = promodsToggleInput.checked ? config.dbusworldY : config.promodsY;
+        ctx.drawImage(dbusworldImg, config.dbusworldX, dbusworldY, config.logoWidth, config.logoHeight);
+      }
+
       const titleText = isNicknameUnlocked && titleToggleInput.checked ? "PERMISO PARA CHOCAR EN CONVOY" : "PERMISO DE CONDUCCIÓN INTERNACIONAL";
       const titleY = canvas.height - 5;
-      ctx.font = `bold 22px ${config.font}`;
+      ctx.font = `bold 22px ${config.font}`; // Título en 22px
       ctx.fillStyle = "rgb(240, 240, 240)";
       ctx.textAlign = "center";
       ctx.textBaseline = "bottom";
@@ -467,7 +529,7 @@
       ctx.fillText(titleText, canvas.width / 2, titleY);
       ctx.shadowColor = "transparent";
 
-      if (truckersmpLink) {
+      if (isTruckersMPLinkValid) {
         const qrPersonal = new QRious({
           value: truckersmpLink,
           size: config.qrSize,
@@ -514,7 +576,7 @@
     }
 
     fotoInput.addEventListener("change", (e) => {
-      console.log("fotoInput changed"); // Debug log
+      console.log("fotoInput changed");
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
@@ -530,11 +592,22 @@
       }
     });
 
-    const debouncedGenerarImagen = debounce(generarImagen, 100); // Increased to 100ms
+    truckersmpLinkInput.addEventListener("input", () => {
+      const link = truckersmpLinkInput.value.trim();
+      if (link) {
+        validateTruckersMPLink(link);
+      } else {
+        truckersmpStatus.textContent = "";
+        truckersmpStatus.className = "";
+      }
+      debouncedGenerarImagen();
+    });
 
-    [nombreInput, paisInput, nicknameInput, truckersmpLinkInput, empresaLinkInput, titleToggleInput]
+    const debouncedGenerarImagen = debounce(generarImagen, 100);
+
+    [nombreInput, paisInput, nicknameInput, empresaLinkInput, titleToggleInput, promodsToggleInput, dbusworldToggleInput]
       .forEach(el => el.addEventListener("input", (e) => {
-        console.log(`Input event on ${el.id}`); // Debug log
+        console.log(`Input event on ${el.id}`);
         debouncedGenerarImagen();
       }));
     paisInput.addEventListener("change", saveDefaultCountry);
