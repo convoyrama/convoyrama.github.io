@@ -217,7 +217,7 @@
       qrY: 101,
       flagX: 625,
       flagY: 206,
-      font: "'Open Sans', sans-serif",
+      font: "'Open Sans', Arial, sans-serif", // Added Arial as fallback
       defaultPhotoSize: 192,
       qrSize: 100,
       qrSpacing: 10
@@ -237,6 +237,9 @@
 
     let userImage = null;
     let isNicknameUnlocked = localStorage.getItem("nicknameUnlocked") === "true";
+    let cachedDate = null;
+    let lastDateFetch = 0;
+    const DATE_CACHE_DURATION = 60 * 1000; // Cache date for 60 seconds
 
     function generarLicenseNumber(nombre, pais, truckersmpLink) {
       const countryCode = pais.split("|")[0].substring(0, 2) || "XX";
@@ -251,12 +254,33 @@
       return "";
     }
 
-    function getCurrentDate() {
-      const date = new Date();
-      const day = date.getDate().toString().padStart(2, "0");
-      const month = (date.getMonth() + 1).toString().padStart(2, "0");
-      const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
+    async function getCurrentDate() {
+      const now = Date.now();
+      if (cachedDate && now - lastDateFetch < DATE_CACHE_DURATION) {
+        console.log("Using cached date:", cachedDate);
+        return cachedDate;
+      }
+      try {
+        const response = await fetch('http://worldtimeapi.org/api/timezone/Etc/UTC');
+        const data = await response.json();
+        const date = new Date(data.datetime);
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear();
+        cachedDate = `${day}/${month}/${year}`;
+        lastDateFetch = now;
+        console.log("Fetched new date:", cachedDate);
+        return cachedDate;
+      } catch (error) {
+        console.error("Failed to fetch date from API, falling back to system date:", error);
+        const date = new Date();
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear();
+        cachedDate = `${day}/${month}/${year}`;
+        lastDateFetch = now;
+        return cachedDate;
+      }
     }
 
     function debounce(func, wait) {
@@ -280,6 +304,7 @@
     }
 
     function updateForm() {
+      console.log("updateForm triggered"); // Debug log
       const empresa = empresaInput.value;
       empresaLinkGroup.classList.toggle("hidden", empresa !== "Otro");
       const nombre = nombreInput.value.toLowerCase().trim();
@@ -289,15 +314,38 @@
       }
       nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
       titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked);
-      generarImagen();
+      debouncedGenerarImagen(); // Use debounced version
     }
 
     function aplicarConfig() {
       updateForm();
     }
 
+    // Store previous form state to avoid redundant redraws
+    let lastFormState = {};
+
+    function getFormState() {
+      return {
+        nombre: nombreInput.value,
+        pais: paisInput.value,
+        nickname: nicknameInput.value,
+        empresa: empresaInput.value,
+        truckersmpLink: truckersmpLinkInput.value,
+        empresaLink: empresaLinkInput.value,
+        titleToggle: titleToggleInput.checked,
+        userImage: userImage ? userImage.src : null
+      };
+    }
+
     async function generarImagen() {
-      console.log("Redrawing canvas for empresa:", empresaInput.value); // Debug log
+      console.log("generarImagen triggered"); // Debug log
+      const formState = getFormState();
+      if (JSON.stringify(formState) === JSON.stringify(lastFormState)) {
+        console.log("No changes in form state, skipping redraw");
+        return;
+      }
+      lastFormState = formState;
+
       const nombre = nombreInput.value || "Sin nombre";
       const paisData = paisInput.value.split("|");
       const countryCode = paisData[0] || "XX";
@@ -321,7 +369,7 @@
       ctx.textAlign = "start";
       ctx.textBaseline = "alphabetic";
       ctx.shadowColor = "transparent";
-      ctx.globalCompositeOperation = "source-over"; // Ensure default composite mode
+      ctx.globalCompositeOperation = "source-over";
 
       // Load template
       config.template = `assets/images/license_template_${empresa.toLowerCase()}.png`;
@@ -368,7 +416,6 @@
       }
 
       // Draw content
-      // Draw photo or silhouette
       if (userImage) {
         const photoSize = config.defaultPhotoSize;
         ctx.drawImage(userImage, config.photoX, config.photoY, photoSize, photoSize);
@@ -376,13 +423,11 @@
         ctx.drawImage(silhouetteImg, config.photoX, config.photoY, config.defaultPhotoSize, config.defaultPhotoSize);
       }
 
-      // Draw flag
       if (flagImg) {
         ctx.drawImage(flagImg, config.flagX - config.flagSize / 2, config.flagY, config.flagSize, config.flagSize);
       }
 
-      // Draw text fields
-      const currentDate = getCurrentDate();
+      const currentDate = await getCurrentDate();
       ctx.font = `bold 24px ${config.font}`;
       ctx.fillStyle = config.color;
       ctx.textAlign = "left";
@@ -409,23 +454,20 @@
         ctx.fillText(nickname, config.textX, config.textY + lineHeight * 4);
       }
 
-      // Draw title at the bottom
       const titleText = isNicknameUnlocked && titleToggleInput.checked ? "PERMISO PARA CHOCAR EN CONVOY" : "PERMISO DE CONDUCCIÓN INTERNACIONAL";
-      const titleY = canvas.height - 5; // 5px from bottom
-      ctx.font = `bold 22px ${config.font}`; // 26px for consistency
-      ctx.fillStyle = "rgb(240, 240, 240)"; // Nearly white text
+      const titleY = canvas.height - 5;
+      ctx.font = `bold 22px ${config.font}`;
+      ctx.fillStyle = "rgb(240, 240, 240)";
       ctx.textAlign = "center";
       ctx.textBaseline = "bottom";
-      ctx.shadowColor = "rgb(0, 0, 0)"; // Black shadow
+      ctx.shadowColor = "rgb(0, 0, 0)";
       ctx.shadowOffsetX = 1;
       ctx.shadowOffsetY = 1;
       ctx.shadowBlur = 2;
       ctx.fillText(titleText, canvas.width / 2, titleY);
-      ctx.shadowColor = "transparent"; // Reset shadow
+      ctx.shadowColor = "transparent";
 
-      // Draw QR codes
       if (truckersmpLink) {
-        // Draw TruckersMP profile QR code (center)
         const qrPersonal = new QRious({
           value: truckersmpLink,
           size: config.qrSize,
@@ -438,12 +480,10 @@
         qrPersonalCtx.drawImage(qrPersonal.canvas, 0, 0);
         ctx.drawImage(qrPersonalCanvas, config.qrX, config.qrY, config.qrSize, config.qrSize);
 
-        // Draw id.svg on the right
         if (idImg) {
           ctx.drawImage(idImg, config.qrX + config.qrSize + config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
         }
 
-        // Draw company QR code on the left
         if (empresa === "LS" || empresa === "CN" || empresa === "TCS") {
           if (leftQrImg) {
             ctx.drawImage(leftQrImg, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
@@ -464,7 +504,7 @@
       }
 
       updateDownloadLink();
-      console.log("Canvas redraw complete for empresa:", empresa); // Debug log
+      console.log("Canvas redraw complete for empresa:", empresa);
 
       function updateDownloadLink() {
         const enlace = document.getElementById("descargar");
@@ -474,34 +514,39 @@
     }
 
     fotoInput.addEventListener("change", (e) => {
+      console.log("fotoInput changed"); // Debug log
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = (event) => {
           userImage = new Image();
           userImage.src = event.target.result;
-          userImage.onload = generarImagen;
+          userImage.onload = debouncedGenerarImagen;
         };
         reader.readAsDataURL(file);
       } else {
         userImage = null;
-        generarImagen();
+        debouncedGenerarImagen();
       }
     });
 
-    const debouncedGenerarImagen = debounce(generarImagen, 50); // Reduced to 50ms for faster response
+    const debouncedGenerarImagen = debounce(generarImagen, 100); // Increased to 100ms
 
     [nombreInput, paisInput, nicknameInput, truckersmpLinkInput, empresaLinkInput, titleToggleInput]
-      .forEach(el => el.addEventListener("input", debouncedGenerarImagen));
+      .forEach(el => el.addEventListener("input", (e) => {
+        console.log(`Input event on ${el.id}`); // Debug log
+        debouncedGenerarImagen();
+      }));
     paisInput.addEventListener("change", saveDefaultCountry);
     empresaInput.addEventListener("change", updateForm);
     nombreInput.addEventListener("input", updateForm);
 
-    function initialize() {
+    async function initialize() {
+      console.log("Initializing");
       loadDefaultCountry();
       nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
       titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked);
-      generarImagen();
+      await debouncedGenerarImagen();
     }
 
     initialize();
