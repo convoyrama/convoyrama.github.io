@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Convoyrama | Generador de Licencia</title>
+  <title id="pageTitle">Convoyrama | Generador de Licencia</title>
   <meta name="description" content="Convoyrama">
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="icon" href="../assets/images/favicon.png">
@@ -86,22 +86,29 @@
       <a href="../index.html">Home</a>
       <a href="ls.html">LS</a>
       <a href="gen.html">TCS/CN/CDS</a>
-      <a href="id.html">Licencia</a>
+      <a href="id.html" id="navLicense">Licencia</a>
     </nav>
-    <p>Generador de Licencia de Conductor</p>
+    <p id="headerTitle">Generador de Licencia de Conductor</p>
   </header>
 
   <div class="contenedor">
     <div class="panel">
       <div class="input-group">
-        <label>Fuente: <span id="fontName">Open Sans</span></label>
+        <label for="languageToggle">Idioma / Language:</label><br>
+        <select id="languageToggle" style="width:100%">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
       </div>
       <div class="input-group">
-        <label for="nombre">Nombre:</label><br>
-        <input type="text" id="nombre" placeholder="Nombre" required>
+        <label id="fontLabel">Fuente: <span id="fontName">Open Sans</span></label>
+      </div>
+      <div class="input-group">
+        <label for="nombre" id="nameLabel">Nombre:</label><br>
+        <input type="text" id="nombre" placeholder="Nombre / Name" required>
       </div>
       <div class="input-group hidden" id="nicknameGroup">
-        <label for="nickname">TAG Épico:</label><br>
+        <label for="nickname" id="nicknameLabel">TAG Épico:</label><br>
         <select id="nickname" style="width:100%">
           <option value="">Seleccione un TAG</option>
           <option value="ReyDelLag">ReyDelLag</option>
@@ -134,44 +141,44 @@
         </select>
       </div>
       <div class="input-group hidden" id="titleToggleGroup">
-        <label for="titleToggle">Usar título cómico:</label><br>
+        <label for="titleToggle" id="titleToggleLabel">Usar título cómico:</label><br>
         <input type="checkbox" id="titleToggle">
       </div>
       <div class="input-group">
-        <label for="foto">Foto (Opcional):</label><br>
+        <label for="foto" id="photoLabel">Foto (Opcional):</label><br>
         <input type="file" id="foto" accept="image/*">
       </div>
       <div class="input-group">
-        <label for="pais">País:</label><br>
+        <label for="pais" id="countryLabel">País:</label><br>
         <select id="pais" style="width:100%" required>
-          <option value="">Seleccione un país</option>
+          <option value="">Seleccione un país / Select a country</option>
           <option value="AR|🇦🇷|Argentina">🇦🇷 Argentina</option>
           <option value="BO|🇧🇴|Bolivia">🇧🇴 Bolivia</option>
           <option value="BR|🇧🇷|Brasil">🇧🇷 Brasil</option>
-          <option value="CA|🇨🇦|Canadá">🇨🇦 Canadá</option>
+          <option value="CA|🇨🇦|Canadá">🇨🇦 Canadá / Canada</option>
           <option value="CL|🇨🇱|Chile">🇨🇱 Chile</option>
           <option value="CO|🇨🇴|Colombia">🇨🇴 Colombia</option>
           <option value="CR|🇨🇷|Costa Rica">🇨🇷 Costa Rica</option>
           <option value="CU|🇨🇺|Cuba">🇨🇺 Cuba</option>
-          <option value="DO|🇩🇴|República Dominicana">🇩🇴 República Dominicana</option>
+          <option value="DO|🇩🇴|República Dominicana">🇩🇴 República Dominicana / Dominican Republic</option>
           <option value="EC|🇪🇨|Ecuador">🇪🇨 Ecuador</option>
           <option value="SV|🇸🇻|El Salvador">🇸🇻 El Salvador</option>
-          <option value="ES|🇪🇸|España">🇪🇸 España</option>
+          <option value="ES|🇪🇸|España">🇪🇸 España / Spain</option>
           <option value="GT|🇬🇹|Guatemala">🇬🇹 Guatemala</option>
           <option value="HN|🇭🇳|Honduras">🇭🇳 Honduras</option>
-          <option value="MX|🇲🇽|México">🇲🇽 México</option>
+          <option value="MX|🇲🇽|México">🇲🇽 México / Mexico</option>
           <option value="NI|🇳🇮|Nicaragua">🇳🇮 Nicaragua</option>
-          <option value="PA|🇵🇦|Panamá">🇵🇦 Panamá</option>
+          <option value="PA|🇵🇦|Panamá">🇵🇦 Panamá / Panama</option>
           <option value="PY|🇵🇾|Paraguay">🇵🇾 Paraguay</option>
-          <option value="PE|🇵🇪|Perú">🇵🇪 Perú</option>
+          <option value="PE|🇵🇪|Perú">🇵🇪 Perú / Peru</option>
           <option value="PT|🇵🇹|Portugal">🇵🇹 Portugal</option>
-          <option value="US|🇺🇸|Estados Unidos">🇺🇸 Estados Unidos</option>
+          <option value="US|🇺🇸|Estados Unidos">🇺🇸 Estados Unidos / United States</option>
           <option value="UY|🇺🇾|Uruguay" selected>🇺🇾 Uruguay</option>
           <option value="VE|🇻🇪|Venezuela">🇻🇪 Venezuela</option>
         </select>
       </div>
-      <div class="input-group">
-        <label for="empresa">Empresa:</label><br>
+      <div class="input-group" id="empresaGroup">
+        <label for="empresa" id="companyLabel">Empresa:</label><br>
         <select id="empresa" style="width:100%" onchange="updateForm()">
           <option value="LS" selected>LS</option>
           <option value="CN">CN</option>
@@ -179,12 +186,12 @@
           <option value="Otro">Otro</option>
         </select>
       </div>
-      <div class="input-group hidden" id="empresaLinkGroup">
-        <label for="empresaLink">Enlace Perfil Empresa en TMP:</label><br>
+      <div class="input-group" id="empresaLinkGroup">
+        <label for="empresaLink" id="companyLinkLabel">Enlace Perfil Empresa en TMP:</label><br>
         <input type="text" id="empresaLink" placeholder="TruckersMP Company Profile Link" required>
       </div>
       <div class="input-group">
-        <label for="truckersmpLink">Enlace Perfil en TMP:</label><br>
+        <label for="truckersmpLink" id="truckersmpLinkLabel">Enlace Perfil en TMP:</label><br>
         <input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link" required>
         <div id="truckersmpStatus"></div>
       </div>
@@ -252,6 +259,59 @@
       logoHeight: 50
     };
 
+    const translations = {
+      es: {
+        pageTitle: "Convoyrama | Generador de Licencia",
+        headerTitle: "Generador de Licencia de Conductor",
+        navLicense: "Licencia",
+        fontLabel: "Fuente: ",
+        nameLabel: "Nombre:",
+        nicknameLabel: "TAG Épico:",
+        titleToggleLabel: "Usar título cómico:",
+        photoLabel: "Foto (Opcional):",
+        countryLabel: "País:",
+        companyLabel: "Empresa:",
+        companyLinkLabel: "Enlace Perfil Empresa en TMP:",
+        truckersmpLinkLabel: "Enlace Perfil en TMP:",
+        validLink: "Enlace válido",
+        invalidLink: "Enlace inválido: debe ser https://truckersmp.com/user/[número]",
+        downloadButton: "Descargar Licencia",
+        canvasName: "Nombre :",
+        canvasLicenseNo: "Núm. Licencia :",
+        canvasDate: "Fecha :",
+        canvasCountry: "País :",
+        canvasTag: "TAG :",
+        titleNormal: "PERMISO DE CONDUCCIÓN INTERNACIONAL",
+        titleComedic: "PERMISO PARA CHOCAR EN CONVOY",
+        countryPlaceholder: "Seleccione un país"
+      },
+      en: {
+        pageTitle: "Convoyrama | Driver License Generator",
+        headerTitle: "Driver License Generator",
+        navLicense: "License",
+        fontLabel: "Font: ",
+        nameLabel: "Name:",
+        nicknameLabel: "Epic TAG:",
+        titleToggleLabel: "Use comedic title:",
+        photoLabel: "Photo (Optional):",
+        countryLabel: "Country:",
+        companyLabel: "Company:",
+        companyLinkLabel: "TruckersMP Company Profile Link:",
+        truckersmpLinkLabel: "TruckersMP Profile Link:",
+        validLink: "Valid link",
+        invalidLink: "Invalid link: must be https://truckersmp.com/user/[number]",
+        downloadButton: "Download License",
+        canvasName: "Name :",
+        canvasLicenseNo: "License No. :",
+        canvasDate: "Date :",
+        canvasCountry: "Country :",
+        canvasTag: "TAG :",
+        titleNormal: "INTERNATIONAL DRIVING LICENSE",
+        titleComedic: "CONVOY CRASHING PERMIT",
+        countryPlaceholder: "Select a country"
+      }
+    };
+
     const nombreInput = document.getElementById("nombre");
     const fotoInput = document.getElementById("foto");
     const paisInput = document.getElementById("pais");
@@ -260,18 +320,55 @@
     const empresaLinkInput = document.getElementById("empresaLink");
     const truckersmpLinkInput = document.getElementById("truckersmpLink");
     const truckersmpStatus = document.getElementById("truckersmpStatus");
+    const empresaGroup = document.getElementById("empresaGroup");
     const empresaLinkGroup = document.getElementById("empresaLinkGroup");
     const nicknameGroup = document.getElementById("nicknameGroup");
     const titleToggleGroup = document.getElementById("titleToggleGroup");
     const titleToggleInput = document.getElementById("titleToggle");
     const promodsToggleInput = document.getElementById("promodsToggle");
     const dbusworldToggleInput = document.getElementById("dbusworldToggle");
+    const languageToggle = document.getElementById("languageToggle");
 
     let userImage = null;
     let isNicknameUnlocked = localStorage.getItem("nicknameUnlocked") === "true";
     let cachedDate = null;
     let lastDateFetch = 0;
     const DATE_CACHE_DURATION = 60 * 1000;
+    let currentLanguage = "es";
+
+    function updateLanguage(lang) {
+      currentLanguage = lang;
+      const t = translations[lang];
+
+      document.getElementById("pageTitle").textContent = t.pageTitle;
+      document.getElementById("headerTitle").textContent = t.headerTitle;
+      document.getElementById("navLicense").textContent = t.navLicense;
+      document.getElementById("fontLabel").innerHTML = t.fontLabel + '<span id="fontName">Open Sans</span>';
+      document.getElementById("nameLabel").textContent = t.nameLabel;
+      document.getElementById("nicknameLabel").textContent = t.nicknameLabel;
+      document.getElementById("titleToggleLabel").textContent = t.titleToggleLabel;
+      document.getElementById("photoLabel").textContent = t.photoLabel;
+      document.getElementById("countryLabel").textContent = t.countryLabel;
+      document.getElementById("companyLinkLabel").textContent = t.companyLinkLabel;
+      document.getElementById("truckersmpLinkLabel").textContent = t.truckersmpLinkLabel;
+      document.getElementById("botonDescargar").textContent = t.downloadButton;
+      paisInput.options[0].text = t.countryPlaceholder;
+
+      if (lang === "en") {
+        empresaGroup.classList.add("hidden");
+        empresaLinkGroup.classList.remove("hidden");
+      } else {
+        empresaGroup.classList.remove("hidden");
+        empresaLinkGroup.classList.toggle("hidden", empresaInput.value !== "Otro");
+      }
+
+      const link = truckersmpLinkInput.value.trim();
+      if (link) {
+        validateTruckersMPLink(link);
+      }
+
+      debouncedGenerarImagen();
+    }
 
     function generarLicenseNumber(nombre, pais, truckersmpLink) {
       const countryCode = pais.split("|")[0].substring(0, 2) || "XX";
@@ -317,12 +414,13 @@
 
     function validateTruckersMPLink(link) {
       const regex = /^https:\/\/truckersmp\.com\/user\/\d+$/;
+      const t = translations[currentLanguage];
       if (!regex.test(link)) {
-        truckersmpStatus.textContent = "Enlace inválido: debe ser https://truckersmp.com/user/[número]";
+        truckersmpStatus.textContent = t.invalidLink;
         truckersmpStatus.className = "invalid";
         return false;
       }
-      truckersmpStatus.textContent = "Enlace válido";
+      truckersmpStatus.textContent = t.validLink;
       truckersmpStatus.className = "valid";
       return true;
     }
@@ -350,7 +448,9 @@
     function updateForm() {
       console.log("updateForm triggered");
       const empresa = empresaInput.value;
-      empresaLinkGroup.classList.toggle("hidden", empresa !== "Otro");
+      if (currentLanguage === "es") {
+        empresaLinkGroup.classList.toggle("hidden", empresa !== "Otro");
+      }
       const nombre = nombreInput.value.toLowerCase().trim();
       if (["convoyrama", "nocturnoverso"].includes(nombre)) {
         isNicknameUnlocked = true;
@@ -374,7 +474,8 @@
         titleToggle: titleToggleInput.checked,
         promodsToggle: promodsToggleInput.checked,
         dbusworldToggle: dbusworldToggleInput.checked,
-        userImage: userImage ? userImage.src : null
+        userImage: userImage ? userImage.src : null,
+        language: currentLanguage
       };
     }
 
@@ -387,15 +488,16 @@
       }
       lastFormState = formState;
 
-      const nombre = nombreInput.value || "Sin nombre";
+      const t = translations[currentLanguage];
+      const nombre = nombreInput.value || (currentLanguage === "es" ? "Sin nombre" : "No name");
       const paisData = paisInput.value.split("|");
       const countryCode = paisData[0] || "XX";
       const flag = paisData[1] || "";
-      const countryName = paisData[2] || "Sin país";
+      const countryName = paisData[2] || (currentLanguage === "es" ? "Sin país" : "No country");
       const nickname = nicknameInput.value || "";
-      const empresa = empresaInput.value;
+      const empresa = currentLanguage === "en" ? "en" : empresaInput.value;
       const truckersmpLink = truckersmpLinkInput.value.trim();
-      const empresaLink = empresa === "Otro" ? empresaLinkInput.value.trim() : null;
+      const empresaLink = empresaLinkInput.value.trim();
       const isTruckersMPLinkValid = truckersmpLink ? validateTruckersMPLink(truckersmpLink) : false;
 
       if (canvas.width !== 800 || canvas.height !== 500) {
@@ -411,7 +513,7 @@
       ctx.shadowColor = "transparent";
       ctx.globalCompositeOperation = "source-over";
 
-      config.template = `assets/images/license_template_${empresa.toLowerCase()}.png`;
+      config.template = currentLanguage === "en" ? "assets/images/license_template_en.png" : `assets/images/license_template_${empresa.toLowerCase()}.png`;
       const template = new Image();
       template.src = config.template;
 
@@ -434,14 +536,18 @@
             resolve(null);
           };
         }) : Promise.resolve(null),
-        isTruckersMPLinkValid && (empresa === "LS" || empresa === "CN" || empresa === "TCS") ? new Promise((resolve) => {
-          const img = new Image();
-          img.src = `assets/images/qr${empresa.toLowerCase()}.svg`;
-          img.onload = () => resolve(img);
-          img.onerror = () => {
-            console.error(`Failed to load qr${empresa.toLowerCase()}.svg`);
-            resolve(null);
-          };
+        isTruckersMPLinkValid && empresaLink ? new Promise((resolve) => {
+          const qrEmpresa = new QRious({
+            value: empresaLink,
+            size: config.qrSize,
+            level: 'H'
+          });
+          const qrEmpresaCanvas = document.createElement("canvas");
+          qrEmpresaCanvas.width = config.qrSize;
+          qrEmpresaCanvas.height = config.qrSize;
+          const qrEmpresaCtx = qrEmpresaCanvas.getContext("2d");
+          qrEmpresaCtx.drawImage(qrEmpresa.canvas, 0, 0);
+          resolve(qrEmpresaCanvas);
         }) : Promise.resolve(null),
         promodsToggleInput.checked ? new Promise((resolve) => {
           const img = new Image();
@@ -487,12 +593,12 @@
       ctx.textAlign = "left";
 
       const lineHeight = 24 * 1.2;
-      ctx.fillText("Nombre :", config.labelX, config.textY);
-      ctx.fillText("Núm. Licencia :", config.labelX, config.textY + lineHeight);
-      ctx.fillText("Fecha :", config.labelX, config.textY + lineHeight * 2);
-      ctx.fillText("País :", config.labelX, config.textY + lineHeight * 3);
+      ctx.fillText(t.canvasName, config.labelX, config.textY);
+      ctx.fillText(t.canvasLicenseNo, config.labelX, config.textY + lineHeight);
+      ctx.fillText(t.canvasDate, config.labelX, config.textY + lineHeight * 2);
+      ctx.fillText(t.canvasCountry, config.labelX, config.textY + lineHeight * 3);
       if (isNicknameUnlocked && nickname) {
-        ctx.fillText("TAG :", config.labelX, config.textY + lineHeight * 4);
+        ctx.fillText(t.canvasTag, config.labelX, config.textY + lineHeight * 4);
       }
 
       ctx.fillText(nombre, config.textX, config.textY);
@@ -516,9 +622,9 @@
         ctx.drawImage(dbusworldImg, config.dbusworldX, dbusworldY, config.logoWidth, config.logoHeight);
       }
 
-      const titleText = isNicknameUnlocked && titleToggleInput.checked ? "PERMISO PARA CHOCAR EN CONVOY" : "PERMISO DE CONDUCCIÓN INTERNACIONAL";
+      const titleText = isNicknameUnlocked && titleToggleInput.checked ? t.titleComedic : t.titleNormal;
       const titleY = canvas.height - 5;
-      ctx.font = `bold 22px ${config.font}`; // Título en 22px
+      ctx.font = `bold 22px ${config.font}`;
       ctx.fillStyle = "rgb(240, 240, 240)";
       ctx.textAlign = "center";
       ctx.textBaseline = "bottom";
@@ -546,27 +652,13 @@
           ctx.drawImage(idImg, config.qrX + config.qrSize + config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
         }
 
-        if (empresa === "LS" || empresa === "CN" || empresa === "TCS") {
-          if (leftQrImg) {
-            ctx.drawImage(leftQrImg, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
-          }
-        } else if (empresa === "Otro" && empresaLink) {
-          const qrEmpresa = new QRious({
-            value: empresaLink,
-            size: config.qrSize,
-            level: 'H'
-          });
-          const qrEmpresaCanvas = document.createElement("canvas");
-          qrEmpresaCanvas.width = config.qrSize;
-          qrEmpresaCanvas.height = config.qrSize;
-          const qrEmpresaCtx = qrEmpresaCanvas.getContext("2d");
-          qrEmpresaCtx.drawImage(qrEmpresa.canvas, 0, 0);
-          ctx.drawImage(qrEmpresaCanvas, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
+        if (leftQrImg) {
+          ctx.drawImage(leftQrImg, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
         }
       }
 
       updateDownloadLink();
-      console.log("Canvas redraw complete for empresa:", empresa);
+      console.log("Canvas redraw complete for empresa:", empresa, "language:", currentLanguage);
 
       function updateDownloadLink() {
         const enlace = document.getElementById("descargar");
@@ -603,6 +695,10 @@
       debouncedGenerarImagen();
     });
 
+    languageToggle.addEventListener("change", () => {
+      updateLanguage(languageToggle.value);
+    });
+
     const debouncedGenerarImagen = debounce(generarImagen, 100);
 
     [nombreInput, paisInput, nicknameInput, empresaLinkInput, titleToggleInput, promodsToggleInput, dbusworldToggleInput]
@@ -619,6 +715,7 @@
       loadDefaultCountry();
       nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
       titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked);
+      updateLanguage(currentLanguage);
       await debouncedGenerarImagen();
     }
 
