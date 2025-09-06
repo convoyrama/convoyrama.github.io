@@ -94,10 +94,11 @@
   <div class="contenedor">
     <div class="panel">
       <div class="input-group">
-        <label for="languageToggle">Idioma / Language:</label><br>
+        <label for="languageToggle">Idioma / Language / Língua:</label><br>
         <select id="languageToggle" style="width:100%">
           <option value="es">Español</option>
           <option value="en">English</option>
+          <option value="pt">Português</option>
         </select>
       </div>
       <div class="input-group">
@@ -105,7 +106,7 @@
       </div>
       <div class="input-group">
         <label for="nombre" id="nameLabel">Nombre:</label><br>
-        <input type="text" id="nombre" placeholder="Nombre / Name" required>
+        <input type="text" id="nombre" placeholder="Nombre / Name / Nome" required>
       </div>
       <div class="input-group hidden" id="nicknameGroup">
         <label for="nickname" id="nicknameLabel">TAG Épico:</label><br>
@@ -151,30 +152,30 @@
       <div class="input-group">
         <label for="pais" id="countryLabel">País:</label><br>
         <select id="pais" style="width:100%" required>
-          <option value="">Seleccione un país / Select a country</option>
-          <option value="AR|🇦🇷|Argentina">🇦🇷 Argentina</option>
-          <option value="BO|🇧🇴|Bolivia">🇧🇴 Bolivia</option>
-          <option value="BR|🇧🇷|Brasil">🇧🇷 Brasil</option>
-          <option value="CA|🇨🇦|Canadá">🇨🇦 Canadá / Canada</option>
-          <option value="CL|🇨🇱|Chile">🇨🇱 Chile</option>
-          <option value="CO|🇨🇴|Colombia">🇨🇴 Colombia</option>
-          <option value="CR|🇨🇷|Costa Rica">🇨🇷 Costa Rica</option>
-          <option value="CU|🇨🇺|Cuba">🇨🇺 Cuba</option>
-          <option value="DO|🇩🇴|República Dominicana">🇩🇴 República Dominicana / Dominican Republic</option>
-          <option value="EC|🇪🇨|Ecuador">🇪🇨 Ecuador</option>
-          <option value="SV|🇸🇻|El Salvador">🇸🇻 El Salvador</option>
-          <option value="ES|🇪🇸|España">🇪🇸 España / Spain</option>
-          <option value="GT|🇬🇹|Guatemala">🇬🇹 Guatemala</option>
-          <option value="HN|🇭🇳|Honduras">🇭🇳 Honduras</option>
-          <option value="MX|🇲🇽|México">🇲🇽 México / Mexico</option>
-          <option value="NI|🇳🇮|Nicaragua">🇳🇮 Nicaragua</option>
-          <option value="PA|🇵🇦|Panamá">🇵🇦 Panamá / Panama</option>
-          <option value="PY|🇵🇾|Paraguay">🇵🇾 Paraguay</option>
-          <option value="PE|🇵🇪|Perú">🇵🇪 Perú / Peru</option>
-          <option value="PT|🇵🇹|Portugal">🇵🇹 Portugal</option>
-          <option value="US|🇺🇸|Estados Unidos">🇺🇸 Estados Unidos / United States</option>
-          <option value="UY|🇺🇾|Uruguay" selected>🇺🇾 Uruguay</option>
-          <option value="VE|🇻🇪|Venezuela">🇻🇪 Venezuela</option>
+          <option value="">Seleccione un país / Select a country / Selecione um país</option>
+          <option value="AR|🇦🇷|Argentina|Argentina|Argentina">🇦🇷 Argentina</option>
+          <option value="BO|🇧🇴|Bolivia|Bolivia|Bolívia">🇧🇴 Bolivia</option>
+          <option value="BR|🇧🇷|Brasil|Brazil|Brasil">🇧🇷 Brasil</option>
+          <option value="CA|🇨🇦|Canadá|Canada|Canadá">🇨🇦 Canadá</option>
+          <option value="CL|🇨🇱|Chile|Chile|Chile">🇨🇱 Chile</option>
+          <option value="CO|🇨🇴|Colombia|Colombia|Colômbia">�.c🇴 Colombia</option>
+          <option value="CR|🇨🇷|Costa Rica|Costa Rica|Costa Rica">🇨🇷 Costa Rica</option>
+          <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
+          <option value="DO|🇩🇴|República Dominicana|Dominican Republic|República Dominicana">🇩🇴 República Dominicana</option>
+          <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
+          <option value="SV|🇸🇻|El Salvador|El Salvador|El Salvador">🇸🇻 El Salvador</option>
+          <option value="ES|🇪🇸|España|Spain|Espanha">🇪🇸 España</option>
+          <option value="GT|🇬🇹|Guatemala|Guatemala|Guatemala">🇬🇹 Guatemala</option>
+          <option value="HN|🇭🇳|Honduras|Honduras|Honduras">🇭🇳 Honduras</option>
+          <option value="MX|🇲🇽|México|Mexico|México">🇲🇽 México</option>
+          <option value="NI|🇳🇮|Nicaragua|Nicaragua|Nicarágua">🇳🇮 Nicaragua</option>
+          <option value="PA|🇵🇦|Panamá|Panama|Panamá">🇵🇦 Panamá</option>
+          <option value="PY|🇵🇾|Paraguay|Paraguay|Paraguai">🇵🇾 Paraguay</option>
+          <option value="PE|🇵🇪|Perú|Peru|Peru">🇵🇪 Perú</option>
+          <option value="PT|🇵🇹|Portugal|Portugal|Portugal">🇵🇹 Portugal</option>
+          <option value="US|🇺🇸|Estados Unidos|United States|Estados Unidos">🇺🇸 Estados Unidos</option>
+          <option value="UY|🇺🇾|Uruguay|Uruguay|Uruguai" selected>🇺🇾 Uruguay</option>
+          <option value="VE|🇻🇪|Venezuela|Venezuela|Venezuela">🇻🇪 Venezuela</option>
         </select>
       </div>
       <div class="input-group" id="empresaGroup">
@@ -216,7 +217,7 @@
   </div>
 
   <footer>
-    <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.2</small>
   </footer>
 
   <script>
@@ -309,6 +310,31 @@
         titleNormal: "INTERNATIONAL DRIVING LICENSE",
         titleComedic: "CONVOY CRASHING PERMIT",
         countryPlaceholder: "Select a country"
+      },
+      pt: {
+        pageTitle: "Convoyrama | Gerador de Licença",
+        headerTitle: "Gerador de Licença de Motorista",
+        navLicense: "Licença",
+        fontLabel: "Fonte: ",
+        nameLabel: "Nome:",
+        nicknameLabel: "TAG Épico:",
+        titleToggleLabel: "Usar título cômico:",
+        photoLabel: "Foto (Opcional):",
+        countryLabel: "País:",
+        companyLabel: "Empresa:",
+        companyLinkLabel: "Link do Perfil da Empresa no TruckersMP:",
+        truckersmpLinkLabel: "Link do Perfil no TruckersMP:",
+        validLink: "Link válido",
+        invalidLink: "Link inválido: deve ser https://truckersmp.com/user/[número]",
+        downloadButton: "Baixar Licença",
+        canvasName: "Nome :",
+        canvasLicenseNo: "Nº da Licença :",
+        canvasDate: "Data :",
+        canvasCountry: "País :",
+        canvasTag: "TAG :",
+        titleNormal: "LICENÇA INTERNACIONAL DE CONDUÇÃO",
+        titleComedic: "PERMISSÃO PARA BATER EM CONVOI",
+        countryPlaceholder: "Selecione um país"
       }
     };
 
@@ -354,12 +380,46 @@
       document.getElementById("botonDescargar").textContent = t.downloadButton;
       paisInput.options[0].text = t.countryPlaceholder;
 
-      if (lang === "en") {
-        empresaGroup.classList.add("hidden");
-        empresaLinkGroup.classList.remove("hidden");
-      } else {
+      // Actualizar nombres de países según el idioma
+      const countryOptions = [
+        { code: "AR", flag: "🇦🇷", es: "Argentina", en: "Argentina", pt: "Argentina" },
+        { code: "BO", flag: "🇧🇴", es: "Bolivia", en: "Bolivia", pt: "Bolívia" },
+        { code: "BR", flag: "🇧🇷", es: "Brasil", en: "Brazil", pt: "Brasil" },
+        { code: "CA", flag: "🇨🇦", es: "Canadá", en: "Canada", pt: "Canadá" },
+        { code: "CL", flag: "🇨🇱", es: "Chile", en: "Chile", pt: "Chile" },
+        { code: "CO", flag: "🇨🇴", es: "Colombia", en: "Colombia", pt: "Colômbia" },
+        { code: "CR", flag: "🇨🇷", es: "Costa Rica", en: "Costa Rica", pt: "Costa Rica" },
+        { code: "CU", flag: "🇨🇺", es: "Cuba", en: "Cuba", pt: "Cuba" },
+        { code: "DO", flag: "🇩🇴", es: "República Dominicana", en: "Dominican Republic", pt: "República Dominicana" },
+        { code: "EC", flag: "🇪🇨", es: "Ecuador", en: "Ecuador", pt: "Equador" },
+        { code: "SV", flag: "🇸🇻", es: "El Salvador", en: "El Salvador", pt: "El Salvador" },
+        { code: "ES", flag: "🇪🇸", es: "España", en: "Spain", pt: "Espanha" },
+        { code: "GT", flag: "🇬🇹", es: "Guatemala", en: "Guatemala", pt: "Guatemala" },
+        { code: "HN", flag: "🇭🇳", es: "Honduras", en: "Honduras", pt: "Honduras" },
+        { code: "MX", flag: "🇲🇽", es: "México", en: "Mexico", pt: "México" },
+        { code: "NI", flag: "🇳🇮", es: "Nicaragua", en: "Nicaragua", pt: "Nicarágua" },
+        { code: "PA", flag: "🇵🇦", es: "Panamá", en: "Panama", pt: "Panamá" },
+        { code: "PY", flag: "🇵🇾", es: "Paraguay", en: "Paraguay", pt: "Paraguai" },
+        { code: "PE", flag: "🇵🇪", es: "Perú", en: "Peru", pt: "Peru" },
+        { code: "PT", flag: "🇵🇹", es: "Portugal", en: "Portugal", pt: "Portugal" },
+        { code: "US", flag: "🇺🇸", es: "Estados Unidos", en: "United States", pt: "Estados Unidos" },
+        { code: "UY", flag: "🇺🇾", es: "Uruguay", en: "Uruguay", pt: "Uruguai" },
+        { code: "VE", flag: "🇻🇪", es: "Venezuela", en: "Venezuela", pt: "Venezuela" }
+      ];
+
+      for (let i = 1; i < paisInput.options.length; i++) {
+        const option = paisInput.options[i];
+        const country = countryOptions.find(c => c.code === option.value.split("|")[0]);
+        option.text = `${country.flag} ${country[lang]}`;
+        option.value = `${country.code}|${country.flag}|${country[lang]}`;
+      }
+
+      if (lang === "es") {
         empresaGroup.classList.remove("hidden");
         empresaLinkGroup.classList.toggle("hidden", empresaInput.value !== "Otro");
+      } else {
+        empresaGroup.classList.add("hidden");
+        empresaLinkGroup.classList.remove("hidden");
       }
 
       const link = truckersmpLinkInput.value.trim();
@@ -489,13 +549,13 @@
       lastFormState = formState;
 
       const t = translations[currentLanguage];
-      const nombre = nombreInput.value || (currentLanguage === "es" ? "Sin nombre" : "No name");
+      const nombre = nombreInput.value || (currentLanguage === "es" ? "Sin nombre" : currentLanguage === "en" ? "No name" : "Sem nome");
       const paisData = paisInput.value.split("|");
       const countryCode = paisData[0] || "XX";
       const flag = paisData[1] || "";
-      const countryName = paisData[2] || (currentLanguage === "es" ? "Sin país" : "No country");
+      const countryName = paisData[2] || (currentLanguage === "es" ? "Sin país" : currentLanguage === "en" ? "No country" : "Sem país");
       const nickname = nicknameInput.value || "";
-      const empresa = currentLanguage === "en" ? "en" : empresaInput.value;
+      const empresa = currentLanguage === "es" ? empresaInput.value : currentLanguage;
       const truckersmpLink = truckersmpLinkInput.value.trim();
       const empresaLink = empresaLinkInput.value.trim();
       const isTruckersMPLinkValid = truckersmpLink ? validateTruckersMPLink(truckersmpLink) : false;
@@ -513,7 +573,7 @@
       ctx.shadowColor = "transparent";
       ctx.globalCompositeOperation = "source-over";
 
-      config.template = currentLanguage === "en" ? "assets/images/license_template_en.png" : `assets/images/license_template_${empresa.toLowerCase()}.png`;
+      config.template = currentLanguage === "es" ? `assets/images/license_template_${empresa.toLowerCase()}.png` : `assets/images/license_template_${currentLanguage}.png`;
       const template = new Image();
       template.src = config.template;
 
@@ -536,7 +596,15 @@
             resolve(null);
           };
         }) : Promise.resolve(null),
-        isTruckersMPLinkValid && empresaLink ? new Promise((resolve) => {
+        isTruckersMPLinkValid && (empresa === "LS" || empresa === "CN" || empresa === "TCS") ? new Promise((resolve) => {
+          const img = new Image();
+          img.src = `assets/images/qr${empresa.toLowerCase()}.svg`;
+          img.onload = () => resolve(img);
+          img.onerror = () => {
+            console.error(`Failed to load qr${empresa.toLowerCase()}.svg`);
+            resolve(null);
+          };
+        }) : isTruckersMPLinkValid && empresaLink ? new Promise((resolve) => {
           const qrEmpresa = new QRious({
             value: empresaLink,
             size: config.qrSize,
