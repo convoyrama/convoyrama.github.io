@@ -153,26 +153,45 @@
         <label for="pais" id="countryLabel">País:</label><br>
         <select id="pais" style="width:100%" required>
           <option value="">Seleccione un país / Select a country / Selecione um país</option>
+          <option value="AO|🇦🇴|Angola|Angola|Angola">🇦🇴 Angola</option>
           <option value="AR|🇦🇷|Argentina|Argentina|Argentina">🇦🇷 Argentina</option>
           <option value="BO|🇧🇴|Bolivia|Bolivia|Bolívia">🇧🇴 Bolivia</option>
           <option value="BR|🇧🇷|Brasil|Brazil|Brasil">🇧🇷 Brasil</option>
+          <option value="BZ|🇧🇿|Belice|Belize|Belize">🇧🇿 Belice</option>
           <option value="CA|🇨🇦|Canadá|Canada|Canadá">🇨🇦 Canadá</option>
           <option value="CL|🇨🇱|Chile|Chile|Chile">🇨🇱 Chile</option>
+          <option value="CN|🇨🇳|China|China|China">🇨🇳 China</option>
           <option value="CO|🇨🇴|Colombia|Colombia|Colômbia">🇨🇴 Colombia</option>
           <option value="CR|🇨🇷|Costa Rica|Costa Rica|Costa Rica">🇨🇷 Costa Rica</option>
           <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
+          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇩🇪 Alemania</option>
           <option value="DO|🇩🇴|República Dominicana|Dominican Republic|República Dominicana">🇩🇴 República Dominicana</option>
           <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
-          <option value="SV|🇸🇻|El Salvador|El Salvador|El Salvador">🇸🇻 El Salvador</option>
           <option value="ES|🇪🇸|España|Spain|Espanha">🇪🇸 España</option>
+          <option value="FR|🇫🇷|Francia|France|França">🇫🇷 Francia</option>
+          <option value="GB|🇬🇧|Reino Unido|United Kingdom (England/Scotland)|Reino Unido">🇬🇧 Reino Unido</option>
           <option value="GT|🇬🇹|Guatemala|Guatemala|Guatemala">🇬🇹 Guatemala</option>
+          <option value="GY|🇬🇾|Guyana|Guyana|Guiana">🇬🇾 Guyana</option>
           <option value="HN|🇭🇳|Honduras|Honduras|Honduras">🇭🇳 Honduras</option>
+          <option value="IE|🇮🇪|Irlanda|Ireland|Irlanda">🇮🇪 Irlanda</option>
+          <option value="IT|🇮🇹|Italia|Italy|Itália">🇮🇹 Italia</option>
+          <option value="JM|🇯🇲|Jamaica|Jamaica|Jamaica">🇯🇲 Jamaica</option>
+          <option value="JP|🇯🇵|Japón|Japan|Japão">🇯🇵 Japón</option>
           <option value="MX|🇲🇽|México|Mexico|México">🇲🇽 México</option>
+          <option value="MZ|🇲🇿|Mozambique|Mozambique|Moçambique">🇲🇿 Mozambique</option>
           <option value="NI|🇳🇮|Nicaragua|Nicaragua|Nicarágua">🇳🇮 Nicaragua</option>
           <option value="PA|🇵🇦|Panamá|Panama|Panamá">🇵🇦 Panamá</option>
-          <option value="PY|🇵🇾|Paraguay|Paraguay|Paraguai">🇵🇾 Paraguay</option>
           <option value="PE|🇵🇪|Perú|Peru|Peru">🇵🇪 Perú</option>
+          <option value="PI|🏴‍☠️|Pirata|Pirate|Pirata">🏴‍☠️ Pirata</option>
+          <option value="PL|🇵🇱|Polonia|Poland|Polônia">🇵🇱 Polonia</option>
           <option value="PT|🇵🇹|Portugal|Portugal|Portugal">🇵🇹 Portugal</option>
+          <option value="PY|🇵🇾|Paraguay|Paraguay|Paraguai">🇵🇾 Paraguay</option>
+          <option value="RO|🇷🇴|Rumania|Romania|Romênia">🇷🇴 Rumania</option>
+          <option value="RU|🇷🇺|Rusia|Russia|Rússia">🇷🇺 Rusia</option>
+          <option value="SR|🇸🇷|Surinam|Suriname|Suriname">🇸🇷 Surinam</option>
+          <option value="SV|🇸🇻|El Salvador|El Salvador|El Salvador">🇸🇻 El Salvador</option>
+          <option value="TR|🇹🇷|Turquía|Turkey|Turquia">🇹🇷 Turquía</option>
+          <option value="UA|🇺🇦|Ucrania|Ukraine|Ucrânia">🇺🇦 Ucrania</option>
           <option value="US|🇺🇸|Estados Unidos|United States|Estados Unidos">🇺🇸 Estados Unidos</option>
           <option value="UY|🇺🇾|Uruguay|Uruguay|Uruguai" selected>🇺🇾 Uruguay</option>
           <option value="VE|🇻🇪|Venezuela|Venezuela|Venezuela">🇻🇪 Venezuela</option>
@@ -217,7 +236,7 @@
   </div>
 
   <footer>
-    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.3</small>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.7.1</small>
   </footer>
 
   <script>
@@ -381,26 +400,45 @@
       paisInput.options[0].text = t.countryPlaceholder;
 
       const countryOptions = [
+        { code: "AO", flag: "🇦🇴", es: "Angola", en: "Angola", pt: "Angola" },
         { code: "AR", flag: "🇦🇷", es: "Argentina", en: "Argentina", pt: "Argentina" },
         { code: "BO", flag: "🇧🇴", es: "Bolivia", en: "Bolivia", pt: "Bolívia" },
         { code: "BR", flag: "🇧🇷", es: "Brasil", en: "Brazil", pt: "Brasil" },
+        { code: "BZ", flag: "🇧🇿", es: "Belice", en: "Belize", pt: "Belize" },
         { code: "CA", flag: "🇨🇦", es: "Canadá", en: "Canada", pt: "Canadá" },
         { code: "CL", flag: "🇨🇱", es: "Chile", en: "Chile", pt: "Chile" },
+        { code: "CN", flag: "🇨🇳", es: "China", en: "China", pt: "China" },
         { code: "CO", flag: "🇨🇴", es: "Colombia", en: "Colombia", pt: "Colômbia" },
         { code: "CR", flag: "🇨🇷", es: "Costa Rica", en: "Costa Rica", pt: "Costa Rica" },
         { code: "CU", flag: "🇨🇺", es: "Cuba", en: "Cuba", pt: "Cuba" },
+        { code: "DE", flag: "🇩🇪", es: "Alemania", en: "Germany", pt: "Alemanha" },
         { code: "DO", flag: "🇩🇴", es: "República Dominicana", en: "Dominican Republic", pt: "República Dominicana" },
         { code: "EC", flag: "🇪🇨", es: "Ecuador", en: "Ecuador", pt: "Equador" },
-        { code: "SV", flag: "🇸🇻", es: "El Salvador", en: "El Salvador", pt: "El Salvador" },
         { code: "ES", flag: "🇪🇸", es: "España", en: "Spain", pt: "Espanha" },
+        { code: "FR", flag: "🇫🇷", es: "Francia", en: "France", pt: "França" },
+        { code: "GB", flag: "🇬🇧", es: "Reino Unido", en: "United Kingdom (England/Scotland)", pt: "Reino Unido" },
         { code: "GT", flag: "🇬🇹", es: "Guatemala", en: "Guatemala", pt: "Guatemala" },
+        { code: "GY", flag: "🇬🇾", es: "Guyana", en: "Guyana", pt: "Guiana" },
         { code: "HN", flag: "🇭🇳", es: "Honduras", en: "Honduras", pt: "Honduras" },
+        { code: "IE", flag: "🇮🇪", es: "Irlanda", en: "Ireland", pt: "Irlanda" },
+        { code: "IT", flag: "🇮🇹", es: "Italia", en: "Italy", pt: "Itália" },
+        { code: "JM", flag: "🇯🇲", es: "Jamaica", en: "Jamaica", pt: "Jamaica" },
+        { code: "JP", flag: "🇯🇵", es: "Japón", en: "Japan", pt: "Japão" },
         { code: "MX", flag: "🇲🇽", es: "México", en: "Mexico", pt: "México" },
+        { code: "MZ", flag: "🇲🇿", es: "Mozambique", en: "Mozambique", pt: "Moçambique" },
         { code: "NI", flag: "🇳🇮", es: "Nicaragua", en: "Nicaragua", pt: "Nicarágua" },
         { code: "PA", flag: "🇵🇦", es: "Panamá", en: "Panama", pt: "Panamá" },
-        { code: "PY", flag: "🇵🇾", es: "Paraguay", en: "Paraguay", pt: "Paraguai" },
         { code: "PE", flag: "🇵🇪", es: "Perú", en: "Peru", pt: "Peru" },
+        { code: "PI", flag: "🏴‍☠️", es: "Pirata", en: "Pirate", pt: "Pirata" },
+        { code: "PL", flag: "🇵🇱", es: "Polonia", en: "Poland", pt: "Polônia" },
         { code: "PT", flag: "🇵🇹", es: "Portugal", en: "Portugal", pt: "Portugal" },
+        { code: "PY", flag: "🇵🇾", es: "Paraguay", en: "Paraguay", pt: "Paraguai" },
+        { code: "RO", flag: "🇷🇴", es: "Rumania", en: "Romania", pt: "Romênia" },
+        { code: "RU", flag: "🇷🇺", es: "Rusia", en: "Russia", pt: "Rússia" },
+        { code: "SR", flag: "🇸🇷", es: "Surinam", en: "Suriname", pt: "Suriname" },
+        { code: "SV", flag: "🇸🇻", es: "El Salvador", en: "El Salvador", pt: "El Salvador" },
+        { code: "TR", flag: "🇹🇷", es: "Turquía", en: "Turkey", pt: "Turquia" },
+        { code: "UA", flag: "🇺🇦", es: "Ucrania", en: "Ukraine", pt: "Ucrânia" },
         { code: "US", flag: "🇺🇸", es: "Estados Unidos", en: "United States", pt: "Estados Unidos" },
         { code: "UY", flag: "🇺🇾", es: "Uruguay", en: "Uruguay", pt: "Uruguai" },
         { code: "VE", flag: "🇻🇪", es: "Venezuela", en: "Venezuela", pt: "Venezuela" }
@@ -689,7 +727,6 @@
         ctx.drawImage(dbusworldImg, config.dbusworldX, dbusworldY, config.logoWidth, config.logoHeight);
       }
 
-      // Dibujar estrellas doradas en el lado derecho
       const starMap = {
         "https://truckersmp.com/user/627943": 2,
         "https://truckersmp.com/user/5441056": 1,
@@ -704,11 +741,11 @@
       const starsCount = starMap[truckersmpLink] || 0;
       if (starsCount > 0) {
         ctx.font = `bold 24px ${config.font}`;
-        ctx.fillStyle = "#FFD700"; // Color dorado
+        ctx.fillStyle = "#FFD700";
         ctx.textAlign = "right";
-        const starX = canvas.width - 20; // 20px desde el borde derecho
+        const starX = canvas.width - 20;
         for (let i = 0; i < starsCount; i++) {
-          const starY = config.promodsY + i * 24; // Empieza en y=334, separado por 24px
+          const starY = config.promodsY + i * 24;
           ctx.fillText("★", starX, starY);
         }
       }
