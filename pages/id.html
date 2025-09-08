@@ -271,7 +271,7 @@
   </div>
 
   <footer>
-    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.7.1</small>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.7.2</small>
   </footer>
 
   <script>
@@ -416,6 +416,72 @@
     const DATE_CACHE_DURATION = 60 * 1000;
     let currentLanguage = "es";
 
+    async function getCurrentDate() {
+      const now = Date.now();
+      if (cachedDate && now - lastDateFetch < DATE_CACHE_DURATION) {
+        console.log("Using cached date:", cachedDate);
+        return cachedDate;
+      }
+
+      const apis = [
+        {
+          url: 'https://worldtimeapi.org/api/timezone/Etc/UTC',
+          parse: (data) => {
+            const date = new Date(data.datetime);
+            return {
+              day: date.getDate().toString().padStart(2, "0"),
+              month: (date.getMonth() + 1).toString().padStart(2, "0"),
+              year: date.getFullYear()
+            };
+          }
+        },
+        {
+          url: 'https://timeapi.io/api/Time/current/utc',
+          parse: (data) => ({
+            day: data.day.toString().padStart(2, "0"),
+            month: data.month.toString().padStart(2, "0"),
+            year: data.year
+          })
+        },
+        {
+          url: 'https://worldclockapi.herokuapp.com/api/json/utc/now',
+          parse: (data) => {
+            const date = new Date(data.currentDateTime);
+            return {
+              day: date.getDate().toString().padStart(2, "0"),
+              month: (date.getMonth() + 1).toString().padStart(2, "0"),
+              year: date.getFullYear()
+            };
+          }
+        }
+      ];
+
+      for (const api of apis) {
+        try {
+          console.log(`Attempting to fetch date from ${api.url}`);
+          const response = await fetch(api.url);
+          const data = await response.json();
+          const { day, month, year } = api.parse(data);
+          cachedDate = `${day}/${month}/${year}`;
+          lastDateFetch = now;
+          console.log(`Successfully fetched date from ${api.url}: ${cachedDate}`);
+          return cachedDate;
+        } catch (error) {
+          console.error(`Failed to fetch date from ${api.url}:`, error);
+        }
+      }
+
+      console.warn("All API attempts failed, falling back to system date");
+      const date = new Date();
+      const day = date.getDate().toString().padStart(2, "0");
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const year = date.getFullYear();
+      cachedDate = `${day}/${month}/${year}`;
+      lastDateFetch = now;
+      console.log("Using system date:", cachedDate);
+      return cachedDate;
+    }
+
     function updateLanguage(lang) {
       currentLanguage = lang;
       const t = translations[lang];
@@ -513,35 +579,6 @@
         return `${countryCode}${userId}`;
       }
       return "";
-    }
-
-    async function getCurrentDate() {
-      const now = Date.now();
-      if (cachedDate && now - lastDateFetch < DATE_CACHE_DURATION) {
-        console.log("Using cached date:", cachedDate);
-        return cachedDate;
-      }
-      try {
-        const response = await fetch('https://worldtimeapi.org/api/timezone/Etc/UTC');
-        const data = await response.json();
-        const date = new Date(data.datetime);
-        const day = date.getDate().toString().padStart(2, "0");
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const year = date.getFullYear();
-        cachedDate = `${day}/${month}/${year}`;
-        lastDateFetch = now;
-        console.log("Fetched new date:", cachedDate);
-        return cachedDate;
-      } catch (error) {
-        console.error("Failed to fetch date from API, falling back to system date:", error);
-        const date = new Date();
-        const day = date.getDate().toString().padStart(2, "0");
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const year = date.getFullYear();
-        cachedDate = `${day}/${month}/${year}`;
-        lastDateFetch = now;
-        return cachedDate;
-      }
     }
 
     function validateTruckersMPLink(link) {
