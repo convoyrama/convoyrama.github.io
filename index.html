@@ -37,6 +37,81 @@
     nav a:hover {
       text-decoration: underline;
     }
+    footer {
+      text-align: center;
+      padding: 10px;
+    }
+    footer small {
+      color: #fff;
+      font-size: 0.9em;
+    }
+    .help-link,
+    .help-link:visited {
+      display: block;
+      margin-top: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1em;
+      font-family: Arial, sans-serif;
+    }
+    .help-link:hover {
+      text-decoration: underline;
+    }
+    /* Estilos del modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: transparent;
+      position: relative;
+      text-align: center;
+    }
+    .close-button {
+      position: absolute;
+      top: -30px;
+      right: -10px;
+      font-size: 30px;
+      cursor: pointer;
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    .cube-container {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+      margin: 0 auto;
+    }
+    .cube {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+    }
+    .face {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background-size: cover;
+      border: 2px solid #333;
+      box-sizing: border-box;
+    }
+    .face.front  { transform: rotateY(0deg) translateZ(100px); background-image: url('assets/images/cara1.png'); }
+    .face.back   { transform: rotateY(180deg) translateZ(100px); background-image: url('assets/images/cara2.png'); }
+    .face.right  { transform: rotateY(90deg) translateZ(100px); background-image: url('assets/images/cara3.png'); }
+    .face.left   { transform: rotateY(-90deg) translateZ(100px); background-image: url('assets/images/cara4.png'); }
+    .face.top    { transform: rotateX(90deg) translateZ(100px); background-image: url('assets/images/cara5.png'); }
+    .face.bottom { transform: rotateX(-90deg) translateZ(100px); background-image: url('assets/images/cara6.png'); }
   </style>
 </head>
 
@@ -126,14 +201,83 @@
       </div>
     </div>
 
-    <p>
-    </p>
-    <ul style="padding-left:18px;">
-    </ul>
+    <p></p>
+    <ul style="padding-left:18px;"></ul>
   </section>
 
   <footer>
     <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+    <a href="#" class="help-link" id="helpLink">¿Necesitas ayuda?</a>
   </footer>
+
+  <!-- Modal para el dado 3D -->
+  <div class="modal" id="diceModal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <div class="cube-container" id="cube-container">
+        <div class="cube" id="cube">
+          <div class="face front"></div>
+          <div class="face back"></div>
+          <div class="face right"></div>
+          <div class="face left"></div>
+          <div class="face top"></div>
+          <div class="face bottom"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script para el dado 3D
+    const cube = document.getElementById('cube');
+    const rotations = [
+      { x: 0, y: 0 },    // cara1 (front)
+      { x: 0, y: 180 },  // cara2 (back)
+      { x: 0, y: 90 },   // cara3 (right)
+      { x: 0, y: -90 },  // cara4 (left)
+      { x: 90, y: 0 },   // cara5 (top)
+      { x: -90, y: 0 }   // cara6 (bottom)
+    ];
+
+    function getRandomFace() {
+      return Math.floor(Math.random() * 6);
+    }
+
+    function rotateCube() {
+      const faceIndex = getRandomFace();
+      const rotation = rotations[faceIndex];
+      cube.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
+    }
+
+    // Rotar al hacer clic
+    cube.addEventListener('click', () => {
+      cube.style.transition = 'transform 1s';
+      rotateCube();
+    });
+
+    // Mostrar una cara inicial aleatoria
+    rotateCube();
+
+    // Script para el modal
+    const modal = document.getElementById('diceModal');
+    const helpLink = document.getElementById('helpLink');
+    const closeButton = document.querySelector('.close-button');
+
+    helpLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+      rotateCube(); // Rotar el dado al abrir el modal
+    });
+
+    closeButton.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
