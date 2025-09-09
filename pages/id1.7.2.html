@@ -113,18 +113,6 @@
     .invalid {
       color: red;
     }
-    #colorSlider {
-      width: 80%;
-      margin-top: 5px;
-      vertical-align: middle;
-    }
-    #colorValue {
-      display: inline-block;
-      width: 15%;
-      text-align: right;
-      font-size: 14px;
-      color: #555;
-    }
   </style>
 </head>
 
@@ -150,11 +138,6 @@
       </div>
       <div class="input-group">
         <label id="fontLabel">Fuente: <span id="fontName">Open Sans</span></label>
-      </div>
-      <div class="input-group">
-        <label for="colorSlider" id="colorLabel">Tono del fondo:</label><br>
-        <input type="range" id="colorSlider" min="0" max="360" value="0" style="width:80%">
-        <span id="colorValue">0°</span>
       </div>
       <div class="input-group">
         <label for="nombre" id="nameLabel">Nombre:</label><br>
@@ -288,7 +271,7 @@
   </div>
 
   <footer>
-    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.8.3-testing</small>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.7.2</small>
   </footer>
 
   <script>
@@ -306,7 +289,7 @@
     const ctx = canvas.getContext("2d");
 
     const config = {
-      // NUEVO: template ahora es dinámico, se define en generarImagen
+      template: "assets/images/license_template_ls.png",
       color: "white",
       flagSize: 80,
       photoX: 45,
@@ -355,8 +338,7 @@
         canvasTag: "TAG :",
         titleNormal: "PERMISO DE CONDUCCIÓN INTERNACIONAL",
         titleComedic: "PERMISO PARA CHOCAR EN CONVOY",
-        countryPlaceholder: "Seleccione un país",
-        colorLabel: "Tono del fondo:"
+        countryPlaceholder: "Seleccione un país"
       },
       en: {
         pageTitle: "Convoyrama | Driver License Generator",
@@ -381,8 +363,7 @@
         canvasTag: "TAG :",
         titleNormal: "INTERNATIONAL DRIVING LICENSE",
         titleComedic: "CONVOY CRASHING PERMIT",
-        countryPlaceholder: "Select a country",
-        colorLabel: "Background hue:"
+        countryPlaceholder: "Select a country"
       },
       pt: {
         pageTitle: "Convoyrama | Gerador de Licença",
@@ -407,8 +388,7 @@
         canvasTag: "TAG :",
         titleNormal: "LICENÇA INTERNACIONAL DE CONDUÇÃO",
         titleComedic: "PERMISSÃO PARA BATER EM CONVOI",
-        countryPlaceholder: "Selecione um país",
-        colorLabel: "Tom do fundo:"
+        countryPlaceholder: "Selecione um país"
       }
     };
 
@@ -428,8 +408,6 @@
     const promodsToggleInput = document.getElementById("promodsToggle");
     const dbusworldToggleInput = document.getElementById("dbusworldToggle");
     const languageToggle = document.getElementById("languageToggle");
-    const colorSlider = document.getElementById("colorSlider");
-    const colorValue = document.getElementById("colorValue");
 
     let userImage = null;
     let isNicknameUnlocked = localStorage.getItem("nicknameUnlocked") === "true";
@@ -519,7 +497,6 @@
       document.getElementById("countryLabel").textContent = t.countryLabel;
       document.getElementById("companyLinkLabel").textContent = t.companyLinkLabel;
       document.getElementById("truckersmpLinkLabel").textContent = t.truckersmpLinkLabel;
-      document.getElementById("colorLabel").textContent = t.colorLabel;
       document.getElementById("botonDescargar").textContent = t.downloadButton;
       paisInput.options[0].text = t.countryPlaceholder;
 
@@ -667,8 +644,7 @@
         promodsToggle: promodsToggleInput.checked,
         dbusworldToggle: dbusworldToggleInput.checked,
         userImage: userImage ? userImage.src : null,
-        language: currentLanguage,
-        colorHue: colorSlider.value
+        language: currentLanguage
       };
     }
 
@@ -688,11 +664,10 @@
       const flag = paisData[1] || "";
       const countryName = paisData[2] || (currentLanguage === "es" ? "Sin país" : currentLanguage === "en" ? "No country" : "Sem país");
       const nickname = nicknameInput.value || "";
-      const empresa = currentLanguage === "es" ? empresaInput.value : "Otro"; // NUEVO: Usar "Otro" para idiomas en/pt
+      const empresa = currentLanguage === "es" ? empresaInput.value : currentLanguage;
       const truckersmpLink = truckersmpLinkInput.value.trim();
       const empresaLink = empresaLinkInput.value.trim();
       const isTruckersMPLinkValid = truckersmpLink ? validateTruckersMPLink(truckersmpLink) : false;
-      const hueRotate = parseInt(colorSlider.value);
 
       if (canvas.width !== 800 || canvas.height !== 500) {
         canvas.width = 800;
@@ -706,56 +681,16 @@
       ctx.textBaseline = "alphabetic";
       ctx.shadowColor = "transparent";
       ctx.globalCompositeOperation = "source-over";
-      ctx.filter = "none";
 
-      // NUEVO: Seleccionar fondo según empresa
-      const templateImgSrc = {
-        'LS': 'assets/images/license_template_ls.png',
-        'TCS': 'assets/images/license_template_tcs.png',
-        'CN': 'assets/images/license_template_cn.png',
-        'Otro': 'assets/images/license_template_otro.png'
-      }[empresa] || 'assets/images/license_template_otro.png';
+      config.template = currentLanguage === "es" ? `assets/images/license_template_${empresa.toLowerCase()}.png` : `assets/images/license_template_${currentLanguage}.png`;
       const template = new Image();
-      template.src = templateImgSrc;
+      template.src = config.template;
 
-      // Layer de empresa
-      const empresaImgSrc = {
-        'LS': 'assets/images/lsb.png',
-        'TCS': 'assets/images/tcsb.png',
-        'CN': 'assets/images/cnb.png',
-        'Otro': 'assets/images/otrosb.png'
-      }[empresa] || 'assets/images/otrosb.png';
-      const empresaLayer = new Image();
-      empresaLayer.src = empresaImgSrc;
-
-      // Layer de idioma
-      const idiomaImgSrc = {
-        'es': 'assets/images/es.png',
-        'en': 'assets/images/en.png',
-        'pt': 'assets/images/pt.png'
-      }[currentLanguage];
-      const idiomaLayer = new Image();
-      idiomaLayer.src = idiomaImgSrc;
-
-      const [templateImg, empresaLayerImg, idiomaLayerImg, silhouetteImg, flagImg, idImg, leftQrImg, promodsImg, dbusworldImg] = await Promise.all([
+      const [templateImg, silhouetteImg, flagImg, idImg, leftQrImg, promodsImg, dbusworldImg] = await Promise.all([
         new Promise((resolve) => {
           template.onload = () => resolve(template);
           template.onerror = () => {
-            console.error(`Failed to load license template image: ${templateImgSrc}`);
-            resolve(null);
-          };
-        }),
-        new Promise((resolve) => {
-          empresaLayer.onload = () => resolve(empresaLayer);
-          empresaLayer.onerror = () => {
-            console.error(`Failed to load empresa layer: ${empresaImgSrc}`);
-            resolve(null);
-          };
-        }),
-        new Promise((resolve) => {
-          idiomaLayer.onload = () => resolve(idiomaLayer);
-          idiomaLayer.onerror = () => {
-            console.error(`Failed to load idioma layer: ${idiomaImgSrc}`);
+            console.error("Failed to load license template image");
             resolve(null);
           };
         }),
@@ -811,24 +746,11 @@
         }) : Promise.resolve(null)
       ]);
 
-      // Dibujar fondo con hue-rotate
       if (templateImg) {
-        ctx.filter = `hue-rotate(${hueRotate}deg)`;
         ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
-        ctx.filter = "none";
       } else {
         ctx.fillStyle = "#fff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-
-      // Dibujar layer de empresa
-      if (empresaLayerImg) {
-        ctx.drawImage(empresaLayerImg, 0, 0, canvas.width, canvas.height);
-      }
-
-      // Dibujar layer de idioma
-      if (idiomaLayerImg) {
-        ctx.drawImage(idiomaLayerImg, 0, 0, canvas.width, canvas.height);
       }
 
       if (userImage) {
@@ -936,7 +858,7 @@
       }
 
       updateDownloadLink();
-      console.log("Canvas redraw complete for empresa:", empresa, "language:", currentLanguage, "hue:", hueRotate, "template:", templateImgSrc);
+      console.log("Canvas redraw complete for empresa:", empresa, "language:", currentLanguage);
 
       function updateDownloadLink() {
         const enlace = document.getElementById("descargar");
@@ -977,12 +899,6 @@
       updateLanguage(languageToggle.value);
     });
 
-    colorSlider.addEventListener("input", () => {
-      console.log(`Color slider changed to: ${colorSlider.value}`);
-      colorValue.textContent = `${colorSlider.value}°`;
-      debouncedGenerarImagen();
-    });
-
     const debouncedGenerarImagen = debounce(generarImagen, 100);
 
     [nombreInput, paisInput, nicknameInput, empresaLinkInput, titleToggleInput, promodsToggleInput, dbusworldToggleInput]
@@ -1000,7 +916,6 @@
       nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
       titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked);
       updateLanguage(currentLanguage);
-      colorValue.textContent = `${colorSlider.value}°`;
       await debouncedGenerarImagen();
     }
 
