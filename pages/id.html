@@ -1,251 +1,195 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="pageTitle">Convoyrama | Generador de Licencia</title>
-<meta name="description" content="Convoyrama">
-<link rel="stylesheet" href="../assets/style.css">
-<link rel="icon" href="../assets/images/favicon.png">
-<link rel="apple-touch-icon" href="../assets/images/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
-<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
-<style>
-header{padding:15px;text-align:center;position:relative;z-index:10;background:var(--accent-bg);border-bottom:1px solid var(--border)}
-header p{font-size:1.2em;text-shadow:none;font-family:Arial,sans-serif;font-weight:normal;margin:10px 0;color:#fff}
-nav{padding:10px;text-align:center}
-nav a,nav a:visited{text-decoration:none;margin:0 15px;font-size:1em;text-shadow:none;color:#fff}
-nav a:hover{text-decoration:underline}
-.contenedor{display:flex;gap:20px;padding:20px;align-items:flex-start;font-family:Arial,sans-serif}
-.panel{flex:1;max-width:300px;font-size:14px}
-.panel h3{margin:10px 0 5px;font-size:14px}
-.input-group{margin:6px 0}
-.toggle-group{display:flex;gap:10px;justify-content:space-between}
-.toggle-group .toggle-item{flex:1}
-canvas{border:1px solid #000;display:block;max-width:100%;height:auto}
-#preview{flex:1;text-align:center}
-button{padding:6px 12px;font-size:14px;margin-top:10px;background:rgb(90,165,25);color:#fff;border:none;border-radius:6px;cursor:pointer}
-button:hover{opacity:0.8}
-.hidden{display:none}
-#truckersmpStatus{font-size:12px;color:#555;margin-top:5px}
-.valid{color:green}
-.invalid{color:red}
-#colorSlider{width:80%;margin-top:5px;vertical-align:middle}
-#colorValue{display:inline-block;width:15%;text-align:right;font-size:14px;color:#555}
-</style>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Convoyrama | Generador de Licencia</title>
+  <meta name="description" content="Convoyrama">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="icon" href="../assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/images/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+  <style>
+    header{padding:15px;text-align:center;position:relative;z-index:10;background:var(--accent-bg);border-bottom:1px solid var(--border)}header p{font-size:1.2em;text-shadow:none;font-family:Arial,sans-serif;font-weight:normal;margin:10px 0;color:#fff}nav{padding:10px;text-align:center}nav a,nav a:visited{text-decoration:none;margin:0 15px;font-size:1em;text-shadow:none;color:#fff}nav a:hover{text-decoration:underline}.contenedor{display:flex;gap:20px;padding:20px;align-items:flex-start;font-family:Arial,sans-serif}.panel{flex:1;max-width:300px;font-size:14px}.panel h3{margin:10px 0 5px;font-size:14px}.input-group{margin:6px 0}.toggle-group{display:flex;gap:10px;justify-content:space-between}.toggle-group .toggle-item{flex:1}canvas{border:1px solid #000;display:block;max-width:100%;height:auto}#preview{flex:1;text-align:center}button{padding:6px 12px;font-size:14px;margin-top:10px;background:rgb(90,165,25);color:#fff;border:none;border-radius:6px;cursor:pointer}button:hover{opacity:0.8}.hidden{display:none}#truckersmpStatus{font-size:12px;color:#555;margin-top:5px}.valid{color:green}.invalid{color:red}#colorSlider{width:80%;margin-top:5px;vertical-align:middle}#colorValue{display:inline-block;width:15%;text-align:right;font-size:14px;color:#555}
+  </style>
 </head>
 <body>
-<header>
-<nav>
-<a href="../index.html">Home</a>
-<a href="pc.html">Creador de Perfil</a>
-<a href="id.html" id="navLicense">Licencia</a>
-</nav>
-<p id="headerTitle">Generador de Licencia de Conductor</p>
-</header>
-<div class="contenedor">
-<div class="panel">
-<div class="input-group">
-<label for="languageToggle">Idioma / Language / Língua:</label><br>
-<select id="languageToggle" style="width:100%">
-<option value="es">Español</option>
-<option value="en">English</option>
-<option value="pt">Português</option>
-</select>
-</div>
-<div class="input-group">
-<label id="fontLabel">Fuente: <span id="fontName">Open Sans</span></label>
-</div>
-<div class="input-group">
-<label for="colorSlider" id="colorLabel">Tono del fondo:</label><br>
-<input type="range" id="colorSlider" min="0" max="360" value="0" style="width:80%">
-<span id="colorValue">0°</span>
-</div>
-<div class="input-group">
-<label for="nombre" id="nameLabel">Nombre:</label><br>
-<input type="text" id="nombre" placeholder="Nombre / Name / Nome" required>
-</div>
-<div class="input-group hidden" id="nicknameGroup">
-<label for="nickname" id="nicknameLabel">TAG Épico:</label><br>
-<select id="nickname" style="width:100%">
-<option value="">Seleccione un TAG</option>
-<option value="ReyDelLag">ReyDelLag</option>
-<option value="FrenadorEnCurva">FrenadorEnCurva</option>
-<option value="SeñorDelLagazo">SeñorDelLagazo</option>
-<option value="BocinaLoca">BocinaLoca</option>
-<option value="CargadorDeDeudas">CargadorDeDeudas</option>
-<option value="CamioneroDelApagón">CamioneroDelApagón</option>
-<option value="FugitivoDeLaRuta">FugitivoDeLaRuta</option>
-<option value="MaestroDelPing">MaestroDelPing</option>
-<option value="ReyDeLaCarretera">ReyDeLaCarretera</option>
-<option value="LocoDelVolante">LocoDelVolante</option>
-<option value="SobrevivienteDelBan">SobrevivienteDelBan</option>
-<option value="BanEvasor">BanEvasor</option>
-<option value="FrenazoEstelar">FrenazoEstelar</option>
-<option value="TerrorDeCalais">TerrorDeCalais</option>
-<option value="LagLegendario">LagLegendario</option>
-<option value="SobrevivienteDeKirkenes">SobrevivienteDeKirkenes</option>
-<option value="MaestroDelReckless">MaestroDelReckless</option>
-<option value="PingParalizante">PingParalizante</option>
-<option value="RutaSinRetorno">RutaSinRetorno</option>
-<option value="VolanteEndemoniado">VolanteEndemoniado</option>
-<option value="AsDelReporte">AsDelReporte</option>
-<option value="ReyDeDuisburg">ReyDeDuisburg</option>
-<option value="ReyDeCalais">ReyDeCalais</option>
-<option value="KaosEnLaRuta">KaosEnLaRuta</option>
-<option value="CarreteraPerdida">CarreteraPerdida</option>
-<option value="FrenadorDePánico">FrenadorDePánico</option>
-<option value="CargaConDrama">CargaConDrama</option>
-</select>
-</div>
-<div class="input-group hidden" id="titleToggleGroup">
-<label for="titleToggle" id="titleToggleLabel">Usar título cómico:</label><br>
-<input type="checkbox" id="titleToggle">
-</div>
-<div class="input-group">
-<label for="foto" id="photoLabel">Foto (Opcional):</label><br>
-<input type="file" id="foto" accept="image/*">
-</div>
-<div class="input-group">
-<label for="pais" id="countryLabel">País:</label><br>
-<select id="pais" style="width:100%" required>
-<option value="">Seleccione un país / Select a country / Selecione um país</option>
-<option value="AO|🇦🇴|Angola|Angola|Angola">🇦🇴 Angola</option>
-<option value="AR|🇦🇷|Argentina|Argentina|Argentina">🇦🇷 Argentina</option>
-<option value="BO|🇧🇴|Bolivia|Bolivia|Bolívia">🇧🇴 Bolivia</option>
-<option value="BR|🇧🇷|Brasil|Brazil|Brasil">🇧🇷 Brasil</option>
-<option value="BZ|🇧🇿|Belice|Belize|Belize">🇧🇿 Belice</option>
-<option value="CA|🇨🇦|Canadá|Canada|Canadá">🇨🇦 Canadá</option>
-<option value="CL|🇨🇱|Chile|Chile|Chile">🇨🇱 Chile</option>
-<option value="CN|🇨🇳|China|China|China">🇨🇳 China</option>
-<option value="CO|🇨🇴|Colombia|Colombia|Colômbia">🇨🇴 Colombia</option>
-<option value="CR|🇨🇷|Costa Rica|Costa Rica|Costa Rica">🇨🇷 Costa Rica</option>
-<option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
-<option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇩🇪 Alemania</option>
-<option value="DO|🇩🇴|República Dominicana|Dominican Republic|República Dominicana">🇩🇴 República Dominicana</option>
-<option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
-<option value="ES|🇪🇸|España|Spain|Espanha">🇪🇸 España</option>
-<option value="FR|🇫🇷|Francia|France|França">🇫🇷 Francia</option>
-<option value="GB|🇬🇧|Reino Unido|United Kingdom (England/Scotland)|Reino Unido">🇬🇧 Reino Unido</option>
-<option value="GT|🇬🇹|Guatemala|Guatemala|Guatemala">🇬🇹 Guatemala</option>
-<option value="GY|🇬🇾|Guyana|Guyana|Guiana">🇬🇾 Guyana</option>
-<option value="HN|🇭🇳|Honduras|Honduras|Honduras">🇭🇳 Honduras</option>
-<option value="IE|🇮🇪|Irlanda|Ireland|Irlanda">🇮🇪 Irlanda</option>
-<option value="IT|🇮🇹|Italia|Italy|Itália">🇮🇹 Italia</option>
-<option value="JM|🇯🇲|Jamaica|Jamaica|Jamaica">🇯🇲 Jamaica</option>
-<option value="JP|🇯🇵|Japón|Japan|Japão">🇯🇵 Japón</option>
-<option value="MX|🇲🇽|México|Mexico|México">🇲🇽 México</option>
-<option value="MZ|🇲🇿|Mozambique|Mozambique|Moçambique">🇲🇿 Mozambique</option>
-<option value="NI|🇳🇮|Nicaragua|Nicaragua|Nicarágua">🇳🇮 Nicaragua</option>
-<option value="PA|🇵🇦|Panamá|Panama|Panamá">🇵🇦 Panamá</option>
-<option value="PE|🇵🇪|Perú|Peru|Peru">🇵🇪 Perú</option>
-<option value="PI|🏴‍☠️|Pirata|Pirate|Pirata">🏴‍☠️ Pirata</option>
-<option value="PL|🇵🇱|Polonia|Poland|Polônia">🇵🇱 Polonia</option>
-<option value="PT|🇵🇹|Portugal|Portugal|Portugal">🇵🇹 Portugal</option>
-<option value="PY|🇵🇾|Paraguay|Paraguay|Paraguai">🇵🇾 Paraguay</option>
-<option value="RO|🇷🇴|Rumania|Romania|Romênia">🇷🇴 Rumania</option>
-<option value="RU|🇷🇺|Rusia|Russia|Rússia">🇷🇺 Rusia</option>
-<option value="SR|🇸🇷|Surinam|Suriname|Suriname">🇸🇷 Surinam</option>
-<option value="SV|🇸🇻|El Salvador|El Salvador|El Salvador">🇸🇻 El Salvador</option>
-<option value="TR|🇹🇷|Turquía|Turkey|Turquia">🇹🇷 Turquía</option>
-<option value="UA|🇺🇦|Ucrania|Ukraine|Ucrânia">🇺🇦 Ucrania</option>
-<option value="US|🇺🇸|Estados Unidos|United States|Estados Unidos">🇺🇸 Estados Unidos</option>
-<option value="UY|🇺🇾|Uruguay|Uruguay|Uruguai" selected>🇺🇾 Uruguay</option>
-<option value="VE|🇻🇪|Venezuela|Venezuela|Venezuela">🇻🇪 Venezuela</option>
-</select>
-</div>
-<div class="input-group" id="empresaGroup">
-<label for="empresa" id="companyLabel">Empresa:</label><br>
-<select id="empresa" style="width:100%" onchange="f4()">
-<option value="LS" selected>LS</option>
-<option value="CN">CN</option>
-<option value="TCS">TCS</option>
-<option value="Otro">Otro</option>
-</select>
-</div>
-<div class="input-group hidden" id="empresaLinkGroup">
-<label for="empresaLink" id="companyLinkLabel">Enlace Perfil Empresa en TMP:</label><br>
-<input type="text" id="empresaLink" placeholder="TruckersMP Company Profile Link" required>
-</div>
-<div class="input-group">
-<label for="truckersmpLink" id="truckersmpLinkLabel">Enlace Perfil en TMP:</label><br>
-<input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link" required>
-<div id="truckersmpStatus"></div>
-</div>
-<div class="input-group toggle-group">
-<div class="toggle-item">
-<label for="promodsToggle">ProMods:</label><br>
-<input type="checkbox" id="promodsToggle">
-</div>
-<div class="toggle-item">
-<label for="dbusworldToggle">DBUS:</label><br>
-<input type="checkbox" id="dbusworldToggle">
-</div>
-</div>
-</div>
-<div id="preview">
-<canvas id="canvas" width="800" height="500"></canvas>
-<br>
-<a id="descargar" download="driver_license.png">
-<button id="botonDescargar">Descargar Licencia</button>
-</a>
-</div>
-</div>
-<footer>
-<small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.8.3-testing</small>
-</footer>
-<script>
-function f0(a,b){return new Promise(c=>{const d=new Image();d.onload=()=>c(d);d.onerror=()=>c(null);d.src=twemoji.parse(a,{folder:'svg',ext:'.svg'}).match(/src="([^"]+)"/)[1];d.crossOrigin="anonymous"})}
-const w=document.getElementById("canvas");const x=w.getContext("2d");
-const y={color:"white",flagSize:80,photoX:45,photoY:80,labelX:100,colonX:130,textX:295,textY:334,qrX:573,qrY:101,flagX:625,flagY:206,font:"'Open Sans', Arial, sans-serif",defaultPhotoSize:192,qrSize:100,qrSpacing:10,promodsX:20,promodsY:334,dbusworldX:20,dbusworldY:394,logoWidth:67,logoHeight:50};
-const z={es:{pageTitle:"Convoyrama | Generador de Licencia",headerTitle:"Generador de Licencia de Conductor",navLicense:"Licencia",fontLabel:"Fuente: ",nameLabel:"Nombre:",nicknameLabel:"TAG Épico:",titleToggleLabel:"Usar título cómico:",photoLabel:"Foto (Opcional):",countryLabel:"País:",companyLabel:"Empresa:",companyLinkLabel:"Enlace Perfil Empresa en TMP:",truckersmpLinkLabel:"Enlace Perfil en TMP:",validLink:"Enlace válido",invalidLink:"Enlace inválido: debe ser https://truckersmp.com/user/[número]",downloadButton:"Descargar Licencia",canvasName:"Nombre :",canvasLicenseNo:"Núm. Licencia :",canvasDate:"Fecha :",canvasCountry:"País :",canvasTag:"TAG :",titleNormal:"PERMISO DE CONDUCCIÓN INTERNACIONAL",titleComedic:"PERMISO PARA CHOCAR EN CONVOY",countryPlaceholder:"Seleccione un país",colorLabel:"Tono del fondo:"},en:{pageTitle:"Convoyrama | Driver License Generator",headerTitle:"Driver License Generator",navLicense:"License",fontLabel:"Font: ",nameLabel:"Name:",nicknameLabel:"Epic TAG:",titleToggleLabel:"Use comedic title:",photoLabel:"Photo (Optional):",countryLabel:"Country:",companyLabel:"Company:",companyLinkLabel:"TruckersMP Company Profile Link:",truckersmpLinkLabel:"TruckersMP Profile Link:",validLink:"Valid link",invalidLink:"Invalid link: must be https://truckersmp.com/user/[number]",downloadButton:"Download License",canvasName:"Name :",canvasLicenseNo:"License No. :",canvasDate:"Date :",canvasCountry:"Country :",canvasTag:"TAG :",titleNormal:"INTERNATIONAL DRIVING LICENSE",titleComedic:"CONVOY CRASHING PERMIT",countryPlaceholder:"Select a country",colorLabel:"Background hue:"},pt:{pageTitle:"Convoyrama | Gerador de Licença",headerTitle:"Gerador de Licença de Motorista",navLicense:"Licença",fontLabel:"Fonte: ",nameLabel:"Nome:",nicknameLabel:"TAG Épico:",titleToggleLabel:"Usar título cômico:",photoLabel:"Foto (Opcional):",countryLabel:"País:",companyLabel:"Empresa:",companyLinkLabel:"Link do Perfil da Empresa no TruckersMP:",truckersmpLinkLabel:"Link do Perfil no TruckersMP:",validLink:"Link válido",invalidLink:"Link inválido: deve ser https://truckersmp.com/user/[número]",downloadButton:"Baixar Licença",canvasName:"Nome :",canvasLicenseNo:"Nº da Licença :",canvasDate:"Data :",canvasCountry:"País :",canvasTag:"TAG :",titleNormal:"LICENÇA INTERNACIONAL DE CONDUÇÃO",titleComedic:"PERMISSÃO PARA BATER EM CONVOI",countryPlaceholder:"Selecione um país",colorLabel:"Tom do fundo:"}};
-const a1=document.getElementById("nombre");const a2=document.getElementById("foto");const a3=document.getElementById("pais");const a4=document.getElementById("nickname");const a5=document.getElementById("empresa");const a6=document.getElementById("empresaLink");const a7=document.getElementById("truckersmpLink");const a8=document.getElementById("truckersmpStatus");const a9=document.getElementById("empresaGroup");const a10=document.getElementById("empresaLinkGroup");const a11=document.getElementById("nicknameGroup");const a12=document.getElementById("titleToggleGroup");const a13=document.getElementById("titleToggle");const a14=document.getElementById("promodsToggle");const a15=document.getElementById("dbusworldToggle");const a16=document.getElementById("languageToggle");const a17=document.getElementById("colorSlider");const a18=document.getElementById("colorValue");
-let v1=null;let v2=localStorage.getItem("nicknameUnlocked")==="true";let v3=null;let v4=0;const v5=60*1000;let v6="es";
-async function f1(){const a=Date.now();if(v3&&a-v4<v5){console.log("Using cached date:",v3);return v3}
-const b=[{url:'https://worldtimeapi.org/api/timezone/Etc/UTC',parse:c=>{const d=new Date(c.datetime);return{day:d.getDate().toString().padStart(2,"0"),month:(d.getMonth()+1).toString().padStart(2,"0"),year:d.getFullYear()}}},{url:'https://timeapi.io/api/Time/current/utc',parse:c=>({day:c.day.toString().padStart(2,"0"),month:c.month.toString().padStart(2,"0"),year:c.year})},{url:'https://worldclockapi.herokuapp.com/api/json/utc/now',parse:c=>{const d=new Date(c.currentDateTime);return{day:d.getDate().toString().padStart(2,"0"),month:(d.getMonth()+1).toString().padStart(2,"0"),year:d.getFullYear()}}}];for(const c of b){try{console.log(`Attempting to fetch date from ${c.url}`);const d=await fetch(c.url);const e=await d.json();const{day,month,year}=c.parse(e);v3=`${day}/${month}/${year}`;v4=a;console.log(`Successfully fetched date from ${c.url}: ${v3}`);return v3}catch(f){console.error(`Failed to fetch date from ${c.url}:`,f)}}
-console.warn("All API attempts failed, falling back to system date");const g=new Date();const h=g.getDate().toString().padStart(2,"0");const i=(g.getMonth()+1).toString().padStart(2,"0");const j=g.getFullYear();v3=`${h}/${i}/${j}`;v4=a;console.log("Using system date:",v3);return v3}
-function f2(a){v6=a;const b=z[a];document.getElementById("pageTitle").textContent=b.pageTitle;document.getElementById("headerTitle").textContent=b.headerTitle;document.getElementById("navLicense").textContent=b.navLicense;document.getElementById("fontLabel").innerHTML=b.fontLabel+'<span id="fontName">Open Sans</span>';document.getElementById("nameLabel").textContent=b.nameLabel;document.getElementById("nicknameLabel").textContent=b.nicknameLabel;document.getElementById("titleToggleLabel").textContent=b.titleToggleLabel;document.getElementById("photoLabel").textContent=b.photoLabel;document.getElementById("countryLabel").textContent=b.countryLabel;document.getElementById("companyLinkLabel").textContent=b.companyLinkLabel;document.getElementById("truckersmpLinkLabel").textContent=b.truckersmpLinkLabel;document.getElementById("colorLabel").textContent=b.colorLabel;document.getElementById("botonDescargar").textContent=b.downloadButton;a3.options[0].text=b.countryPlaceholder;const c=[{code:"AO",flag:"🇦🇴",es:"Angola",en:"Angola",pt:"Angola"},{code:"AR",flag:"🇦🇷",es:"Argentina",en:"Argentina",pt:"Argentina"},{code:"BO",flag:"🇧🇴",es:"Bolivia",en:"Bolivia",pt:"Bolívia"},{code:"BR",flag:"🇧🇷",es:"Brasil",en:"Brazil",pt:"Brasil"},{code:"BZ",flag:"🇧🇿",es:"Belice",en:"Belize",pt:"Belize"},{code:"CA",flag:"🇨🇦",es:"Canadá",en:"Canada",pt:"Canadá"},{code:"CL",flag:"🇨🇱",es:"Chile",en:"Chile",pt:"Chile"},{code:"CN",flag:"🇨🇳",es:"China",en:"China",pt:"China"},{code:"CO",flag:"🇨🇴",es:"Colombia",en:"Colombia",pt:"Colômbia"},{code:"CR",flag:"🇨🇷",es:"Costa Rica",en:"Costa Rica",pt:"Costa Rica"},{code:"CU",flag:"🇨🇺",es:"Cuba",en:"Cuba",pt:"Cuba"},{code:"DE",flag:"🇩🇪",es:"Alemania",en:"Germany",pt:"Alemanha"},{code:"DO",flag:"🇩🇴",es:"República Dominicana",en:"Dominican Republic",pt:"República Dominicana"},{code:"EC",flag:"🇪🇨",es:"Ecuador",en:"Ecuador",pt:"Equador"},{code:"ES",flag:"🇪🇸",es:"España",en:"Spain",pt:"Espanha"},{code:"FR",flag:"🇫🇷",es:"Francia",en:"France",pt:"França"},{code:"GB",flag:"🇬🇧",es:"Reino Unido",en:"United Kingdom (England/Scotland)",pt:"Reino Unido"},{code:"GT",flag:"🇬🇹",es:"Guatemala",en:"Guatemala",pt:"Guatemala"},{code:"GY",flag:"🇬🇾",es:"Guyana",en:"Guyana",pt:"Guiana"},{code:"HN",flag:"🇭🇳",es:"Honduras",en:"Honduras",pt:"Honduras"},{code:"IE",flag:"🇮🇪",es:"Irlanda",en:"Ireland",pt:"Irlanda"},{code:"IT",flag:"🇮🇹",es:"Italia",en:"Italy",pt:"Itália"},{code:"JM",flag:"🇯🇲",es:"Jamaica",en:"Jamaica",pt:"Jamaica"},{code:"JP",flag:"🇯🇵",es:"Japón",en:"Japan",pt:"Japão"},{code:"MX",flag:"🇲🇽",es:"México",en:"Mexico",pt:"México"},{code:"MZ",flag:"🇲🇿",es:"Mozambique",en:"Mozambique",pt:"Moçambique"},{code:"NI",flag:"🇳🇮",es:"Nicaragua",en:"Nicaragua",pt:"Nicarágua"},{code:"PA",flag:"🇵🇦",es:"Panamá",en:"Panama",pt:"Panamá"},{code:"PE",flag:"🇵🇪",es:"Perú",en:"Peru",pt:"Peru"},{code:"PI",flag:"🏴‍☠️",es:"Pirata",en:"Pirate",pt:"Pirata"},{code:"PL",flag:"🇵🇱",es:"Polonia",en:"Poland",pt:"Polônia"},{code:"PT",flag:"🇵🇹",es:"Portugal",en:"Portugal",pt:"Portugal"},{code:"PY",flag:"🇵🇾",es:"Paraguay",en:"Paraguay",pt:"Paraguai"},{code:"RO",flag:"🇷🇴",es:"Rumania",en:"Romania",pt:"Romênia"},{code:"RU",flag:"🇷🇺",es:"Rusia",en:"Russia",pt:"Rússia"},{code:"SR",flag:"🇸🇷",es:"Surinam",en:"Suriname",pt:"Suriname"},{code:"SV",flag:"🇸🇻",es:"El Salvador",en:"El Salvador",pt:"El Salvador"},{code:"TR",flag:"🇹🇷",es:"Turquía",en:"Turkey",pt:"Turquia"},{code:"UA",flag:"🇺🇦",es:"Ucrania",en:"Ukraine",pt:"Ucrânia"},{code:"US",flag:"🇺🇸",es:"Estados Unidos",en:"United States",pt:"Estados Unidos"},{code:"UY",flag:"🇺🇾",es:"Uruguay",en:"Uruguay",pt:"Uruguai"},{code:"VE",flag:"🇻🇪",es:"Venezuela",en:"Venezuela",pt:"Venezuela"}];for(let i=1;i<a3.options.length;i++){const d=a3.options[i];const e=c.find(f=>f.code===d.value.split("|")[0]);d.text=`${e.flag} ${e[a]}`;d.value=`${e.code}|${e.flag}|${e[a]}`}
-if(a==="es"){a9.classList.remove("hidden");a10.classList.toggle("hidden",a5.value!=="Otro")}else{a9.classList.add("hidden");a10.classList.remove("hidden")}
-const f=a7.value.trim();if(f){f3(f)}
-f5()}
-function f3(a){const b=/^https:\/\/truckersmp\.com\/user\/\d+$/;const c=z[v6];if(!b.test(a)){a8.textContent=c.invalidLink;a8.className="invalid";return false}
-a8.textContent=c.validLink;a8.className="valid";return true}
-function f6(a,b){let c;return function(...d){const e=()=>{clearTimeout(c);a(...d)};clearTimeout(c);c=setTimeout(e,b)}}
-function f7(){localStorage.setItem("defaultCountry",a3.value)}
-function f8(){const a=localStorage.getItem("defaultCountry");if(a)a3.value=a}
-function f4(){console.log("updateForm triggered");const a=a5.value;if(v6==="es"){a10.classList.toggle("hidden",a!=="Otro")}
-const b=a1.value.toLowerCase().trim();if(["convoyrama","nocturnoverso"].includes(b)){v2=true;localStorage.setItem("nicknameUnlocked","true")}
-a11.classList.toggle("hidden",!v2);a12.classList.toggle("hidden",!v2);f5()}
-let v7={};
-function f9(){return{a:a1.value,b:a3.value,c:a4.value,d:a5.value,e:a7.value,f:a6.value,g:a13.checked,h:a14.checked,i:a15.checked,j:v1?v1.src:null,k:v6,l:a17.value}}
-async function f10(){console.log("generarImagen triggered");const a=f9();if(JSON.stringify(a)===JSON.stringify(v7)){console.log("No changes in form state, skipping redraw");return}
-v7=a;const b=z[v6];const c=a1.value||(v6==="es"?"Sin nombre":v6==="en"?"No name":"Sem nome");const d=a3.value.split("|");const e=d[0]||"XX";const f=d[1]||"";const g=d[2]||(v6==="es"?"Sin país":v6==="en"?"No country":"Sem país");const h=a4.value||"";const i=v6==="es"?a5.value:"Otro";const j=a7.value.trim();const k=a6.value.trim();const l=j?f3(j):false;const m=parseInt(a17.value);if(w.width!==800||w.height!==500){w.width=800;w.height=500}
-x.clearRect(0,0,w.width,w.height);x.font=null;x.fillStyle=null;x.textAlign="start";x.textBaseline="alphabetic";x.shadowColor="transparent";x.globalCompositeOperation="source-over";x.filter="none";const n={LS:'assets/images/license_template_ls.png',TCS:'assets/images/license_template_tcs.png',CN:'assets/images/license_template_cn.png',Otro:'assets/images/license_template_otro.png'}[i]||'assets/images/license_template_otro.png';const o=new Image();o.src=n;const p={LS:'assets/images/lsb.png',TCS:'assets/images/tcsb.png',CN:'assets/images/cnb.png',Otro:'assets/images/otrosb.png'}[i]||'assets/images/otrosb.png';const q=new Image();q.src=p;const r={es:'assets/images/es.png',en:'assets/images/en.png',pt:'assets/images/pt.png'}[v6];const s=new Image();s.src=r;const[t,u,v,w1,x2,y2,z2,a3a,b3]=await Promise.all([new Promise(a=>{o.onload=()=>a(o);o.onerror=()=>{console.error(`Failed to load license template image: ${n}`);a(null)}}),new Promise(a=>{q.onload=()=>a(q);q.onerror=()=>{console.error(`Failed to load empresa layer: ${p}`);a(null)}}),new Promise(a=>{s.onload=()=>a(s);s.onerror=()=>{console.error(`Failed to load idioma layer: ${r}`);a(null)}}),v1?Promise.resolve(null):f0("👤",y.defaultPhotoSize),f?f0(f,y.flagSize):Promise.resolve(null),l?new Promise(a=>{const b=new Image();b.src="assets/images/id.svg";b.onload=()=>a(b);b.onerror=()=>{console.error("Failed to load id.svg");a(null)}}):Promise.resolve(null),l&&(i==="LS"||i==="CN"||i==="TCS")?new Promise(a=>{const b=new Image();b.src=`assets/images/qr${i.toLowerCase()}.svg`;b.onload=()=>a(b);b.onerror=()=>{console.error(`Failed to load qr${i.toLowerCase()}.svg`);a(null)}}):l&&k?new Promise(a=>{const b=new QRious({value:k,size:y.qrSize,level:'H'});const c=document.createElement("canvas");c.width=y.qrSize;c.height=y.qrSize;const d=c.getContext("2d");d.drawImage(b.canvas,0,0);a(c)}):Promise.resolve(null),a14.checked?new Promise(a=>{const b=new Image();b.src="assets/images/promods.png";b.onload=()=>a(b);b.onerror=()=>{console.error("Failed to load promods.png");a(null)}}):Promise.resolve(null),a15.checked?new Promise(a=>{const b=new Image();b.src="assets/images/dbusworld.png";b.onload=()=>a(b);b.onerror=()=>{console.error("Failed to load dbusworld.png");a(null)}}):Promise.resolve(null)]);if(t){x.filter=`hue-rotate(${m}deg)`;x.drawImage(t,0,0,w.width,w.height);x.filter="none"}else{x.fillStyle="#fff";x.fillRect(0,0,w.width,w.height)}
-if(u){x.drawImage(u,0,0,w.width,w.height)}
-if(v){x.drawImage(v,0,0,w.width,w.height)}
-if(v1){const a=y.defaultPhotoSize;x.drawImage(v1,y.photoX,y.photoY,a,a)}else if(w1){x.drawImage(w1,y.photoX,y.photoY,y.defaultPhotoSize,y.defaultPhotoSize)}
-if(x2){x.drawImage(x2,y.flagX-y.flagSize/2,y.flagY,y.flagSize,y.flagSize)}
-const c1=await f1();x.font=`bold 24px ${y.font}`;x.fillStyle=y.color;x.textAlign="left";const d1=24*1.2;x.fillText(b.canvasName,y.labelX,y.textY);x.fillText(b.canvasLicenseNo,y.labelX,y.textY+d1);x.fillText(b.canvasDate,y.labelX,y.textY+d1*2);x.fillText(b.canvasCountry,y.labelX,y.textY+d1*3);if(v2&&h){x.fillText(b.canvasTag,y.labelX,y.textY+d1*4)}
-x.fillText(c,y.textX,y.textY);if(c&&c.trim()!==""&&a3.value&&l){const e1=f11(c,a3.value,j);if(e1){x.fillText(e1,y.textX,y.textY+d1)}}
-x.fillText(c1,y.textX,y.textY+d1*2);x.fillText(g,y.textX,y.textY+d1*3);if(v2&&h){x.fillText(h,y.textX,y.textY+d1*4)}
-if(a3a&&a14.checked){x.drawImage(a3a,y.promodsX,y.promodsY,y.logoWidth,y.logoHeight)}
-if(b3&&a15.checked){const f1=a14.checked?y.dbusworldY:y.promodsY;x.drawImage(b3,y.dbusworldX,f1,y.logoWidth,y.logoHeight)}
-const g1={"https://truckersmp.com/user/627943":2,"https://truckersmp.com/user/5441056":1,"https://truckersmp.com/user/5429829":3,"https://truckersmp.com/user/5408877":1,"https://truckersmp.com/user/5379466":3,"https://truckersmp.com/user/5861450":2,"https://truckersmp.com/user/4690862":3,"https://truckersmp.com/user/1432064":2,"https://truckersmp.com/user/4890784":2};const h1=g1[j]||0;if(h1>0){x.font=`bold 24px ${y.font}`;x.fillStyle="#FFD700";x.textAlign="right";const i1=w.width-20;for(let i=0;i<h1;i++){const j1=y.promodsY+i*24;x.fillText("★",i1,j1)}}
-const k1=v2&&a13.checked?b.titleComedic:b.titleNormal;const l1=w.height-5;x.font=`bold 22px ${y.font}`;x.fillStyle="rgb(240, 240, 240)";x.textAlign="center";x.textBaseline="bottom";x.shadowColor="rgb(0, 0, 0)";x.shadowOffsetX=1;x.shadowOffsetY=1;x.shadowBlur=2;x.fillText(k1,w.width/2,l1);x.shadowColor="transparent";if(l){const m1=new QRious({value:j,size:y.qrSize,level:'H'});const n1=document.createElement("canvas");n1.width=y.qrSize;n1.height=y.qrSize;const o1=n1.getContext("2d");o1.drawImage(m1.canvas,0,0);x.drawImage(n1,y.qrX,y.qrY,y.qrSize,y.qrSize);if(y2){x.drawImage(y2,y.qrX+y.qrSize+y.qrSpacing,y.qrY,y.qrSize,y.qrSize)}
-if(z2){x.drawImage(z2,y.qrX-y.qrSize-y.qrSpacing,y.qrY,y.qrSize,y.qrSize)}}
-f12();console.log("Canvas redraw complete for empresa:",i,"language:",v6,"hue:",m,"template:",n)}
-function f11(a,b,c){const d=b.split("|")[0].substring(0,2)||"XX";let e="";if(c){const f=c.match(/truckersmp\.com\/user\/(\d+)/);e=f?f[1]:""}if(e){return`${d}${e}`}return""}
-function f12(){const a=document.getElementById("descargar");a.href=w.toDataURL("image/png");a.download=`driver_license_${c}_${i}.png`}
-a2.addEventListener("change",a=>{console.log("fotoInput changed");const b=a.target.files[0];if(b){const c=new FileReader();c.onload=d=>{v1=new Image();v1.src=d.target.result;v1.onload=f5};c.readAsDataURL(b)}else{v1=null;f5()}});
-a7.addEventListener("input",()=>{const a=a7.value.trim();if(a){f3(a)}else{a8.textContent="";a8.className=""}f5()});
-a16.addEventListener("change",()=>{f2(a16.value)});
-a17.addEventListener("input",()=>{console.log(`Color slider changed to: ${a17.value}`);a18.textContent=`${a17.value}°`;f5()});
-const f5=f6(f10,100);
-[a1,a3,a4,a6,a13,a14,a15].forEach(a=>a.addEventListener("input",b=>{console.log(`Input event on ${a.id}`);f5()}));a3.addEventListener("change",f7);a5.addEventListener("change",f4);a1.addEventListener("input",f4);
-async function f13(){console.log("Initializing");f8();a11.classList.toggle("hidden",!v2);a12.classList.toggle("hidden",!v2);f2(v6);a18.textContent=`${a17.value}°`;await f5()}
-f13();
-</script>
+  <header>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="pc.html">Creador de Perfil</a>
+      <a href="id.html" id="navLicense">Licencia</a>
+    </nav>
+    <p id="headerTitle">Generador de Licencia de Conductor</p>
+  </header>
+  <div class="contenedor">
+    <div class="panel">
+      <div class="input-group">
+        <label for="languageToggle">Idioma / Language / Língua:</label><br>
+        <select id="languageToggle" style="width:100%">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="pt">Português</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label id="fontLabel">Fuente: <span id="fontName">Open Sans</span></label>
+      </div>
+      <div class="input-group">
+        <label for="colorSlider" id="colorLabel">Tono del fondo:</label><br>
+        <input type="range" id="colorSlider" min="0" max="360" value="0" style="width:80%">
+        <span id="colorValue">0°</span>
+      </div>
+      <div class="input-group">
+        <label for="nombre" id="nameLabel">Nombre:</label><br>
+        <input type="text" id="nombre" placeholder="Nombre / Name / Nome" required>
+      </div>
+      <div class="input-group hidden" id="nicknameGroup">
+        <label for="nickname" id="nicknameLabel">TAG Épico:</label><br>
+        <select id="nickname" style="width:100%">
+          <option value="">Seleccione un TAG</option>
+          <option value="ReyDelLag">ReyDelLag</option>
+          <option value="FrenadorEnCurva">FrenadorEnCurva</option>
+          <option value="SeñorDelLagazo">SeñorDelLagazo</option>
+          <option value="BocinaLoca">BocinaLoca</option>
+          <option value="CargadorDeDeudas">CargadorDeDeudas</option>
+          <option value="CamioneroDelApagón">CamioneroDelApagón</option>
+          <option value="FugitivoDeLaRuta">FugitivoDeLaRuta</option>
+          <option value="MaestroDelPing">MaestroDelPing</option>
+          <option value="ReyDeLaCarretera">ReyDeLaCarretera</option>
+          <option value="LocoDelVolante">LocoDelVolante</option>
+          <option value="SobrevivienteDelBan">SobrevivienteDelBan</option>
+          <option value="BanEvasor">BanEvasor</option>
+          <option value="FrenazoEstelar">FrenazoEstelar</option>
+          <option value="TerrorDeCalais">TerrorDeCalais</option>
+          <option value="LagLegendario">LagLegendario</option>
+          <option value="SobrevivienteDeKirkenes">SobrevivienteDeKirkenes</option>
+          <option value="MaestroDelReckless">MaestroDelReckless</option>
+          <option value="PingParalizante">PingParalizante</option>
+          <option value="RutaSinRetorno">RutaSinRetorno</option>
+          <option value="VolanteEndemoniado">VolanteEndemoniado</option>
+          <option value="AsDelReporte">AsDelReporte</option>
+          <option value="ReyDeDuisburg">ReyDeDuisburg</option>
+          <option value="ReyDeCalais">ReyDeCalais</option>
+          <option value="KaosEnLaRuta">KaosEnLaRuta</option>
+          <option value="CarreteraPerdida">CarreteraPerdida</option>
+          <option value="FrenadorDePánico">FrenadorDePánico</option>
+          <option value="CargaConDrama">CargaConDrama</option>
+        </select>
+      </div>
+      <div class="input-group hidden" id="titleToggleGroup">
+        <label for="titleToggle" id="titleToggleLabel">Usar título cómico:</label><br>
+        <input type="checkbox" id="titleToggle">
+      </div>
+      <div class="input-group">
+        <label for="foto" id="photoLabel">Foto (Opcional):</label><br>
+        <input type="file" id="foto" accept="image/*">
+      </div>
+      <div class="input-group">
+        <label for="pais" id="countryLabel">País:</label><br>
+        <select id="pais" style="width:100%" required>
+          <option value="">Seleccione un país / Select a country / Selecione um país</option>
+          <option value="AO|🇦🇴|Angola|Angola|Angola">🇦🇴 Angola</option>
+          <option value="AR|🇦🇷|Argentina|Argentina|Argentina">🇦🇷 Argentina</option>
+          <option value="BO|🇧🇴|Bolivia|Bolivia|Bolívia">🇧🇴 Bolivia</option>
+          <option value="BR|🇧🇷|Brasil|Brazil|Brasil">🇧🇷 Brasil</option>
+          <option value="BZ|🇧🇿|Belice|Belize|Belize">🇧🇿 Belice</option>
+          <option value="CA|🇨🇦|Canadá|Canada|Canadá">🇨🇦 Canadá</option>
+          <option value="CL|🇨🇱|Chile|Chile|Chile">🇨🇱 Chile</option>
+          <option value="CN|🇨🇳|China|China|China">🇨🇳 China</option>
+          <option value="CO|🇨🇴|Colombia|Colombia|Colômbia">🇨🇴 Colombia</option>
+          <option value="CR|🇨🇷|Costa Rica|Costa Rica|Costa Rica">🇨🇷 Costa Rica</option>
+          <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
+          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇩🇪 Alemania</option>
+          <option value="DO|🇩🇴|República Dominicana|Dominican Republic|República Dominicana">🇩🇴 República Dominicana</option>
+          <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
+          <option value="ES|🇪🇸|España|Spain|Espanha">🇪🇸 España</option>
+          <option value="FR|🇫🇷|Francia|France|França">🇫🇷 Francia</option>
+          <option value="GB|🇬🇧|Reino Unido|United Kingdom (England/Scotland)|Reino Unido">🇬🇧 Reino Unido</option>
+          <option value="GT|🇬🇹|Guatemala|Guatemala|Guatemala">🇬🇹 Guatemala</option>
+          <option value="GY|🇬🇾|Guyana|Guyana|Guiana">🇬🇾 Guyana</option>
+          <option value="HN|🇭🇳|Honduras|Honduras|Honduras">🇭🇳 Honduras</option>
+          <option value="IE|🇮🇪|Irlanda|Ireland|Irlanda">🇮🇪 Irlanda</option>
+          <option value="IT|🇮🇹|Italia|Italy|Itália">🇮🇹 Italia</option>
+          <option value="JM|🇯🇲|Jamaica|Jamaica|Jamaica">🇯🇲 Jamaica</option>
+          <option value="JP|🇯🇵|Japón|Japan|Japão">🇯🇵 Japón</option>
+          <option value="MX|🇲🇽|México|Mexico|México">🇲🇽 México</option>
+          <option value="MZ|🇲🇿|Mozambique|Mozambique|Moçambique">🇲🇿 Mozambique</option>
+          <option value="NI|🇳🇮|Nicaragua|Nicaragua|Nicarágua">🇳🇮 Nicaragua</option>
+          <option value="PA|🇵🇦|Panamá|Panama|Panamá">🇵🇦 Panamá</option>
+          <option value="PE|🇵🇪|Perú|Peru|Peru">🇵🇪 Perú</option>
+          <option value="PI|🏴‍☠️|Pirata|Pirate|Pirata">🏴‍☠️ Pirata</option>
+          <option value="PL|🇵🇱|Polonia|Poland|Polônia">🇵🇱 Polonia</option>
+          <option value="PT|🇵🇹|Portugal|Portugal|Portugal">🇵🇹 Portugal</option>
+          <option value="PY|🇵🇾|Paraguay|Paraguay|Paraguai">🇵🇾 Paraguay</option>
+          <option value="RO|🇷🇴|Rumania|Romania|Romênia">🇷🇴 Rumania</option>
+          <option value="RU|🇷🇺|Rusia|Russia|Rússia">🇷🇺 Rusia</option>
+          <option value="SR|🇸🇷|Surinam|Suriname|Suriname">🇸🇷 Surinam</option>
+          <option value="SV|🇸🇻|El Salvador|El Salvador|El Salvador">🇸🇻 El Salvador</option>
+          <option value="TR|🇹🇷|Turquía|Turkey|Turquia">🇹🇷 Turquía</option>
+          <option value="UA|🇺🇦|Ucrania|Ukraine|Ucrânia">🇺🇦 Ucrania</option>
+          <option value="US|🇺🇸|Estados Unidos|United States|Estados Unidos">🇺🇸 Estados Unidos</option>
+          <option value="UY|🇺🇾|Uruguay|Uruguay|Uruguai" selected>🇺🇾 Uruguay</option>
+          <option value="VE|🇻🇪|Venezuela|Venezuela|Venezuela">🇻🇪 Venezuela</option>
+        </select>
+      </div>
+      <div class="input-group" id="empresaGroup">
+        <label for="empresa" id="companyLabel">Empresa:</label><br>
+        <select id="empresa" style="width:100%" onchange="updForm()">
+          <option value="LS" selected>LS</option>
+          <option value="CN">CN</option>
+          <option value="TCS">TCS</option>
+          <option value="Otro">Otra</option>
+        </select>
+      </div>
+      <div class="input-group hidden" id="empresaLinkGroup">
+        <label for="empresaLink" id="companyLinkLabel">Enlace Perfil Empresa en TMP:</label><br>
+        <input type="text" id="empresaLink" placeholder="TruckersMP Company Profile Link" required>
+      </div>
+      <div class="input-group">
+        <label for="truckersmpLink" id="truckersmpLinkLabel">Enlace Perfil en TMP:</label><br>
+        <input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link" required>
+        <div id="truckersmpStatus"></div>
+      </div>
+      <div class="input-group toggle-group">
+        <div class="toggle-item">
+          <label for="promodsToggle">ProMods:</label><br>
+          <input type="checkbox" id="promodsToggle">
+        </div>
+        <div class="toggle-item">
+          <label for="dbusworldToggle">DBUS:</label><br>
+          <input type="checkbox" id="dbusworldToggle">
+        </div>
+      </div>
+    </div>
+    <div id="preview">
+      <canvas id="canvas" width="800" height="500"></canvas>
+      <br>
+      <a id="descargar" download="driver_license.png">
+        <button id="botonDescargar">Descargar Licencia</button>
+      </a>
+    </div>
+  </div>
+  <footer>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.8.4-testing</small>
+  </footer>
+  <script>
+    function getTwemoji(e,s){return new Promise(r=>{const i=new Image();i.onload=()=>{r(i)};i.onerror=()=>{r(null)};i.src=twemoji.parse(e,{folder:'svg',ext:'.svg'}).match(/src="([^"]+)"/)[1];i.crossOrigin="anonymous"})}
+    const cvs=document.getElementById("canvas"),ctx=cvs.getContext("2d"),cfg={color:"white",flagSize:80,photoX:45,photoY:80,labelX:100,colonX:130,textX:295,textY:334,qrX:573,qrY:101,flagX:625,flagY:206,font:"'Open Sans', Arial, sans-serif",defaultPhotoSize:192,qrSize:100,qrSpacing:10,promodsX:20,promodsY:334,dbusworldX:20,dbusworldY:394,logoWidth:67,logoHeight:50},trans={es:{pageTitle:"Convoyrama | Generador de Licencia",headerTitle:"Generador de Licencia de Conductor",navLicense:"Licencia",fontLabel:"Fuente: ",nameLabel:"Nombre:",nicknameLabel:"TAG Épico:",titleToggleLabel:"Usar título cómico:",photoLabel:"Foto (Opcional):",countryLabel:"País:",companyLabel:"Empresa:",companyOther:"Otra",companyLinkLabel:"Enlace Perfil Empresa en TMP:",truckersmpLinkLabel:"Enlace Perfil en TMP:",validLink:"Enlace válido",invalidLink:"Enlace inválido: debe ser https://truckersmp.com/user/[número]",downloadButton:"Descargar Licencia",canvasName:"Nombre :",canvasLicenseNo:"Núm. Licencia :",canvasDate:"Fecha :",canvasCountry:"País :",canvasTag:"TAG :",titleNormal:"PERMISO DE CONDUCCIÓN INTERNACIONAL",titleComedic:"PERMISO PARA CHOCAR EN CONVOY",countryPlaceholder:"Seleccione un país",colorLabel:"Tono del fondo:"},en:{pageTitle:"Convoyrama | Driver License Generator",headerTitle:"Driver License Generator",navLicense:"License",fontLabel:"Font: ",nameLabel:"Name:",nicknameLabel:"Epic TAG:",titleToggleLabel:"Use comedic title:",photoLabel:"Photo (Optional):",countryLabel:"Country:",companyLabel:"Company:",companyOther:"Other",companyLinkLabel:"TruckersMP Company Profile Link:",truckersmpLinkLabel:"TruckersMP Profile Link:",validLink:"Valid link",invalidLink:"Invalid link: must be https://truckersmp.com/user/[number]",downloadButton:"Download License",canvasName:"Name :",canvasLicenseNo:"License No. :",canvasDate:"Date :",canvasCountry:"Country :",canvasTag:"TAG :",titleNormal:"INTERNATIONAL DRIVING LICENSE",titleComedic:"CONVOY CRASHING PERMIT",countryPlaceholder:"Select a country",colorLabel:"Background hue:"},pt:{pageTitle:"Convoyrama | Gerador de Licença",headerTitle:"Gerador de Licença de Motorista",navLicense:"Licença",fontLabel:"Fonte: ",nameLabel:"Nome:",nicknameLabel:"TAG Épico:",titleToggleLabel:"Usar título cômico:",photoLabel:"Foto (Opcional):",countryLabel:"País:",companyLabel:"Empresa:",companyOther:"Outra",companyLinkLabel:"Link do Perfil da Empresa no TruckersMP:",truckersmpLinkLabel:"Link do Perfil no TruckersMP:",validLink:"Link válido",invalidLink:"Link inválido: deve ser https://truckersmp.com/user/[número]",downloadButton:"Baixar Licença",canvasName:"Nome :",canvasLicenseNo:"Nº da Licença :",canvasDate:"Data :",canvasCountry:"País :",canvasTag:"TAG :",titleNormal:"LICENÇA INTERNACIONAL DE CONDUÇÃO",titleComedic:"PERMISSÃO PARA BATER EM CONVOI",countryPlaceholder:"Selecione um país",colorLabel:"Tom do fundo:"}},nameInp=document.getElementById("nombre"),fotoInp=document.getElementById("foto"),paisInp=document.getElementById("pais"),nickInp=document.getElementById("nickname"),empInp=document.getElementById("empresa"),empLinkInp=document.getElementById("empresaLink"),tmpLinkInp=document.getElementById("truckersmpLink"),tmpStatus=document.getElementById("truckersmpStatus"),empGroup=document.getElementById("empresaGroup"),empLinkGroup=document.getElementById("empresaLinkGroup"),nickGroup=document.getElementById("nicknameGroup"),titleGroup=document.getElementById("titleToggleGroup"),titleTog=document.getElementById("titleToggle"),promodsTog=document.getElementById("promodsToggle"),dbusTog=document.getElementById("dbusworldToggle"),langTog=document.getElementById("languageToggle"),colorSld=document.getElementById("colorSlider"),colorVal=document.getElementById("colorValue");let usrImg=null,nickUnlock=localStorage.getItem("nicknameUnlocked")==="true",cacheDate=null,lastFetch=0,DATE_CACHE=60*1000,curLang="es";
+    async function getDate(){const now=Date.now();if(cacheDate&&now-lastFetch<DATE_CACHE)return cacheDate;const apis=[{url:'https://worldtimeapi.org/api/timezone/Etc/UTC',parse:d=>{const dt=new Date(d.datetime);return{day:dt.getDate().toString().padStart(2,"0"),month:(dt.getMonth()+1).toString().padStart(2,"0"),year:dt.getFullYear()}}},{url:'https://timeapi.io/api/Time/current/utc',parse:d=>({day:d.day.toString().padStart(2,"0"),month:d.month.toString().padStart(2,"0"),year:d.year})},{url:'https://worldclockapi.herokuapp.com/api/json/utc/now',parse:d=>{const dt=new Date(d.currentDateTime);return{day:dt.getDate().toString().padStart(2,"0"),month:(dt.getMonth()+1).toString().padStart(2,"0"),year:dt.getFullYear()}}}];for(const api of apis)try{const res=await fetch(api.url),data=await res.json(),{day,month,year}=api.parse(data);cacheDate=`${day}/${month}/${year}`;lastFetch=now;return cacheDate}catch(e){}const dt=new Date(),day=dt.getDate().toString().padStart(2,"0"),month=(dt.getMonth()+1).toString().padStart(2,"0"),year=dt.getFullYear();cacheDate=`${day}/${month}/${year}`;lastFetch=now;return cacheDate}
+    function updLang(lang){curLang=lang;const t=trans[lang];document.getElementById("pageTitle").textContent=t.pageTitle;document.getElementById("headerTitle").textContent=t.headerTitle;document.getElementById("navLicense").textContent=t.navLicense;document.getElementById("fontLabel").innerHTML=t.fontLabel+'<span id="fontName">Open Sans</span>';document.getElementById("nameLabel").textContent=t.nameLabel;document.getElementById("nicknameLabel").textContent=t.nicknameLabel;document.getElementById("titleToggleLabel").textContent=t.titleToggleLabel;document.getElementById("photoLabel").textContent=t.photoLabel;document.getElementById("countryLabel").textContent=t.countryLabel;document.getElementById("companyLabel").textContent=t.companyLabel;document.getElementById("companyLinkLabel").textContent=t.companyLinkLabel;document.getElementById("truckersmpLinkLabel").textContent=t.truckersmpLinkLabel;document.getElementById("colorLabel").textContent=t.colorLabel;document.getElementById("botonDescargar").textContent=t.downloadButton;paisInp.options[0].text=t.countryPlaceholder;const empSel=empInp;for(let i=0;i<empSel.options.length;i++)if(empSel.options[i].value==="Otro")empSel.options[i].text=t.companyOther;const countries=[{code:"AO",flag:"🇦🇴",es:"Angola",en:"Angola",pt:"Angola"},{code:"AR",flag:"🇦🇷",es:"Argentina",en:"Argentina",pt:"Argentina"},{code:"BO",flag:"🇧🇴",es:"Bolivia",en:"Bolivia",pt:"Bolívia"},{code:"BR",flag:"🇧🇷",es:"Brasil",en:"Brazil",pt:"Brasil"},{code:"BZ",flag:"🇧🇿",es:"Belice",en:"Belize",pt:"Belize"},{code:"CA",flag:"🇨🇦",es:"Canadá",en:"Canada",pt:"Canadá"},{code:"CL",flag:"🇨🇱",es:"Chile",en:"Chile",pt:"Chile"},{code:"CN",flag:"🇨🇳",es:"China",en:"China",pt:"China"},{code:"CO",flag:"🇨🇴",es:"Colombia",en:"Colombia",pt:"Colômbia"},{code:"CR",flag:"🇨🇷",es:"Costa Rica",en:"Costa Rica",pt:"Costa Rica"},{code:"CU",flag:"🇨🇺",es:"Cuba",en:"Cuba",pt:"Cuba"},{code:"DE",flag:"🇩🇪",es:"Alemania",en:"Germany",pt:"Alemanha"},{code:"DO",flag:"🇩🇴",es:"República Dominicana",en:"Dominican Republic",pt:"República Dominicana"},{code:"EC",flag:"🇪🇨",es:"Ecuador",en:"Ecuador",pt:"Equador"},{code:"ES",flag:"🇪🇸",es:"España",en:"Spain",pt:"Espanha"},{code:"FR",flag:"🇫🇷",es:"Francia",en:"France",pt:"França"},{code:"GB",flag:"🇬🇧",es:"Reino Unido",en:"United Kingdom (England/Scotland)",pt:"Reino Unido"},{code:"GT",flag:"🇬🇹",es:"Guatemala",en:"Guatemala",pt:"Guatemala"},{code:"GY",flag:"🇬🇾",es:"Guyana",en:"Guyana",pt:"Guiana"},{code:"HN",flag:"🇭🇳",es:"Honduras",en:"Honduras",pt:"Honduras"},{code:"IE",flag:"🇮🇪",es:"Irlanda",en:"Ireland",pt:"Irlanda"},{code:"IT",flag:"🇮🇹",es:"Italia",en:"Italy",pt:"Itália"},{code:"JM",flag:"🇯🇲",es:"Jamaica",en:"Jamaica",pt:"Jamaica"},{code:"JP",flag:"🇯🇵",es:"Japón",en:"Japan",pt:"Japão"},{code:"MX",flag:"🇲🇽",es:"México",en:"Mexico",pt:"México"},{code:"MZ",flag:"🇲🇿",es:"Mozambique",en:"Mozambique",pt:"Moçambique"},{code:"NI",flag:"🇳🇮",es:"Nicaragua",en:"Nicaragua",pt:"Nicarágua"},{code:"PA",flag:"🇵🇦",es:"Panamá",en:"Panama",pt:"Panamá"},{code:"PE",flag:"🇵🇪",es:"Perú",en:"Peru",pt:"Peru"},{code:"PI",flag:"🏴‍☠️",es:"Pirata",en:"Pirate",pt:"Pirata"},{code:"PL",flag:"🇵🇱",es:"Polonia",en:"Poland",pt:"Polônia"},{code:"PT",flag:"🇵🇹",es:"Portugal",en:"Portugal",pt:"Portugal"},{code:"PY",flag:"🇵🇾",es:"Paraguay",en:"Paraguay",pt:"Paraguai"},{code:"RO",flag:"🇷🇴",es:"Rumania",en:"Romania",pt:"Romênia"},{code:"RU",flag:"🇷🇺",es:"Rusia",en:"Russia",pt:"Rússia"},{code:"SR",flag:"🇸🇷",es:"Surinam",en:"Suriname",pt:"Suriname"},{code:"SV",flag:"🇸🇻",es:"El Salvador",en:"El Salvador",pt:"El Salvador"},{code:"TR",flag:"🇹🇷",es:"Turquía",en:"Turkey",pt:"Turquia"},{code:"UA",flag:"🇺🇦",es:"Ucrania",en:"Ukraine",pt:"Ucrânia"},{code:"US",flag:"🇺🇸",es:"Estados Unidos",en:"United States",pt:"Estados Unidos"},{code:"UY",flag:"🇺🇾",es:"Uruguay",en:"Uruguay",pt:"Uruguai"},{code:"VE",flag:"🇻🇪",es:"Venezuela",en:"Venezuela",pt:"Venezuela"}];for(let i=1;i<paisInp.options.length;i++){const opt=paisInp.options[i],ctry=countries.find(c=>c.code===opt.value.split("|")[0]);opt.text=`${ctry.flag} ${ctry[lang]}`;opt.value=`${ctry.code}|${ctry.flag}|${ctry[lang]}`;}const link=tmpLinkInp.value.trim();if(link)valTmpLink(link);debGenImg()}
+    function genLicNum(n,p,l){const cc=p.split("|")[0].substring(0,2)||"XX",m=l.match(/truckersmp\.com\/user\/(\d+)/);return m?`${cc}${m[1]}`:""}
+    function valTmpLink(l){const r=/^https:\/\/truckersmp\.com\/user\/\d+$/,t=trans[curLang];if(!r.test(l)){tmpStatus.textContent=t.invalidLink;tmpStatus.className="invalid";return false}tmpStatus.textContent=t.validLink;tmpStatus.className="valid";return true}
+    function debounce(f,w){let t;return function(...a){const l=()=>{clearTimeout(t);f(...a);};clearTimeout(t);t=setTimeout(l,w);}}
+    function saveCtry(){localStorage.setItem("defaultCountry",paisInp.value)}
+    function loadCtry(){const s=localStorage.getItem("defaultCountry");if(s)paisInp.value=s}
+    function updForm(){const emp=empInp.value;empLinkGroup.classList.toggle("hidden",emp!=="Otro");const clrMap={LS:260,CN:340,TCS:200,Otro:colorSld.value};const newClr=clrMap[emp]||0;colorSld.value=newClr;colorVal.textContent=`${newClr}°`;const n=nameInp.value.toLowerCase().trim();if(["convoyrama","nocturnoverso"].includes(n)){nickUnlock=true;localStorage.setItem("nicknameUnlocked","true")}nickGroup.classList.toggle("hidden",!nickUnlock);titleGroup.classList.toggle("hidden",!nickUnlock);debGenImg()}
+    let lastState={};function getState(){return{nombre:nameInp.value,pais:paisInp.value,nickname:nickInp.value,empresa:empInp.value,truckersmpLink:tmpLinkInp.value,empresaLink:empLinkInp.value,titleToggle:titleTog.checked,promodsToggle:promodsTog.checked,dbusworldToggle:dbusTog.checked,userImage:usrImg?usrImg.src:null,language:curLang,colorHue:colorSld.value}}
+    async function genImg(){const state=getState();if(JSON.stringify(state)===JSON.stringify(lastState))return;lastState=state;const t=trans[curLang],n=nameInp.value||(curLang==="es"?"Sin nombre":curLang==="en"?"No name":"Sem nome"),p=paisInp.value.split("|"),cc=p[0]||"XX",flag=p[1]||"",cn=p[2]||(curLang==="es"?"Sin país":curLang==="en"?"No country":"Sem país"),nick=nickInp.value||"",emp=empInp.value,tmpLink=tmpLinkInp.value.trim(),empLink=empLinkInp.value.trim(),isTmpValid=tmpLink?valTmpLink(tmpLink):false,hue=parseInt(colorSld.value);if(cvs.width!==800||cvs.height!==500){cvs.width=800;cvs.height=500}ctx.clearRect(0,0,cvs.width,cvs.height);ctx.font=null;ctx.fillStyle=null;ctx.textAlign="start";ctx.textBaseline="alphabetic";ctx.shadowColor="transparent";ctx.globalCompositeOperation="source-over";ctx.filter="none";const tmpSrc={LS:'./assets/images/license_template_ls.png',TCS:'./assets/images/license_template_tcs.png',CN:'./assets/images/license_template_cn.png',Otro:'./assets/images/license_template_otro.png'}[emp]||'./assets/images/license_template_otro.png',tmpImg=new Image();tmpImg.src=tmpSrc;const empSrc={LS:'./assets/images/lsb.png',TCS:'./assets/images/tcsb.png',CN:'./assets/images/cnb.png',Otro:'./assets/images/otrosb.png'}[emp]||'./assets/images/otrosb.png',empLayer=new Image();empLayer.src=empSrc;const langSrc={es:'./assets/images/es.png',en:'./assets/images/en.png',pt:'./assets/images/pt.png'}[curLang],langLayer=new Image();langLayer.src=langSrc;const[tmpI,empI,langI,silImg,flagImg,idImg,leftQr,promodsImg,dbusImg]=await Promise.all([new Promise(r=>{tmpImg.onload=()=>{r(tmpImg)};tmpImg.onerror=()=>{r(null)}}),new Promise(r=>{empLayer.onload=()=>{r(empLayer)};empLayer.onerror=()=>{r(null)}}),new Promise(r=>{langLayer.onload=()=>{r(langLayer)};langLayer.onerror=()=>{r(null)}}),usrImg?Promise.resolve(null):getTwemoji("👤",cfg.defaultPhotoSize),flag?getTwemoji(flag,cfg.flagSize):Promise.resolve(null),isTmpValid?new Promise(r=>{const i=new Image();i.src="./assets/images/id.svg";i.onload=()=>{r(i)};i.onerror=()=>{r(null)}}):Promise.resolve(null),isTmpValid&&(emp==="LS"||emp==="CN"||emp==="TCS")?new Promise(r=>{const i=new Image();i.src=`./assets/images/qr${emp.toLowerCase()}.svg`;i.onload=()=>{r(i)};i.onerror=()=>{r(null)}}):isTmpValid&&empLink?new Promise(r=>{const qr=new QRious({value:empLink,size:cfg.qrSize,level:'H'}),qc=document.createElement("canvas");qc.width=cfg.qrSize;qc.height=cfg.qrSize;const qctx=qc.getContext("2d");qctx.drawImage(qr.canvas,0,0);r(qc)}):Promise.resolve(null),promodsTog.checked?new Promise(r=>{const i=new Image();i.src="./assets/images/promods.png";i.onload=()=>{r(i)};i.onerror=()=>{r(null)}}):Promise.resolve(null),dbusTog.checked?new Promise(r=>{const i=new Image();i.src="./assets/images/dbusworld.png";i.onload=()=>{r(i)};i.onerror=()=>{r(null)}}):Promise.resolve(null)]);if(tmpI){ctx.filter=`hue-rotate(${hue}deg)`;ctx.drawImage(tmpI,0,0,cvs.width,cvs.height);ctx.filter="none"}else{ctx.fillStyle="#fff";ctx.fillRect(0,0,cvs.width,cvs.height)}if(empI)ctx.drawImage(empI,0,0,cvs.width,cvs.height);if(langI)ctx.drawImage(langI,0,0,cvs.width,cvs.height);if(usrImg)ctx.drawImage(usrImg,cfg.photoX,cfg.photoY,cfg.defaultPhotoSize,cfg.defaultPhotoSize);else if(silImg)ctx.drawImage(silImg,cfg.photoX,cfg.photoY,cfg.defaultPhotoSize,cfg.defaultPhotoSize);if(flagImg)ctx.drawImage(flagImg,cfg.flagX-cfg.flagSize/2,cfg.flagY,cfg.flagSize,cfg.flagSize);const date=await getDate();ctx.font=`bold 24px ${cfg.font}`;ctx.fillStyle=cfg.color;const lh=24*1.2;ctx.fillText(t.canvasName,cfg.labelX,cfg.textY);ctx.fillText(t.canvasLicenseNo,cfg.labelX,cfg.textY+lh);ctx.fillText(t.canvasDate,cfg.labelX,cfg.textY+lh*2);ctx.fillText(t.canvasCountry,cfg.labelX,cfg.textY+lh*3);if(nickUnlock&&nick)ctx.fillText(t.canvasTag,cfg.labelX,cfg.textY+lh*4);ctx.fillText(n,cfg.textX,cfg.textY);if(n&&n.trim()!==""&&paisInp.value&&isTmpValid){const licNum=genLicNum(n,paisInp.value,tmpLink);if(licNum)ctx.fillText(licNum,cfg.textX,cfg.textY+lh)}ctx.fillText(date,cfg.textX,cfg.textY+lh*2);ctx.fillText(cn,cfg.textX,cfg.textY+lh*3);if(nickUnlock&&nick)ctx.fillText(nick,cfg.textX,cfg.textY+lh*4);if(promodsImg&&promodsTog.checked)ctx.drawImage(promodsImg,cfg.promodsX,cfg.promodsY,cfg.logoWidth,cfg.logoHeight);if(dbusImg&&dbusTog.checked){const dbusY=promodsTog.checked?cfg.dbusworldY:cfg.promodsY;ctx.drawImage(dbusImg,cfg.dbusworldX,dbusY,cfg.logoWidth,cfg.logoHeight)}const starMap={"https://truckersmp.com/user/627943":2,"https://truckersmp.com/user/5441056":1,"https://truckersmp.com/user/5429829":3,"https://truckersmp.com/user/5408877":1,"https://truckersmp.com/user/5379466":3,"https://truckersmp.com/user/5861450":2,"https://truckersmp.com/user/4690862":3,"https://truckersmp.com/user/1432064":2,"https://truckersmp.com/user/4890784":2},stars=starMap[tmpLink]||0;if(stars>0){ctx.font=`bold 24px ${cfg.font}`;ctx.fillStyle="#FFD700";ctx.textAlign="right";const starX=cvs.width-20;for(let i=0;i<stars;i++)ctx.fillText("★",starX,cfg.promodsY+i*24)}const title=nickUnlock&&titleTog.checked?t.titleComedic:t.titleNormal,ty=cvs.height-5;ctx.font=`bold 22px ${cfg.font}`;ctx.fillStyle="rgb(240,240,240)";ctx.textAlign="center";ctx.textBaseline="bottom";ctx.shadowColor="rgb(0,0,0)";ctx.shadowOffsetX=1;ctx.shadowOffsetY=1;ctx.shadowBlur=2;ctx.fillText(title,cvs.width/2,ty);ctx.shadowColor="transparent";if(isTmpValid){const qrP=new QRious({value:tmpLink,size:cfg.qrSize,level:'H'}),qrCvs=document.createElement("canvas");qrCvs.width=cfg.qrSize;qrCvs.height=cfg.qrSize;const qrCtx=qrCvs.getContext("2d");qrCtx.drawImage(qrP.canvas,0,0);ctx.drawImage(qrCvs,cfg.qrX,cfg.qrY,cfg.qrSize,cfg.qrSize);if(idImg)ctx.drawImage(idImg,cfg.qrX+cfg.qrSize+cfg.qrSpacing,cfg.qrY,cfg.qrSize,cfg.qrSize);if(leftQr)ctx.drawImage(leftQr,cfg.qrX-cfg.qrSize-cfg.qrSpacing,cfg.qrY,cfg.qrSize,cfg.qrSize)}const link=document.getElementById("descargar");link.href=cvs.toDataURL("image/png");link.download=`driver_license_${n}_${emp}.png`}
+    const debGenImg=debounce(genImg,100);fotoInp.addEventListener("change",e=>{const f=e.target.files[0];if(f){const r=new FileReader();r.onload=ev=>{usrImg=new Image();usrImg.src=ev.target.result;usrImg.onload=debGenImg};r.readAsDataURL(f)}else{usrImg=null;debGenImg()}});tmpLinkInp.addEventListener("input",()=>{const l=tmpLinkInp.value.trim();if(l)valTmpLink(l);else{tmpStatus.textContent="";tmpStatus.className=""}debGenImg()});langTog.addEventListener("change",()=>{updLang(langTog.value)});colorSld.addEventListener("input",()=>{colorVal.textContent=`${colorSld.value}°`;debGenImg()});[nameInp,paisInp,nickInp,empLinkInp,titleTog,promodsTog,dbusTog].forEach(el=>el.addEventListener("input",debGenImg));paisInp.addEventListener("change",saveCtry);empInp.addEventListener("change",updForm);nameInp.addEventListener("input",updForm);async function init(){loadCtry();nickGroup.classList.toggle("hidden",!nickUnlock);titleGroup.classList.toggle("hidden",!nickUnlock);updLang(curLang);updForm();await debGenImg()}init();
+  </script>
 </body>
 </html>
