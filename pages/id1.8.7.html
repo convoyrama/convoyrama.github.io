@@ -239,7 +239,7 @@
           <option value="CO|🇨🇴|Colombia|Colombia|Colômbia">🇨🇴 Colombia</option>
           <option value="CR|🇨🇷|Costa Rica|Costa Rica|Costa Rica">🇨🇷 Costa Rica</option>
           <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
-          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇩🇪 Alemania</option>
+          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇦🇪 Alemania</option>
           <option value="DO|🇩🇴|República Dominicana|Dominican Republic|República Dominicana">🇩🇴 República Dominicana</option>
           <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
           <option value="ES|🇪🇸|España|Spain|Espanha">🇪🇸 España</option>
@@ -312,7 +312,7 @@
   </div>
 
   <footer>
-    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.8.7</small>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.8.7 testing</small>
   </footer>
 
   <script>
@@ -501,7 +501,7 @@
     let isNicknameUnlocked = localStorage.getItem("nicknameUnlocked") === "true";
     let cachedDate = null;
     let lastDateFetch = 0;
-    const DATE_CACHE_DURATION = 60 * 1000;
+    const DATE_CACHE_DURATION = 180000; // 3 minutos en milisegundos
     let currentLanguage = "es";
 
     async function getCurrentDate() {
@@ -725,6 +725,7 @@
         canvas.height = 500;
       }
 
+      ctx.save(); // Guardar el estado del contexto
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.font = null;
       ctx.fillStyle = null;
@@ -1002,6 +1003,7 @@
         }
       }
 
+      ctx.restore(); // Restaurar el estado del contexto
       updateDownloadLink();
       console.log("Canvas redraw complete for empresa:", empresa, "language:", currentLanguage, "hue:", hueRotate, "template:", templateImgSrc);
     }
