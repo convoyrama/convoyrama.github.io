@@ -12,145 +12,32 @@
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
   <style>
-    @font-face {
-      font-family: 'Open Sans';
-      src: url('./open-sans/OpenSans-Bold.ttf') format('truetype');
-      font-weight: 700;
-      font-style: normal;
-    }
-    header {
-      padding: 15px;
-      text-align: center;
-      position: relative;
-      z-index: 10;
-      background: var(--accent-bg);
-      border-bottom: 1px solid var(--border);
-    }
-    header p {
-      font-size: 1.2em;
-      text-shadow: none;
-      font-family: Arial, sans-serif;
-      font-weight: normal;
-      margin: 10px 0;
-      color: #fff;
-    }
-    nav {
-      padding: 10px;
-      text-align: center;
-    }
-    nav a,
-    nav a:visited {
-      text-decoration: none;
-      margin: 0 15px;
-      font-size: 1em;
-      text-shadow: none;
-      color: #fff;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    .contenedor {
-      display: flex;
-      gap: 20px;
-      padding: 20px;
-      align-items: flex-start;
-      font-family: Arial, sans-serif;
-    }
-    .panel {
-      flex: 1;
-      max-width: 300px;
-      font-size: 14px;
-    }
-    .panel h3 {
-      margin: 10px 0 5px;
-      font-size: 14px;
-    }
-    .input-group {
-      margin: 6px 0;
-    }
-    .toggle-group {
-      display: flex;
-      gap: 10px;
-      justify-content: space-between;
-    }
-    .toggle-group .toggle-item {
-      flex: 1;
-    }
-    canvas {
-      border: 1px solid #000;
-      display: block;
-      max-width: 100%;
-      height: auto;
-    }
-    #preview {
-      flex: 1;
-      text-align: center;
-    }
-    button {
-      padding: 6px 12px;
-      font-size: 14px;
-      margin-top: 10px;
-      background: rgb(90,165,25);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      opacity: 0.8;
-    }
-    .hidden {
-      display: none;
-    }
-    #truckersmpStatus {
-      font-size: 12px;
-      color: #555;
-      margin-top: 5px;
-    }
-    .valid {
-      color: green;
-    }
-    .invalid {
-      color: red;
-    }
-    #colorSlider {
-      width: 80%;
-      margin-top: 5px;
-      vertical-align: middle;
-    }
-    #colorValue {
-      display: inline-block;
-      width: 15%;
-      text-align: right;
-      font-size: 14px;
-      color: #555;
-    }
-    .info-tooltip {
-      display: inline-block;
-      font-size: 16px;
-      font-weight: bold;
-      color: rgb(90,165,25);
-      cursor: help;
-      margin-left: 10px;
-      position: relative;
-    }
-    .info-tooltip:hover::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #333;
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 12px;
-      white-space: nowrap;
-      z-index: 10;
-    }
+    @font-face {font-family:'Open Sans';src:url('./open-sans/OpenSans-Bold.ttf') format('truetype');font-weight:700;font-style:normal;}
+    header {padding:15px;text-align:center;position:relative;z-index:10;background:var(--accent-bg);border-bottom:1px solid var(--border);}
+    header p {font-size:1.2em;text-shadow:none;font-family:Arial,sans-serif;font-weight:normal;margin:10px 0;color:#fff;}
+    nav {padding:10px;text-align:center;}
+    nav a,nav a:visited {text-decoration:none;margin:0 15px;font-size:1em;text-shadow:none;color:#fff;}
+    nav a:hover {text-decoration:underline;}
+    .contenedor {display:flex;gap:20px;padding:20px;align-items:flex-start;font-family:Arial,sans-serif;}
+    .panel {flex:1;max-width:300px;font-size:14px;}
+    .panel h3 {margin:10px 0 5px;font-size:14px;}
+    .input-group {margin:6px 0;}
+    .toggle-group {display:flex;gap:10px;justify-content:space-between;}
+    .toggle-group .toggle-item {flex:1;}
+    canvas {border:1px solid #000;display:block;max-width:100%;height:auto;}
+    #preview {flex:1;text-align:center;}
+    button {padding:6px 12px;font-size:14px;margin-top:10px;background:rgb(90,165,25);color:#fff;border:none;border-radius:6px;cursor:pointer;}
+    button:hover {opacity:0.8;}
+    .hidden {display:none;}
+    #truckersmpStatus {font-size:12px;color:#555;margin-top:5px;}
+    .valid {color:green;}
+    .invalid {color:red;}
+    #colorSlider {width:80%;margin-top:5px;vertical-align:middle;}
+    #colorValue {display:inline-block;width:15%;text-align:right;font-size:14px;color:#555;}
+    .info-tooltip {display:inline-block;font-size:16px;font-weight:bold;color:rgb(90,165,25);cursor:help;margin-left:10px;position:relative;}
+    .info-tooltip:hover::after {content:attr(data-tooltip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:10;}
   </style>
 </head>
-
 <body>
   <header>
     <nav>
@@ -160,7 +47,6 @@
     </nav>
     <p id="headerTitle">Generador de Licencia de Conductor</p>
   </header>
-
   <div class="contenedor">
     <div class="panel">
       <div class="input-group">
@@ -239,7 +125,7 @@
           <option value="CO|🇨🇴|Colombia|Colombia|Colômbia">🇨🇴 Colombia</option>
           <option value="CR|🇨🇷|Costa Rica|Costa Rica|Costa Rica">🇨🇷 Costa Rica</option>
           <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
-          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇦🇪 Alemania</option>
+          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇩🇪 Alemania</option>
           <option value="DO|🇩🇴|República Dominicana|Dominican Republic|República Dominicana">🇩🇴 República Dominicana</option>
           <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
           <option value="ES|🇪🇸|España|Spain|Espanha">🇪🇸 España</option>
@@ -274,7 +160,7 @@
       </div>
       <div class="input-group" id="empresaGroup">
         <label for="empresa" id="companyLabel">Empresa:</label><br>
-        <select id="empresa" style="width:100%" onchange="updateForm()">
+        <select id="empresa" style="width:100%" onchange="uF()">
           <option value="LS" selected>LS</option>
           <option value="CN">CN</option>
           <option value="TCS">TCS</option>
@@ -304,790 +190,45 @@
     <div id="preview">
       <canvas id="canvas" width="800" height="500"></canvas>
       <br>
+      <span class="info-tooltip" id="infoTooltip">?</span>
       <a id="descargar" download="driver_license.png">
         <button id="botonDescargar">Descargar Licencia</button>
       </a>
-      <span class="info-tooltip" id="infoTooltip">?</span>
     </div>
   </div>
-
   <footer>
-    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.8.7 testing</small>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.8.8</small>
   </footer>
-
   <script>
-    function rasterizeTwemoji(emoji, size) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => {
-          console.log(`Loaded twemoji: ${emoji}`);
-          resolve(img);
-        };
-        img.onerror = () => {
-          console.error(`Failed to load twemoji: ${emoji}`);
-          resolve(null);
-        };
-        img.src = twemoji.parse(emoji, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
-        img.crossOrigin = "anonymous";
-      });
-    }
-
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-
-    const config = {
-      color: "white",
-      flagSize: 80,
-      photoX: 45,
-      photoY: 80,
-      labelX: 100,
-      colonX: 130,
-      textX: 295,
-      textY: 334,
-      qrX: 573,
-      qrY: 101,
-      flagX: 625,
-      flagY: 206,
-      font: "'Open Sans', Arial, sans-serif",
-      defaultPhotoSize: 192,
-      qrSize: 100,
-      qrSpacing: 10,
-      promodsX: 20,
-      promodsY: 334,
-      dbusworldX: 20,
-      dbusworldY: 394,
-      logoWidth: 67,
-      logoHeight: 50,
-      vtcLogoHeight: 80
-    };
-
-    const vtcMap = {
-      "https://truckersmp.com/vtc/55250-andesvtc": "andes.png",
-      "https://truckersmp.com/vtc/55250": "andes.png",
-      "https://truckersmp.com/vtc/29591": "castores.jpg",
-      "https://truckersmp.com/vtc/81636": "chapu.jpeg",
-      "https://truckersmp.com/vtc/55439-destiny": "destiny.png",
-      "https://truckersmp.com/vtc/55439": "destiny.png",
-      "https://truckersmp.com/vtc/56572-lsavtc": "lsa.png",
-      "https://truckersmp.com/vtc/56572": "lsa.png",
-      "https://truckersmp.com/vtc/79357": "norte.png",
-      "https://truckersmp.com/vtc/34966-nova-era": "nova.png",
-      "https://truckersmp.com/vtc/34966": "nova.png",
-      "https://truckersmp.com/vtc/64312": "shipeados.png",
-      "https://truckersmp.com/vtc/65011": "tl.png",
-      "https://truckersmp.com/vtc/17910-transportesatr": "atr.png",
-      "https://truckersmp.com/vtc/17910": "atr.png",
-      "https://truckersmp.com/vtc/63758": "cord.jpg",
-      "https://truckersmp.com/vtc/48970": "sin.jpg",
-      "https://truckersmp.com/vtc/70703": "as.png",
-      "https://truckersmp.com/vtc/77802": "ex.png",
-      "https://truckersmp.com/vtc/62448": "rut.jpg",
-      "https://truckersmp.com/vtc/11715": "avant.png",
-      "https://truckersmp.com/vtc/76975": "titan.png",
-      "https://truckersmp.com/vtc/3414": "baltico.png",
-      "https://truckersmp.com/vtc/79130": "corr.png",
-      "https://truckersmp.com/vtc/74222": "esp.jpg",
-      "https://truckersmp.com/vtc/63303": "coo.png"
-    };
-
-    const translations = {
-      es: {
-        pageTitle: "Convoyrama | Generador de Licencia",
-        headerTitle: "Generador de Licencia de Conductor",
-        navLicense: "Licencia",
-        fontLabel: "Fuente: ",
-        nameLabel: "Nombre:",
-        nicknameLabel: "TAG Épico:",
-        titleToggleLabel: "Usar título cómico:",
-        photoLabel: "Foto (Opcional):",
-        countryLabel: "País:",
-        companyLabel: "Empresa:",
-        companyOther: "Otra",
-        companyLinkLabel: "Enlace Perfil Empresa en TMP:",
-        truckersmpLinkLabel: "Enlace Perfil en TMP:",
-        validLink: "Enlace válido",
-        invalidLink: "Enlace inválido: debe ser https://truckersmp.com/user/[número]",
-        downloadButton: "Descargar Licencia",
-        canvasName: "Nombre :",
-        canvasLicenseNo: "Núm. Licencia :",
-        canvasDate: "Fecha :",
-        canvasCountry: "País :",
-        canvasTag: "TAG :",
-        titleNormal: "PERMISO DE CONDUCCIÓN INTERNACIONAL",
-        titleComedic: "PERMISO PARA CHOCAR EN CONVOY",
-        countryPlaceholder: "Seleccione un país",
-        colorLabel: "Tono del fondo:",
-        tooltipMessage: "Esta licencia es una broma y un guiño a la comunidad, no pretende ser profesional ni seria."
-      },
-      en: {
-        pageTitle: "Convoyrama | Driver License Generator",
-        headerTitle: "Driver License Generator",
-        navLicense: "License",
-        fontLabel: "Font: ",
-        nameLabel: "Name:",
-        nicknameLabel: "Epic TAG:",
-        titleToggleLabel: "Use comedic title:",
-        photoLabel: "Photo (Optional):",
-        countryLabel: "Country:",
-        companyLabel: "Company:",
-        companyOther: "Other",
-        companyLinkLabel: "TruckersMP Company Profile Link:",
-        truckersmpLinkLabel: "TruckersMP Profile Link:",
-        validLink: "Valid link",
-        invalidLink: "Invalid link: must be https://truckersmp.com/user/[number]",
-        downloadButton: "Download License",
-        canvasName: "Name :",
-        canvasLicenseNo: "License No. :",
-        canvasDate: "Date :",
-        canvasCountry: "Country :",
-        canvasTag: "TAG :",
-        titleNormal: "INTERNATIONAL DRIVING LICENSE",
-        titleComedic: "CONVOY CRASHING PERMIT",
-        countryPlaceholder: "Select a country",
-        colorLabel: "Background hue:",
-        tooltipMessage: "This license is a joke and a nod to the community, not intended to be professional or serious."
-      },
-      pt: {
-        pageTitle: "Convoyrama | Gerador de Licença",
-        headerTitle: "Gerador de Licença de Motorista",
-        navLicense: "Licença",
-        fontLabel: "Fonte: ",
-        nameLabel: "Nome:",
-        nicknameLabel: "TAG Épico:",
-        titleToggleLabel: "Usar título cômico:",
-        photoLabel: "Foto (Opcional):",
-        countryLabel: "País:",
-        companyLabel: "Empresa:",
-        companyOther: "Outra",
-        companyLinkLabel: "Link do Perfil da Empresa no TruckersMP:",
-        truckersmpLinkLabel: "Link do Perfil no TruckersMP:",
-        validLink: "Link válido",
-        invalidLink: "Link inválido: deve ser https://truckersmp.com/user/[número]",
-        downloadButton: "Baixar Licença",
-        canvasName: "Nome :",
-        canvasLicenseNo: "Nº da Licença :",
-        canvasDate: "Data :",
-        canvasCountry: "País :",
-        canvasTag: "TAG :",
-        titleNormal: "LICENÇA INTERNACIONAL DE CONDUÇÃO",
-        titleComedic: "PERMISSÃO PARA BATER EM CONVOI",
-        countryPlaceholder: "Selecione um país",
-        colorLabel: "Tom do fundo:",
-        tooltipMessage: "Esta licença é uma brincadeira e uma homenagem à comunidade, não pretende ser profissional ou séria."
-      }
-    };
-
-    const nombreInput = document.getElementById("nombre");
-    const fotoInput = document.getElementById("foto");
-    const paisInput = document.getElementById("pais");
-    const nicknameInput = document.getElementById("nickname");
-    const empresaInput = document.getElementById("empresa");
-    const empresaLinkInput = document.getElementById("empresaLink");
-    const truckersmpLinkInput = document.getElementById("truckersmpLink");
-    const truckersmpStatus = document.getElementById("truckersmpStatus");
-    const empresaGroup = document.getElementById("empresaGroup");
-    const empresaLinkGroup = document.getElementById("empresaLinkGroup");
-    const nicknameGroup = document.getElementById("nicknameGroup");
-    const titleToggleGroup = document.getElementById("titleToggleGroup");
-    const titleToggleInput = document.getElementById("titleToggle");
-    const promodsToggleInput = document.getElementById("promodsToggle");
-    const dbusworldToggleInput = document.getElementById("dbusworldToggle");
-    const languageToggle = document.getElementById("languageToggle");
-    const colorSlider = document.getElementById("colorSlider");
-    const colorValue = document.getElementById("colorValue");
-    const infoTooltip = document.getElementById("infoTooltip");
-
-    let userImage = null;
-    let isNicknameUnlocked = localStorage.getItem("nicknameUnlocked") === "true";
-    let cachedDate = null;
-    let lastDateFetch = 0;
-    const DATE_CACHE_DURATION = 180000; // 3 minutos en milisegundos
-    let currentLanguage = "es";
-
-    async function getCurrentDate() {
-      const now = Date.now();
-      if (cachedDate && now - lastDateFetch < DATE_CACHE_DURATION) {
-        console.log("Using cached date:", cachedDate);
-        return cachedDate;
-      }
-
-      const apis = [
-        {
-          url: 'https://worldtimeapi.org/api/timezone/Etc/UTC',
-          parse: (data) => {
-            const date = new Date(data.datetime);
-            return {
-              day: date.getDate().toString().padStart(2, "0"),
-              month: (date.getMonth() + 1).toString().padStart(2, "0"),
-              year: date.getFullYear()
-            };
-          }
-        },
-        {
-          url: 'https://timeapi.io/api/Time/current/utc',
-          parse: (data) => ({
-            day: data.day.toString().padStart(2, "0"),
-            month: data.month.toString().padStart(2, "0"),
-            year: data.year
-          })
-        },
-        {
-          url: 'https://worldclockapi.herokuapp.com/api/json/utc/now',
-          parse: (data) => {
-            const date = new Date(data.currentDateTime);
-            return {
-              day: date.getDate().toString().padStart(2, "0"),
-              month: (date.getMonth() + 1).toString().padStart(2, "0"),
-              year: date.getFullYear()
-            };
-          }
-        }
-      ];
-
-      for (const api of apis) {
-        try {
-          console.log(`Attempting to fetch date from ${api.url}`);
-          const response = await fetch(api.url);
-          const data = await response.json();
-          const { day, month, year } = api.parse(data);
-          cachedDate = `${day}/${month}/${year}`;
-          lastDateFetch = now;
-          console.log(`Successfully fetched date from ${api.url}: ${cachedDate}`);
-          return cachedDate;
-        } catch (error) {
-          console.error(`Failed to fetch date from ${api.url}:`, error);
-        }
-      }
-
-      console.warn("All API attempts failed, falling back to system date");
-      const date = new Date();
-      const day = date.getDate().toString().padStart(2, "0");
-      const month = (date.getMonth() + 1).toString().padStart(2, "0");
-      const year = date.getFullYear();
-      cachedDate = `${day}/${month}/${year}`;
-      lastDateFetch = now;
-      console.log("Using system date:", cachedDate);
-      return cachedDate;
-    }
-
-    function updateLanguage(lang) {
-      currentLanguage = lang;
-      const t = translations[lang];
-
-      document.getElementById("pageTitle").textContent = t.pageTitle;
-      document.getElementById("headerTitle").textContent = t.headerTitle;
-      document.getElementById("navLicense").textContent = t.navLicense;
-      document.getElementById("fontLabel").innerHTML = t.fontLabel + '<span id="fontName">Open Sans</span>';
-      document.getElementById("nameLabel").textContent = t.nameLabel;
-      document.getElementById("nicknameLabel").textContent = t.nicknameLabel;
-      document.getElementById("titleToggleLabel").textContent = t.titleToggleLabel;
-      document.getElementById("photoLabel").textContent = t.photoLabel;
-      document.getElementById("countryLabel").textContent = t.countryLabel;
-      document.getElementById("companyLabel").textContent = t.companyLabel;
-      document.getElementById("companyLinkLabel").textContent = t.companyLinkLabel;
-      document.getElementById("truckersmpLinkLabel").textContent = t.truckersmpLinkLabel;
-      document.getElementById("colorLabel").textContent = t.colorLabel;
-      document.getElementById("botonDescargar").textContent = t.downloadButton;
-      paisInput.options[0].text = t.countryPlaceholder;
-      infoTooltip.setAttribute("data-tooltip", t.tooltipMessage);
-
-      const empresaSelect = empresaInput;
-      for (let i = 0; i < empresaSelect.options.length; i++) {
-        if (empresaSelect.options[i].value === "Otro") {
-          empresaSelect.options[i].text = t.companyOther;
-        }
-      }
-
-      const link = truckersmpLinkInput.value.trim();
-      if (link) {
-        validateTruckersMPLink(link);
-      }
-
-      debouncedGenerarImagen();
-    }
-
-    function generarLicenseNumber(nombre, pais, truckersmpLink) {
-      const countryCode = pais.split("|")[0].substring(0, 2) || "XX";
-      let userId = "";
-      if (truckersmpLink) {
-        const match = truckersmpLink.match(/truckersmp\.com\/user\/(\d+)/);
-        userId = match ? match[1] : "";
-      }
-      if (userId) {
-        return `${countryCode}${userId}`;
-      }
-      return "";
-    }
-
-    function validateTruckersMPLink(link) {
-      const regex = /^https:\/\/truckersmp\.com\/user\/\d+$/;
-      const t = translations[currentLanguage];
-      if (!regex.test(link)) {
-        truckersmpStatus.textContent = t.invalidLink;
-        truckersmpStatus.className = "invalid";
-        return false;
-      }
-      truckersmpStatus.textContent = t.validLink;
-      truckersmpStatus.className = "valid";
-      return true;
-    }
-
-    function debounce(func, wait) {
-      let timeout;
-      return function executedFunction(...args) {
-        const later = () => {
-          clearTimeout(timeout);
-          func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-      };
-    }
-
-    function saveDefaultCountry() {
-      localStorage.setItem("defaultCountry", paisInput.value);
-    }
-
-    function loadDefaultCountry() {
-      const saved = localStorage.getItem("defaultCountry");
-      if (saved) paisInput.value = saved;
-    }
-
-    function updateForm() {
-      console.log("updateForm triggered");
-      const empresa = empresaInput.value;
-      empresaLinkGroup.classList.toggle("hidden", empresa !== "Otro");
-
-      const colorMap = {
-        'LS': 260,
-        'CN': 340,
-        'TCS': 200,
-        'Otro': colorSlider.value
-      };
-      const newColorValue = colorMap[empresa] || 0;
-      colorSlider.value = newColorValue;
-      colorValue.textContent = `${newColorValue}°`;
-      console.log(`Set color slider to ${newColorValue}° for empresa: ${empresa}`);
-
-      const nombre = nombreInput.value.toLowerCase().trim();
-      if (["convoyrama", "nocturnoverso"].includes(nombre)) {
-        isNicknameUnlocked = true;
-        localStorage.setItem("nicknameUnlocked", "true");
-      }
-      nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
-      titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked);
-      debouncedGenerarImagen();
-    }
-
-    let lastFormState = {};
-
-    function getFormState() {
-      return {
-        nombre: nombreInput.value,
-        pais: paisInput.value,
-        nickname: nicknameInput.value,
-        empresa: empresaInput.value,
-        truckersmpLink: truckersmpLinkInput.value,
-        empresaLink: empresaLinkInput.value,
-        titleToggle: titleToggleInput.checked,
-        promodsToggle: promodsToggleInput.checked,
-        dbusworldToggle: dbusworldToggleInput.checked,
-        userImage: userImage ? userImage.src : null,
-        language: currentLanguage,
-        colorHue: colorSlider.value
-      };
-    }
-
-    async function generarImagen() {
-      console.log("generarImagen triggered at:", new Date().toISOString());
-      const formState = getFormState();
-      if (JSON.stringify(formState) === JSON.stringify(lastFormState)) {
-        console.log("No changes in form state, skipping redraw");
-        return;
-      }
-      lastFormState = formState;
-
-      const t = translations[currentLanguage];
-      const nombre = nombreInput.value || (currentLanguage === "es" ? "Sin nombre" : currentLanguage === "en" ? "No name" : "Sem nome");
-      const paisData = paisInput.value.split("|");
-      const countryCode = paisData[0] || "XX";
-      const flag = paisData[1] || "";
-      const countryName = paisData[2] || (currentLanguage === "es" ? "Sin país" : currentLanguage === "en" ? "No country" : "Sem país");
-      const nickname = nicknameInput.value || "";
-      const empresa = empresaInput.value;
-      const truckersmpLink = truckersmpLinkInput.value.trim();
-      const empresaLink = empresaLinkInput.value.trim();
-      const isTruckersMPLinkValid = truckersmpLink ? validateTruckersMPLink(truckersmpLink) : false;
-      const hueRotate = parseInt(colorSlider.value);
-
-      if (canvas.width !== 800 || canvas.height !== 500) {
-        canvas.width = 800;
-        canvas.height = 500;
-      }
-
-      ctx.save(); // Guardar el estado del contexto
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.font = null;
-      ctx.fillStyle = null;
-      ctx.textAlign = "start";
-      ctx.textBaseline = "alphabetic";
-      ctx.shadowColor = "transparent";
-      ctx.globalCompositeOperation = "source-over";
-      ctx.filter = "none";
-
-      const templateImgSrc = {
-        'LS': './assets/images/license_template_ls.png',
-        'TCS': './assets/images/license_template_tcs.png',
-        'CN': './assets/images/license_template_cn.png',
-        'Otro': './assets/images/license_template_otro.png'
-      }[empresa] || './assets/images/license_template_otro.png';
-      console.log("Loading license template:", templateImgSrc);
-      const template = new Image();
-      template.src = templateImgSrc;
-
-      const empresaImgSrc = {
-        'LS': './assets/images/lsb.png',
-        'TCS': './assets/images/tcsb.png',
-        'CN': './assets/images/cnb.png',
-        'Otro': './assets/images/otrosb.png'
-      }[empresa] || './assets/images/otrosb.png';
-      console.log("Loading empresa layer:", empresaImgSrc);
-      const empresaLayer = new Image();
-      empresaLayer.src = empresaImgSrc;
-
-      const idiomaImgSrc = {
-        'es': './assets/images/es.png',
-        'en': './assets/images/en.png',
-        'pt': './assets/images/pt.png'
-      }[currentLanguage];
-      console.log("Loading idioma layer:", idiomaImgSrc);
-      const idiomaLayer = new Image();
-      idiomaLayer.src = idiomaImgSrc;
-
-      const vtcImgSrc = empresa === "Otro" && empresaLink && vtcMap[empresaLink] ? `./assets/images/vtc/${vtcMap[empresaLink]}` : null;
-      const vtcImg = vtcImgSrc ? new Image() : null;
-      if (vtcImg) vtcImg.src = vtcImgSrc;
-
-      const [templateImg, empresaLayerImg, idiomaLayerImg, silhouetteImg, flagImg, idImg, leftQrImg, promodsImg, dbusworldImg, vtcLogoImg] = await Promise.all([
-        new Promise((resolve) => {
-          template.onload = () => {
-            console.log(`Loaded license template: ${templateImgSrc}`);
-            resolve(template);
-          };
-          template.onerror = () => {
-            console.error(`Failed to load license template: ${templateImgSrc}`);
-            resolve(null);
-          };
-        }),
-        new Promise((resolve) => {
-          empresaLayer.onload = () => {
-            console.log(`Loaded empresa layer: ${empresaImgSrc}`);
-            resolve(empresaLayer);
-          };
-          empresaLayer.onerror = () => {
-            console.error(`Failed to load empresa layer: ${empresaImgSrc}`);
-            resolve(null);
-          };
-        }),
-        new Promise((resolve) => {
-          idiomaLayer.onload = () => {
-            console.log(`Loaded idioma layer: ${idiomaImgSrc}`);
-            resolve(idiomaLayer);
-          };
-          idiomaLayer.onerror = () => {
-            console.error(`Failed to load idioma layer: ${idiomaImgSrc}`);
-            resolve(null);
-          };
-        }),
-        userImage ? Promise.resolve(null) : rasterizeTwemoji("👤", config.defaultPhotoSize),
-        flag ? rasterizeTwemoji(flag, config.flagSize) : Promise.resolve(null),
-        isTruckersMPLinkValid ? new Promise((resolve) => {
-          const img = new Image();
-          img.src = "./assets/images/id.svg";
-          img.onload = () => {
-            console.log("Loaded id.svg");
-            resolve(img);
-          };
-          img.onerror = () => {
-            console.error("Failed to load id.svg");
-            resolve(null);
-          };
-        }) : Promise.resolve(null),
-        isTruckersMPLinkValid && (empresa === "LS" || empresa === "CN" || empresa === "TCS") ? new Promise((resolve) => {
-          const img = new Image();
-          img.src = `./assets/images/qr${empresa.toLowerCase()}.svg`;
-          img.onload = () => {
-            console.log(`Loaded qr${empresa.toLowerCase()}.svg`);
-            resolve(img);
-          };
-          img.onerror = () => {
-            console.error(`Failed to load qr${empresa.toLowerCase()}.svg`);
-            resolve(null);
-          };
-        }) : isTruckersMPLinkValid && empresaLink && empresa === "Otro" ? new Promise((resolve) => {
-          const qrEmpresa = new QRious({
-            value: empresaLink,
-            size: config.qrSize,
-            level: 'H'
-          });
-          const qrEmpresaCanvas = document.createElement("canvas");
-          qrEmpresaCanvas.width = config.qrSize;
-          qrEmpresaCanvas.height = config.qrSize;
-          const qrEmpresaCtx = qrEmpresaCanvas.getContext("2d");
-          qrEmpresaCtx.drawImage(qrEmpresa.canvas, 0, 0);
-          resolve(qrEmpresaCanvas);
-        }) : Promise.resolve(null),
-        promodsToggleInput.checked ? new Promise((resolve) => {
-          const img = new Image();
-          img.src = "./assets/images/promods.png";
-          img.onload = () => {
-            console.log("Loaded promods.png");
-            resolve(img);
-          };
-          img.onerror = () => {
-            console.error("Failed to load promods.png");
-            resolve(null);
-          };
-        }) : Promise.resolve(null),
-        dbusworldToggleInput.checked ? new Promise((resolve) => {
-          const img = new Image();
-          img.src = "./assets/images/dbusworld.png";
-          img.onload = () => {
-            console.log("Loaded dbusworld.png");
-            resolve(img);
-          };
-          img.onerror = () => {
-            console.error("Failed to load dbusworld.png");
-            resolve(null);
-          };
-        }) : Promise.resolve(null),
-        vtcImg ? new Promise((resolve) => {
-          vtcImg.onload = () => {
-            console.log(`Loaded VTC logo: ${vtcImgSrc}`);
-            resolve(vtcImg);
-          };
-          vtcImg.onerror = () => {
-            console.error(`Failed to load VTC logo: ${vtcImgSrc}`);
-            resolve(null);
-          };
-        }) : Promise.resolve(null)
-      ]);
-
-      if (templateImg) {
-        ctx.filter = `hue-rotate(${hueRotate}deg)`;
-        ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
-        ctx.filter = "none";
-      } else {
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        console.warn("No license template loaded, using white background");
-      }
-
-      if (empresaLayerImg) {
-        ctx.drawImage(empresaLayerImg, 0, 0, canvas.width, canvas.height);
-      }
-
-      if (idiomaLayerImg) {
-        ctx.drawImage(idiomaLayerImg, 0, 0, canvas.width, canvas.height);
-      }
-
-      if (userImage) {
-        const photoSize = config.defaultPhotoSize;
-        ctx.drawImage(userImage, config.photoX, config.photoY, photoSize, photoSize);
-      } else if (silhouetteImg) {
-        ctx.drawImage(silhouetteImg, config.photoX, config.photoY, config.defaultPhotoSize, config.defaultPhotoSize);
-      }
-
-      if (flagImg) {
-        ctx.drawImage(flagImg, config.flagX - config.flagSize / 2, config.flagY, config.flagSize, config.flagSize);
-      }
-
-      if (vtcLogoImg && empresa === "Otro" && isTruckersMPLinkValid) {
-        const vtcLogoHeight = config.vtcLogoHeight;
-        const vtcLogoWidth = vtcLogoImg ? (vtcLogoImg.width / vtcLogoImg.height) * vtcLogoHeight : vtcLogoHeight;
-        const vtcLogoX = config.flagX - config.flagSize / 2 - 70 - vtcLogoWidth / 2;
-        const vtcLogoY = config.qrY + config.qrSize + 10;
-        ctx.drawImage(vtcLogoImg, vtcLogoX, vtcLogoY, vtcLogoWidth, vtcLogoHeight);
-      }
-
-      const currentDate = await getCurrentDate();
-      ctx.font = `bold 24px ${config.font}`;
-      ctx.fillStyle = config.color;
-      ctx.textAlign = "left";
-
-      const lineHeight = 24 * 1.2;
-      ctx.fillText(t.canvasName, config.labelX, config.textY);
-      ctx.fillText(t.canvasLicenseNo, config.labelX, config.textY + lineHeight);
-      ctx.fillText(t.canvasDate, config.labelX, config.textY + lineHeight * 2);
-      ctx.fillText(t.canvasCountry, config.labelX, config.textY + lineHeight * 3);
-      if (isNicknameUnlocked && nickname) {
-        ctx.fillText(t.canvasTag, config.labelX, config.textY + lineHeight * 4);
-      }
-
-      ctx.fillText(nombre, config.textX, config.textY);
-      if (nombre && nombre.trim() !== "" && paisInput.value && isTruckersMPLinkValid) {
-        const licenseNumber = generarLicenseNumber(nombre, paisInput.value, truckersmpLink);
-        if (licenseNumber) {
-          ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
-        }
-      }
-      ctx.fillText(currentDate, config.textX, config.textY + lineHeight * 2);
-      ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
-      if (isNicknameUnlocked && nickname) {
-        ctx.fillText(nickname, config.textX, config.textY + lineHeight * 4);
-      }
-
-      if (promodsImg && promodsToggleInput.checked) {
-        ctx.drawImage(promodsImg, config.promodsX, config.promodsY, config.logoWidth, config.logoHeight);
-      }
-      if (dbusworldImg && dbusworldToggleInput.checked) {
-        const dbusworldY = promodsToggleInput.checked ? config.dbusworldY : config.promodsY;
-        ctx.drawImage(dbusworldImg, config.dbusworldX, dbusworldY, config.logoWidth, config.logoHeight);
-      }
-
-      const starMap = {
-        "https://truckersmp.com/user/627943": 2,
-        "https://truckersmp.com/user/5441056": 1,
-        "https://truckersmp.com/user/5429829": 3,
-        "https://truckersmp.com/user/5408877": 1,
-        "https://truckersmp.com/user/5379466": 3,
-        "https://truckersmp.com/user/5861450": 2,
-        "https://truckersmp.com/user/4690862": 3,
-        "https://truckersmp.com/user/1432064": 2,
-        "https://truckersmp.com/user/4890784": 2
-      };
-      const starsCount = starMap[truckersmpLink] || 0;
-      if (starsCount > 0) {
-        ctx.font = `bold 24px ${config.font}`;
-        ctx.fillStyle = "#FFD700";
-        ctx.textAlign = "right";
-        const starX = canvas.width - 20;
-        for (let i = 0; i < starsCount; i++) {
-          const starY = config.promodsY + i * 24;
-          ctx.fillText("★", starX, starY);
-        }
-      }
-
-      const titleText = isNicknameUnlocked && titleToggleInput.checked ? t.titleComedic : t.titleNormal;
-      const titleY = canvas.height - 5;
-      ctx.font = `bold 22px ${config.font}`;
-      ctx.fillStyle = "rgb(240, 240, 240)";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "bottom";
-      ctx.shadowColor = "rgb(0, 0, 0)";
-      ctx.shadowOffsetX = 1;
-      ctx.shadowOffsetY = 1;
-      ctx.shadowBlur = 2;
-      ctx.fillText(titleText, canvas.width / 2, titleY);
-      ctx.shadowColor = "transparent";
-
-      if (isTruckersMPLinkValid) {
-        const qrPersonal = new QRious({
-          value: truckersmpLink,
-          size: config.qrSize,
-          level: 'H'
-        });
-        const qrPersonalCanvas = document.createElement("canvas");
-        qrPersonalCanvas.width = config.qrSize;
-        qrPersonalCanvas.height = config.qrSize;
-        const qrPersonalCtx = qrPersonalCanvas.getContext("2d");
-        qrPersonalCtx.drawImage(qrPersonal.canvas, 0, 0);
-        ctx.drawImage(qrPersonalCanvas, config.qrX, config.qrY, config.qrSize, config.qrSize);
-
-        if (idImg) {
-          ctx.drawImage(idImg, config.qrX + config.qrSize + config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
-        }
-
-        if (leftQrImg) {
-          ctx.drawImage(leftQrImg, config.qrX - config.qrSize - config.qrSpacing, config.qrY, config.qrSize, config.qrSize);
-        }
-      }
-
-      ctx.restore(); // Restaurar el estado del contexto
-      updateDownloadLink();
-      console.log("Canvas redraw complete for empresa:", empresa, "language:", currentLanguage, "hue:", hueRotate, "template:", templateImgSrc);
-    }
-
-    function updateDownloadLink() {
-      const enlace = document.getElementById("descargar");
-      const nombre = nombreInput.value || "unknown";
-      const empresa = empresaInput.value;
-      try {
-        enlace.href = canvas.toDataURL("image/png");
-        enlace.download = `driver_license_${nombre}_${empresa}.png`;
-        console.log("Download link updated successfully");
-      } catch (error) {
-        console.error("Failed to update download link due to tainted canvas:", error);
-        enlace.href = "#";
-        enlace.download = "";
-        console.warn("Download functionality disabled due to CORS issue");
-      }
-    }
-
-    fotoInput.addEventListener("change", (e) => {
-      console.log("fotoInput changed");
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          userImage = new Image();
-          userImage.src = event.target.result;
-          userImage.onload = debouncedGenerarImagen;
-        };
-        reader.readAsDataURL(file);
-      } else {
-        userImage = null;
-        debouncedGenerarImagen();
-      }
-    });
-
-    truckersmpLinkInput.addEventListener("input", () => {
-      const link = truckersmpLinkInput.value.trim();
-      if (link) {
-        validateTruckersMPLink(link);
-      } else {
-        truckersmpStatus.textContent = "";
-        truckersmpStatus.className = "";
-      }
-      debouncedGenerarImagen();
-    });
-
-    languageToggle.addEventListener("change", () => {
-      updateLanguage(languageToggle.value);
-    });
-
-    colorSlider.addEventListener("input", () => {
-      console.log(`Color slider changed to: ${colorSlider.value}`);
-      colorValue.textContent = `${colorSlider.value}°`;
-      debouncedGenerarImagen();
-    });
-
-    infoTooltip.addEventListener("click", () => {
-      alert(translations[currentLanguage].tooltipMessage);
-    });
-
-    const debouncedGenerarImagen = debounce(generarImagen, 200);
-
-    [nombreInput, paisInput, nicknameInput, empresaLinkInput, titleToggleInput, promodsToggleInput, dbusworldToggleInput]
-      .forEach(el => el.addEventListener("input", (e) => {
-        console.log(`Input event on ${el.id}`);
-        debouncedGenerarImagen();
-      }));
-    paisInput.addEventListener("change", saveDefaultCountry);
-    empresaInput.addEventListener("change", updateForm);
-    nombreInput.addEventListener("input", updateForm);
-
-    async function initialize() {
-      console.log("Initializing");
-      loadDefaultCountry();
-      nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
-      titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked);
-      updateLanguage(currentLanguage);
-      updateForm();
-      await debouncedGenerarImagen();
-    }
-
-    initialize();
+    function rT(e,s){return new Promise(r=>{const i=new Image();i.onload=() => r(i);i.onerror=() => r(null);i.src=twemoji.parse(e,{folder:'svg',ext:'.svg'}).match(/src="([^"]+)"/)[1];i.crossOrigin="anonymous";})}
+    const cv=document.getElementById("canvas"),ctx=cv.getContext("2d"),cfg={color:"white",flagSize:80,photoX:45,photoY:80,labelX:100,colonX:130,textX:295,textY:334,qrX:573,qrY:101,flagX:625,flagY:206,font:"'Open Sans', Arial, sans-serif",defaultPhotoSize:192,qrSize:100,qrSpacing:10,promodsX:20,promodsY:334,dbusworldX:20,dbusworldY:394,logoWidth:67,logoHeight:50,vtcLogoHeight:80};
+    const vtcM={ "https://truckersmp.com/vtc/55250-andesvtc": "andes.png", "https://truckersmp.com/vtc/55250": "andes.png", "https://truckersmp.com/vtc/29591": "castores.jpg", "https://truckersmp.com/vtc/81636": "chapu.jpeg", "https://truckersmp.com/vtc/55439-destiny": "destiny.png", "https://truckersmp.com/vtc/55439": "destiny.png", "https://truckersmp.com/vtc/56572-lsavtc": "lsa.png", "https://truckersmp.com/vtc/56572": "lsa.png", "https://truckersmp.com/vtc/79357": "norte.png", "https://truckersmp.com/vtc/34966-nova-era": "nova.png", "https://truckersmp.com/vtc/34966": "nova.png", "https://truckersmp.com/vtc/64312": "shipeados.png", "https://truckersmp.com/vtc/65011": "tl.png", "https://truckersmp.com/vtc/17910-transportesatr": "atr.png", "https://truckersmp.com/vtc/17910": "atr.png", "https://truckersmp.com/vtc/63758": "cord.jpg", "https://truckersmp.com/vtc/48970": "sin.jpg", "https://truckersmp.com/vtc/70703": "as.png", "https://truckersmp.com/vtc/77802": "ex.png", "https://truckersmp.com/vtc/62448": "rut.jpg", "https://truckersmp.com/vtc/11715": "avant.png", "https://truckersmp.com/vtc/76975": "titan.png", "https://truckersmp.com/vtc/3414": "baltico.png", "https://truckersmp.com/vtc/79130": "corr.png", "https://truckersmp.com/vtc/74222": "esp.jpg", "https://truckersmp.com/vtc/63303": "coo.png", "https://truckersmp.com/vtc/1271": "ali.png", "https://truckersmp.com/vtc/50578": "tcc.png", "https://truckersmp.com/vtc/56350": "gaat.png", "https://truckersmp.com/vtc/2436": "go.png"};
+    const t={es:{pageTitle:"Convoyrama | Generador de Licencia",headerTitle:"Generador de Licencia de Conductor",navLicense:"Licencia",fontLabel:"Fuente: ",nameLabel:"Nombre:",nicknameLabel:"TAG Épico:",titleToggleLabel:"Usar título cómico:",photoLabel:"Foto (Opcional):",countryLabel:"País:",companyLabel:"Empresa:",companyOther:"Otra",companyLinkLabel:"Enlace Perfil Empresa en TMP:",truckersmpLinkLabel:"Enlace Perfil en TMP:",validLink:"Enlace válido",invalidLink:"Enlace inválido: debe ser https://truckersmp.com/user/[número]",downloadButton:"Descargar Licencia",canvasName:"Nombre :",canvasLicenseNo:"Núm. Licencia :",canvasDate:"Fecha :",canvasCountry:"País :",canvasTag:"TAG :",titleNormal:"PERMISO DE CONDUCCIÓN INTERNACIONAL",titleComedic:"PERMISO PARA CHOCAR EN CONVOY",countryPlaceholder:"Seleccione un país",colorLabel:"Tono del fondo:",tooltipMessage:"Esta licencia es una broma y un guiño a la comunidad, no pretende ser profesional ni seria."},en:{pageTitle:"Convoyrama | Driver License Generator",headerTitle:"Driver License Generator",navLicense:"License",fontLabel:"Font: ",nameLabel:"Name:",nicknameLabel:"Epic TAG:",titleToggleLabel:"Use comedic title:",photoLabel:"Photo (Optional):",countryLabel:"Country:",companyLabel:"Company:",companyOther:"Other",companyLinkLabel:"TruckersMP Company Profile Link:",truckersmpLinkLabel:"TruckersMP Profile Link:",validLink:"Valid link",invalidLink:"Invalid link: must be https://truckersmp.com/user/[number]",downloadButton:"Download License",canvasName:"Name :",canvasLicenseNo:"License No. :",canvasDate:"Date :",canvasCountry:"Country :",canvasTag:"TAG :",titleNormal:"INTERNATIONAL DRIVING LICENSE",titleComedic:"CONVOY CRASHING PERMIT",countryPlaceholder:"Select a country",colorLabel:"Background hue:",tooltipMessage:"This license is a joke and a nod to the community, not intended to be professional or serious."},pt:{pageTitle:"Convoyrama | Gerador de Licença",headerTitle:"Gerador de Licença de Motorista",navLicense:"Licença",fontLabel:"Fonte: ",nameLabel:"Nome:",nicknameLabel:"TAG Épico:",titleToggleLabel:"Usar título cômico:",photoLabel:"Foto (Opcional):",countryLabel:"País:",companyLabel:"Empresa:",companyOther:"Outra",companyLinkLabel:"Link do Perfil da Empresa no TruckersMP:",truckersmpLinkLabel:"Link do Perfil no TruckersMP:",validLink:"Link válido",invalidLink:"Link inválido: deve ser https://truckersmp.com/user/[número]",downloadButton:"Baixar Licença",canvasName:"Nome :",canvasLicenseNo:"Nº da Licença :",canvasDate:"Data :",canvasCountry:"País :",canvasTag:"TAG :",titleNormal:"LICENÇA INTERNACIONAL DE CONDUÇÃO",titleComedic:"PERMISSÃO PARA BATER EM CONVOI",countryPlaceholder:"Selecione um país",colorLabel:"Tom do fundo:",tooltipMessage:"Esta licença é uma brincadeira e uma homenagem à comunidade, não pretende ser profissional ou séria."}};
+    const nInp=document.getElementById("nombre"),fInp=document.getElementById("foto"),pInp=document.getElementById("pais"),nickInp=document.getElementById("nickname"),eInp=document.getElementById("empresa"),eLinkInp=document.getElementById("empresaLink"),tLinkInp=document.getElementById("truckersmpLink"),tStat=document.getElementById("truckersmpStatus"),eGrp=document.getElementById("empresaGroup"),eLinkGrp=document.getElementById("empresaLinkGroup"),nickGrp=document.getElementById("nicknameGroup"),tTogGrp=document.getElementById("titleToggleGroup"),tTogInp=document.getElementById("titleToggle"),pTogInp=document.getElementById("promodsToggle"),dTogInp=document.getElementById("dbusworldToggle"),lTog=document.getElementById("languageToggle"),cSld=document.getElementById("colorSlider"),cVal=document.getElementById("colorValue"),iTip=document.getElementById("infoTooltip");
+    let uImg=null,isNickUnl=localStorage.getItem("nicknameUnlocked")==="true",cDate=null,lDateF=0,DATE_CACHE_DUR=180000,curLang="es";
+    async function gDate(){const n=Date.now();if(cDate&&n-lDateF<DATE_CACHE_DUR)return cDate;const a=[{url:'https://worldtimeapi.org/api/timezone/Etc/UTC',parse:d=>{const dt=new Date(d.datetime);return{day:dt.getDate().toString().padStart(2,"0"),month:(dt.getMonth()+1).toString().padStart(2,"0"),year:dt.getFullYear()}}},{url:'https://timeapi.io/api/Time/current/utc',parse:d=>({day:d.day.toString().padStart(2,"0"),month:d.month.toString().padStart(2,"0"),year:d.year})},{url:'https://worldclockapi.herokuapp.com/api/json/utc/now',parse:d=>{const dt=new Date(d.currentDateTime);return{day:dt.getDate().toString().padStart(2,"0"),month:(dt.getMonth()+1).toString().padStart(2,"0"),year:dt.getFullYear()}}}];for(const api of a){try{const r=await fetch(api.url),d=await r.json(),{day,month,year}=api.parse(d);cDate=`${day}/${month}/${year}`;lDateF=n;return cDate;}catch(e){}}const d=new Date();cDate=`${d.getDate().toString().padStart(2,"0")}/${(d.getMonth()+1).toString().padStart(2,"0")}/${d.getFullYear()}`;lDateF=n;return cDate;}
+    function uLang(l){curLang=l;const tr=t[l];document.getElementById("pageTitle").textContent=tr.pageTitle;document.getElementById("headerTitle").textContent=tr.headerTitle;document.getElementById("navLicense").textContent=tr.navLicense;document.getElementById("fontLabel").innerHTML=tr.fontLabel+'<span id="fontName">Open Sans</span>';document.getElementById("nameLabel").textContent=tr.nameLabel;document.getElementById("nicknameLabel").textContent=tr.nicknameLabel;document.getElementById("titleToggleLabel").textContent=tr.titleToggleLabel;document.getElementById("photoLabel").textContent=tr.photoLabel;document.getElementById("countryLabel").textContent=tr.countryLabel;document.getElementById("companyLabel").textContent=tr.companyLabel;document.getElementById("companyLinkLabel").textContent=tr.companyLinkLabel;document.getElementById("truckersmpLinkLabel").textContent=tr.truckersmpLinkLabel;document.getElementById("colorLabel").textContent=tr.colorLabel;document.getElementById("botonDescargar").textContent=tr.downloadButton;pInp.options[0].text=tr.countryPlaceholder;iTip.setAttribute("data-tooltip",tr.tooltipMessage);const es=eInp;for(let i=0;i<es.options.length;i++){if(es.options[i].value==="Otro")es.options[i].text=tr.companyOther;}const link=tLinkInp.value.trim();if(link)vTLink(link);dGenImg();}
+    function gLicNum(n,p,tl){const cc=p.split("|")[0].substring(0,2)||"XX";let ui="";if(tl){const m=tl.match(/truckersmp\.com\/user\/(\d+)/);ui=m?m[1]:"";}return ui?`${cc}${ui}`:"";}
+    function vTLink(l){const r=/^https:\/\/truckersmp\.com\/user\/\d+$/,tr=t[curLang];if(!r.test(l)){tStat.textContent=tr.invalidLink;tStat.className="invalid";return false;}tStat.textContent=tr.validLink;tStat.className="valid";return true;}
+    function db(f,w){let t;return function(...a){const l=()=>{clearTimeout(t);f(...a);};clearTimeout(t);t=setTimeout(l,w);};}
+    function sDC(){localStorage.setItem("defaultCountry",pInp.value);}
+    function lDC(){const s=localStorage.getItem("defaultCountry");if(s)pInp.value=s;}
+    function uF(){const e=eInp.value;eLinkGrp.classList.toggle("hidden",e!=="Otro");const cm={'LS':260,'CN':340,'TCS':200,'Otro':cSld.value},nc=cm[e]||0;cSld.value=nc;cVal.textContent=`${nc}°`;const n=nInp.value.toLowerCase().trim();if(["convoyrama","nocturnoverso"].includes(n)){isNickUnl=true;localStorage.setItem("nicknameUnlocked","true");}nickGrp.classList.toggle("hidden",!isNickUnl);tTogGrp.classList.toggle("hidden",!isNickUnl);dGenImg();}
+    let lFS={};
+    function gFS(){return{nombre:nInp.value,pais:pInp.value,nickname:nickInp.value,empresa:eInp.value,truckersmpLink:tLinkInp.value,empresaLink:eLinkInp.value,titleToggle:tTogInp.checked,promodsToggle:pTogInp.checked,dbusworldToggle:dTogInp.checked,userImage:uImg?uImg.src:null,language:curLang,colorHue:cSld.value};}
+    async function gImg(){const fs=gFS();if(JSON.stringify(fs)===JSON.stringify(lFS))return;lFS=fs;const tr=t[curLang],n=nInp.value||(curLang==="es"?"Sin nombre":curLang==="en"?"No name":"Sem nome"),pd=pInp.value.split("|"),cc=pd[0]||"XX",f=pd[1]||"",cn=pd[2]||(curLang==="es"?"Sin país":curLang==="en"?"No country":"Sem país"),nick=nickInp.value||"",e=eInp.value,tl=tLinkInp.value.trim(),el=eLinkInp.value.trim(),isTValid=tl?vTLink(tl):false,hr=parseInt(cSld.value);if(cv.width!==800||cv.height!==500){cv.width=800;cv.height=500;}ctx.save();ctx.clearRect(0,0,cv.width,cv.height);ctx.font=null;ctx.fillStyle=null;ctx.textAlign="start";ctx.textBaseline="alphabetic";ctx.shadowColor="transparent";ctx.globalCompositeOperation="source-over";ctx.filter="none";const tSrc={'LS':'./assets/images/license_template_ls.png','TCS':'./assets/images/license_template_tcs.png','CN':'./assets/images/license_template_cn.png','Otro':'./assets/images/license_template_otro.png'}[e]||'./assets/images/license_template_otro.png',tImg=new Image();tImg.src=tSrc;const eSrc={'LS':'./assets/images/lsb.png','TCS':'./assets/images/tcsb.png','CN':'./assets/images/cnb.png','Otro':'./assets/images/otrosb.png'}[e]||'./assets/images/otrosb.png',eL=new Image();eL.src=eSrc;const iSrc={'es':'./assets/images/es.png','en':'./assets/images/en.png','pt':'./assets/images/pt.png'}[curLang],iL=new Image();iL.src=iSrc;const vSrc=e==="Otro"&&el&&vtcM[el]?`./assets/images/vtc/${vtcM[el]}`:null,vImg=vSrc?new Image():null;if(vImg)vImg.src=vSrc;const lsSrc=e==="LS"&&isTValid?"./assets/images/vtc/ls.png":null,tcsSrc=e==="TCS"&&isTValid?"./assets/images/vtc/tcs.png":null,lsImg=lsSrc?new Image():null,tcsImg=tcsSrc?new Image():null;if(lsImg)lsImg.src=lsSrc;if(tcsImg)tcsImg.src=tcsSrc;const [tI,eLI,iLI,sI,fI,idI,lQI,pI,dI,vLI,lsLI,tcsLI]=await Promise.all([new Promise(r=>{tImg.onload=() => r(tImg);tImg.onerror=() => r(null);}),new Promise(r=>{eL.onload=() => r(eL);eL.onerror=() => r(null);}),new Promise(r=>{iL.onload=() => r(iL);iL.onerror=() => r(null);}),uImg?Promise.resolve(null):rT("👤",cfg.defaultPhotoSize),f?rT(f,cfg.flagSize):Promise.resolve(null),isTValid?new Promise(r=>{const i=new Image();i.src="./assets/images/id.svg";i.onload=() => r(i);i.onerror=() => r(null);}):Promise.resolve(null),isTValid&&(e==="LS"||e==="CN"||e==="TCS")?new Promise(r=>{const i=new Image();i.src=`./assets/images/qr${e.toLowerCase()}.svg`;i.onload=() => r(i);i.onerror=() => r(null);}):isTValid&&el&&e==="Otro"?new Promise(r=>{const qr=new QRious({value:el,size:cfg.qrSize,level:'H'}),qc=document.createElement("canvas");qc.width=cfg.qrSize;qc.height=cfg.qrSize;qc.getContext("2d").drawImage(qr.canvas,0,0);r(qc);}):Promise.resolve(null),pTogInp.checked?new Promise(r=>{const i=new Image();i.src="./assets/images/promods.png";i.onload=() => r(i);i.onerror=() => r(null);}):Promise.resolve(null),dTogInp.checked?new Promise(r=>{const i=new Image();i.src="./assets/images/dbusworld.png";i.onload=() => r(i);i.onerror=() => r(null);}):Promise.resolve(null),vImg?new Promise(r=>{vImg.onload=() => r(vImg);vImg.onerror=() => r(null);}):Promise.resolve(null),lsImg?new Promise(r=>{lsImg.onload=() => r(lsImg);lsImg.onerror=() => r(null);}):Promise.resolve(null),tcsImg?new Promise(r=>{tcsImg.onload=() => r(tcsImg);tcsImg.onerror=() => r(null);}):Promise.resolve(null)]);if(tI){ctx.filter=`hue-rotate(${hr}deg)`;ctx.drawImage(tI,0,0,cv.width,cv.height);ctx.filter="none";}else{ctx.fillStyle="#fff";ctx.fillRect(0,0,cv.width,cv.height);}if(eLI)ctx.drawImage(eLI,0,0,cv.width,cv.height);if(iLI)ctx.drawImage(iLI,0,0,cv.width,cv.height);if(uImg)ctx.drawImage(uImg,cfg.photoX,cfg.photoY,cfg.defaultPhotoSize,cfg.defaultPhotoSize);else if(sI)ctx.drawImage(sI,cfg.photoX,cfg.photoY,cfg.defaultPhotoSize,cfg.defaultPhotoSize);if(fI)ctx.drawImage(fI,cfg.flagX-cfg.flagSize/2,cfg.flagY,cfg.flagSize,cfg.flagSize);if((vLI||lsLI||tcsLI)&&isTValid){const li=vLI||lsLI||tcsLI,vlh=cfg.vtcLogoHeight,vlw=li?(li.width/li.height)*vlh:vlh,vlx=cfg.flagX-cfg.flagSize/2-70-vlw/2,vly=cfg.qrY+cfg.qrSize+10;ctx.drawImage(li,vlx,vly,vlw,vlh);}const cd=await gDate();ctx.font=`bold 24px ${cfg.font}`;ctx.fillStyle=cfg.color;ctx.textAlign="left";const lh=24*1.2;ctx.fillText(tr.canvasName,cfg.labelX,cfg.textY);ctx.fillText(tr.canvasLicenseNo,cfg.labelX,cfg.textY+lh);ctx.fillText(tr.canvasDate,cfg.labelX,cfg.textY+lh*2);ctx.fillText(tr.canvasCountry,cfg.labelX,cfg.textY+lh*3);if(isNickUnl&&nick)ctx.fillText(tr.canvasTag,cfg.labelX,cfg.textY+lh*4);ctx.fillText(n,cfg.textX,cfg.textY);if(n&&n.trim()!==""&&pInp.value&&isTValid){const ln=gLicNum(n,pInp.value,tl);if(ln)ctx.fillText(ln,cfg.textX,cfg.textY+lh);}ctx.fillText(cd,cfg.textX,cfg.textY+lh*2);ctx.fillText(cn,cfg.textX,cfg.textY+lh*3);if(isNickUnl&&nick)ctx.fillText(nick,cfg.textX,cfg.textY+lh*4);if(pI&&pTogInp.checked)ctx.drawImage(pI,cfg.promodsX,cfg.promodsY,cfg.logoWidth,cfg.logoHeight);if(dI&&dTogInp.checked){const dy=pTogInp.checked?cfg.dbusworldY:cfg.promodsY;ctx.drawImage(dI,cfg.dbusworldX,dy,cfg.logoWidth,cfg.logoHeight);}const sm={"https://truckersmp.com/user/627943":2,"https://truckersmp.com/user/5441056":1,"https://truckersmp.com/user/5429829":3,"https://truckersmp.com/user/5408877":1,"https://truckersmp.com/user/5379466":3,"https://truckersmp.com/user/5861450":2,"https://truckersmp.com/user/4690862":3,"https://truckersmp.com/user/1432064":2,"https://truckersmp.com/user/4890784":2},sc=sm[tl]||0;if(sc>0){ctx.font=`bold 24px ${cfg.font}`;ctx.fillStyle="#FFD700";ctx.textAlign="right";const sx=cv.width-20;for(let i=0;i<sc;i++){const sy=cfg.promodsY+i*24;ctx.fillText("★",sx,sy);}}const tt=isNickUnl&&tTogInp.checked?tr.titleComedic:tr.titleNormal,ty=cv.height-5;ctx.font=`bold 22px ${cfg.font}`;ctx.fillStyle="rgb(240,240,240)";ctx.textAlign="center";ctx.textBaseline="bottom";ctx.shadowColor="rgb(0,0,0)";ctx.shadowOffsetX=1;ctx.shadowOffsetY=1;ctx.shadowBlur=2;ctx.fillText(tt,cv.width/2,ty);ctx.shadowColor="transparent";if(isTValid){const qr=new QRious({value:tl,size:cfg.qrSize,level:'H'}),qc=document.createElement("canvas");qc.width=cfg.qrSize;qc.height=cfg.qrSize;qc.getContext("2d").drawImage(qr.canvas,0,0);ctx.drawImage(qc,cfg.qrX,cfg.qrY,cfg.qrSize,cfg.qrSize);if(idI)ctx.drawImage(idI,cfg.qrX+cfg.qrSize+cfg.qrSpacing,cfg.qrY,cfg.qrSize,cfg.qrSize);if(lQI)ctx.drawImage(lQI,cfg.qrX-cfg.qrSize-cfg.qrSpacing,cfg.qrY,cfg.qrSize,cfg.qrSize);}ctx.restore();uDL();}
+    function uDL(){const l=document.getElementById("descargar"),n=nInp.value||"unknown",e=eInp.value;try{l.href=cv.toDataURL("image/png");l.download=`driver_license_${n}_${e}.png`;}catch(e){l.href="#";l.download="";}}
+    fInp.addEventListener("change",e=>{const f=e.target.files[0];if(f){const r=new FileReader();r.onload=ev=>{uImg=new Image();uImg.src=ev.target.result;uImg.onload=dGenImg;};r.readAsDataURL(f);}else{uImg=null;dGenImg();}});
+    tLinkInp.addEventListener("input",()=>{const l=tLinkInp.value.trim();if(l)vTLink(l);else{tStat.textContent="";tStat.className="";}dGenImg();});
+    lTog.addEventListener("change",() => uLang(lTog.value));
+    cSld.addEventListener("input",() => {cVal.textContent=`${cSld.value}°`;dGenImg();});
+    iTip.addEventListener("click",() => alert(t[curLang].tooltipMessage));
+    const dGenImg=db(gImg,200);
+    [nInp,pInp,nickInp,eLinkInp,tTogInp,pTogInp,dTogInp].forEach(el => el.addEventListener("input",() => dGenImg()));
+    pInp.addEventListener("change",sDC);
+    eInp.addEventListener("change",uF);
+    nInp.addEventListener("input",uF);
+    async function init(){lDC();nickGrp.classList.toggle("hidden",!isNickUnl);tTogGrp.classList.toggle("hidden",!isNickUnl);uLang(curLang);uF();await dGenImg();}init();
   </script>
 </body>
 </html>
