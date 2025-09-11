@@ -239,7 +239,7 @@
           <option value="CO|🇨🇴|Colombia|Colombia|Colômbia">🇨🇴 Colombia</option>
           <option value="CR|🇨🇷|Costa Rica|Costa Rica|Costa Rica">🇨🇷 Costa Rica</option>
           <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
-          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇦🇪 Alemania</option>
+          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇩🇪 Alemania</option>
           <option value="DO|🇩🇴|República Dominicana|Dominican Republic|República Dominicana">🇩🇴 República Dominicana</option>
           <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
           <option value="ES|🇪🇸|España|Spain|Espanha">🇪🇸 España</option>
@@ -304,15 +304,15 @@
     <div id="preview">
       <canvas id="canvas" width="800" height="500"></canvas>
       <br>
+      <span class="info-tooltip" id="infoTooltip">?</span>
       <a id="descargar" download="driver_license.png">
         <button id="botonDescargar">Descargar Licencia</button>
       </a>
-      <span class="info-tooltip" id="infoTooltip">?</span>
     </div>
   </div>
 
   <footer>
-    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.8.7 testing</small>
+    <small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 1.8.8 testing</small>
   </footer>
 
   <script>
@@ -387,7 +387,11 @@
       "https://truckersmp.com/vtc/3414": "baltico.png",
       "https://truckersmp.com/vtc/79130": "corr.png",
       "https://truckersmp.com/vtc/74222": "esp.jpg",
-      "https://truckersmp.com/vtc/63303": "coo.png"
+      "https://truckersmp.com/vtc/63303": "coo.png",
+      "https://truckersmp.com/vtc/1271": "ali.png",
+      "https://truckersmp.com/vtc/50578": "tcc.png",
+      "https://truckersmp.com/vtc/56350": "gaat.png",
+      "https://truckersmp.com/vtc/2436": "go.png"
     };
 
     const translations = {
@@ -725,7 +729,7 @@
         canvas.height = 500;
       }
 
-      ctx.save(); // Guardar el estado del contexto
+      ctx.save();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.font = null;
       ctx.fillStyle = null;
@@ -768,7 +772,14 @@
       const vtcImg = vtcImgSrc ? new Image() : null;
       if (vtcImg) vtcImg.src = vtcImgSrc;
 
-      const [templateImg, empresaLayerImg, idiomaLayerImg, silhouetteImg, flagImg, idImg, leftQrImg, promodsImg, dbusworldImg, vtcLogoImg] = await Promise.all([
+      const lsImgSrc = empresa === "LS" && isTruckersMPLinkValid ? "./assets/images/vtc/ls.png" : null;
+      const tcsImgSrc = empresa === "TCS" && isTruckersMPLinkValid ? "./assets/images/vtc/tcs.png" : null;
+      const lsImg = lsImgSrc ? new Image() : null;
+      const tcsImg = tcsImgSrc ? new Image() : null;
+      if (lsImg) lsImg.src = lsImgSrc;
+      if (tcsImg) tcsImg.src = tcsImgSrc;
+
+      const [templateImg, empresaLayerImg, idiomaLayerImg, silhouetteImg, flagImg, idImg, leftQrImg, promodsImg, dbusworldImg, vtcLogoImg, lsLogoImg, tcsLogoImg] = await Promise.all([
         new Promise((resolve) => {
           template.onload = () => {
             console.log(`Loaded license template: ${templateImgSrc}`);
@@ -870,6 +881,26 @@
             console.error(`Failed to load VTC logo: ${vtcImgSrc}`);
             resolve(null);
           };
+        }) : Promise.resolve(null),
+        lsImg ? new Promise((resolve) => {
+          lsImg.onload = () => {
+            console.log(`Loaded LS logo: ${lsImgSrc}`);
+            resolve(lsImg);
+          };
+          lsImg.onerror = () => {
+            console.error(`Failed to load LS logo: ${lsImgSrc}`);
+            resolve(null);
+          };
+        }) : Promise.resolve(null),
+        tcsImg ? new Promise((resolve) => {
+          tcsImg.onload = () => {
+            console.log(`Loaded TCS logo: ${tcsImgSrc}`);
+            resolve(tcsImg);
+          };
+          tcsImg.onerror = () => {
+            console.error(`Failed to load TCS logo: ${tcsImgSrc}`);
+            resolve(null);
+          };
         }) : Promise.resolve(null)
       ]);
 
@@ -902,12 +933,13 @@
         ctx.drawImage(flagImg, config.flagX - config.flagSize / 2, config.flagY, config.flagSize, config.flagSize);
       }
 
-      if (vtcLogoImg && empresa === "Otro" && isTruckersMPLinkValid) {
+      if ((vtcLogoImg || lsLogoImg || tcsLogoImg) && isTruckersMPLinkValid) {
+        const logoImg = vtcLogoImg || lsLogoImg || tcsLogoImg;
         const vtcLogoHeight = config.vtcLogoHeight;
-        const vtcLogoWidth = vtcLogoImg ? (vtcLogoImg.width / vtcLogoImg.height) * vtcLogoHeight : vtcLogoHeight;
+        const vtcLogoWidth = logoImg ? (logoImg.width / logoImg.height) * vtcLogoHeight : vtcLogoHeight;
         const vtcLogoX = config.flagX - config.flagSize / 2 - 70 - vtcLogoWidth / 2;
         const vtcLogoY = config.qrY + config.qrSize + 10;
-        ctx.drawImage(vtcLogoImg, vtcLogoX, vtcLogoY, vtcLogoWidth, vtcLogoHeight);
+        ctx.drawImage(logoImg, vtcLogoX, vtcLogoY, vtcLogoWidth, vtcLogoHeight);
       }
 
       const currentDate = await getCurrentDate();
@@ -1003,7 +1035,7 @@
         }
       }
 
-      ctx.restore(); // Restaurar el estado del contexto
+      ctx.restore();
       updateDownloadLink();
       console.log("Canvas redraw complete for empresa:", empresa, "language:", currentLanguage, "hue:", hueRotate, "template:", templateImgSrc);
     }
