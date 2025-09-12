@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Convoyrama | Generador de Licencia</title>
+  <meta name="description" content="Convoyrama">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="icon" href="../assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/images/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+  <style>
+    @font-face {font-family:'Verdana';src:url('./verdana/Verdana.ttf') format('truetype');font-weight:400;font-style:normal;}
+    @font-face {font-family:'Verdana-Bold';src:url('./verdana/Verdana-Bold.ttf') format('truetype');font-weight:700;font-style:normal;}
+    @font-face {font-family:'Verdana-Italic';src:url('./verdana/Verdana-Italic.ttf') format('truetype');font-weight:400;font-style:italic;}
+    @font-face {font-family:'Verdana-BoldItalic';src:url('./verdana/Verdana-BoldItalic.ttf') format('truetype');font-weight:700;font-style:italic;}
+    header {padding:15px;text-align:center;position:relative;z-index:10;background:var(--accent-bg);border-bottom:1px solid var(--border);}
+    header p {font-size:1.2em;text-shadow:none;font-family:Arial,sans-serif;font-weight:normal;margin:10px 0;color:#fff;}
+    nav {padding:10px;text-align:center;}
+    nav a,nav a:visited {text-decoration:none;margin:0 15px;font-size:1em;text-shadow:none;color:#fff;}
+    nav a:hover {text-decoration:underline;}
+    .contenedor {display:flex;gap:15px;padding:15px;align-items:flex-start;font-family:Arial,sans-serif;}
+    .panel {flex:1;max-width:250px;font-size:13px;}
+    .panel h3 {margin:10px 0 5px;font-size:13px;}
+    .input-group {margin:5px 0;}
+    .toggle-group {display:flex;gap:8px;justify-content:space-between;}
+    .toggle-group .toggle-item {flex:1;}
+    canvas {border:1px solid #000;display:block;max-width:100%;height:auto;}
+    #preview {flex:1;text-align:center;}
+    button {padding:5px 10px;font-size:13px;margin-top:8px;background:rgb(90,165,25);color:#fff;border:none;border-radius:6px;cursor:pointer;}
+    button:hover {opacity:0.8;}
+    button.info-tooltip:hover::after {content:attr(data-tooltip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:5px 10px;border-radius:4px;font-size:12px;white-space:nowrap;z-index:10;}
+    .hidden {display:none;}
+    #truckersmpStatus,#empresaLinkStatus {font-size:11px;color:#555;margin-top:5px;}
+    .valid {color:green;}
+    .invalid {color:red;}
+    #colorSlider {width:80%;margin-top:5px;vertical-align:middle;}
+    #colorValue {display:inline-block;width:15%;text-align:right;font-size:13px;color:#555;}
+    footer {margin:8px 0;}
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="pc.html">Creador de Perfil</a>
+      <a href="id.html" id="navLicense">Licencia</a>
+    </nav>
+    <p id="headerTitle">Generador de Licencia de Conductor</p>
+  </header>
+  <div class="contenedor">
+    <div class="panel">
+      <div class="input-group"><label for="languageToggle">Idioma / Language / Língua:</label><br><select id="languageToggle" style="width:100%"><option value="es">Español</option><option value="en">English</option><option value="pt">Português</option></select></div>
+      <div class="input-group"><label for="colorSlider" id="colorLabel">Tono del fondo:</label><br><input type="range" id="colorSlider" min="0" max="360" value="0" style="width:80%"><span id="colorValue">0°</span></div>
+      <div class="input-group"><label for="nombre" id="nameLabel">Nombre:</label><br><input type="text" id="nombre" placeholder="Nombre / Name / Nome" required></div>
+      <div class="input-group hidden" id="nicknameGroup"><label for="nickname" id="nicknameLabel">TAG Épico:</label><br><select id="nickname" style="width:100%"><option value="">Seleccione un TAG</option><option value="ReyDelLag">ReyDelLag</option><option value="FrenadorEnCurva">FrenadorEnCurva</option><option value="SeñorDelLagazo">SeñorDelLagazo</option><option value="BocinaLoca">BocinaLoca</option><option value="CargadorDeDeudas">CargadorDeDeudas</option><option value="CamioneroDelApagón">CamioneroDelApagón</option><option value="FugitivoDeLaRuta">FugitivoDeLaRuta</option><option value="MaestroDelPing">MaestroDelPing</option><option value="ReyDeLaCarretera">ReyDeLaCarretera</option><option value="LocoDelVolante">LocoDelVolante</option><option value="SobrevivienteDelBan">SobrevivienteDelBan</option><option value="BanEvasor">BanEvasor</option><option value="FrenazoEstelar">FrenazoEstelar</option><option value="TerrorDeCalais">TerrorDeCalais</option><option value="LagLegendario">LagLegendario</option><option value="SobrevivienteDeKirkenes">SobrevivienteDeKirkenes</option><option value="MaestroDelReckless">MaestroDelReckless</option><option value="PingParalizante">PingParalizante</option><option value="RutaSinRetorno">RutaSinRetorno</option><option value="VolanteEndemoniado">VolanteEndemoniado</option><option value="AsDelReporte">AsDelReporte</option><option value="ReyDeDuisburg">ReyDeDuisburg</option><option value="ReyDeCalais">ReyDeCalais</option><option value="KaosEnLaRuta">KaosEnLaRuta</option><option value="CarreteraPerdida">CarreteraPerdida</option><option value="FrenadorDePánico">FrenadorDePánico</option><option value="CargaConDrama">CargaConDrama</option></select></div>
+      <div class="input-group hidden" id="titleToggleGroup"><label for="titleToggle" id="titleToggleLabel">Usar título cómico:</label><br><input type="checkbox" id="titleToggle"></div>
+      <div class="input-group"><label for="foto" id="photoLabel">Foto (Opcional):</label><br><input type="file" id="foto" accept="image/*"></div>
+      <div class="input-group"><label for="pais" id="countryLabel">País:</label><br><select id="pais" style="width:100%" required>
+        <option value="">Seleccione un país / Select a country / Selecione um país</option>
+        <option value="AD|🇦🇩|Andorra|Andorra|Andorra">🇦🇩 Andorra</option>
+        <option value="AE|🇦🇪|Emiratos Árabes Unidos|United Arab Emirates|Emirados Árabes Unidos">🇦🇪 Emiratos Árabes Unidos</option>
+        <option value="AF|🇦🇫|Afganistán|Afghanistan|Afeganistão">🇦🇫 Afganistán</option>
+        <option value="AG|🇦🇬|Antigua y Barbuda|Antigua and Barbuda|Antígua e Barbuda">🇦🇬 Antigua y Barbuda</option>
+        <option value="AI|🇦🇮|Anguila|Anguilla|Anguilla">🇦🇮 Anguila</option>
+        <option value="AL|🇦🇱|Albania|Albania|Albânia">🇦🇱 Albania</option>
+        <option value="AM|🇦🇲|Armenia|Armenia|Armênia">🇦🇲 Armenia</option>
+        <option value="AO|🇦🇴|Angola|Angola|Angola">🇦🇴 Angola</option>
+        <option value="AQ|🇦🇶|Antártida|Antarctica|Antártida">🇦🇶 Antártida</option>
+        <option value="AR|🇦🇷|Argentina|Argentina|Argentina">🇦🇷 Argentina</option>
+        <option value="AS|🇦🇸|Samoa Americana|American Samoa|Samoa Americana">🇦🇸 Samoa Americana</option>
+        <option value="AT|🇦🇹|Austria|Austria|Áustria">🇦🇹 Austria</option>
+        <option value="AU|🇦🇺|Australia|Australia|Austrália">🇦🇺 Australia</option>
+        <option value="AW|🇦🇼|Aruba|Aruba|Aruba">🇦🇼 Aruba</option>
+        <option value="AX|🇦🇽|Islas Åland|Åland Islands|Ilhas Åland">🇦🇽 Islas Åland</option>
+        <option value="AZ|🇦🇿|Azerbaiyán|Azerbaijan|Azerbaijão">🇦🇿 Azerbaiyán</option>
+        <option value="BA|🇧🇦|Bosnia y Herzegovina|Bosnia and Herzegovina|Bósnia e Herzegovina">🇧🇦 Bosnia y Herzegovina</option>
+        <option value="BB|🇧🇧|Barbados|Barbados|Barbados">🇧🇧 Barbados</option>
+        <option value="BD|🇧🇩|Bangladés|Bangladesh|Bangladesh">🇧🇩 Bangladés</option>
+        <option value="BE|🇧🇪|Bélgica|Belgium|Bélgica">🇧🇪 Bélgica</option>
+        <option value="BF|🇧🇫|Burkina Faso|Burkina Faso|Burkina Faso">🇧🇫 Burkina Faso</option>
+        <option value="BG|🇧🇬|Bulgaria|Bulgaria|Bulgária">🇧🇬 Bulgaria</option>
+        <option value="BH|🇧🇭|Baréin|Bahrain|Bahrein">🇧🇭 Baréin</option>
+        <option value="BI|🇧🇮|Burundi|Burundi|Burundi">🇧🇮 Burundi</option>
+        <option value="BJ|🇧🇯|Benín|Benin|Benin">🇧🇯 Benín</option>
+        <option value="BL|🇧🇱|San Bartolomé|Saint Barthélemy|São Bartolomeu">🇧🇱 San Bartolomé</option>
+        <option value="BM|🇧🇲|Bermudas|Bermuda|Bermudas">🇬🇧 Bermudas</option>
+        <option value="BN|🇧🇳|Brunéi|Brunei|Brunei">🇧🇳 Brunéi</option>
+        <option value="BO|🇧🇴|Bolivia|Bolivia|Bolívia">🇧🇴 Bolivia</option>
+        <option value="BQ|🇧🇶|Caribe Neerlandés|Bonaire, Sint Eustatius and Saba|Caribe Neerlandês">🇧🇶 Caribe Neerlandés</option>
+        <option value="BR|🇧🇷|Brasil|Brazil|Brasil">🇧🇷 Brasil</option>
+        <option value="BS|🇧🇸|Bahamas|Bahamas|Bahamas">🇧🇸 Bahamas</option>
+        <option value="BT|🇧🇹|Bután|Bhutan|Butão">🇧🇹 Bután</option>
+        <option value="BV|🇧🇻|Isla Bouvet|Bouvet Island|Ilha Bouvet">🇧🇻 Isla Bouvet</option>
+        <option value="BW|🇧🇼|Botsuana|Botswana|Botswana">🇧🇼 Botsuana</option>
+        <option value="BY|🇧🇾|Bielorrusia|Belarus|Bielorrússia">🇧🇾 Bielorrusia</option>
+        <option value="BZ|🇧🇿|Belice|Belize|Belize">🇧🇿 Belice</option>
+        <option value="CA|🇨🇦|Canadá|Canada|Canadá">🇨🇦 Canadá</option>
+        <option value="CC|🇨🇨|Islas Cocos|Cocos (Keeling) Islands|Ilhas Cocos">🇨🇨 Islas Cocos</option>
+        <option value="CD|🇨🇩|República Democrática del Congo|Democratic Republic of the Congo|República Democrática do Congo">🇨🇩 República Democrática del Congo</option>
+        <option value="CF|🇨🇫|República Centroafricana|Central African Republic|República Centro-Africana">🇨🇫 República Centroafricana</option>
+        <option value="CG|🇨🇬|Congo|Congo|Congo">🇨🇬 Congo</option>
+        <option value="CH|🇨🇭|Suiza|Switzerland|Suíça">🇨🇭 Suiza</option>
+        <option value="CI|🇨🇮|Costa de Marfil|Côte d'Ivoire|Costa do Marfim">🇨🇮 Costa de Marfil</option>
+        <option value="CK|🇨🇰|Islas Cook|Cook Islands|Ilhas Cook">🇨🇰 Islas Cook</option>
+        <option value="CL|🇨🇱|Chile|Chile|Chile">🇨🇱 Chile</option>
+        <option value="CM|🇨🇲|Camerún|Cameroon|Camarões">🇨🇲 Camerún</option>
+        <option value="CN|🇨🇳|China|China|China">🇨🇳 China</option>
+        <option value="CO|🇨🇴|Colombia|Colombia|Colômbia">🇨🇴 Colombia</option>
+        <option value="CR|🇨🇷|Costa Rica|Costa Rica|Costa Rica">🇨🇷 Costa Rica</option>
+        <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
+        <option value="CV|🇨🇻|Cabo Verde|Cape Verde|Cabo Verde">🇨🇻 Cabo Verde</option>
+        <option value="CW|🇨🇼|Curazao|Curaçao|Curaçao">🇨🇼 Curazao</option>
+        <option value="CX|🇨🇽|Isla de Navidad|Christmas Island|Ilha de Natal">🇨🇽 Isla de Navidad</option>
+        <option value="CY|🇨🇾|Chipre|Cyprus|Chipre">🇨🇾 Chipre</option>
+        <option value="CZ|🇨🇿|República Checa|Czech Republic|República Tcheca">🇨🇿 República Checa</option>
+        <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇩🇪 Alemania</option>
+        <option value="DJ|🇩🇯|Yibuti|Djibouti|Djibuti">🇩🇯 Yibuti</option>
+        <option value="DK|🇩🇰|Dinamarca|Denmark|Dinamarca">🇩🇰 Dinamarca</option>
+        <option value="DM|🇩🇲|Dominica|Dominica|Dominica">🇦🇪 Dominica</option>
+        <option value="DO|🇩🇴|República Dominicana|Dominican Republic|República Dominicana">🇩🇴 República Dominicana</option>
+        <option value="DZ|🇩🇿|Argelia|Algeria|Argélia">🇩🇿 Argelia</option>
+        <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
+        <option value="EE|🇪🇪|Estonia|Estonia|Estônia">🇪🇪 Estonia</option>
+        <option value="EG|🇪🇬|Egipto|Egypt|Egito">🇪🇬 Egipto</option>
+        <option value="EH|🇪🇭|Sahara Occidental|Western Sahara|Sara Ocidental">🇪🇭 Sahara Occidental</option>
+        <option value="ER|🇪🇷|Eritrea|Eritrea|Eritreia">🇪🇷 Eritrea</option>
+        <option value="ES|🇪🇸|España|Spain|Espanha">🇪🇸 España</option>
+        <option value="ET|🇪🇹|Etiopía|Ethiopia|Etiópia">🇪🇹 Etiopía</option>
+        <option value="FI|🇫🇮|Finlandia|Finland|Finlândia">🇫🇮 Finlandia</option>
+        <option value="FJ|🇫🇯|Fiyi|Fiji|Fiji">🇬🇧 Fiyi</option>
+        <option value="FK|🇫🇰|Islas Malvinas|Falkland Islands|Ilhas Malvinas">🇫🇰 Islas Malvinas</option>
+        <option value="FM|🇫🇲|Micronesia|Micronesia|Micronésia">🇫🇲 Micronesia</option>
+        <option value="FO|🇫🇴|Islas Feroe|Faroe Islands|Ilhas Faroé">🇫🇴 Islas Feroe</option>
+        <option value="FR|🇫🇷|Francia|France|França">🇫🇷 Francia</option>
+        <option value="GA|🇬🇦|Gabón|Gabon|Gabão">🇬🇦 Gabón</option>
+        <option value="GB|🇬🇧|Reino Unido|United Kingdom|Reino Unido">🇬🇧 Reino Unido</option>
+        <option value="GD|🇬🇩|Granada|Grenada|Granada">🇬🇩 Granada</option>
+        <option value="GE|🇬🇪|Georgia|Georgia|Geórgia">🇬🇪 Georgia</option>
+        <option value="GF|🇬🇫|Guayana Francesa|French Guiana|Guiana Francesa">🇬🇫 Guayana Francesa</option>
+        <option value="GG|🇬🇬|Guernsey|Guernsey|Guernsey">🇬🇬 Guernsey</option>
+        <option value="GH|🇬🇭|Ghana|Ghana|Gana">🇬🇭 Ghana</option>
+        <option value="GI|🇬🇮|Gibraltar|Gibraltar|Gibraltar">🇬🇮 Gibraltar</option>
+        <option value="GL|🇬🇱|Groenlandia|Greenland|Groenlândia">🇬🇱 Groenlandia</option>
+        <option value="GM|🇬🇲|Gambia|Gambia|Gâmbia">🇬🇲 Gambia</option>
+        <option value="GN|🇬🇳|Guinea|Guinea|Guiné">🇬🇳 Guinea</option>
+        <option value="GP|🇬🇵|Guadalupe|Guadeloupe|Guadalupe">🇬🇵 Guadalupe</option>
+        <option value="GQ|🇬🇶|Guinea Ecuatorial|Equatorial Guinea|Guiné Equatorial">🇬🇶 Guinea Ecuatorial</option>
+        <option value="GR|🇬🇷|Grecia|Greece|Grécia">🇬🇷 Grecia</option>
+        <option value="GS|🇬🇸|Georgia del Sur y las Islas Sandwich del Sur|South Georgia and the South Sandwich Islands|Geórgia do Sul e Ilhas Sandwich do Sul">🇬🇸 Georgia del Sur</option>
+        <option value="GT|🇬🇹|Guatemala|Guatemala|Guatemala">🇬🇹 Guatemala</option>
+        <option value="GU|🇬🇺|Guam|Guam|Guam">🇬🇺 Guam</option>
+        <option value="GW|🇬🇼|Guinea-Bisáu|Guinea-Bissau|Guiné-Bissau">🇬🇼 Guinea-Bisáu</option>
+        <option value="GY|🇬🇾|Guyana|Guyana|Guiana">🇬🇾 Guyana</option>
+        <option value="HK|🇭🇰|Hong Kong|Hong Kong|Hong Kong">🇭🇰 Hong Kong</option>
+        <option value="HM|🇭🇲|Islas Heard y McDonald|Heard Island and McDonald Islands|Ilhas Heard e McDonald">🇭🇲 Islas Heard y McDonald</option>
+        <option value="HN|🇭🇳|Honduras|Honduras|Honduras">🇭🇳 Honduras</option>
+        <option value="HR|🇭🇷|Croacia|Croatia|Croácia">🇭🇷 Croacia</option>
+        <option value="HT|🇭🇹|Haití|Haiti|Haiti">🇭🇹 Haití</option>
+        <option value="HU|🇭🇺|Hungría|Hungary|Hungria">🇭🇺 Hungría</option>
+        <option value="ID|🇮🇩|Indonesia|Indonesia|Indonésia">🇮🇩 Indonesia</option>
+        <option value="IE|🇮🇪|Irlanda|Ireland|Irlanda">🇮🇪 Irlanda</option>
+        <option value="IL|🇮🇱|Israel|Israel|Israel">🇮🇱 Israel</option>
+        <option value="IM|🇮🇲|Isla de Man|Isle of Man|Ilha de Man">🇮🇲 Isla de Man</option>
+        <option value="IN|🇮🇳|India|India|Índia">🇮🇳 India</option>
+        <option value="IO|🇮🇴|Territorio Británico del Océano Índico|British Indian Ocean Territory|Território Britânico do Oceano Índico">🇮🇴 Territorio Británico del Océano Índico</option>
+        <option value="IQ|🇮🇶|Irak|Iraq|Iraque">🇮🇶 Irak</option>
+        <option value="IR|🇮🇷|Irán|Iran|Irã">🇮🇷 Irán</option>
+        <option value="IS|🇮🇸|Islandia|Iceland|Islândia">🇮🇸 Islandia</option>
+        <option value="IT|🇮🇹|Italia|Italy|Itália">🇮🇹 Italia</option>
+        <option value="JE|🇯🇪|Jersey|Jersey|Jersey">🇯🇪 Jersey</option>
+        <option value="JM|🇯🇲|Jamaica|Jamaica|Jamaica">🇯🇲 Jamaica</option>
+        <option value="JO|🇯🇴|Jordania|Jordan|Jordânia">🇯🇴 Jordania</option>
+        <option value="JP|🇯🇵|Japón|Japan|Japão">🇯🇵 Japón</option>
+        <option value="KE|🇰🇪|Kenia|Kenya|Quênia">🇰🇪 Kenia</option>
+        <option value="KG|🇰🇬|Kirguistán|Kyrgyzstan|Quirguistão">🇰🇬 Kirguistán</option>
+        <option value="KH|🇰🇭|Camboya|Cambodia|Camboja">🇰🇭 Camboya</option>
+        <option value="KI|🇰🇮|Kiribati|Kiribati|Kiribati">🇰🇮 Kiribati</option>
+        <option value="KM|🇰🇲|Comoras|Comoros|Comores">🇰🇲 Comoras</option>
+        <option value="KN|🇰🇳|San Cristóbal y Nieves|Saint Kitts and Nevis|São Cristóvão e Névis">🇰🇳 San Cristóbal y Nieves</option>
+        <option value="KP|🇰🇵|Corea del Norte|North Korea|Coreia do Norte">🇰🇵 Corea del Norte</option>
+        <option value="KR|🇰🇷|Corea del Sur|South Korea|Coreia do Sul">🇰🇷 Corea del Sur</option>
+        <option value="KW|🇰🇼|Kuwait|Kuwait|Kuwait">🇰🇼 Kuwait</option>
+        <option value="KY|🇰🇾|Islas Caimán|Cayman Islands|Ilhas Cayman">🇰🇾 Islas Caimán</option>
+        <option value="KZ|🇰🇿|Kazajistán|Kazakhstan|Cazaquistão">🇰🇿 Kazajistán</option>
+        <option value="LA|🇱🇦|Laos|Laos|Laos">🇱🇦 Laos</option>
+        <option value="LB|🇱🇧|Líbano|Lebanon|Líbano">🇱🇧 Líbano</option>
+        <option value="LC|🇱🇨|Santa Lucía|Saint Lucia|Santa Lúcia">🇱🇨 Santa Lucía</option>
+        <option value="LI|🇱🇮|Liechtenstein|Liechtenstein|Liechtenstein">🇱🇮 Liechtenstein</option>
+        <option value="LK|🇱🇰|Sri Lanka|Sri Lanka|Sri Lanka">🇲🇻 Sri Lanka</option>
+        <option value="LR|🇱🇷|Liberia|Liberia|Libéria">🇱🇷 Liberia</option>
+        <option value="LS|🇱🇸|Lesoto|Lesotho|Lesoto">🇱🇸 Lesoto</option>
+        <option value="LT|🇱🇹|Lituania|Lithuania|Lituânia">🇱🇹 Lituania</option>
+        <option value="LU|🇱🇺|Luxemburgo|Luxembourg|Luxemburgo">🇱🇺 Luxemburgo</option>
+        <option value="LV|🇱🇻|Letonia|Latvia|Letônia">🇱🇻 Letonia</option>
+        <option value="LY|🇱🇾|Libia|Libya|Líbia">🇱🇾 Libia</option>
+        <option value="MA|🇲🇦|Marruecos|Morocco|Marrocos">🇲🇦 Marruecos</option>
+        <option value="MC|🇲🇨|Mónaco|Monaco|Mônaco">🇲🇨 Mónaco</option>
+        <option value="MD|🇲🇩|Moldavia|Moldova|Moldávia">🇲🇩 Moldavia</option>
+        <option value="ME|🇲🇪|Montenegro|Montenegro|Montenegro">🇲🇪 Montenegro</option>
+        <option value="MF|🇲🇫|San Martín|Saint Martin|São Martinho">🇲🇫 San Martín</option>
+        <option value="MG|🇲🇬|Madagascar|Madagascar|Madagáscar">🇲🇬 Madagascar</option>
+        <option value="MH|🇲🇭|Islas Marshall|Marshall Islands|Ilhas Marshall">🇲🇭 Islas Marshall</option>
+        <option value="MK|🇲🇰|Macedonia del Norte|North Macedonia|Macedônia do Norte">🇲🇰 Macedonia del Norte</option>
+        <option value="ML|🇲🇱|Malí|Mali|Mali">🇲🇱 Malí</option>
+        <option value="MM|🇲🇲|Myanmar|Myanmar|Mianmar">🇲🇲 Myanmar</option>
+        <option value="MN|🇲🇳|Mongolia|Mongolia|Mongólia">🇲🇳 Mongolia</option>
+        <option value="MO|🇲🇴|Macao|Macao|Macau">🇲🇴 Macao</option>
+        <option value="MP|🇲🇵|Islas Marianas del Norte|Northern Mariana Islands|Ilhas Marianas do Norte">🇲🇵 Islas Marianas del Norte</option>
+        <option value="MQ|🇲🇶|Martinica|Martinique|Martinica">🇲🇶 Martinica</option>
+        <option value="MR|🇲🇷|Mauritania|Mauritania|Mauritânia">🇲🇷 Mauritania</option>
+        <option value="MS|🇲🇸|Montserrat|Montserrat|Montserrat">🇲🇸 Montserrat</option>
+        <option value="MT|🇲🇹|Malta|Malta|Malta">🇲🇹 Malta</option>
+        <option value="MU|🇲🇺|Mauricio|Mauritius|Maurício">🇲🇺 Mauricio</option>
+        <option value="MV|🇲🇻|Maldivas|Maldives|Maldivas">🇲🇻 Maldivas</option>
+        <option value="MW|🇲🇼|Malaui|Malawi|Malaui">🇲🇼 Malaui</option>
+        <option value="MX|🇲🇽|México|Mexico|México">🇲🇽 México</option>
+        <option value="MY|🇲🇾|Malasia|Malaysia|Malásia">🇲🇾 Malasia</option>
+        <option value="MZ|🇲🇿|Mozambique|Mozambique|Moçambique">🇲🇿 Mozambique</option>
+        <option value="NA|🇳🇦|Namibia|Namibia|Namíbia">🇳🇦 Namibia</option>
+        <option value="NC|🇳🇨|Nueva Caledonia|New Caledonia|Nova Caledônia">🇳🇨 Nueva Caledonia</option>
+        <option value="NE|🇳🇪|Níger|Niger|Níger">🇳🇪 Níger</option>
+        <option value="NF|🇳🇫|Isla Norfolk|Norfolk Island|Ilha Norfolk">🇳🇫 Isla Norfolk</option>
+        <option value="NG|🇳🇬|Nigeria|Nigeria|Nigéria">🇳🇬 Nigeria</option>
+        <option value="NI|🇳🇮|Nicaragua|Nicaragua|Nicarágua">🇳🇮 Nicaragua</option>
+        <option value="NL|🇳🇱|Países Bajos|Netherlands|Países Baixos">🇳🇱 Países Bajos</option>
+        <option value="NO|🇳🇴|Noruega|Norway|Noruega">🇳🇴 Noruega</option>
+        <option value="NP|🇳🇵|Nepal|Nepal|Nepal">🇳🇵 Nepal</option>
+        <option value="NR|🇳🇷|Nauru|Nauru|Nauru">🇳🇷 Nauru</option>
+        <option value="NU|🇳🇺|Niue|Niue|Niue">🇳🇺 Niue</option>
+        <option value="NZ|🇳🇿|Nueva Zelanda|New Zealand|Nova Zelândia">🇳🇿 Nueva Zelanda</option>
+        <option value="OM|🇴🇲|Omán|Oman|Omã">🇴🇲 Omán</option>
+        <option value="PA|🇵🇦|Panamá|Panama|Panamá">🇵🇦 Panamá</option>
+        <option value="PE|🇵🇪|Perú|Peru|Peru">🇵🇪 Perú</option>
+        <option value="PF|🇵🇫|Polinesia Francesa|French Polynesia|Polinésia Francesa">🇵🇫 Polinesia Francesa</option>
+        <option value="PG|🇵🇬|Papúa Nueva Guinea|Papua New Guinea|Papua-Nova Guiné">🇵🇬 Papúa Nueva Guinea</option>
+        <option value="PH|🇵🇭|Filipinas|Philippines|Filipinas">🇵🇭 Filipinas</option>
+        <option value="PK|🇵🇰|Pakistán|Pakistan|Paquistão">🇵🇰 Pakistán</option>
+        <option value="PL|🇵🇱|Polonia|Poland|Polônia">🇵🇱 Polonia</option>
+        <option value="PM|🇵🇲|San Pedro y Miquelón|Saint Pierre and Miquelon|São Pedro e Miquelão">🇵🇲 San Pedro y Miquelón</option>
+        <option value="PN|🇵🇳|Islas Pitcairn|Pitcairn Islands|Ilhas Pitcairn">🇵🇳 Islas Pitcairn</option>
+        <option value="PR|🇵🇷|Puerto Rico|Puerto Rico|Porto Rico">🇵🇷 Puerto Rico</option>
+        <option value="PS|🇵🇸|Palestina|Palestine|Palestina">🇵🇸 Palestina</option>
+        <option value="PT|🇵🇹|Portugal|Portugal|Portugal">🇵🇹 Portugal</option>
+        <option value="PW|🇵🇼|Palaos|Palau|Palau">🇵🇼 Palaos</option>
+        <option value="PY|🇵🇾|Paraguay|Paraguay|Paraguai">🇵🇾 Paraguay</option>
+        <option value="QA|🇶🇦|Catar|Qatar|Catar">🇶🇦 Catar</option>
+        <option value="RE|🇷🇪|Reunión|Réunion|Reunião">🇷🇪 Reunión</option>
+        <option value="RO|🇷🇴|Rumania|Romania|Romênia">🇷🇴 Rumania</option>
+        <option value="RS|🇷🇸|Serbia|Serbia|Sérvia">🇷🇸 Serbia</option>
+        <option value="RU|🇷🇺|Rusia|Russia|Rússia">🇷🇺 Rusia</option>
+        <option value="RW|🇷🇼|Ruanda|Rwanda|Ruanda">🇷🇼 Ruanda</option>
+        <option value="SA|🇸🇦|Arabia Saudita|Saudi Arabia|Arábia Saudita">🇸🇦 Arabia Saudita</option>
+        <option value="SB|🇸🇧|Islas Salomón|Solomon Islands|Ilhas Salomão">🇸🇧 Islas Salomón</option>
+        <option value="SC|🇸🇨|Seychelles|Seychelles|Seicheles">🇸🇨 Seychelles</option>
+        <option value="SD|🇸🇩|Sudán|Sudan|Sudão">🇸🇩 Sudán</option>
+        <option value="SE|🇸🇪|Suecia|Sweden|Suécia">🇸🇪 Suecia</option>
+        <option value="SG|🇸🇬|Singapur|Singapore|Cingapura">🇸🇬 Singapur</option>
+        <option value="SH|🇸🇭|Santa Elena|Saint Helena|Santa Helena">🇸🇭 Santa Elena</option>
+        <option value="SI|🇸🇮|Eslovenia|Slovenia|Eslovênia">🇸🇮 Eslovenia</option>
+        <option value="SJ|🇸🇯|Svalbard y Jan Mayen|Svalbard and Jan Mayen|Svalbard e Jan Mayen">🇸🇯 Svalbard y Jan Mayen</option>
+        <option value="SK|🇸🇰|Eslovaquia|Slovakia|Eslováquia">🇸🇰 Eslovaquia</option>
+        <option value="SL|🇸🇱|Sierra Leona|Sierra Leone|Serra Leoa">🇸🇱 Sierra Leona</option>
+        <option value="SM|🇸🇲|San Marino|San Marino|San Marino">🇸🇲 San Marino</option>
+        <option value="SN|🇸🇳|Senegal|Senegal|Senegal">🇸🇳 Senegal</option>
+        <option value="SO|🇸🇴|Somalia|Somalia|Somália">🇸🇴 Somalia</option>
+        <option value="SR|🇸🇷|Surinam|Suriname|Suriname">🇸🇷 Surinam</option>
+        <option value="SS|🇸🇸|Sudán del Sur|South Sudan|Sudão do Sul">🇸🇸 Sudán del Sur</option>
+        <option value="ST|🇸🇹|Santo Tomé y Príncipe|São Tomé and Príncipe|São Tomé e Príncipe">🇸🇹 Santo Tomé y Príncipe</option>
+        <option value="SV|🇸🇻|El Salvador|El Salvador|El Salvador">🇸🇻 El Salvador</option>
+        <option value="SX|🇸🇽|San Martín|Sint Maarten|São Martinho">🇸🇽 San Martín</option>
+        <option value="SY|🇸🇾|Siria|Syria|Síria">🇸🇾 Siria</option>
+        <option value="SZ|🇸🇿|Esuatini|Eswatini|Eswatini">🇸🇿 Esuatini</option>
+        <option value="TC|🇹🇨|Islas Turcas y Caicos|Turks and Caicos Islands|Ilhas Turcas e Caicos">🇹🇨 Islas Turcas y Caicos</option>
+        <option value="TD|🇹🇩|Chad|Chad|Chade">🇹🇩 Chad</option>
+        <option value="TF|🇹🇫|Tierras Australes y Antárticas Francesas|French Southern Territories|Territórios Franceses do Sul">🇹🇫 Tierras Australes y Antárticas Francesas</option>
+        <option value="TG|🇹🇬|Togo|Togo|Togo">🇹🇬 Togo</option>
+        <option value="TH|🇹🇭|Tailandia|Thailand|Tailândia">🇹🇭 Tailandia</option>
+        <option value="TJ|🇹🇯|Tayikistán|Tajikistan|Tajiquistão">🇹🇯 Tayikistán</option>
+        <option value="TK|🇹🇰|Tokelau|Tokelau|Tokelau">🇹🇰 Tokelau</option>
+        <option value="TL|🇹🇱|Timor Oriental|Timor-Leste|Timor-Leste">🇹🇱 Timor Oriental</option>
+        <option value="TM|🇹🇲|Turkmenistán|Turkmenistan|Turcomenistão">🇹🇲 Turkmenistán</option>
+        <option value="TN|🇹🇳|Túnez|Tunisia|Tunísia">🇹🇳 Túnez</option>
+        <option value="TO|🇹🇴|Tonga|Tonga|Tonga">🇹🇴 Tonga</option>
+        <option value="TR|🇹🇷|Turquía|Turkey|Turquia">🇹🇷 Turquía</option>
+        <option value="TT|🇹🇹|Trinidad y Tobago|Trinidad and Tobago|Trinidad e Tobago">🇹🇹 Trinidad y Tobago</option>
+        <option value="TV|🇹🇻|Tuvalu|Tuvalu|Tuvalu">🇹🇻 Tuvalu</option>
+        <option value="TW|🇹🇼|Taiwán|Taiwan|Taiwan">🇹🇼 Taiwán</option>
+        <option value="TZ|🇹🇿|Tanzania|Tanzania|Tanzânia">🇹🇿 Tanzania</option>
+        <option value="UA|🇺🇦|Ucrania|Ukraine|Ucrânia">🇺🇦 Ucrania</option>
+        <option value="UG|🇺🇬|Uganda|Uganda|Uganda">🇺🇬 Uganda</option>
+        <option value="UM|🇺🇲|Islas Menores de Estados Unidos|United States Minor Outlying Islands|Ilhas Menores dos Estados Unidos">🇺🇲 Islas Menores de Estados Unidos</option>
+        <option value="US|🇺🇸|Estados Unidos|United States|Estados Unidos">🇺🇸 Estados Unidos</option>
+        <option value="UY|🇺🇾|Uruguay|Uruguay|Uruguai">🇺🇾 Uruguay</option>
+        <option value="UZ|🇺🇿|Uzbekistán|Uzbekistan|Uzbequistão">🇺🇿 Uzbekistán</option>
+        <option value="VA|🇻🇦|Ciudad del Vaticano|Vatican City|Cidade do Vaticano">🇻🇦 Ciudad del Vaticano</option>
+        <option value="VC|🇻🇨|San Vicente y las Granadinas|Saint Vincent and the Grenadines|São Vicente e Granadinas">🇻🇨 San Vicente y las Granadinas</option>
+        <option value="VE|🇻🇪|Venezuela|Venezuela|Venezuela">🇻🇪 Venezuela</option>
+        <option value="VG|🇻🇬|Islas Vírgenes Británicas|British Virgin Islands|Ilhas Virgens Britânicas">🇻🇬 Islas Vírgenes Británicas</option>
+        <option value="VI|🇻🇮|Islas Vírgenes de los Estados Unidos|United States Virgin Islands|Ilhas Virgens Americanas">🇻🇮 Islas Vírgenes de los Estados Unidos</option>
+        <option value="VN|🇻🇳|Vietnam|Vietnam|Vietnã">🇻🇳 Vietnam</option>
+        <option value="VU|🇻🇺|Vanuatu|Vanuatu|Vanuatu">🇻🇺 Vanuatu</option>
+        <option value="WF|🇼🇫|Wallis y Futuna|Wallis and Futuna|Wallis e Futuna">🇼🇫 Wallis y Futuna</option>
+        <option value="WS|🇼🇸|Samoa|Samoa|Samoa">🇼🇸 Samoa</option>
+        <option value="YE|🇾🇪|Yemen|Yemen|Iêmen">🇾🇪 Yemen</option>
+        <option value="YT|🇾🇹|Mayotte|Mayotte|Mayotte">🇾🇹 Mayotte</option>
+        <option value="ZA|🇿🇦|Sudáfrica|South Africa|África do Sul">🇿🇦 Sudáfrica</option>
+        <option value="ZM|🇿🇲|Zambia|Zambia|Zâmbia">🇿🇲 Zambia</option>
+        <option value="ZW|🇿🇼|Zimbabue|Zimbabwe|Zimbábue">🇿🇼 Zimbabue</option>
+        <option value="PI|🏴‍☠️|Pirata|Pirate|Pirata">🏴‍☠️ Pirata</option>
+      </select></div>
+      <div class="input-group"><label for="empresaLink" id="companyLinkLabel">Enlace Perfil Empresa en TMP:</label><br><input type="text" id="empresaLink" placeholder="TruckersMP Company Profile Link" required><div id="empresaLinkStatus"></div></div>
+      <div class="input-group"><label for="truckersmpLink" id="truckersmpLinkLabel">Enlace Perfil en TMP:</label><br><input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link" required><div id="truckersmpStatus"></div></div>
+      <div class="input-group toggle-group"><div class="toggle-item"><label for="promodsToggle">ProMods:</label><br><input type="checkbox" id="promodsToggle"></div><div class="toggle-item"><label for="dbusworldToggle">DBUS:</label><br><input type="checkbox" id="dbusworldToggle"></div></div>
+      <div class="input-group"><label for="customTitle" id="customTitleLabel">Cambiar título:</label><br><input type="text" id="customTitle" maxlength="36" placeholder="Título personalizado (máx. 36 caracteres, opcional)"></div>
+    </div>
+    <div id="preview">
+      <canvas id="canvas" width="800" height="500"></canvas>
+      <br>
+      <a id="descargar" download="driver_license.png"><button id="botonDescargar" class="info-tooltip" data-tooltip="Esta licencia es una broma y un guiño a la comunidad, no pretende ser profesional ni seria.">Descargar Licencia</button></a>
+    </div>
+  </div>
+  <footer><small>© LAG'S SPEED - CONVOYRAMA 2025 - v5</small></footer>
+  <script>
+    function rT(e,s){return new Promise(r=>{const i=new Image();i.crossOrigin="anonymous";i.onload=() => r(i);i.src=twemoji.parse(e,{folder:'svg',ext:'.svg'}).match(/src="([^"]+)"/)?.[1]||"";})}
+    const cv=document.getElementById("canvas"),ctx=cv.getContext("2d"),cfg={color:"white",flagSize:80,photoX:45,photoY:80,labelX:100,colonX:130,textX:295,textY:334,qrX:573,qrY:101,flagX:625,flagY:206,font:"'Verdana', sans-serif",defaultPhotoSize:192,qrSize:100,qrSpacing:10,promodsX:20,promodsY:334,dbusworldX:20,dbusworldY:394,logoWidth:67,logoHeight:50,vtcLogoSize:100};
+    const vtcM={"https://truckersmp.com/vtc/78865":"ls.png","https://truckersmp.com/vtc/76978":"tcs.png","https://truckersmp.com/vtc/55250-andesvtc":"andes.png","https://truckersmp.com/vtc/55250":"andes.png","https://truckersmp.com/vtc/29591":"castores.jpg","https://truckersmp.com/vtc/81636":"chapu.jpeg","https://truckersmp.com/vtc/55439-destiny":"destiny.png","https://truckersmp.com/vtc/55439":"destiny.png","https://truckersmp.com/vtc/56572-lsavtc":"lsa.png","https://truckersmp.com/vtc/56572":"lsa.png","https://truckersmp.com/vtc/79357":"norte.png","https://truckersmp.com/vtc/34966-nova-era":"nova.png","https://truckersmp.com/vtc/34966":"nova.png","https://truckersmp.com/vtc/64312":"shipeados.png","https://truckersmp.com/vtc/65011":"tl.png","https://truckersmp.com/vtc/17910-transportesatr":"atr.png","https://truckersmp.com/vtc/17910":"atr.png","https://truckersmp.com/vtc/63758":"cord.jpg","https://truckersmp.com/vtc/48970":"sin.jpg","https://truckersmp.com/vtc/70703":"as.png","https://truckersmp.com/vtc/77802":"ex.png","https://truckersmp.com/vtc/62448":"rut.jpg","https://truckersmp.com/vtc/11715":"avant.png","https://truckersmp.com/vtc/76975":"titan.png","https://truckersmp.com/vtc/3414":"baltico.png","https://truckersmp.com/vtc/79130":"corr.png","https://truckersmp.com/vtc/74222":"esp.jpg","https://truckersmp.com/vtc/63303":"coo.png","https://truckersmp.com/vtc/1271":"ali.png","https://truckersmp.com/vtc/50578":"tcc.png","https://truckersmp.com/vtc/56350":"gaat.png","https://truckersmp.com/vtc/2436":"go.png"};
+    const t={es:{pageTitle:"Convoyrama | Generador de Licencia",headerTitle:"Generador de Licencia de Conductor",navLicense:"Licencia",nameLabel:"Nombre:",nicknameLabel:"TAG Épico:",titleToggleLabel:"Usar título cómico:",photoLabel:"Foto (Opcional):",countryLabel:"País:",companyLinkLabel:"Enlace Perfil Empresa en TMP:",truckersmpLinkLabel:"Enlace Perfil en TMP:",customTitleLabel:"Cambiar título:",customTitlePlaceholder:"Título personalizado (máx. 36 caracteres, opcional)",validLink:"Enlace válido",invalidLink:"Enlace inválido: debe ser https://truckersmp.com/user/[...]",validCompanyLink:"Enlace de empresa válido",invalidCompanyLink:"Enlace inválido: debe ser https://truckersmp.com/vtc/[...]",downloadButton:"Descargar Licencia",canvasName:"Nombre :",canvasLicenseNo:"Núm. Licencia :",canvasDate:"Fecha :",canvasCountry:"País :",canvasTag:"TAG :",titleNormal:"PERMISO DE CONDUCCIÓN INTERNACIONAL",titleComedic:"PERMISO PARA CHOCAR EN CONVOY",countryPlaceholder:"Seleccione un país",colorLabel:"Tono del fondo:",tooltipMessage:"Esta licencia es una broma y un guiño a la comunidad, no pretende ser profesional ni seria."},en:{pageTitle:"Convoyrama | Driver License Generator",headerTitle:"Driver License Generator",navLicense:"License",nameLabel:"Name:",nicknameLabel:"Epic TAG:",titleToggleLabel:"Use comedic title:",photoLabel:"Photo (Optional):",countryLabel:"Country:",companyLinkLabel:"TruckersMP Company Profile Link:",truckersmpLinkLabel:"TruckersMP Profile Link:",customTitleLabel:"Change title:",customTitlePlaceholder:"Custom title (max 36 characters, optional)",validLink:"Valid link",invalidLink:"Invalid link: must be https://truckersmp.com/user/[...]",validCompanyLink:"Valid company link",invalidCompanyLink:"Invalid link: must be https://truckersmp.com/vtc/[...]",downloadButton:"Download License",canvasName:"Name :",canvasLicenseNo:"License No. :",canvasDate:"Date :",canvasCountry:"Country :",canvasTag:"TAG :",titleNormal:"INTERNATIONAL DRIVING LICENSE",titleComedic:"CONVOY CRASHING PERMIT",countryPlaceholder:"Select a country",colorLabel:"Background hue:",tooltipMessage:"This license is a joke and a nod to the community, not intended to be professional or serious."},pt:{pageTitle:"Convoyrama | Gerador de Licença",headerTitle:"Gerador de Licença de Motorista",navLicense:"Licença",nameLabel:"Nome:",nicknameLabel:"TAG Épico:",titleToggleLabel:"Usar título cômico:",photoLabel:"Foto (Opcional):",countryLabel:"País:",companyLinkLabel:"Link do Perfil da Empresa no TruckersMP:",truckersmpLinkLabel:"Link do Perfil no TruckersMP:",customTitleLabel:"Alterar título:",customTitlePlaceholder:"Título personalizado (máx. 36 caracteres, opcional)",validLink:"Link válido",invalidLink:"Link inválido: deve ser https://truckersmp.com/user/[...]",validCompanyLink:"Link de empresa válido",invalidCompanyLink:"Link inválido: deve ser https://truckersmp.com/vtc/[...]",downloadButton:"Baixar Licença",canvasName:"Nome :",canvasLicenseNo:"Nº da Licença :",canvasDate:"Data :",canvasCountry:"País :",canvasTag:"TAG :",titleNormal:"LICENÇA INTERNACIONAL DE CONDUCCIÓN",titleComedic:"PERMISSÃO PARA BATER EM CONVOI",countryPlaceholder:"Selecione um país",colorLabel:"Tom do fundo:",tooltipMessage:"Esta licença é uma brincadeira e uma homenagem à comunidade, não pretende ser profissional ou séria."}};
+    const nInp=document.getElementById("nombre"),fInp=document.getElementById("foto"),pInp=document.getElementById("pais"),nickInp=document.getElementById("nickname"),eLinkInp=document.getElementById("empresaLink"),tLinkInp=document.getElementById("truckersmpLink"),tStat=document.getElementById("truckersmpStatus"),eStat=document.getElementById("empresaLinkStatus"),nickGrp=document.getElementById("nicknameGroup"),tTogGrp=document.getElementById("titleToggleGroup"),tTogInp=document.getElementById("titleToggle"),pTogInp=document.getElementById("promodsToggle"),dTogInp=document.getElementById("dbusworldToggle"),lTog=document.getElementById("languageToggle"),cSld=document.getElementById("colorSlider"),cVal=document.getElementById("colorValue"),iTip=document.getElementById("botonDescargar"),cTitleInp=document.getElementById("customTitle");
+    let uImg=null,isNickUnl=localStorage.getItem("nicknameUnlocked")==="true",cDate=null,lDateF=0,DATE_CACHE_DUR=180000,curLang="es";
+    async function gDate(){const n=Date.now();if(cDate&&n-lDateF<DATE_CACHE_DUR)return cDate;const a=[{url:'https://worldtimeapi.org/api/timezone/Etc/UTC',parse:d=>{const dt=new Date(d.datetime);return{day:dt.getDate().toString().padStart(2,"0"),month:(dt.getMonth()+1).toString().padStart(2,"0"),year:dt.getFullYear()}}},{url:'https://timeapi.io/api/Time/current/utc',parse:d=>({day:d.day.toString().padStart(2,"0"),month:d.month.toString().padStart(2,"0"),year:d.year})},{url:'https://worldclockapi.herokuapp.com/api/json/utc/now',parse:d=>{const dt=new Date(d.currentDateTime);return{day:dt.getDate().toString().padStart(2,"0"),month:(dt.getMonth()+1).toString().padStart(2,"0"),year:dt.getFullYear()}}}];for(const api of a){try{const r=await fetch(api.url),d=await r.json(),{day,month,year}=api.parse(d);cDate=`${day}/${month}/${year}`;lDateF=n;return cDate;}catch(e){}}const d=new Date();cDate=`${d.getDate().toString().padStart(2,"0")}/${(d.getMonth()+1).toString().padStart(2,"0")}/${d.getFullYear()}`;lDateF=n;return cDate;}
+    function uLang(l){curLang=l;const tr=t[l];document.getElementById("pageTitle").textContent=tr.pageTitle;document.getElementById("headerTitle").textContent=tr.headerTitle;document.getElementById("navLicense").textContent=tr.navLicense;document.getElementById("nameLabel").textContent=tr.nameLabel;document.getElementById("nicknameLabel").textContent=tr.nicknameLabel;document.getElementById("titleToggleLabel").textContent=tr.titleToggleLabel;document.getElementById("photoLabel").textContent=tr.photoLabel;document.getElementById("countryLabel").textContent=tr.countryLabel;document.getElementById("companyLinkLabel").textContent=tr.companyLinkLabel;document.getElementById("truckersmpLinkLabel").textContent=tr.truckersmpLinkLabel;document.getElementById("customTitleLabel").textContent=tr.customTitleLabel;document.getElementById("botonDescargar").textContent=tr.downloadButton;document.getElementById("botonDescargar").setAttribute("data-tooltip",tr.tooltipMessage);pInp.options[0].text=tr.countryPlaceholder;cTitleInp.placeholder=tr.customTitlePlaceholder;const tl=tLinkInp.value.trim(),el=eLinkInp.value.trim();if(tl)vTLink(tl);if(el)vELink(el);dGenImg();}
+    function gLicNum(n,p,tl){const cc=p.split("|")[0].substring(0,2)||"XX";let ui="";if(tl){const m=tl.match(/truckersmp\.com\/user\/(.+)/);ui=m?m[1]:"";}return ui?`${cc}${ui}`:"";}
+    function vTLink(l){const r=/^https:\/\/truckersmp\.com\/user\/.+$/,tr=t[curLang];if(!r.test(l)){tStat.textContent=tr.invalidLink;tStat.className="invalid";return false;}tStat.textContent=tr.validLink;tStat.className="valid";return true;}
+    function vELink(l){const r=/^https:\/\/truckersmp\.com\/vtc\/.+$/,tr=t[curLang];if(!r.test(l)){eStat.textContent=tr.invalidCompanyLink;eStat.className="invalid";return false;}eStat.textContent=tr.validCompanyLink;eStat.className="valid";return true;}
+    function db(f,w){let t;return function(...a){const l=()=>{clearTimeout(t);f(...a);};clearTimeout(t);t=setTimeout(l,w);};}
+    function sDC(){localStorage.setItem("defaultCountry",pInp.value);}
+    function lDC(){const s=localStorage.getItem("defaultCountry");if(s)pInp.value=s;}
+    function uF(){const n=nInp.value.toLowerCase().trim();if(n==="resetnick"){isNickUnl=false;localStorage.removeItem("nicknameUnlocked");}else if(["convoyrama","nocturnoverso"].includes(n)){isNickUnl=true;localStorage.setItem("nicknameUnlocked","true");}nickGrp.classList.toggle("hidden",!isNickUnl);tTogGrp.classList.toggle("hidden",!isNickUnl);const el=eLinkInp.value.trim(),cm={"https://truckersmp.com/vtc/78865":260,"https://truckersmp.com/vtc/76978":200},nc=cm[el]||cSld.value;cSld.value=nc;cVal.textContent=`${nc}°`;if(el)vELink(el);dGenImg();}
+    let lFS={};
+    function gFS(){return{nombre:nInp.value,pais:pInp.value,nickname:nickInp.value,truckersmpLink:tLinkInp.value,empresaLink:eLinkInp.value,titleToggle:tTogInp.checked,promodsToggle:pTogInp.checked,dbusworldToggle:dTogInp.checked,userImage:uImg?uImg.src:null,language:curLang,colorHue:cSld.value,customTitle:cTitleInp.value};}
+    async function gImg(){const fs=gFS();if(JSON.stringify(fs)===JSON.stringify(lFS))return;lFS=fs;const tr=t[curLang],n=nInp.value||(curLang==="es"?"Sin nombre":curLang==="en"?"No name":"Sem nome"),pd=pInp.value.split("|"),cc=pd[0]||"XX",f=pd[1]||"",cn=pd[2]||(curLang==="es"?"Sin país":curLang==="en"?"No country":"Sem nome"),nick=nickInp.value||"",tl=tLinkInp.value.trim(),el=eLinkInp.value.trim(),isTValid=tl?vTLink(tl):false,isEValid=el?vELink(el):false,hr=parseInt(cSld.value);cv.width=800;cv.height=500;ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";ctx.save();ctx.clearRect(0,0,cv.width,cv.height);ctx.font=null;ctx.fillStyle=null;ctx.textAlign="start";ctx.textBaseline="alphabetic";ctx.shadowColor="transparent";ctx.globalCompositeOperation="source-over";const tImg=new Image();tImg.src="./assets/images/license_template.png";const iSrc={'es':'./assets/images/es.png','en':'./assets/images/en.png','pt':'./assets/images/pt.png'}[curLang],iL=new Image();iL.src=iSrc;const vSrc=el&&vtcM[el]?`./assets/images/vtc/${vtcM[el]}`:null,vImg=vSrc?new Image():null;if(vImg)vImg.src=vSrc;const [tI,iLI,sI,fI,idI,pI,dI,vLI]=await Promise.all([new Promise(r=>{tImg.onload=() => r(tImg);tImg.onerror=() => r(null);}),new Promise(r=>{iL.onload=() => r(iL);iL.onerror=() => r(null);}),uImg?Promise.resolve(null):rT("👤",cfg.defaultPhotoSize),f?rT(f,cfg.flagSize):Promise.resolve(null),isTValid?new Promise(r=>{const i=new Image();i.src="./assets/images/id.svg";i.onload=() => r(i);i.onerror=() => r(null);}):Promise.resolve(null),pTogInp.checked?new Promise(r=>{const i=new Image();i.src="./assets/images/promods.png";i.onload=() => r(i);i.onerror=() => r(null);}):Promise.resolve(null),dTogInp.checked?new Promise(r=>{const i=new Image();i.src="./assets/images/dbusworld.png";i.onload=() => r(i);i.onerror=() => r(null);}):Promise.resolve(null),vImg?new Promise(r=>{vImg.onload=() => r(vImg);vImg.onerror=() => r(null);}):Promise.resolve(null)]);if(tI){ctx.filter=`hue-rotate(${hr}deg)`;ctx.drawImage(tI,0,0,800,500);ctx.filter="none";}else{ctx.fillStyle="#fff";ctx.fillRect(0,0,800,500);}if(iLI)ctx.drawImage(iLI,0,0,800,500);ctx.font="bold 30px 'Verdana-Bold'";ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(cTitleInp.value.trim()||"TRUCKERSMP",400,40.77);if(uImg)ctx.drawImage(uImg,cfg.photoX,cfg.photoY,cfg.defaultPhotoSize,cfg.defaultPhotoSize);else if(sI)ctx.drawImage(sI,cfg.photoX,cfg.photoY,cfg.defaultPhotoSize,cfg.defaultPhotoSize);if(fI)ctx.drawImage(fI,cfg.flagX-cfg.flagSize/2,cfg.flagY,cfg.flagSize,cfg.flagSize);if(vLI&&isEValid)ctx.drawImage(vLI,cfg.qrX-2*cfg.qrSize-2*cfg.qrSpacing,cfg.qrY,cfg.vtcLogoSize,cfg.vtcLogoSize);const cd=await gDate();ctx.font=`bold 24px ${cfg.font}`;ctx.fillStyle=cfg.color;ctx.textAlign="left";ctx.textBaseline="alphabetic";const lh=24*1.2;ctx.fillText(tr.canvasName,cfg.labelX,cfg.textY);ctx.fillText(tr.canvasLicenseNo,cfg.labelX,cfg.textY+lh);ctx.fillText(tr.canvasDate,cfg.labelX,cfg.textY+lh*2);ctx.fillText(tr.canvasCountry,cfg.labelX,cfg.textY+lh*3);if(isNickUnl&&nick)ctx.fillText(tr.canvasTag,cfg.labelX,cfg.textY+lh*4);ctx.fillText(n,cfg.textX,cfg.textY);if(n&&n.trim()!==""&&pInp.value&&isTValid){const ln=gLicNum(n,pInp.value,tl);if(ln)ctx.fillText(ln,cfg.textX,cfg.textY+lh);}ctx.fillText(cd,cfg.textX,cfg.textY+lh*2);ctx.fillText(cn,cfg.textX,cfg.textY+lh*3);if(isNickUnl&&nick)ctx.fillText(nick,cfg.textX,cfg.textY+lh*4);if(pI&&pTogInp.checked)ctx.drawImage(pI,cfg.promodsX,cfg.promodsY,cfg.logoWidth,cfg.logoHeight);if(dI&&dTogInp.checked){const dy=pTogInp.checked?cfg.dbusworldY:cfg.promodsY;ctx.drawImage(dI,cfg.dbusworldX,dy,cfg.logoWidth,cfg.logoHeight);}const sm={"https://truckersmp.com/user/627943":2,"https://truckersmp.com/user/5441056":1,"https://truckersmp.com/user/5429829":3,"https://truckersmp.com/user/5408877":1,"https://truckersmp.com/user/5379466":3,"https://truckersmp.com/user/5861450":2,"https://truckersmp.com/user/4690862":3,"https://truckersmp.com/user/1432064":2,"https://truckersmp.com/user/4890784":2},sc=sm[tl]||0;if(sc>0){ctx.font=`bold 24px ${cfg.font}`;ctx.fillStyle="#FFD700";ctx.textAlign="right";const sx=800-20;for(let i=0;i<sc;i++){const sy=cfg.promodsY+i*24;ctx.fillText("★",sx,sy);}ctx.filter="none";}const tt=isNickUnl&&tTogInp.checked?tr.titleComedic:tr.titleNormal,ty=500-5;ctx.font=`bold 22px ${cfg.font}`;ctx.fillStyle="rgb(240,240,240)";ctx.textAlign="center";ctx.textBaseline="bottom";ctx.shadowColor="rgb(0,0,0)";ctx.shadowOffsetX=1;ctx.shadowOffsetY=1;ctx.shadowBlur=2;ctx.fillText(tt,400,ty);ctx.shadowColor="transparent";if(isTValid){const qr=new QRious({value:tl,size:cfg.qrSize,level:'H'}),qc=document.createElement("canvas");qc.width=cfg.qrSize;qc.height=cfg.qrSize;qc.getContext("2d").drawImage(qr.canvas,0,0);ctx.drawImage(qc,cfg.qrX,cfg.qrY,cfg.qrSize,cfg.qrSize);if(idI)ctx.drawImage(idI,cfg.qrX+cfg.qrSize+cfg.qrSpacing,cfg.qrY,cfg.qrSize,cfg.qrSize);}if(isEValid){const qrE=new QRious({value:el,size:cfg.qrSize,level:'H'}),qcE=document.createElement("canvas");qcE.width=cfg.qrSize;qcE.height=cfg.qrSize;qcE.getContext("2d").drawImage(qrE.canvas,0,0);ctx.drawImage(qcE,cfg.qrX-cfg.qrSize-cfg.qrSpacing,cfg.qrY,cfg.qrSize,cfg.qrSize);}ctx.restore();try{uDL();}catch(e){console.error("Error generating download link:",e);}}
+    function uDL(){const l=document.getElementById("descargar"),n=nInp.value||"unknown";try{l.href=cv.toDataURL("image/png");l.download=`driver_license_${n}.png`;}catch(e){l.href="#";l.download="";console.error("Error in toDataURL:",e);}}
+    fInp.addEventListener("change",e=>{const f=e.target.files[0];if(f){const r=new FileReader();r.onload=ev=>{uImg=new Image();uImg.src=ev.target.result;uImg.crossOrigin="anonymous";uImg.onload=dGenImg;};r.readAsDataURL(f);}else{uImg=null;dGenImg();}});
+    tLinkInp.addEventListener("input",()=>{const l=tLinkInp.value.trim();if(l)vTLink(l);else{tStat.textContent="";tStat.className="";}dGenImg();});
+    eLinkInp.addEventListener("input",()=>{const l=eLinkInp.value.trim();if(l)vELink(l);else{eStat.textContent="";eStat.className="";}dGenImg();});
+    lTog.addEventListener("change",() => uLang(lTog.value));
+    cSld.addEventListener("input",() => {cVal.textContent=`${cSld.value}°`;dGenImg();});
+    const dGenImg=db(gImg,200);
+    nInp.addEventListener("input",uF);pInp.addEventListener("change",() => {sDC();dGenImg();});nickInp.addEventListener("change",dGenImg);tTogInp.addEventListener("change",dGenImg);pTogInp.addEventListener("change",dGenImg);dTogInp.addEventListener("change",dGenImg);cTitleInp.addEventListener("input",dGenImg);function init(){lDC();uLang(curLang);uF();dGenImg();}init();
+  </script>
+</body>
+</html>
