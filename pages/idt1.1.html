@@ -62,41 +62,7 @@
     .valid {color:green;}
     .invalid {color:red;}
     /* Estilos para el slider de color */
-    #colorSlider {
-      width:80%;
-      margin-top:5px;
-      vertical-align:middle;
-      height:6px; /* Reducido para un aspecto más fino */
-      background:#e0e0e0;
-      border-radius:3px;
-      outline:none;
-      transition:background 0.3s;
-    }
-    #colorSlider::-webkit-slider-thumb {
-      -webkit-appearance:none;
-      appearance:none;
-      width:16px; /* Thumb más pequeño */
-      height:16px;
-      background:rgb(90,165,25);
-      border-radius:50%;
-      cursor:pointer;
-      transition:background 0.3s;
-    }
-    #colorSlider::-webkit-slider-thumb:hover {
-      background:rgb(70,130,20);
-    }
-    #colorSlider::-moz-range-thumb {
-      width:16px;
-      height:16px;
-      background:rgb(90,165,25);
-      border-radius:50%;
-      cursor:pointer;
-      border:none;
-      transition:background 0.3s;
-    }
-    #colorSlider::-moz-range-thumb:hover {
-      background:rgb(70,130,20);
-    }
+    #colorSlider {width:80%;margin-top:5px;vertical-align:middle;}
     #colorValue {display:inline-block;width:15%;text-align:right;font-size:13px;color:#555;}
     footer {margin:8px 0;}
   </style>
@@ -147,7 +113,7 @@
           <option value="CN|🇨🇳|China|China|China">🇨🇳 China</option>
           <option value="CO|🇨🇴|Colombia|Colombia|Colômbia">🇨🇴 Colombia</option>
           <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
-          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇩🇪 Alemania</option>
+          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇦🇪 Alemania</option>
           <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
           <option value="ES|🇪🇸|España|Spain|Espanha">🇪🇸 España</option>
           <option value="FR|🇫🇷|Francia|France|França">🇫🇷 Francia</option>
@@ -217,8 +183,8 @@
           <option value="CargaConDrama">CargaConDrama</option>
         </select>
       </div>
-      <!-- Checkbox para usar título cómico (oculta por defecto) -->
-      <div class="toggle-item hidden" id="titleToggleGroup">
+      <!-- Checkbox para usar título cómico -->
+      <div class="toggle-item">
         <label for="titleToggle" id="titleToggleLabel">Usar título cómico:</label><br>
         <input type="checkbox" id="titleToggle">
       </div>
@@ -418,7 +384,6 @@
     const truckersmpStatus = document.getElementById("truckersmpStatus");
     const companyLinkStatus = document.getElementById("empresaLinkStatus");
     const nicknameGroup = document.getElementById("nicknameGroup");
-    const titleToggleGroup = document.getElementById("titleToggleGroup"); // Referencia al grupo del checkbox
     const titleToggleInput = document.getElementById("titleToggle");
     const promodsToggleInput = document.getElementById("promodsToggle");
     const dbusworldToggleInput = document.getElementById("dbusworldToggle");
@@ -517,7 +482,6 @@
       document.getElementById("companyLinkLabel").textContent = trans.companyLinkLabel;
       document.getElementById("truckersmpLinkLabel").textContent = trans.truckersmpLinkLabel;
       document.getElementById("customTitleLabel").textContent = trans.customTitleLabel;
-      document.getElementById("colorLabel").textContent = trans.colorLabel;
       document.getElementById("botonDescargar").textContent = trans.downloadButton;
       document.getElementById("botonDescargar").setAttribute("data-tooltip", trans.tooltipMessage);
       countrySelect.options[0].text = trans.countryPlaceholder;
@@ -598,7 +562,7 @@
       if (savedCountry) countrySelect.value = savedCountry;
     }
 
-    // Actualiza el estado del formulario (desbloqueo de TAG, título cómico y color)
+    // Actualiza el estado del formulario (desbloqueo de TAG y color)
     function updateForm() {
       const name = nameInput.value.toLowerCase().trim();
       if (name === "resetnick") {
@@ -609,7 +573,6 @@
         localStorage.setItem("nicknameUnlocked", "true");
       }
       nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
-      titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked); // Mostrar u ocultar el checkbox de título cómico
       const companyLink = companyLinkInput.value.trim();
       const colorMap = {
         "https://truckersmp.com/vtc/78865": 260,
