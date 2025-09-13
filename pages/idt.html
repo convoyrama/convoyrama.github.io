@@ -49,6 +49,13 @@
     }
     .toggle-item {margin:5px 0;}
     .toggle-item input[type="checkbox"] {margin-right:5px;}
+    /* Estilos para el grupo de toggles en la misma línea */
+    .toggle-group {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin: 5px 0;
+    }
     /* Estilos para el canvas de la licencia */
     canvas {border:1px solid #000;display:block;max-width:100%;height:auto;}
     #preview {flex:1;text-align:center;}
@@ -147,7 +154,7 @@
           <option value="CN|🇨🇳|China|China|China">🇨🇳 China</option>
           <option value="CO|🇨🇴|Colombia|Colombia|Colômbia">🇨🇴 Colombia</option>
           <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
-          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇩🇪 Alemania</option>
+          <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇦🇩 Alemania</option>
           <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
           <option value="ES|🇪🇸|España|Spain|Espanha">🇪🇸 España</option>
           <option value="FR|🇫🇷|Francia|France|França">🇫🇷 Francia</option>
@@ -222,15 +229,18 @@
         <label for="titleToggle" id="titleToggleLabel">Usar título cómico:</label><br>
         <input type="checkbox" id="titleToggle">
       </div>
-      <!-- Checkbox para incluir logo de ProMods -->
-      <div class="toggle-item">
-        <label for="promodsToggle">ProMods:</label><br>
-        <input type="checkbox" id="promodsToggle">
-      </div>
-      <!-- Checkbox para incluir logo de DBusWorld -->
-      <div class="toggle-item">
-        <label for="dbusworldToggle">DBUS:</label><br>
-        <input type="checkbox" id="dbusworldToggle">
+      <!-- Grupo de toggles para ProMods y DBusWorld -->
+      <div class="toggle-group">
+        <!-- Checkbox para incluir logo de ProMods -->
+        <div class="toggle-item">
+          <label for="promodsToggle">ProMods:</label>
+          <input type="checkbox" id="promodsToggle">
+        </div>
+        <!-- Checkbox para incluir logo de DBusWorld -->
+        <div class="toggle-item">
+          <label for="dbusworldToggle">DBUS:</label>
+          <input type="checkbox" id="dbusworldToggle">
+        </div>
       </div>
     </div>
     <!-- Área de vista previa con canvas, deslizador de tono y botón de descarga -->
@@ -418,7 +428,7 @@
     const truckersmpStatus = document.getElementById("truckersmpStatus");
     const companyLinkStatus = document.getElementById("empresaLinkStatus");
     const nicknameGroup = document.getElementById("nicknameGroup");
-    const titleToggleGroup = document.getElementById("titleToggleGroup"); // Referencia al grupo del checkbox
+    const titleToggleGroup = document.getElementById("titleToggleGroup");
     const titleToggleInput = document.getElementById("titleToggle");
     const promodsToggleInput = document.getElementById("promodsToggle");
     const dbusworldToggleInput = document.getElementById("dbusworldToggle");
@@ -433,6 +443,7 @@
     let isNicknameUnlocked = localStorage.getItem("nicknameUnlocked") === "true"; // Estado del desbloqueo del TAG épico
     let currentDate = null; // Caché de la fecha actual
     let lastDateFetch = 0; // Timestamp del último fetch de fecha
+    let isDateFromInternet = false; // Indicador de si la fecha proviene de internet
     const DATE_CACHE_DURATION = 180000; // Duración del caché de fecha (3 minutos)
     let currentLanguage = "es"; // Idioma actual
     let lastFormState = {}; // Estado anterior del formulario para evitar redibujar innecesariamente
@@ -492,12 +503,14 @@
           const { day, month, year } = api.parse(data);
           currentDate = `${day}/${month}/${year}`;
           lastDateFetch = now;
+          isDateFromInternet = true; // Fecha obtenida de internet
           return currentDate;
         } catch (error) {}
       }
       const date = new Date();
       currentDate = `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getFullYear()}`;
       lastDateFetch = now;
+      isDateFromInternet = false; // Fecha obtenida localmente
       return currentDate;
     }
 
@@ -609,7 +622,7 @@
         localStorage.setItem("nicknameUnlocked", "true");
       }
       nicknameGroup.classList.toggle("hidden", !isNicknameUnlocked);
-      titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked); // Mostrar u ocultar el checkbox de título cómico
+      titleToggleGroup.classList.toggle("hidden", !isNicknameUnlocked);
       const companyLink = companyLinkInput.value.trim();
       const colorMap = {
         "https://truckersmp.com/vtc/78865": 260,
@@ -781,6 +794,8 @@
         if (licenseNumber) ctx.fillText(licenseNumber, config.textX, config.textY + lineHeight);
       }
       ctx.fillText(currentDateStr, config.textX, config.textY + lineHeight * 2);
+      // Dibuja el indicador de fuente de fecha (✓ o ✗)
+      ctx.fillText(isDateFromInternet ? "✓" : "✗", config.textX + ctx.measureText(currentDateStr).width + 5, config.textY + lineHeight * 2);
       ctx.fillText(countryName, config.textX, config.textY + lineHeight * 3);
       if (isNicknameUnlocked && nickname) ctx.fillText(nickname, config.textX, config.textY + lineHeight * 4);
 
