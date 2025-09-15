@@ -61,7 +61,7 @@ nav {
 }
 nav a, nav a:visited {
     text-decoration: none;
-    margin: 0 1rem;
+    margin: 0 0.5rem;
     font-size: clamp(0.9rem, 2.5vw, 1rem);
     color: #fff;
 }
@@ -75,7 +75,8 @@ nav a:hover {
     padding: 1rem;
     align-items: center;
     font-family: Arial, sans-serif;
-    max-width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     box-sizing: border-box;
 }
 .panel {
@@ -124,7 +125,7 @@ canvas {
     width: 800px;
     height: 500px;
     display: block;
-    max-width: 100%;
+    max-width: 90vw;
     height: auto;
 }
 #preview {
@@ -140,7 +141,8 @@ button {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    min-width: 140px;
+    width: 100%;
+    max-width: 300px;
     touch-action: manipulation;
 }
 button:hover {
@@ -226,22 +228,36 @@ footer {
         flex-direction: row;
         align-items: flex-start;
         justify-content: center;
+        gap: 2rem;
     }
     .panel {
-        max-width: 300px;
+        flex: 0 0 400px;
+        max-width: 400px;
+        order: -1; /* Place panel on the left */
+    }
+    #preview {
+        flex: 0 0 auto;
+        max-width: 800px;
+    }
+    canvas {
+        max-width: 800px;
+        height: 500px;
+    }
+    button {
+        width: auto;
+        min-width: 140px;
     }
 }
 @media (max-width: 767px) {
+    #preview {
+        order: -1; /* Place preview at the top */
+    }
+    .panel {
+        order: 0;
+    }
     canvas {
         max-width: 90vw;
         height: auto;
-    }
-    button {
-        width: 100%;
-        max-width: 300px;
-    }
-    nav a {
-        margin: 0 0.5rem;
     }
 }
 </style>
@@ -256,6 +272,21 @@ footer {
     <p id="headerTitle">Generador de Licencia de Conductor</p>
 </header>
 <div class="contenedor">
+    <div id="preview">
+        <canvas id="canvas" width="800" height="500"></canvas>
+        <div class="input-group">
+            <label for="colorSlider" id="colorLabel">Tono del fondo:</label><br>
+            <input type="range" id="colorSlider" min="0" max="360" value="0"><span id="colorValue">0°</span>
+        </div>
+        <div class="input-group">
+            <label for="saturationSlider" id="saturationLabel">Saturación:</label><br>
+            <input type="range" id="saturationSlider" min="0" max="200" value="100"><span id="saturationValue">100%</span>
+        </div>
+        <br>
+        <a id="descargar" download="driver_license.png">
+            <button id="botonDescargar" class="info-tooltip" data-tooltip="Esta licencia es una broma y un guiño a la comunidad, no pretende ser profesional ni seria.">Descargar Licencia</button>
+        </a>
+    </div>
     <div class="panel">
         <div class="input-group">
             <label for="languageToggle">Idioma / Language / Língua:</label><br>
@@ -291,12 +322,12 @@ footer {
                 <option value="HR|🇭🇷|Croacia|Croatia|Croácia">🇭🇷 Croacia</option>
                 <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
                 <option value="CZ|🇨🇿|República Checa|Czech Republic|República Tcheca">🇨🇿 República Checa</option>
-                <option value="DK|🇩🇰|Dinamarca|Denmark|Dinamarca">🇩🇰 Dinamarca</option>
+                <option value="DK|🇩🇰|Dinamarca|Denmark|Dinamarca">🇰 Dinamarca</option>
                 <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
                 <option value="EG|🇪🇬|Egipto|Egypt|Egipto">🇪🇬 Egipto</option>
                 <option value="FI|🇫🇮|Finlandia|Finland|Finlândia">🇫🇮 Finlandia</option>
                 <option value="FR|🇫🇷|Francia|France|França">🇫🇷 Francia</option>
-                <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇨🇪 Alemania</option>
+                <option value="DE|🇩🇪|Alemania|Germany|Alemanha">🇩🇪 Alemania</option>
                 <option value="GR|🇬🇷|Grecia|Greece|Grécia">🇬🇷 Grecia</option>
                 <option value="HU|🇭🇺|Hungría|Hungary|Hungria">🇭🇺 Hungría</option>
                 <option value="IN|🇮🇳|India|India|Índia">🇮🇳 India</option>
@@ -389,21 +420,6 @@ footer {
             <div class="toggle-item"><label for="dbusworldToggle">DBUS:</label><input type="checkbox" id="dbusworldToggle"></div>
             <div class="toggle-item"><label for="watermarkToggle" id="watermarkToggleLabel">Usar marca de agua:</label><input type="checkbox" id="watermarkToggle" checked></div>
         </div>
-    </div>
-    <div id="preview">
-        <canvas id="canvas" width="800" height="500"></canvas>
-        <div class="input-group">
-            <label for="colorSlider" id="colorLabel">Tono del fondo:</label><br>
-            <input type="range" id="colorSlider" min="0" max="360" value="0"><span id="colorValue">0°</span>
-        </div>
-        <div class="input-group">
-            <label for="saturationSlider" id="saturationLabel">Saturación:</label><br>
-            <input type="range" id="saturationSlider" min="0" max="200" value="100"><span id="saturationValue">100%</span>
-        </div>
-        <br>
-        <a id="descargar" download="driver_license.png">
-            <button id="botonDescargar" class="info-tooltip" data-tooltip="Esta licencia es una broma y un guiño a la comunidad, no pretende ser profesional ni seria.">Descargar Licencia</button>
-        </a>
     </div>
 </div>
 <footer><small>© LAG'S SPEED - CONVOYRAMA 2025 - v1.2</small></footer>
@@ -532,7 +548,7 @@ const translations = {
         validLink: "Link válido",
         invalidLink: "Link inválido: deve ser https://truckersmp.com/user/[...]",
         validCompanyLink: "Link de empresa válido",
-        invalidCompanyLink: "Link inválido: debe ser https://truckersmp.com/vtc/[...]",
+        invalidCompanyLink: "Link inválido: deve ser https://truckersmp.com/vtc/[...]",
         downloadButton: "Baixar Licença",
         canvasName: "Nome :",
         canvasLicenseNo: "Nº da Licença :",
