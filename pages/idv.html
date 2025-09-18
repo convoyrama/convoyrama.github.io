@@ -230,9 +230,10 @@
         </div>
     </div>
     <footer>
-        <small>© LAG'S SPEED - CONVOYRAMA 2025 - v1.2.4o</small>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025 - v1.6.0</small>
     </footer>
     <script>
+// Convoyrama Driver License Generator v1.6.0
 function debounce(func, wait) {
     let timeout;
     return function (...args) {
@@ -307,7 +308,7 @@ const canvas = document.getElementById("canvas"),
               titleComedic: "PERMISO PARA CHOCAR EN CONVOY",
               countryPlaceholder: "Seleccione un país",
               tooltipMessage: "Esta licencia es una broma y un guiño a la comunidad, no pretende ser algo profesional.",
-              infoTooltip: "Significado de los elementos:\n- Estrella dorada (✵) junto al nombre: Indica que el usuario es dueño de una VTC. Se puede solicitar abriendo un ticket en el Discord de LAG'S SPEED.\n- Estrellas plateadas (★) a la derecha: Un guiño a la extinta VTC Convoy Nocturno.\n- Símbolo (✓) junto a la fecha: Indica que la fecha proviene de una fuente en línea confiable.\n- Símbolo (✗) junto a la fecha: Indica que la fecha es local, no verificada.\n- Un verso nocturno susurra un secreto, ¿qué palabra desata el camino oculto?\n- Generaciones: TruckersMP comenzó en 2013 y las VTCs en 2019. Las generaciones se calculan aproximando el año de registro del perfil y la VTC."
+              infoTooltip: "Significado de los elementos:\n- Generaciones: TruckersMP comenzó en 2013 y las VTCs en 2019. Las generaciones se calculan aproximando el año de registro del perfil y la VTC.\n- Estrella dorada (✵) junto al nombre: Indica que el usuario es dueño de una VTC. Se puede solicitar abriendo un ticket en el Discord de LAG'S SPEED.\n- Estrellas plateadas (★) a la derecha: Un guiño a la extinta VTC Convoy Nocturno.\n- Símbolo (✓) junto a la fecha: Indica que la fecha proviene de una fuente en línea confiable. Refresca la página para intentar obtener la fecha en línea nuevamente.\n- Símbolo (✗) junto a la fecha: Indica que la fecha es local, no verificada. Refresca la página para intentar obtener la fecha en línea nuevamente.\n- Un verso nocturno susurra un secreto, ¿qué palabra desata el camino oculto?"
           },
           en: {
               pageTitle: "Convoyrama | Driver License Generator",
@@ -343,7 +344,7 @@ const canvas = document.getElementById("canvas"),
               titleComedic: "CONVOY CRASHING PERMIT",
               countryPlaceholder: "Select a country",
               tooltipMessage: "This license is a joke and a nod to the community, not intended to be professional.",
-              infoTooltip: "Meaning of elements:\n- Gold star (✵) next to name: Indicates the user is a VTC owner. It can be requested by opening a ticket in the LAG'S SPEED Discord.\n- Silver stars (★) on the right: A nod to the extinct VTC Convoy Nocturno.\n- Checkmark (✓) next to date: Indicates the date is from a reliable online source.\n- Cross (✗) next to date: Indicates the date is local, not verified.\n- Generations: TruckersMP started in 2013 and VTCs in 2019. Generations are calculated by approximating the profile and VTC registration year."
+              infoTooltip: "Meaning of elements:\n- Generations: TruckersMP started in 2013 and VTCs in 2019. Generations are calculated by approximating the profile and VTC registration year.\n- Gold star (✵) next to name: Indicates the user is a VTC owner. It can be requested by opening a ticket in the LAG'S SPEED Discord.\n- Silver stars (★) on the right: A nod to the extinct VTC Convoy Nocturno.\n- Checkmark (✓) next to date: Indicates the date is from a reliable online source. Refresh the page to try fetching the date online again.\n- Cross (✗) next to date: Indicates the date is local, not verified. Refresh the page to try fetching the date online again.\n- A nocturnal verse whispers a secret, what word unlocks the hidden path?"
           },
           pt: {
               pageTitle: "Convoyrama | Gerador de Licença",
@@ -379,7 +380,7 @@ const canvas = document.getElementById("canvas"),
               titleComedic: "PERMISSÃO PARA CAUSAR CAOS EM COMBOIO",
               countryPlaceholder: "Selecione um país",
               tooltipMessage: "Esta licença é uma brincadeira e uma homenagem à comunidade, não pretende ser profissional.",
-              infoTooltip: "Significado dos elementos:\n- Estrela dourada (✵) ao lado do nome: Indica que o usuário é dono de uma VTC. Pode ser solicitada abrindo um ticket no Discord do LAG'S SPEED.\n- Estrelas prateadas (★) à direita: Uma homenagem à extinta VTC Convoy Nocturno.\n- Marca de verificação (✓) ao lado da data: Indica que a data vem de uma fonte online confiável.\n- Cruz (✗) ao lado da data: Indica que a data é local, não verificada.\n- Gerações: TruckersMP começou em 2013 e as VTCs em 2019. As gerações são calculadas aproximando o ano de registro do perfil e da VTC."
+              infoTooltip: "Significado dos elementos:\n- Gerações: TruckersMP começou em 2013 e as VTCs em 2019. As gerações são calculadas aproximando o ano de registro do perfil e da VTC.\n- Estrela dourada (✵) ao lado do nome: Indica que o usuário é dono de uma VTC. Pode ser solicitada abrindo um ticket no Discord do LAG'S SPEED.\n- Estrelas prateadas (★) à direita: Uma homenagem à extinta VTC Convoy Nocturno.\n- Marca de verificação (✓) ao lado da data: Indica que a data vem de uma fonte online confiável. Atualize a página para tentar obter a data online novamente.\n- Cruz (✗) ao lado da data: Indica que a data é local, não verificada. Atualize a página para tentar obter a data online novamente.\n- Um verso noturno sussurra um segredo, que palavra desvenda o caminho oculto?"
           }
       };
 const nameInput = document.getElementById("nombre"),
@@ -413,7 +414,7 @@ let userImage = null,
     lastDateFetch = 0,
     isDateFromInternet = false,
     vtcData = { vtcOwners: [], starMap: {} };
-const DATE_CACHE_DURATION = 180000;
+const DATE_CACHE_DURATION = 360000; // 6 minutos
 let currentLanguage = "es",
     lastFormState = {};
 const userLevelRanges = [
@@ -556,7 +557,7 @@ async function getCurrentDate() {
                 return {
                     day: date.getDate().toString().padStart(2, "0"),
                     month: (date.getMonth() + 1).toString().padStart(2, "0"),
-                    year: date.getFullYear()
+                    year: data.getFullYear()
                 };
             }
         }
