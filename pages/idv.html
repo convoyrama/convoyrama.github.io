@@ -96,7 +96,7 @@
                     <option value="HR|🇭🇷|Croacia|Croatia|Croácia">🇭🇷 Croacia</option>
                     <option value="CU|🇨🇺|Cuba|Cuba|Cuba">🇨🇺 Cuba</option>
                     <option value="CZ|🇨🇿|República Checa|Czech Republic|República Tcheca">🇨🇿 República Checa</option>
-                    <option value="DK|🇩🇰|Dinamarca|Denmark|Dinamarca">🇩🇰 Dinamarca</option>
+                    <option value="DK|🇩🇰|Dinamarca|Denmark|Dinamarca">🇯🇵 Dinamarca</option>
                     <option value="EC|🇪🇨|Ecuador|Ecuador|Equador">🇪🇨 Ecuador</option>
                     <option value="EG|🇪🇬|Egipto|Egypt|Egipto">🇪🇬 Egipto</option>
                     <option value="FI|🇫🇮|Finlandia|Finland|Finlândia">🇫🇮 Finlandia</option>
@@ -622,7 +622,11 @@ function updateLanguage(lang) {
     debouncedGenerateImage();
 }
 function normalizeLink(link) {
-    return link.trim().replace(/\/+$/, '').replace(/\?.*$/, '').toLowerCase();
+    return link.trim()
+        .replace(/\/+$/, '')
+        .replace(/\?.*$/, '')
+        .replace(/(-[a-z0-9-]+)?$/, '')
+        .toLowerCase();
 }
 function getUserLevel(userId) {
     if (!userId || isNaN(userId)) return "N/A";
@@ -843,7 +847,7 @@ async function generateImage() {
         console.log(`Drawing gold ✵ after name at x: ${config.textX + nameWidth + 5}, y: ${config.textY}`);
     }
     if (name && name.trim() !== "" && countrySelect.value && isTruckersmpValid) {
-        const { licenseNumber, userLevel, vtcLevel } = generateLicenseNumber(name, countrySelect.value, truckersmpLink, companyLink);
+        const { licenseNumber, userLevel, vtcLevel } = generateLicenseNumber(name, countrySelect.value, normalizedTruckersmpLink, normalizedCompanyLink);
         if (licenseNumber) {
             ctx.fillStyle = config.color;
             console.log(`Drawing license number in color: ${config.color}`);
@@ -942,10 +946,10 @@ async function generateImage() {
               });
           };
     if (isTruckersmpValid) {
-        await generateUniformQR(truckersmpLink, config.qrX, config.qrY);
+        await generateUniformQR(normalizedTruckersmpLink, config.qrX, config.qrY);
     }
     if (isCompanyValid) {
-        await generateUniformQR(companyLink, config.qrX - config.qrSize - config.qrSpacing, config.qrY);
+        await generateUniformQR(normalizedCompanyLink, config.qrX - config.qrSize - config.qrSpacing, config.qrY);
     }
     await generateUniformQR("https://convoyrama.github.io/pages/id.html", config.qrX + config.qrSize + config.qrSpacing, config.qrY);
     if (vtcLogoImage && watermarkToggleInput.checked) {

@@ -1,49 +1,183 @@
 {
-    "vtcOwners": [
-        { "name": "dr.will", "profileLink": "https://truckersmp.com/user/627943", "companyLink": "https://truckersmp.com/vtc/78865" },
-        { "name": "Christian Mono", "profileLink": "https://truckersmp.com/user/5861450", "companyLink": "https://truckersmp.com/vtc/81233" },
-        { "name": "reja", "profileLink": "https://truckersmp.com/user/945868", "companyLink": "https://truckersmp.com/vtc/56572" },
-        { "name": "toxica", "profileLink": "https://truckersmp.com/user/3134584", "companyLink": "https://truckersmp.com/vtc/34966" },
-        { "name": "mauro", "profileLink": "https://truckersmp.com/user/6010723", "companyLink": "https://truckersmp.com/vtc/79357" },
-        { "name": "luli", "profileLink": "https://truckersmp.com/user/4858961", "companyLink": "https://truckersmp.com/vtc/64312" },
-        { "name": "sibe", "profileLink": "https://truckersmp.com/user/2237770", "companyLink": "https://truckersmp.com/vtc/55250" },
-        { "name": "ángel", "profileLink": "https://truckersmp.com/user/3992795", "companyLink": "https://truckersmp.com/vtc/55250" },
-        { "name": "faridh", "profileLink": "https://truckersmp.com/user/3855500", "companyLink": "https://truckersmp.com/vtc/55439" },
-        { "name": "charles", "profileLink": "https://truckersmp.com/user/2819029", "companyLink": "https://truckersmp.com/vtc/62448" },
-        { "name": "tincho - aires", "profileLink": "https://truckersmp.com/user/1375721", "companyLink": "https://truckersmp.com/vtc/70703" },
-        { "name": "sin front", "profileLink": "https://truckersmp.com/user/4466990", "companyLink": "https://truckersmp.com/vtc/48970" },
-        { "name": "juandam", "profileLink": "https://truckersmp.com/user/2175536", "companyLink": "https://truckersmp.com/vtc/63758" },
-        { "name": "daniel", "profileLink": "https://truckersmp.com/user/2120023", "companyLink": "https://truckersmp.com/vtc/65011" },
-        { "name": "mauro atr", "profileLink": "https://truckersmp.com/user/3405343", "companyLink": "https://truckersmp.com/vtc/17910" },
-        { "name": "luciano", "profileLink": "https://truckersmp.com/user/3661787", "companyLink": "https://truckersmp.com/vtc/29591" },
-        { "name": "fraigot", "profileLink": "https://truckersmp.com/user/5148213", "companyLink": "https://truckersmp.com/vtc/81636" },
-        { "name": "mozart", "profileLink": "https://truckersmp.com/user/2505659", "companyLink": "https://truckersmp.com/vtc/50578" }
-    ],
-    "starMap": {
-        "https://truckersmp.com/user/627943": { "silver": 2 },
-        "https://truckersmp.com/user/5861450": { "silver": 2 },
-        "https://truckersmp.com/user/4890784": { "silver": 2 },
-        "https://truckersmp.com/user/945868": { "silver": 0 },
-        "https://truckersmp.com/user/3134584": { "silver": 0 },
-        "https://truckersmp.com/user/6010723": { "silver": 0 },
-        "https://truckersmp.com/user/4858961": { "silver": 0 },
-        "https://truckersmp.com/user/2237770": { "silver": 0 },
-        "https://truckersmp.com/user/3992795": { "silver": 0 },
-        "https://truckersmp.com/user/3855500": { "silver": 0 },
-        "https://truckersmp.com/user/2819029": { "silver": 0 },
-        "https://truckersmp.com/user/1375721": { "silver": 0 },
-        "https://truckersmp.com/user/4466990": { "silver": 0 },
-        "https://truckersmp.com/user/2175536": { "silver": 0 },
-        "https://truckersmp.com/user/2120023": { "silver": 0 },
-        "https://truckersmp.com/user/3405343": { "silver": 0 },
-        "https://truckersmp.com/user/3661787": { "silver": 0 },
-        "https://truckersmp.com/user/5148213": { "silver": 0 },
-        "https://truckersmp.com/user/2505659": { "silver": 0 },
-        "https://truckersmp.com/user/5441056": { "silver": 1 },
-        "https://truckersmp.com/user/5429829": { "silver": 3 },
-        "https://truckersmp.com/user/5408877": { "silver": 1 },
-        "https://truckersmp.com/user/5379466": { "silver": 3 },
-        "https://truckersmp.com/user/4690862": { "silver": 3 },
-        "https://truckersmp.com/user/1432064": { "silver": 2 }
+  "vtcOwners": [
+    {
+      "name": "dr.will",
+      "profileLink": "https://truckersmp.com/user/627943",
+      "companyLink": "https://truckersmp.com/vtc/78865"
+    },
+    {
+      "name": "Christian Mono",
+      "profileLink": "https://truckersmp.com/user/5861450",
+      "companyLink": "https://truckersmp.com/vtc/81233"
+    },
+    {
+      "name": "reja",
+      "profileLink": "https://truckersmp.com/user/945868",
+      "companyLink": "https://truckersmp.com/vtc/56572"
+    },
+    {
+      "name": "toxica",
+      "profileLink": "https://truckersmp.com/user/3134584",
+      "companyLink": "https://truckersmp.com/vtc/34966"
+    },
+    {
+      "name": "mauro",
+      "profileLink": "https://truckersmp.com/user/6010723",
+      "companyLink": "https://truckersmp.com/vtc/79357"
+    },
+    {
+      "name": "luli",
+      "profileLink": "https://truckersmp.com/user/4858961",
+      "companyLink": "https://truckersmp.com/vtc/64312"
+    },
+    {
+      "name": "sibe",
+      "profileLink": "https://truckersmp.com/user/2237770",
+      "companyLink": "https://truckersmp.com/vtc/55250"
+    },
+    {
+      "name": "ángel",
+      "profileLink": "https://truckersmp.com/user/3992795",
+      "companyLink": "https://truckersmp.com/vtc/55250"
+    },
+    {
+      "name": "faridh",
+      "profileLink": "https://truckersmp.com/user/3855500",
+      "companyLink": "https://truckersmp.com/vtc/55439"
+    },
+    {
+      "name": "charles",
+      "profileLink": "https://truckersmp.com/user/2819029",
+      "companyLink": "https://truckersmp.com/vtc/62448"
+    },
+    {
+      "name": "tincho - aires",
+      "profileLink": "https://truckersmp.com/user/1375721",
+      "companyLink": "https://truckersmp.com/vtc/70703"
+    },
+    {
+      "name": "sin front",
+      "profileLink": "https://truckersmp.com/user/4466990",
+      "companyLink": "https://truckersmp.com/vtc/48970"
+    },
+    {
+      "name": "juandam",
+      "profileLink": "https://truckersmp.com/user/2175536",
+      "companyLink": "https://truckersmp.com/vtc/63758"
+    },
+    {
+      "name": "daniel",
+      "profileLink": "https://truckersmp.com/user/2120023",
+      "companyLink": "https://truckersmp.com/vtc/65011"
+    },
+    {
+      "name": "mauro atr",
+      "profileLink": "https://truckersmp.com/user/3405343",
+      "companyLink": "https://truckersmp.com/vtc/17910"
+    },
+    {
+      "name": "luciano",
+      "profileLink": "https://truckersmp.com/user/3661787",
+      "companyLink": "https://truckersmp.com/vtc/29591"
+    },
+    {
+      "name": "fraigot",
+      "profileLink": "https://truckersmp.com/user/5148213",
+      "companyLink": "https://truckersmp.com/vtc/81636"
+    },
+    {
+      "name": "mozart",
+      "profileLink": "https://truckersmp.com/user/2505659",
+      "companyLink": "https://truckersmp.com/vtc/50578"
+    },
+    {
+      "name": "fabiano",
+      "profileLink": "https://truckersmp.com/user/2721561",
+      "companyLink": "https://truckersmp.com/vtc/11715"
     }
+  ],
+  "starMap": {
+    "https://truckersmp.com/user/627943": {
+      "silver": 2
+    },
+    "https://truckersmp.com/user/5861450": {
+      "silver": 2
+    },
+    "https://truckersmp.com/user/4890784": {
+      "silver": 2
+    },
+    "https://truckersmp.com/user/945868": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/3134584": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/6010723": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/4858961": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/2237770": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/3992795": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/3855500": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/2819029": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/1375721": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/4466990": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/2175536": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/2120023": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/3405343": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/3661787": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/5148213": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/2505659": {
+      "silver": 0
+    },
+    "https://truckersmp.com/user/5441056": {
+      "silver": 1
+    },
+    "https://truckersmp.com/user/5429829": {
+      "silver": 3
+    },
+    "https://truckersmp.com/user/5408877": {
+      "silver": 1
+    },
+    "https://truckersmp.com/user/5379466": {
+      "silver": 3
+    },
+    "https://truckersmp.com/user/4690862": {
+      "silver": 3
+    },
+    "https://truckersmp.com/user/1432064": {
+      "silver": 2
+    }
+  },
+  "a": [
+    {
+      "name": "Cevil",
+      "profileLink": "https://truckersmp.com/user/22931",
+      "companyLink": "https://truckersmp.com/vtc/46880"
+    }
+  ]
 }
