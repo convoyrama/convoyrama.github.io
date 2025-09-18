@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de vtcOwners</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <style>
+        header {
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            background: var(--accent-bg);
+            border-bottom: 1px solid var(--border);
+        }
+        header p {
+            font-size: 1.2em;
+            font-family: Arial, sans-serif;
+            margin: 10px 0;
+            color: #fff;
+        }
+        nav {
+            padding: 10px;
+            text-align: center;
+        }
+        nav a, nav a:visited {
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1em;
+            color: #fff;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .contenedor {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            align-items: flex-start;
+            font-family: Arial, sans-serif;
+        }
+        .panel {
+            flex: 1;
+            max-width: 600px;
+            font-size: 13px;
+        }
+        .panel h3 {
+            margin: 10px 0 5px;
+            font-size: 13px;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px;
+            font-size: 13px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 5px 10px;
+            font-size: 13px;
+            margin: 5px;
+            background: rgb(90, 165, 25);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        .vtc-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .vtc-item input {
+            flex: 1;
+            min-width: 150px;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+        .success {
+            color: green;
+            font-size: 12px;
+        }
+        footer {
+            margin: 8px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="pc.html">Creador de Perfil</a>
+            <a href="id.html">Licencia</a>
+        </nav>
+        <p>Editor de vtcOwners</p>
+    </header>
+    <div class="contenedor">
+        <div class="panel">
+            <div class="input-group">
+                <label for="vtcName">Nombre:</label>
+                <input type="text" id="vtcName" placeholder="Nombre del usuario">
+            </div>
+            <div class="input-group">
+                <label for="profileLink">Enlace Perfil TruckersMP:</label>
+                <input type="text" id="profileLink" placeholder="https://truckersmp.com/user/[ID]">
+            </div>
+            <div class="input-group">
+                <label for="companyLink">Enlace Perfil Empresa:</label>
+                <input type="text" id="companyLink" placeholder="https://truckersmp.com/vtc/[ID]">
+            </div>
+            <button onclick="addVtcLink()">Añadir</button>
+            <div id="status" class="error"></div>
+            <div class="vtc-list">
+                <h3>Lista de vtcOwners</h3>
+                <div id="vtcOwnersList"></div>
+            </div>
+            <button onclick="saveData()">Guardar en vtcData.json</button>
+        </div>
+    </div>
+    <footer>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+    </footer>
+
+    <script>
+        let vtcData = { vtcOwners: [], starMap: {} };
+
+        // Cargar datos iniciales desde vtcData.json
+        async function loadVtcData() {
+            try {
+                const response = await fetch('../assets/data/vtcData.json');
+                vtcData = await response.json();
+                updateList();
+            } catch (error) {
+                console.error('Error al cargar vtcData.json:', error);
+                showStatus('No se pudo cargar vtcData.json. Se iniciará con datos vacíos.', 'error');
+            }
+        }
+
+        // Actualizar lista en la interfaz
+        function updateList() {
+            const vtcOwnersList = document.getElementById('vtcOwnersList');
+            vtcOwnersList.innerHTML = '';
+            vtcData.vtcOwners.forEach((entry, index) => {
+                const div = document.createElement('div');
+                div.className = 'vtc-item';
+                div.innerHTML = `
+                    <input type="text" value="${entry.name}" onchange="updateEntry(${index}, 'name', this.value)">
+                    <input type="text" value="${entry.profileLink}" onchange="updateEntry(${index}, 'profileLink', this.value)">
+                    <input type="text" value="${entry.companyLink}" onchange="updateEntry(${index}, 'companyLink', this.value)">
+                    <button onclick="removeVtcLink(${index})">Eliminar</button>
+                `;
+                vtcOwnersList.appendChild(div);
+            });
+        }
+
+        // Añadir un nuevo enlace
+        function addVtcLink() {
+            const name = document.getElementById('vtcName').value.trim();
+            const profileLink = document.getElementById('profileLink').value.trim();
+            const companyLink = document.getElementById('companyLink').value.trim();
+            const profileRegex = /^https:\/\/truckersmp\.com\/user\/\d+$/;
+            const companyRegex = /^https:\/\/truckersmp\.com\/vtc\/\d+$/;
+
+            if (!name) {
+                showStatus('El nombre es obligatorio', 'error');
+                return;
+            }
+            if (!profileLink || !profileRegex.test(profileLink)) {
+                showStatus('Enlace de perfil inválido: debe ser https://truckersmp.com/user/[ID]', 'error');
+                return;
+            }
+            if (!companyLink || !companyRegex.test(companyLink)) {
+                showStatus('Enlace de empresa inválido: debe ser https://truckersmp.com/vtc/[ID]', 'error');
+                return;
+            }
+
+            vtcData.vtcOwners.push({ name, profileLink, companyLink });
+            updateList();
+            showStatus('Entrada añadida correctamente', 'success');
+            document.getElementById('vtcName').value = '';
+            document.getElementById('profileLink').value = '';
+            document.getElementById('companyLink').value = '';
+        }
+
+        // Actualizar una entrada existente
+        function updateEntry(index, field, value) {
+            if (field === 'profileLink') {
+                const regex = /^https:\/\/truckersmp\.com\/user\/\d+$/;
+                if (!regex.test(value)) {
+                    showStatus('Enlace de perfil inválido: debe ser https://truckersmp.com/user/[ID]', 'error');
+                    return;
+                }
+            } else if (field === 'companyLink') {
+                const regex = /^https:\/\/truckersmp\.com\/vtc\/\d+$/;
+                if (!regex.test(value)) {
+                    showStatus('Enlace de empresa inválido: debe ser https://truckersmp.com/vtc/[ID]', 'error');
+                    return;
+                }
+            } else if (field === 'name' && !value) {
+                showStatus('El nombre es obligatorio', 'error');
+                return;
+            }
+            vtcData.vtcOwners[index][field] = value;
+            updateList();
+            showStatus('Entrada actualizada', 'success');
+        }
+
+        // Eliminar un enlace
+        function removeVtcLink(index) {
+            vtcData.vtcOwners.splice(index, 1);
+            updateList();
+            showStatus('Entrada eliminada', 'success');
+        }
+
+        // Mostrar mensajes de estado
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = type;
+            setTimeout(() => { status.textContent = ''; status.className = 'error'; }, 3000);
+        }
+
+        // Guardar en vtcData.json
+        async function saveData() {
+            try {
+                const jsonString = JSON.stringify(vtcData, null, 2);
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '../assets/data/vtcData.json';
+                a.click();
+                URL.revokeObjectURL(url);
+                showStatus('Datos guardados en vtcData.json', 'success');
+            } catch (error) {
+                console.error('Error al guardar vtcData.json:', error);
+                showStatus('Error al guardar vtcData.json', 'error');
+            }
+        }
+
+        // Cargar datos al iniciar
+        loadVtcData();
+    </script>
+</body>
+</html>
