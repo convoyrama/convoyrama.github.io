@@ -481,7 +481,7 @@
         ];
         async function loadVtcData() {
             try {
-                const response = await fetch('../assets/data/vtcData.json');
+                const response = await fetch('./assets/data/vtcData.json');
                 if (!response.ok) throw new Error('Failed to load vtcData.json');
                 vtcData = await response.json();
                 console.log('vtcData loaded successfully:', vtcData);
