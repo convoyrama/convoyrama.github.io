@@ -74,7 +74,7 @@
             .input-group input,.input-group select{max-width:230px}
             input[type="file"]{max-width:230px}
             #preview{flex:1}
-            canvas{width:800px;height:500px}
+            canvas{width:400px;height:250px;transform:scale(1);transform-origin:top center;}
             .toggle-group{flex-direction:row;justify-content:center}
             .button-group{flex-direction:row}
             button{width:auto}
@@ -363,7 +363,7 @@
                 invalidCompanyLink: "Link inválido: deve ser https://truckersmp.com/vtc/[...]",
                 downloadButton: "Baixar Licença",
                 canvasName: "Nome :",
-                canvasLicenseNo: "Nº da Licença :",
+                canvasLicenseNo: "Núm. Licença :",
                 canvasLevel: "Geração :",
                 canvasDate: "Data :",
                 canvasCountry: "País :",
@@ -694,12 +694,14 @@
             const isMobile = window.innerWidth < 768;
             const canvasContainer = document.querySelector('.canvas-container');
             const containerWidth = canvasContainer.clientWidth;
+            canvas.width = config.baseWidth; // Always 800px for internal rendering
+            canvas.height = config.baseHeight; // Always 500px for internal rendering
             if (isMobile) {
-                canvas.width = Math.min(containerWidth, 800);
-                canvas.height = canvas.width / 1.6; // Maintain 800/500 ratio
+                canvas.style.width = `${Math.min(containerWidth, 800)}px`;
+                canvas.style.height = `${Math.min(containerWidth, 800) / 1.6}px`; // Maintain 800/500 ratio
             } else {
-                canvas.width = config.baseWidth;
-                canvas.height = config.baseHeight;
+                canvas.style.width = '400px'; // Visual size in desktop
+                canvas.style.height = '250px'; // Visual size in desktop
             }
         }
         async function generateImage() {
