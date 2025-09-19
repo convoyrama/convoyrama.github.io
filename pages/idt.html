@@ -260,7 +260,8 @@
             textFontSize: 24,
             footerFontSize: 22,
             watermarkWidth: 180,
-            watermarkHeight: 180
+            watermarkHeight: 180,
+            lineHeight: 28 // Base line height in pixels for 800x500 canvas
         };
         const translations = {
             es: {
@@ -789,13 +790,12 @@
             ctx.fillStyle = config.color;
             ctx.textAlign = "left";
             ctx.textBaseline = "alphabetic";
-            const lineHeight = config.textFontSize * 1.2 * scaleFactor;
             ctx.fillText(trans.canvasName, config.labelX * scaleFactor, config.textY * scaleFactor);
-            ctx.fillText(trans.canvasLicenseNo, config.labelX * scaleFactor, (config.textY + lineHeight) * scaleFactor);
-            ctx.fillText(trans.canvasLevel, config.labelX * scaleFactor, (config.textY + lineHeight * 2) * scaleFactor);
-            ctx.fillText(trans.canvasDate, config.labelX * scaleFactor, (config.textY + lineHeight * 3) * scaleFactor);
-            ctx.fillText(trans.canvasCountry, config.labelX * scaleFactor, (config.textY + lineHeight * 4) * scaleFactor);
-            if (isNicknameUnlocked && nickname) ctx.fillText(trans.canvasTag, config.labelX * scaleFactor, (config.textY + lineHeight * 5) * scaleFactor);
+            ctx.fillText(trans.canvasLicenseNo, config.labelX * scaleFactor, (config.textY + config.lineHeight) * scaleFactor);
+            ctx.fillText(trans.canvasLevel, config.labelX * scaleFactor, (config.textY + config.lineHeight * 2) * scaleFactor);
+            ctx.fillText(trans.canvasDate, config.labelX * scaleFactor, (config.textY + config.lineHeight * 3) * scaleFactor);
+            ctx.fillText(trans.canvasCountry, config.labelX * scaleFactor, (config.textY + config.lineHeight * 4) * scaleFactor);
+            if (isNicknameUnlocked && nickname) ctx.fillText(trans.canvasTag, config.labelX * scaleFactor, (config.textY + config.lineHeight * 5) * scaleFactor);
             const hasGoldStar = vtcData.vtcOwners.some(owner => normalizeLink(owner.profileLink) === normalizedTruckersmpLink && owner.companyLink && normalizeLink(owner.companyLink) === normalizedCompanyLink);
             ctx.fillStyle = config.color;
             ctx.fillText(name, config.textX * scaleFactor, config.textY * scaleFactor);
@@ -808,20 +808,20 @@
                 const { licenseNumber, userLevel, vtcLevel } = generateLicenseNumber(name, countrySelect.value, normalizedTruckersmpLink, normalizedCompanyLink);
                 if (licenseNumber) {
                     ctx.fillStyle = config.color;
-                    ctx.fillText(licenseNumber, config.textX * scaleFactor, (config.textY + lineHeight) * scaleFactor);
+                    ctx.fillText(licenseNumber, config.textX * scaleFactor, (config.textY + config.lineHeight) * scaleFactor);
                     const ordinalUser = userLevel !== "N/A" ? `${userLevel}${getOrdinalSuffix(userLevel, currentLanguage)}` : "N/A",
                         vtcPart = isCompanyValid && vtcLevel !== "N/A" ? ` - VTC: ${vtcLevel}${getOrdinalSuffix(vtcLevel, currentLanguage)}` : "";
-                    ctx.fillText(trans.levelFormat.replace("{0}", ordinalUser).replace("{1}", vtcPart), config.textX * scaleFactor, (config.textY + lineHeight * 2) * scaleFactor);
+                    ctx.fillText(trans.levelFormat.replace("{0}", ordinalUser).replace("{1}", vtcPart), config.textX * scaleFactor, (config.textY + config.lineHeight * 2) * scaleFactor);
                 }
             }
             ctx.fillStyle = config.color;
-            ctx.fillText(currentDateStr, config.textX * scaleFactor, (config.textY + lineHeight * 3) * scaleFactor);
-            ctx.fillText(isDateFromInternet ? "✓" : "✗", (config.textX + ctx.measureText(currentDateStr).width + 5) * scaleFactor, (config.textY + lineHeight * 3) * scaleFactor);
+            ctx.fillText(currentDateStr, config.textX * scaleFactor, (config.textY + config.lineHeight * 3) * scaleFactor);
+            ctx.fillText(isDateFromInternet ? "✓" : "✗", (config.textX + ctx.measureText(currentDateStr).width + 5) * scaleFactor, (config.textY + config.lineHeight * 3) * scaleFactor);
             ctx.fillStyle = config.color;
-            ctx.fillText(countryName, config.textX * scaleFactor, (config.textY + lineHeight * 4) * scaleFactor);
+            ctx.fillText(countryName, config.textX * scaleFactor, (config.textY + config.lineHeight * 4) * scaleFactor);
             if (isNicknameUnlocked && nickname) {
                 ctx.fillStyle = config.color;
-                ctx.fillText(nickname, config.textX * scaleFactor, (config.textY + lineHeight * 5) * scaleFactor);
+                ctx.fillText(nickname, config.textX * scaleFactor, (config.textY + config.lineHeight * 5) * scaleFactor);
             }
             if (promodsImg && promodsToggleInput.checked) {
                 ctx.drawImage(promodsImg, config.promodsX * scaleFactor, config.promodsY * scaleFactor, config.logoWidth * scaleFactor, config.logoHeight * scaleFactor);
