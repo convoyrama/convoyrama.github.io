@@ -22,25 +22,27 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         header {
-            padding: 15px;
+            padding: 10px; /* Reducido para menos espacio */
             text-align: center;
             position: relative;
             z-index: 10;
             background: var(--accent-bg);
-            border-bottom: 1px solid var(--border);
+            border-bottom: none; /* Eliminamos borde para evitar líneas */
         }
         header p {
             font-size: 1.2em;
             text-shadow: none;
             font-family: Arial, sans-serif;
             font-weight: normal;
-            margin: 10px 0;
+            margin: 5px 0; /* Reducido para menos espacio */
             color: #fff;
         }
         nav {
-            padding: 10px;
+            padding: 5px; /* Reducido */
             text-align: center;
         }
         nav a, nav a:visited {
@@ -56,24 +58,43 @@
         .gallery {
             display: grid;
             grid-template-columns: repeat(2, 1fr); /* 2 columnas */
-            gap: 20px; /* Espacio entre imágenes */
-            padding: 20px;
-            max-width: 1200px; /* Limita el ancho máximo */
-            margin: 0 auto; /* Centra la galería */
+            gap: 15px; /* Reducido para menos espacio */
+            padding: 10px; /* Reducido */
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .gallery img {
-            width: 100%; /* Imágenes ocupan todo el ancho de la columna */
-            height: auto; /* Mantiene proporción */
-            object-fit: cover; /* Ajusta la imagen */
-            border: 1px solid #000; /* Estilo similar al canvas del HTML original */
-            border-radius: 6px; /* Suaviza los bordes */
+        .gallery-item {
+            text-align: center;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border: 1px solid #000;
+            border-radius: 6px;
+        }
+        .gallery-item p {
+            font-size: 1em;
+            margin: 5px 0;
+            color: #333;
+        }
+        .gallery-item button {
+            padding: 6px 12px;
+            font-size: 14px;
+            margin: 5px 2px;
+            background: rgb(90,165,25);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .gallery-item button:hover {
+            opacity: 0.8;
         }
         footer {
             color: white;
             text-align: center;
             padding: 10px;
-            position: relative;
-            z-index: 10;
             margin-top: auto;
         }
         footer small {
@@ -91,10 +112,25 @@
         <p id="t2">Lista de Imágenes de Perfil</p>
     </header>
     <div class="gallery">
-        <img src="userid/dr.will.png" alt="ID Image">
+        <div class="gallery-item">
+            <img src="userid/driver_license_dr.will.png" alt="ID dr.will">
+            <p>dr.will</p>
+            <button onclick="copyToClipboard('[![https://convoyrama.github.io/pages/id.html](https://convoyrama.github.io/userid/driver_license_dr.will.png)]')">Copiar TruckersMP</button>
+            <button onclick="copyToClipboard('[img]https://convoyrama.github.io/userid/driver_license_dr.will.png[/img]')">Copiar BBCode</button>
+            <button onclick="copyToClipboard('https://convoyrama.github.io/userid/driver_license_dr.will.png')">Copiar Enlace Directo</button>
+        </div>
     </div>
     <footer>
         <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
     </footer>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('¡Código copiado al portapapeles!');
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+            });
+        }
+    </script>
 </body>
 </html>

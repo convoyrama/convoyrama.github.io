@@ -37,25 +37,27 @@ cat << 'EOF' > "$OUTPUT_HTML"
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         header {
-            padding: 15px;
+            padding: 10px; /* Reducido para menos espacio */
             text-align: center;
             position: relative;
             z-index: 10;
             background: var(--accent-bg);
-            border-bottom: 1px solid var(--border);
+            border-bottom: none; /* Eliminamos borde para evitar líneas */
         }
         header p {
             font-size: 1.2em;
             text-shadow: none;
             font-family: Arial, sans-serif;
             font-weight: normal;
-            margin: 10px 0;
+            margin: 5px 0; /* Reducido para menos espacio */
             color: #fff;
         }
         nav {
-            padding: 10px;
+            padding: 5px; /* Reducido */
             text-align: center;
         }
         nav a, nav a:visited {
@@ -71,24 +73,43 @@ cat << 'EOF' > "$OUTPUT_HTML"
         .gallery {
             display: grid;
             grid-template-columns: repeat(2, 1fr); /* 2 columnas */
-            gap: 20px; /* Espacio entre imágenes */
-            padding: 20px;
-            max-width: 1200px; /* Limita el ancho máximo */
-            margin: 0 auto; /* Centra la galería */
+            gap: 15px; /* Reducido para menos espacio */
+            padding: 10px; /* Reducido */
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .gallery img {
-            width: 100%; /* Imágenes ocupan todo el ancho de la columna */
-            height: auto; /* Mantiene proporción */
-            object-fit: cover; /* Ajusta la imagen */
-            border: 1px solid #000; /* Estilo similar al canvas del HTML original */
-            border-radius: 6px; /* Suaviza los bordes */
+        .gallery-item {
+            text-align: center;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border: 1px solid #000;
+            border-radius: 6px;
+        }
+        .gallery-item p {
+            font-size: 1em;
+            margin: 5px 0;
+            color: #333;
+        }
+        .gallery-item button {
+            padding: 6px 12px;
+            font-size: 14px;
+            margin: 5px 2px;
+            background: rgb(90,165,25);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .gallery-item button:hover {
+            opacity: 0.8;
         }
         footer {
             color: white;
             text-align: center;
             padding: 10px;
-            position: relative;
-            z-index: 10;
             margin-top: auto;
         }
         footer small {
@@ -108,19 +129,48 @@ cat << 'EOF' > "$OUTPUT_HTML"
     <div class="gallery">
 EOF
 
-# Busca imágenes en el directorio y agrega las etiquetas <img>
+# Busca imágenes en el directorio y genera contenedores con botones
 for img in "$IMG_DIR"/*.{jpg,jpeg,png,gif}; do
     if [ -f "$img" ]; then
-        echo "        <img src=\"$img\" alt=\"ID Image\">" >> "$OUTPUT_HTML"
+        # Extrae el nombre del archivo (sin ruta ni extensión)
+        filename=$(basename "$img")
+        name=$(echo "$filename" | sed 's/driver_license_\(.*\)\.\(jpg\|jpeg\|png\|gif\)/\1/')
+        # URL base para las imágenes
+        img_url="https://convoyrama.github.io/userid/$filename"
+        # Código TruckersMP
+        tmp_code="[![https://convoyrama.github.io/pages/id.html]($img_url)]"
+        # BBCode
+        bbcode="[img]$img_url[/img]"
+        # Enlace directo
+        direct_link="$img_url"
+        # Genera el contenedor para la imagen
+        cat << EOF >> "$OUTPUT_HTML"
+        <div class="gallery-item">
+            <img src="$img" alt="ID $name">
+            <p>$name</p>
+            <button onclick="copyToClipboard('$tmp_code')">Copiar TruckersMP</button>
+            <button onclick="copyToClipboard('$bbcode')">Copiar BBCode</button>
+            <button onclick="copyToClipboard('$direct_link')">Copiar Enlace Directo</button>
+        </div>
+EOF
     fi
 done
 
-# Cierra las etiquetas HTML
+# Cierra las etiquetas HTML y agrega JavaScript para copiar al portapapeles
 cat << 'EOF' >> "$OUTPUT_HTML"
     </div>
     <footer>
         <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
     </footer>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('¡Código copiado al portapapeles!');
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+            });
+        }
+    </script>
 </body>
 </html>
 EOF
