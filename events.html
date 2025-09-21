@@ -149,8 +149,6 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-
-
             background: #fff;
             border: 1px solid rgb(90,165,25);
         }
@@ -298,7 +296,7 @@
                 Cada evento tiene una reunión de 30 minutos, seguida de la salida. La llegada se espera hasta 1 hora después de la salida, con 15 minutos adicionales para despedidas. Las reuniones se solapan 15 minutos con el próximo evento.
             </p>
             <div class="timeline" id="slots"></div>
-            <button id="copy-convoy-info">Copiar Info del Convoy</button>
+            <button id="copy-convoy-info">Copiar y Pegar Info en Discord</button>
             <div class="event-timeline">
                 <h3>Línea de Tiempo del Evento Actual</h3>
                 <div id="timeline-bar" class="timeline-bar"></div>
@@ -334,7 +332,7 @@
 
         function formatDateForDisplay(d) {
             const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-            return `${d.getDate()} de ${months[d.getMonth()]}`;
+            return `${d.getDate()} de ${months[d.getMonth()]} de ${d.getFullYear()}`;
         }
 
         function getUnixTimestamp(date) {
@@ -344,8 +342,7 @@
         async function fetchTimeFromInternet() {
             const sources = [
                 'http://worldtimeapi.org/api/ip',
-                'https://ipapi.co/json/',
-                'https://freegeoip.app/json/'
+                'https://ipapi.co/json/'
             ];
 
             for (const source of sources) {
@@ -364,12 +361,6 @@
                         if (!isNaN(offset)) {
                             console.log(`ipapi: offset=${offset}`);
                             return { time: new Date(data.utc_datetime || new Date()), offset };
-                        }
-                    } else if (source.includes('freegeoip')) {
-                        const offset = data.time_zone && data.time_zone.offset ? parseFloat(data.time_zone.offset) : -3;
-                        if (!isNaN(offset)) {
-                            console.log(`freegeoip: offset=${offset}`);
-                            return { time: new Date(), offset };
                         }
                     }
                 } catch (error) {
