@@ -414,7 +414,7 @@
         <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
     </footer>
     <script>
-        let convoySlots = []; // Inicializamos vacío, se cargará desde JSON
+        let convoySlots = [];
         const timezoneMap = {
             'America/Mexico_City': -6,
             'America/Guatemala': -6,
@@ -434,7 +434,6 @@
         };
         let selectedSlot = null, selectedDate = new Date(), userOffset = null;
 
-        // Cargar convoySlots desde JSON
         async function loadConvoySlots() {
             try {
                 const response = await fetch('./assets/data/convoySlots.json');
@@ -443,7 +442,6 @@
                 console.log('convoySlots cargados:', convoySlots);
             } catch (error) {
                 console.error('Error al cargar convoySlots:', error);
-                // Fallback: Lista estática en caso de error
                 convoySlots = [
                     { name: "Slot A", start: "20:00", duration: 30 },
                     { name: "Slot B", start: "21:30", duration: 30 },
@@ -484,7 +482,10 @@
             try {
                 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 console.log(`Navegador: timezone=${timezone}`);
-                if (timezoneMap[timezone]) return { time: new Date(), offset: timezoneMap[timezone] };
+                if (timezoneMap[timezone]) {
+                    console.log(`Offset asignado desde timezoneMap: ${timezoneMap[timezone]}`);
+                    return { time: new Date(), offset: timezoneMap[timezone] };
+                }
             } catch (error) {
                 console.warn('Error obteniendo zona horaria del navegador:', error);
             }
@@ -494,7 +495,10 @@
                 const offset = data.utc_offset ? parseFloat(data.utc_offset) : null;
                 const time = new Date(data.datetime);
                 console.log(`WorldTimeAPI: offset=${offset}, time=${time}`);
-                if (!isNaN(offset)) return { time, offset };
+                if (!isNaN(offset)) {
+                    console.log(`Offset asignado desde WorldTimeAPI: ${offset}`);
+                    return { time, offset };
+                }
             } catch (error) {
                 console.warn('Error fetching time from WorldTimeAPI:', error);
             }
@@ -507,13 +511,16 @@
             const select = document.getElementById("timezone-select"),
                   savedOffset = localStorage.getItem('userOffset'),
                   selValue = select.value;
+            console.log(`updateTime: selValue=${selValue}, savedOffset=${savedOffset}`);
             if (selValue !== "auto" && savedOffset && savedOffset === selValue) {
                 userOffset = parseFloat(selValue);
+                console.log(`Offset desde selección manual: ${userOffset}`);
             } else {
                 const { time, offset } = await fetchTimezone();
                 userOffset = offset;
                 const supportedOffsets = [-6, -5, -4.5, -4, -3, 1];
                 userOffset = supportedOffsets.reduce((prev, curr) => Math.abs(curr - offset) < Math.abs(prev - offset) ? curr : prev);
+                console.log(`Offset calculado: ${userOffset}, original: ${offset}`);
                 if (selValue === "auto") select.value = userOffset.toString();
             }
             const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000),
@@ -581,7 +588,7 @@
 
                 if (selectedDay.toDateString() === today.toDateString()) {
                     const diff = localStart - userNow;
-                    console.log(`Slot ${slot.name}: localStart=${formatTime(localStart)} (${localStart.toISOString()}), diff=${diff/60000} minutos`);
+                    console.log(`Slot ${slot.name}: localStart=${formatTime(localStart)} (${localStart.toISOString()}), diff=${diff/60000} minutos, userOffset=${userOffset}`);
                     if (diff > 0 && diff < minDiff) {
                         minDiff = diff;
                         nextSlotElem = div;
@@ -801,7 +808,7 @@
             customDate.value = selectedDate.toISOString().split('T')[0];
             document.getElementById("date-display").textContent = `Fecha seleccionada: ${formatDateForDisplay(selectedDate)}`;
             document.getElementById("custom-date-display").textContent = `Fecha seleccionada: ${formatDateForDisplay(selectedDate)}`;
-            await loadConvoySlots(); // Cargar convoySlots desde JSON
+            await loadConvoySlots();
             const { userNow, userOffset } = await updateTime();
             renderSlots(userNow, userOffset);
             dateSelect.addEventListener("change", async () => {
