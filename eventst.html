@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="t1">Convoyrama | Eventos</title>
+    <meta name="description" content="Convoyrama - Herramienta para horarios de convoys">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="icon" href="./assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Merriweather:wght@700&family=Roboto:wght@700&family=Lora:wght@700&display=swap" rel="stylesheet">
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--accent-bg, #333);
+        }
+        header {
+            padding: 10px;
+            text-align: center;
+            background: var(--accent-bg, #333);
+            color: #fff;
+        }
+        header p {
+            font-size: 1.2em;
+            margin: 5px 0;
+            font-weight: normal;
+        }
+        nav {
+            padding: 5px;
+            text-align: center;
+        }
+        nav a, nav a:visited {
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 1em;
+            color: #fff;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .contenedor {
+            padding: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+        }
+        .timeline-container {
+            margin-top: 15px;
+        }
+        .timeline-indicator {
+            font-size: 1em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: linear-gradient(to right, #f0f0f0, #e0f0e0);
+            border-radius: 6px;
+            border: 2px solid rgb(90, 165, 25);
+            color: rgb(90, 165, 25);
+            position: relative;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .timeline-indicator::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgb(90, 165, 25);
+        }
+        .slots-explanation {
+            font-size: .9em;
+            margin-bottom: 15px;
+            color: rgb(240, 240, 240);
+            text-align: center;
+        }
+        .timeline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 0;
+            justify-content: center;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .slot {
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 10px;
+            width: calc(100% / 7 - 10px);
+            border: 2px solid rgb(90, 165, 25);
+            text-align: center;
+            transition: transform .3s, border .3s, box-shadow .3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+            cursor: pointer;
+        }
+        .slot:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+        }
+        .slot.highlight {
+            border: 3px solid rgb(90, 165, 25);
+            transform: scale(1.05);
+            background: linear-gradient(to bottom, #e0f0e0, #d0e0d0);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+        }
+        .slot.selected {
+            border: 3px solid rgb(90, 165, 25);
+            background: #d0e0d0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+        }
+        .slot h4 {
+            margin: 0 0 6px;
+            font-size: 1em;
+            color: rgb(90, 165, 25);
+        }
+        .slot .event {
+            font-size: .85em;
+            margin: 3px 0;
+            color: rgb(90, 165, 25);
+            font-weight: bold;
+        }
+        .range-bar {
+            height: 6px;
+            border-radius: 4px;
+            background: linear-gradient(to right, rgb(90, 165, 25), rgb(120, 195, 55));
+            margin: 8px 0;
+            position: relative;
+        }
+        .range-bar::after {
+            content: "";
+            position: absolute;
+            top: -4px;
+            right: -6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid rgb(90, 165, 25);
+        }
+        #timezone-select, #date-select, #event-name, #event-link, #event-description,
+        #custom-date, #custom-time, #custom-event-name, #custom-event-link, #custom-event-description {
+            padding: 6px;
+            margin: 8px 5px;
+            font-size: .85em;
+            border: 2px solid rgb(90, 165, 25);
+            border-radius: 6px;
+        }
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+        .input-row input, .input-row select {
+            width: 50%;
+        }
+        #custom-event-description {
+            max-width: 600px;
+            width: 100%;
+            margin: 8px auto;
+        }
+        .copy-container, .custom-event {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .custom-event-explanation {
+            font-size: .9em;
+            margin-bottom: 15px;
+            color: rgb(240, 240, 240);
+            text-align: center;
+        }
+        #date-display, #custom-date-display {
+            font-size: .9em;
+            color: rgb(90, 165, 25);
+            margin: 5px 0;
+            text-align: center;
+        }
+        #current-user-time {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+            color: rgb(240, 240, 240);
+        }
+        .event-timeline {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .custom-event {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--accent-bg, #333);
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .event-timeline h3, .custom-event h3 {
+            font-size: 1em;
+            color: rgb(90, 165, 25);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .custom-event label {
+            color: #fff;
+        }
+        .timeline-bar {
+            display: flex;
+            height: 20px;
+            background: #ddd;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .timeline-segment {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .7em;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+        .timeline-segment.reunion {
+            background: rgb(90, 165, 25);
+        }
+        .timeline-segment.viaje {
+            background: #4682b4;
+        }
+        .timeline-segment.despedida {
+            background: #aaa;
+        }
+        .timeline-segment.next-reunion {
+            background: #a0d0a0;
+        }
+        .timeline-segment.next-event-reunion {
+            background: #6b8e23;
+        }
+        .timeline-marker {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #ff4500;
+            z-index: 10;
+        }
+        .timeline-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: .8em;
+            color: #333;
+        }
+        #copy-convoy-info, #copy-custom-info {
+            padding: 8px 12px;
+            font-size: .9em;
+            margin: 10px 0;
+            background: rgb(90, 165, 25);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            max-width: 600px;
+            width: 100%;
+        }
+        #copy-convoy-info:hover, #copy-custom-info:hover {
+            opacity: .8;
+        }
+        .copy-container, .custom-event {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        #copy-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            background: linear-gradient(to right, #f0f0f0, #e0f0e0);
+            border: 2px solid rgb(90, 165, 25);
+            border-radius: 6px;
+            color: rgb(90, 165, 25);
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+            max-width: 90%;
+        }
+        @media (max-width: 768px) {
+            .slot {
+                width: calc(50% - 10px);
+            }
+            .timeline {
+                justify-content: space-between;
+            }
+            .timeline-bar {
+                font-size: .6em;
+            }
+            #timezone-select, #date-select, #event-name, #event-link, #event-description,
+            #custom-date, #custom-time, #custom-event-name, #custom-event-link, #custom-event-description {
+                font-size: .85em;
+                padding: 6px;
+            }
+            #copy-convoy-info, #copy-custom-info {
+                font-size: .85em;
+                padding: 6px 10px;
+            }
+            .input-row {
+                flex-direction: column;
+            }
+            .input-row input, .input-row select {
+                width: 100%;
+            }
+        }
+        @media (max-width: 480px) {
+            .slot {
+                width: 100%;
+            }
+            .timeline-indicator, #current-user-time, #date-display, #custom-date-display {
+                font-size: .9em;
+            }
+            .timeline-bar {
+                font-size: .5em;
+            }
+            .event-timeline h3, .custom-event h3 {
+                font-size: .9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="pages/pc.html">Creador de Perfil</a>
+            <a href="pages/id.html">Licencia</a>
+        </nav>
+        <p id="t2">Horarios de Convoys</p>
+    </header>
+    <div class="contenedor">
+        <div class="input-row">
+            <input type="date" id="date-select" value="2025-09-21">
+            <select id="timezone-select">
+                <option value="auto" selected>Detectar automáticamente</option>
+                <option value="-6">UTC-6 (México, Guatemala, Honduras, Costa Rica)</option>
+                <option value="-5">UTC-5 (Colombia, Perú, Ecuador)</option>
+                <option value="-4.5">UTC-4:30 (Venezuela)</option>
+                <option value="-4">UTC-4 (Bolivia, Chile, Paraguay)</option>
+                <option value="-3">UTC-3 (Uruguay, Argentina, Brasil)</option>
+                <option value="1">UTC+1 (España)</option>
+            </select>
+        </div>
+        <div id="date-display"></div>
+        <div id="current-user-time"></div>
+        <div class="timeline-container">
+            <div id="timeline-indicator" class="timeline-indicator"></div>
+            <p class="slots-explanation">Cada evento tiene una reunión de 30 minutos, seguida de un convoy de 60 minutos (50 minutos en ruta y 10 minutos para finalizar, agradecimientos y despedida).</p>
+            <div class="timeline" id="slots"></div>
+            <div class="copy-container">
+                <div class="input-row">
+                    <input type="text" id="event-name" placeholder="Nombre del evento">
+                    <input type="text" id="event-link" placeholder="Enlace del evento">
+                </div>
+                <textarea id="event-description" placeholder="Descripción del evento" rows="3"></textarea>
+                <button id="copy-convoy-info">Código para Discord</button>
+            </div>
+            <div class="event-timeline">
+                <h3 id="timeline-title">Línea de Tiempo del Evento Actual</h3>
+                <div id="timeline-bar" class="timeline-bar"></div>
+                <div id="timeline-labels" class="timeline-labels"></div>
+            </div>
+            <div class="custom-event">
+                <h3>Crear Evento Personalizado</h3>
+                <p class="custom-event-explanation">Cada evento personalizado tiene una reunión de 30 minutos, seguida de un convoy de 60 minutos (50 minutos en ruta y 10 minutos para finalizar, agradecimientos y despedida).</p>
+                <div class="input-row">
+                    <input type="date" id="custom-date" value="2025-09-21">
+                    <input type="time" id="custom-time">
+                </div>
+                <div id="custom-date-display"></div>
+                <div class="input-row">
+                    <input type="text" id="custom-event-name" placeholder="Nombre del evento">
+                    <input type="text" id="custom-event-link" placeholder="Enlace del evento">
+                </div>
+                <label for="custom-event-description">Descripción:</label>
+                <textarea id="custom-event-description" placeholder="Descripción del evento" rows="3"></textarea>
+                <button id="copy-custom-info">Código para Discord</button>
+            </div>
+        </div>
+        <div id="copy-message">¡Información copiada al portapapeles!</div>
+    </div>
+    <footer>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+    </footer>
+    <script>
+        let convoySlots = []; // Inicializamos vacío, se cargará desde JSON
+        const timezoneMap = {
+            'America/Mexico_City': -6,
+            'America/Guatemala': -6,
+            'America/Tegucigalpa': -6,
+            'America/Costa_Rica': -6,
+            'America/Bogota': -5,
+            'America/Lima': -5,
+            'America/Guayaquil': -5,
+            'America/Caracas': -4.5,
+            'America/La_Paz': -4,
+            'America/Santiago': -4,
+            'America/Asuncion': -4,
+            'America/Montevideo': -3,
+            'America/Buenos_Aires': -3,
+            'America/Sao_Paulo': -3,
+            'Europe/Madrid': 1
+        };
+        let selectedSlot = null, selectedDate = new Date(), userOffset = null;
+
+        // Cargar convoySlots desde JSON
+        async function loadConvoySlots() {
+            try {
+                const response = await fetch('./assets/data/convoySlots.json');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                convoySlots = await response.json();
+                console.log('convoySlots cargados:', convoySlots);
+            } catch (error) {
+                console.error('Error al cargar convoySlots:', error);
+                // Fallback: Lista estática en caso de error
+                convoySlots = [
+                    { name: "Slot A", start: "20:00", duration: 30 },
+                    { name: "Slot B", start: "21:30", duration: 30 },
+                    { name: "Slot C", start: "23:00", duration: 30 },
+                    { name: "Slot D", start: "00:30", duration: 30 },
+                    { name: "Slot E", start: "02:00", duration: 30 },
+                    { name: "Slot F", start: "03:30", duration: 30 },
+                    { name: "Slot G", start: "05:00", duration: 30 }
+                ];
+            }
+        }
+
+        function pad(n) {
+            return n < 10 ? "0" + n : n;
+        }
+
+        function formatTime(d) {
+            return pad(d.getHours()) + ":" + pad(d.getMinutes());
+        }
+
+        function formatDateForDisplay(d) {
+            const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+            return `${d.getDate()} de ${months[d.getMonth()]} de ${d.getFullYear()}`;
+        }
+
+        function getUnixTimestamp(date) {
+            return Math.floor(date.getTime() / 1000);
+        }
+
+        function showCopyMessage(message = "¡Información copiada al portapapeles!") {
+            const copyMessage = document.getElementById("copy-message");
+            copyMessage.textContent = message;
+            copyMessage.style.display = "block";
+            setTimeout(() => { copyMessage.style.display = "none"; }, 2000);
+        }
+
+        async function fetchTimezone() {
+            try {
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                console.log(`Navegador: timezone=${timezone}`);
+                if (timezoneMap[timezone]) return { time: new Date(), offset: timezoneMap[timezone] };
+            } catch (error) {
+                console.warn('Error obteniendo zona horaria del navegador:', error);
+            }
+            try {
+                const response = await fetch('http://worldtimeapi.org/api/ip', { mode: 'cors' });
+                const data = await response.json();
+                const offset = data.utc_offset ? parseFloat(data.utc_offset) : null;
+                const time = new Date(data.datetime);
+                console.log(`WorldTimeAPI: offset=${offset}, time=${time}`);
+                if (!isNaN(offset)) return { time, offset };
+            } catch (error) {
+                console.warn('Error fetching time from WorldTimeAPI:', error);
+            }
+            const localOffset = -new Date().getTimezoneOffset() / 60;
+            console.log(`Fallback: offset=${localOffset}`);
+            return { time: new Date(), offset: localOffset };
+        }
+
+        async function updateTime() {
+            const select = document.getElementById("timezone-select"),
+                  savedOffset = localStorage.getItem('userOffset'),
+                  selValue = select.value;
+            if (selValue !== "auto" && savedOffset && savedOffset === selValue) {
+                userOffset = parseFloat(selValue);
+            } else {
+                const { time, offset } = await fetchTimezone();
+                userOffset = offset;
+                const supportedOffsets = [-6, -5, -4.5, -4, -3, 1];
+                userOffset = supportedOffsets.reduce((prev, curr) => Math.abs(curr - offset) < Math.abs(prev - offset) ? curr : prev);
+                if (selValue === "auto") select.value = userOffset.toString();
+            }
+            const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000),
+                  userNow = new Date(utc + (userOffset * 3600000)),
+                  offsetDisplay = userOffset % 1 === 0 ? userOffset : userOffset.toFixed(1);
+            document.getElementById("current-user-time").textContent = `Tu hora actual: ${formatTime(userNow)} (UTC${userOffset >= 0 ? "+" : ""}${offsetDisplay})`;
+            localStorage.setItem('userOffset', userOffset.toString());
+            console.log(`updateTime: userNow=${userNow.toISOString()}, userOffset=${userOffset}, selectedDate=${selectedDate.toISOString()}`);
+            return { userNow, userOffset };
+        }
+
+        function renderSlots(userNow, userOffset) {
+            const slotsDiv = document.getElementById("slots"),
+                  timelineIndicator = document.getElementById("timeline-indicator"),
+                  timelineBar = document.getElementById("timeline-bar"),
+                  timelineLabels = document.getElementById("timeline-labels"),
+                  timelineTitle = document.getElementById("timeline-title"),
+                  copyButton = document.getElementById("copy-convoy-info"),
+                  eventNameInput = document.getElementById("event-name"),
+                  eventLinkInput = document.getElementById("event-link"),
+                  eventDescriptionInput = document.getElementById("event-description"),
+                  dateDisplay = document.getElementById("date-display"),
+                  customDate = document.getElementById("custom-date"),
+                  customDateDisplay = document.getElementById("custom-date-display");
+
+            slotsDiv.innerHTML = "";
+            timelineIndicator.innerHTML = "";
+            timelineBar.innerHTML = "";
+            timelineLabels.innerHTML = "";
+            dateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(selectedDate)}`;
+            customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(new Date(customDate.value))}`;
+
+            let nextSlotElem = null, minDiff = Infinity, nextSlotInfo = null, currentSlot = null, nextSlot = null;
+
+            const today = new Date(userNow);
+            today.setHours(0, 0, 0, 0);
+            const selectedDay = new Date(selectedDate);
+            selectedDay.setHours(0, 0, 0, 0);
+            console.log(`renderSlots: userNow=${userNow.toISOString()}, selectedDate=${selectedDate.toISOString()}, today=${today.toISOString()}, selectedDay=${selectedDay.toISOString()}`);
+
+            convoySlots.forEach((slot, index) => {
+                const [hh, mm] = slot.start.split(":").map(Number),
+                      utcBase = new Date(selectedDate);
+                if (hh < 12 && index > 2) { // Slots D, E, F, G son post-medianoche
+                    utcBase.setDate(utcBase.getDate() + 1);
+                }
+                utcBase.setUTCHours(hh, mm, 0, 0);
+                const localStart = new Date(utcBase.getTime() + userOffset * 3600000),
+                      salida = new Date(localStart.getTime() + slot.duration * 60000),
+                      llegada = new Date(salida.getTime() + 60 * 60000),
+                      despedida = new Date(llegada.getTime() + 5 * 60000),
+                      nextReunion = new Date(llegada.getTime()),
+                      nextSalida = new Date(nextReunion.getTime() + 30 * 60000),
+                      div = document.createElement("div");
+                div.className = "slot";
+                div.innerHTML = `<h4>${slot.name}</h4><div class="event">Reunión: ${formatTime(localStart)}</div><div class="event">Salida: ${formatTime(salida)}</div><div class="range-bar"></div>`;
+                div.onclick = () => {
+                    document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
+                    div.classList.add("selected");
+                    selectedSlot = { name: slot.name, localStart, salida, despedida, date: new Date(selectedDate) };
+                    eventNameInput.value = `Convoy ${slot.name}`;
+                    eventLinkInput.value = "https://convoyrama.github.io/events.html";
+                };
+                slotsDiv.appendChild(div);
+
+                if (selectedDay.toDateString() === today.toDateString()) {
+                    const diff = localStart - userNow;
+                    console.log(`Slot ${slot.name}: localStart=${formatTime(localStart)} (${localStart.toISOString()}), diff=${diff/60000} minutos`);
+                    if (diff > 0 && diff < minDiff) {
+                        minDiff = diff;
+                        nextSlotElem = div;
+                        nextSlotInfo = { name: slot.name, time: formatTime(localStart) };
+                    }
+                    const despedidaEnd = new Date(localStart.getTime() + (slot.duration + 60 + 5) * 60000);
+                    if (userNow >= localStart && userNow <= despedidaEnd) {
+                        currentSlot = { slot, localStart, salida, llegada, despedida, nextReunion, nextSalida };
+                        console.log(`Evento activo: ${slot.name}, de ${formatTime(localStart)} a ${formatTime(despedidaEnd)}`);
+                    }
+                    if (userNow >= llegada && userNow <= nextReunion && index + 1 < convoySlots.length) {
+                        const next = convoySlots[index + 1],
+                              [nhh, nmm] = next.start.split(":").map(Number),
+                              nUtcBase = new Date(selectedDate);
+                        if (nhh < 12 && index + 1 > 2) nUtcBase.setDate(nUtcBase.getDate() + 1);
+                        nUtcBase.setUTCHours(nhh, nmm, 0, 0);
+                        const nLocalStart = new Date(nUtcBase.getTime() + userOffset * 3600000),
+                              nSalida = new Date(nLocalStart.getTime() + next.duration * 60000);
+                        if (userNow >= nLocalStart) {
+                            nextSlot = {
+                                slot: next,
+                                localStart: nLocalStart,
+                                salida: nSalida,
+                                llegada: new Date(nSalida.getTime() + 60 * 60000),
+                                despedida: new Date(nSalida.getTime() + 65 * 60000),
+                                nextReunion: new Date(nSalida.getTime() + 60 * 60000),
+                                nextSalida: new Date(nSalida.getTime() + 90 * 60000)
+                            };
+                            console.log(`Solapamiento detectado: ${next.name}, reunión a las ${formatTime(nLocalStart)}`);
+                        }
+                    }
+                }
+            });
+
+            if (selectedDay.toDateString() === today.toDateString()) {
+                if (currentSlot) {
+                    const { slot, localStart, salida, llegada, despedida, nextReunion } = currentSlot,
+                          preSalida = new Date(salida.getTime() - 5 * 60000),
+                          nextSlotIndex = convoySlots.findIndex(s => s.name === slot.name) + 1,
+                          hasNextSlot = nextSlotIndex < convoySlots.length;
+                    if (userNow >= localStart && userNow < salida) {
+                        timelineIndicator.textContent = `El convoy de ${slot.name} está en reunión.`;
+                    } else if (userNow >= preSalida && userNow < salida) {
+                        timelineIndicator.textContent = `¡Prepárate! El convoy de ${slot.name} está por salir a las ${formatTime(salida)}.`;
+                    } else if (userNow >= salida && userNow < new Date(llegada.getTime() - 10 * 60000)) {
+                        timelineIndicator.textContent = `El convoy de ${slot.name} está en ruta.`;
+                    } else if (userNow >= new Date(llegada.getTime() - 10 * 60000) && userNow < llegada) {
+                        timelineIndicator.textContent = `El convoy de ${slot.name} está finalizando.`;
+                    } else if (userNow >= llegada && userNow < despedida) {
+                        timelineIndicator.textContent = `El convoy de ${slot.name} está en despedidas y agradecimientos.`;
+                    } else if (userNow >= despedida && userNow <= nextReunion) {
+                        let message = `El convoy de ${slot.name} está en despedidas y agradecimientos.`;
+                        if (hasNextSlot) message += ` ¡Atención! La reunión de ${convoySlots[nextSlotIndex].name} está por empezar.`;
+                        timelineIndicator.textContent = message;
+                    }
+                } else if (nextSlotInfo) {
+                    timelineIndicator.textContent = `Próximo: ${nextSlotInfo.name} - Reunión ${nextSlotInfo.time}`;
+                } else {
+                    const nextDay = new Date(today);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    let firstSlot = null, firstSlotTime = Infinity;
+                    convoySlots.forEach(slot => {
+                        const [hh, mm] = slot.start.split(":").map(Number),
+                              utcBase = new Date(selectedDate);
+                        if (hh < 12 && convoySlots.findIndex(s => s.name === slot.name) > 2) {
+                            utcBase.setDate(utcBase.getDate() + 1);
+                        }
+                        utcBase.setUTCHours(hh, mm, 0, 0);
+                        const localStart = new Date(utcBase.getTime() + userOffset * 3600000),
+                              diff = localStart - userNow;
+                        if (diff > 0 && diff < firstSlotTime) {
+                            firstSlotTime = diff;
+                            firstSlot = { name: slot.name, time: formatTime(localStart) };
+                        }
+                    });
+                    timelineIndicator.textContent = firstSlot ? `Próximo: ${firstSlot.name} - Reunión ${firstSlot.time}` : "No hay eventos próximos hoy";
+                }
+            } else {
+                timelineIndicator.textContent = `Horarios para ${formatDateForDisplay(selectedDate)}`;
+            }
+
+            if (selectedDay.toDateString() === today.toDateString() && nextSlotElem) {
+                nextSlotElem.classList.add("highlight");
+                nextSlotElem.scrollIntoView({ behavior: "smooth", inline: "center" });
+            }
+
+            if (selectedDay.toDateString() === today.toDateString() && currentSlot) {
+                const { slot, localStart, salida, llegada, despedida, nextReunion, nextSalida } = currentSlot,
+                      enRutaEnd = new Date(salida.getTime() + 50 * 60000),
+                      totalDuration = (nextSalida - localStart) / 60000,
+                      elapsed = (userNow - localStart) / 60000,
+                      markerPosition = Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100),
+                      segments = [
+                          { class: "reunion", width: (30 / totalDuration) * 100, label: `Hora de Reunión: ${formatTime(localStart)}`, textContent: "Reunión" },
+                          { class: "viaje", width: (50 / totalDuration) * 100, label: `Hora de Salida: ${formatTime(salida)}`, textContent: "Convoy en camino" },
+                          { class: "despedida", width: (15 / totalDuration) * 100, label: `Hora de llegada: ${formatTime(llegada)}`, textContent: "Finalizando" },
+                          { class: "next-reunion", width: (30 / totalDuration) * 100, label: `Próxima reunión: ${formatTime(nextReunion)}`, textContent: "Próxima reunión" }
+                      ];
+                if (nextSlot && userNow >= nextSlot.localStart) {
+                    timelineTitle.textContent = `Línea de Tiempo de Eventos ${slot.name} y ${nextSlot.slot.name}`;
+                    const nTotalDuration = (nextSlot.nextSalida - nextSlot.localStart) / 60000,
+                          nElapsed = (userNow - nextSlot.localStart) / 60000,
+                          nMarkerPosition = Math.min(Math.max((nElapsed / nTotalDuration) * 100, 0), 100),
+                          nextSegments = [
+                              { class: "next-event-reunion", width: (30 / nTotalDuration) * 100, label: `Hora de Reunión (${nextSlot.slot.name}): ${formatTime(nextSlot.localStart)}`, textContent: `Reunión (${nextSlot.slot.name})` }
+                          ];
+                    if (userNow >= nextSlot.salida) {
+                        nextSegments.push({ class: "viaje", width: (50 / nTotalDuration) * 100, label: `Hora de Salida (${nextSlot.slot.name}): ${formatTime(nextSlot.salida)}`, textContent: `Convoy en camino (${nextSlot.slot.name})` });
+                    }
+                    const totalWidth = segments.reduce((sum, s) => sum + s.width, 0) + nextSegments.reduce((sum, s) => sum + s.width, 0),
+                          currentWidth = segments.reduce((sum, s) => sum + s.width, 0);
+                    segments.forEach(segment => {
+                        const div = document.createElement("div");
+                        div.className = `timeline-segment ${segment.class}`;
+                        div.style.width = `${(segment.width / totalWidth) * 100}%`;
+                        div.textContent = segment.textContent;
+                        timelineBar.appendChild(div);
+                        const label = document.createElement("div");
+                        label.textContent = segment.label;
+                        timelineLabels.appendChild(label);
+                    });
+                    nextSegments.forEach(segment => {
+                        const div = document.createElement("div");
+                        div.className = `timeline-segment ${segment.class}`;
+                        div.style.width = `${(segment.width / totalWidth) * 100}%`;
+                        div.textContent = segment.textContent;
+                        timelineBar.appendChild(div);
+                        const label = document.createElement("div");
+                        label.textContent = segment.label;
+                        timelineLabels.appendChild(label);
+                    });
+                    if (markerPosition >= 0 && markerPosition <= 100) {
+                        const marker = document.createElement("div");
+                        marker.className = "timeline-marker";
+                        marker.style.left = `${(markerPosition / totalWidth) * 100}%`;
+                        timelineBar.appendChild(marker);
+                    }
+                    if (nMarkerPosition >= 0 && nMarkerPosition <= 100) {
+                        const marker = document.createElement("div");
+                        marker.className = "timeline-marker";
+                        marker.style.left = `${((currentWidth + nMarkerPosition) / totalWidth) * 100}%`;
+                        timelineBar.appendChild(marker);
+                    }
+                } else {
+                    timelineTitle.textContent = `Línea de Tiempo del Evento ${slot.name}`;
+                    segments.forEach(segment => {
+                        const div = document.createElement("div");
+                        div.className = `timeline-segment ${segment.class}`;
+                        div.style.width = `${segment.width}%`;
+                        div.textContent = segment.textContent;
+                        timelineBar.appendChild(div);
+                        const label = document.createElement("div");
+                        label.textContent = segment.label;
+                        timelineLabels.appendChild(label);
+                    });
+                    if (markerPosition >= 0 && markerPosition <= 100) {
+                        const marker = document.createElement("div");
+                        marker.className = "timeline-marker";
+                        marker.style.left = `${markerPosition}%`;
+                        timelineBar.appendChild(marker);
+                    }
+                }
+            } else {
+                timelineBar.innerHTML = `<div style="width:100%;text-align:center;color:#333;">No hay evento activo en ${formatDateForDisplay(selectedDate)}</div>`;
+            }
+
+            copyButton.onclick = () => {
+                if (!selectedSlot) {
+                    showCopyMessage("Por favor, selecciona un slot primero.");
+                    return;
+                }
+                const eventName = eventNameInput.value || `Convoy ${selectedSlot.name}`,
+                      eventLink = eventLinkInput.value || "https://convoyrama.github.io/events.html",
+                      eventDescription = eventDescriptionInput.value || "Sin descripción",
+                      { localStart, salida, despedida, date } = selectedSlot,
+                      convoyInfo = `[**${eventName} - ${formatDateForDisplay(date)}**](${eventLink})\nReunión: <t:${getUnixTimestamp(localStart)}:f>\nSalida: <t:${getUnixTimestamp(salida)}:f>\nEstimado de término: <t:${getUnixTimestamp(despedida)}:f>\nDescripción: ${eventDescription}`;
+                navigator.clipboard.writeText(convoyInfo).then(() => {
+                    showCopyMessage();
+                }).catch(err => console.error('Error al copiar:', err));
+            };
+
+            document.getElementById("copy-custom-info").onclick = () => {
+                const customDate = document.getElementById("custom-date").value,
+                      customTime = document.getElementById("custom-time").value,
+                      customEventName = document.getElementById("custom-event-name").value || "Evento Personalizado",
+                      customEventLink = document.getElementById("custom-event-link").value || "https://convoyrama.github.io/events.html",
+                      customEventDescription = document.getElementById("custom-event-description").value || "Sin descripción";
+                if (!customDate || !customTime) {
+                    showCopyMessage("Por favor, selecciona una fecha y hora.");
+                    return;
+                }
+                const [hh, mm] = customTime.split(":").map(Number),
+                      customDateObj = new Date(customDate);
+                customDateObj.setHours(hh, mm, 0, 0);
+                const utcBase = new Date(customDateObj.getTime() - userOffset * 3600000),
+                      localStart = new Date(utcBase.getTime() + userOffset * 3600000),
+                      salida = new Date(localStart.getTime() + 30 * 60000),
+                      llegada = new Date(salida.getTime() + 60 * 60000),
+                      despedida = new Date(llegada.getTime() + 5 * 60000),
+                      convoyInfo = `[**${customEventName} - ${formatDateForDisplay(customDateObj)}**](${customEventLink})\nReunión: <t:${getUnixTimestamp(localStart)}:f>\nSalida: <t:${getUnixTimestamp(salida)}:f>\nEstimado de término: <t:${getUnixTimestamp(despedida)}:f>\nDescripción: ${customEventDescription}`;
+                navigator.clipboard.writeText(convoyInfo).then(() => {
+                    showCopyMessage();
+                }).catch(err => console.error('Error al copiar:', err));
+            };
+
+            customDate.onchange = () => {
+                const customDateObj = new Date(customDate.value);
+                customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`;
+            };
+        }
+
+        async function init() {
+            const dateSelect = document.getElementById("date-select"),
+                  customDate = document.getElementById("custom-date");
+            selectedDate = new Date();
+            dateSelect.value = selectedDate.toISOString().split('T')[0];
+            customDate.value = selectedDate.toISOString().split('T')[0];
+            document.getElementById("date-display").textContent = `Fecha seleccionada: ${formatDateForDisplay(selectedDate)}`;
+            document.getElementById("custom-date-display").textContent = `Fecha seleccionada: ${formatDateForDisplay(selectedDate)}`;
+            await loadConvoySlots(); // Cargar convoySlots desde JSON
+            const { userNow, userOffset } = await updateTime();
+            renderSlots(userNow, userOffset);
+            dateSelect.addEventListener("change", async () => {
+                selectedDate = new Date(dateSelect.value);
+                document.getElementById("date-display").textContent = `Fecha seleccionada: ${formatDateForDisplay(selectedDate)}`;
+                const { userNow, userOffset } = await updateTime();
+                renderSlots(userNow, userOffset);
+            });
+            document.getElementById("timezone-select").addEventListener("change", async () => {
+                const select = document.getElementById("timezone-select");
+                localStorage.setItem('userOffset', select.value);
+                const { userNow, userOffset } = await updateTime();
+                renderSlots(userNow, userOffset);
+            });
+            setInterval(async () => {
+                const { userNow, userOffset } = await updateTime();
+                renderSlots(userNow, userOffset);
+            }, 300000);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
