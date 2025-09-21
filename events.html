@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="t1">Convoyrama | Eventos</title>
+    <meta name="description" content="Convoyrama - Herramienta para horarios de convoys">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="icon" href="./assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Merriweather:wght@700&family=Roboto:wght@700&family=Lora:wght@700&display=swap" rel="stylesheet">
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            padding: 8px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            background: var(--accent-bg);
+        }
+        header p {
+            font-size: 1.2em;
+            text-shadow: none;
+            font-family: Arial, sans-serif;
+            font-weight: normal;
+            margin: 3px 0;
+            color: #fff;
+        }
+        nav {
+            padding: 5px;
+            text-align: center;
+        }
+        nav a, nav a:visited {
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1em;
+            text-shadow: none;
+            color: #fff;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .contenedor {
+            padding: 8px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+        }
+        .timeline-container {
+            margin-top: 10px;
+        }
+        .timeline-indicator {
+            font-size: 1em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: linear-gradient(to right, #f0f0f0, #e0f0e0);
+            border-radius: 6px;
+            border: 2px solid rgb(90,165,25);
+            color: rgb(90,165,25);
+            position: relative;
+        }
+        .timeline-indicator::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgb(90,165,25);
+        }
+        .slots-explanation {
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            color: rgb(240,240,240);
+            text-align: center;
+        }
+        .timeline {
+            display: flex;
+            gap: 8px;
+            padding: 12px 0;
+            justify-content: space-between;
+        }
+        .slot {
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 12px;
+            width: calc(100% / 7 - 8px);
+            border: 2px solid rgb(90,165,25);
+            flex-shrink: 0;
+            text-align: center;
+            transition: transform 0.3s, border 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        .slot:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .slot.highlight {
+            border: 3px solid rgb(90,165,25);
+            transform: scale(1.05);
+            background: linear-gradient(to bottom, #e0f0e0, #d0e0d0);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .slot.selected {
+            border: 3px solid rgb(90,165,25);
+            background: #d0e0d0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .slot h4 {
+            margin: 0 0 6px;
+            font-size: 1em;
+            color: rgb(90,165,25);
+        }
+        .slot .event {
+            font-size: 0.85em;
+            margin: 3px 0;
+            color: rgb(90,165,25);
+            font-weight: bold;
+        }
+        .range-bar {
+            height: 6px;
+            border-radius: 4px;
+            background: linear-gradient(to right, rgb(90,165,25), rgb(120,195,55));
+            margin: 8px 0;
+            position: relative;
+        }
+        .range-bar::after {
+            content: "";
+            position: absolute;
+            top: -4px;
+            right: -6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+
+
+            background: #fff;
+            border: 1px solid rgb(90,165,25);
+        }
+        #timezone-select, #date-select {
+            padding: 5px;
+            margin: 10px 0;
+            width: 100%;
+            font-size: 0.8em;
+            border: 2px solid rgb(90,165,25);
+            border-radius: 6px;
+        }
+        #current-user-time {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+            color: rgb(240,240,240);
+        }
+        .event-timeline {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .event-timeline h3 {
+            font-size: 1em;
+            color: rgb(90,165,25);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .timeline-bar {
+            display: flex;
+            height: 20px;
+            background: #ddd;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .timeline-segment {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+        .timeline-segment.reunion {
+            background: rgb(90,165,25);
+        }
+        .timeline-segment.viaje {
+            background: #4682b4;
+        }
+        .timeline-segment.despedida {
+            background: #aaa;
+        }
+        .timeline-segment.next-reunion {
+            background: #a0d0a0;
+        }
+        .timeline-segment.next-salida {
+            background: #87ceeb;
+        }
+        .timeline-marker {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #ff4500;
+            z-index: 10;
+        }
+        .timeline-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.8em;
+            color: #333;
+        }
+        #copy-convoy-info {
+            padding: 5px 10px;
+            font-size: 0.8em;
+            margin: 10px auto;
+            display: block;
+            background: rgb(90,165,25);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        #copy-convoy-info:hover {
+            opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            .slot {
+                width: calc(100% / 3 - 8px);
+            }
+            .timeline {
+                flex-wrap: wrap;
+            }
+            .timeline-bar {
+                font-size: 0.6em;
+            }
+        }
+        @media (max-width: 480px) {
+            .slot {
+                width: 100%;
+            }
+            .timeline-bar {
+                font-size: 0.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="pages/pc.html">Creador de Perfil</a>
+            <a href="pages/id.html">Licencia</a>
+        </nav>
+        <p id="t2">Horarios de Convoys</p>
+    </header>
+
+    <div class="contenedor">
+        <label for="date-select">Fecha:</label>
+        <input type="date" id="date-select" value="2025-09-21">
+
+        <label for="timezone-select">Zona Horaria:</label>
+        <select id="timezone-select">
+            <option value="auto" selected>Detectar automáticamente</option>
+            <option value="-6">UTC-6 (México, Guatemala, Honduras, Costa Rica)</option>
+            <option value="-5">UTC-5 (Colombia, Perú, Ecuador)</option>
+            <option value="-4.5">UTC-4:30 (Venezuela)</option>
+            <option value="-4">UTC-4 (Bolivia, Chile, Paraguay)</option>
+            <option value="-3">UTC-3 (Uruguay, Argentina, Brasil)</option>
+            <option value="1">UTC+1 (España)</option>
+        </select>
+
+        <div id="current-user-time"></div>
+
+        <div class="timeline-container">
+            <div id="timeline-indicator" class="timeline-indicator"></div>
+            <p class="slots-explanation">
+                Cada evento tiene una reunión de 30 minutos, seguida de la salida. La llegada se espera hasta 1 hora después de la salida, con 15 minutos adicionales para despedidas. Las reuniones se solapan 15 minutos con el próximo evento.
+            </p>
+            <div class="timeline" id="slots"></div>
+            <button id="copy-convoy-info">Copiar Info del Convoy</button>
+            <div class="event-timeline">
+                <h3>Línea de Tiempo del Evento Actual</h3>
+                <div id="timeline-bar" class="timeline-bar"></div>
+                <div id="timeline-labels" class="timeline-labels"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+    </footer>
+
+    <script>
+        // --- BASE EN UTC ---
+        const convoySlots = [
+            { name: "Slot A", start: "23:00", duration: 30 }, // 20:00 Uruguay
+            { name: "Slot B", start: "00:30", duration: 30 }, // 21:30 Uruguay
+            { name: "Slot C", start: "02:00", duration: 30 }, // 23:00 Uruguay
+            { name: "Slot D", start: "03:30", duration: 30 }, // 00:30 Uruguay
+            { name: "Slot E", start: "05:00", duration: 30 }, // 23:00 México
+            { name: "Slot F", start: "06:30", duration: 30 }, // 00:30 México
+            { name: "Slot G", start: "08:00", duration: 30 }  // 02:00 México
+        ];
+
+        let selectedSlot = null;
+        let selectedDate = new Date();
+
+        function pad(n) { return n < 10 ? "0" + n : n; }
+
+        function formatDate(d) {
+            return pad(d.getHours()) + ":" + pad(d.getMinutes());
+        }
+
+        function formatDateForDisplay(d) {
+            const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+            return `${d.getDate()} de ${months[d.getMonth()]}`;
+        }
+
+        function getUnixTimestamp(date) {
+            return Math.floor(date.getTime() / 1000);
+        }
+
+        async function fetchTimeFromInternet() {
+            const sources = [
+                'http://worldtimeapi.org/api/ip',
+                'https://ipapi.co/json/',
+                'https://freegeoip.app/json/'
+            ];
+
+            for (const source of sources) {
+                try {
+                    const response = await fetch(source, { mode: 'cors' });
+                    const data = await response.json();
+                    if (source.includes('worldtimeapi')) {
+                        const utcDate = new Date(data.utc_datetime);
+                        const offset = data.utc_offset ? parseFloat(data.utc_offset.replace(/[^\d.-]/g, '')) : -3;
+                        if (!isNaN(offset)) {
+                            console.log(`WorldTimeAPI: offset=${offset}, time=${utcDate}`);
+                            return { time: utcDate, offset };
+                        }
+                    } else if (source.includes('ipapi')) {
+                        const offset = data.utc_offset ? parseFloat(data.utc_offset.replace(/[^\d.-]/g, '')) : -3;
+                        if (!isNaN(offset)) {
+                            console.log(`ipapi: offset=${offset}`);
+                            return { time: new Date(data.utc_datetime || new Date()), offset };
+                        }
+                    } else if (source.includes('freegeoip')) {
+                        const offset = data.time_zone && data.time_zone.offset ? parseFloat(data.time_zone.offset) : -3;
+                        if (!isNaN(offset)) {
+                            console.log(`freegeoip: offset=${offset}`);
+                            return { time: new Date(), offset };
+                        }
+                    }
+                } catch (error) {
+                    console.warn(`Error fetching time from ${source}:`, error);
+                }
+            }
+            // Fallback to UTC-3 (Uruguay)
+            console.log(`Fallback: offset=-3`);
+            return { time: new Date(), offset: -3 };
+        }
+
+        async function updateTime() {
+            const select = document.getElementById("timezone-select");
+            const selValue = select.value;
+            let userOffset;
+
+            if (selValue === "auto") {
+                const { time, offset } = await fetchTimeFromInternet();
+                userOffset = offset;
+                const utc = time.getTime() + (time.getTimezoneOffset() * 60000);
+                const userNow = new Date(utc + (userOffset * 3600000));
+                document.getElementById("current-user-time").textContent =
+                    `Tu hora actual: ${formatDate(userNow)} (UTC${userOffset >= 0 ? "+" : ""}${userOffset})`;
+
+                // Actualizar select solo si es "auto"
+                if (!isNaN(offset)) {
+                    let closestOption = select.options[1];
+                    let minDiff = Math.abs(parseFloat(closestOption.value) - offset);
+                    for (let i = 2; i < select.options.length; i++) {
+                        const diff = Math.abs(parseFloat(select.options[i].value) - offset);
+                        if (diff < minDiff) {
+                            minDiff = diff;
+                            closestOption = select.options[i];
+                        }
+                    }
+                    select.value = closestOption.value;
+                }
+                return { userNow, userOffset };
+            } else {
+                userOffset = parseFloat(selValue);
+                const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
+                const userNow = new Date(utc + (userOffset * 3600000));
+                document.getElementById("current-user-time").textContent =
+                    `Tu hora actual: ${formatDate(userNow)} (UTC${userOffset >= 0 ? "+" : ""}${userOffset})`;
+                return { userNow, userOffset };
+            }
+        }
+
+        function renderSlots(userNow, userOffset) {
+            const slotsDiv = document.getElementById("slots");
+            const timelineIndicator = document.getElementById("timeline-indicator");
+            const timelineBar = document.getElementById("timeline-bar");
+            const timelineLabels = document.getElementById("timeline-labels");
+            const copyButton = document.getElementById("copy-convoy-info");
+            slotsDiv.innerHTML = "";
+            timelineIndicator.innerHTML = "";
+            timelineBar.innerHTML = "";
+            timelineLabels.innerHTML = "";
+
+            let nextSlotElem = null;
+            let minDiff = Infinity;
+            let nextSlotInfo = null;
+            let currentSlot = null;
+
+            convoySlots.forEach((slot, index) => {
+                const [hh, mm] = slot.start.split(":").map(Number);
+                const utcBase = new Date(selectedDate);
+                utcBase.setUTCHours(hh, mm, 0, 0);
+                const localStart = new Date(utcBase.getTime() + userOffset * 3600000);
+                const salida = new Date(localStart.getTime() + slot.duration * 60000);
+                const llegada = new Date(salida.getTime() + 60 * 60000);
+                const despedida = new Date(llegada.getTime() + 15 * 60000);
+                const nextReunion = new Date(salida.getTime() + 75 * 60000);
+                const nextSalida = new Date(nextReunion.getTime() + 30 * 60000);
+
+                const div = document.createElement("div");
+                div.className = "slot";
+                div.innerHTML = `
+                    <h4>${slot.name}</h4>
+                    <div class="event">Reunión: ${formatDate(localStart)}</div>
+                    <div class="event">Salida: ${formatDate(salida)}</div>
+                    <div class="range-bar"></div>
+                `;
+                div.onclick = () => {
+                    document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
+                    div.classList.add("selected");
+                    selectedSlot = { name: slot.name, localStart, salida, despedida, date: new Date(selectedDate) };
+                };
+                slotsDiv.appendChild(div);
+
+                // Buscar el próximo slot (solo si es la fecha actual)
+                if (selectedDate.toDateString() === userNow.toDateString()) {
+                    const diff = localStart - userNow;
+                    if (diff > 0 && diff < minDiff) {
+                        minDiff = diff;
+                        nextSlotElem = div;
+                        nextSlotInfo = { name: slot.name, time: formatDate(localStart) };
+                    }
+
+                    // Identificar el slot actual (si estamos en su ventana de tiempo)
+                    const despedidaEnd = new Date(localStart.getTime() + (slot.duration + 75) * 60000);
+                    if (userNow >= localStart && userNow <= despedidaEnd) {
+                        currentSlot = { slot, localStart, salida, llegada, despedida, nextReunion, nextSalida };
+                    }
+                }
+            });
+
+            // Actualizar línea de tiempo superior (solo para la fecha actual)
+            if (selectedDate.toDateString() === userNow.toDateString()) {
+                if (currentSlot) {
+                    const { slot, localStart, salida, llegada, despedida, nextReunion } = currentSlot;
+                    const preSalida = new Date(salida.getTime() - 5 * 60000); // 5 minutos antes de salida
+                    const nextSlotIndex = convoySlots.findIndex(s => s.name === slot.name) + 1;
+                    const hasNextSlot = nextSlotIndex < convoySlots.length;
+
+                    if (userNow >= preSalida && userNow < salida) {
+                        timelineIndicator.textContent = `¡Prepárate! El convoy de ${slot.name} está por salir a las ${formatDate(salida)}.`;
+                    } else if (userNow >= salida && userNow < llegada) {
+                        timelineIndicator.textContent = `El convoy de ${slot.name} está en camino.`;
+                    } else if (userNow >= llegada && userNow < despedida) {
+                        timelineIndicator.textContent = `El convoy de ${slot.name} está llegando.`;
+                    } else if (userNow >= despedida && userNow <= nextReunion) {
+                        let message = `El convoy de ${slot.name} está en agradecimientos y despedidas.`;
+                        if (hasNextSlot) {
+                            message += ` ¡Atención! La reunión de ${convoySlots[nextSlotIndex].name} está por empezar.`;
+                        }
+                        timelineIndicator.textContent = message;
+                    }
+                } else if (nextSlotInfo) {
+                    timelineIndicator.textContent = `Próximo: ${nextSlotInfo.name} - Reunión ${nextSlotInfo.time}`;
+                } else {
+                    timelineIndicator.textContent = "No hay eventos próximos hoy";
+                }
+            } else {
+                timelineIndicator.textContent = `Horarios para ${formatDateForDisplay(selectedDate)}`;
+            }
+
+            // Resaltar y centrar el próximo slot (solo para la fecha actual)
+            if (selectedDate.toDateString() === userNow.toDateString() && nextSlotElem) {
+                nextSlotElem.classList.add("highlight");
+                nextSlotElem.scrollIntoView({ behavior: "smooth", inline: "center" });
+            }
+
+            // Renderizar línea de tiempo visual del evento actual (solo para la fecha actual)
+            if (selectedDate.toDateString() === userNow.toDateString() && currentSlot) {
+                const { slot, localStart, salida, llegada, despedida, nextReunion, nextSalida } = currentSlot;
+
+                // Calcular posición de la marca
+                const totalDuration = (nextSalida - localStart) / 60000; // en minutos
+                const elapsed = (userNow - localStart) / 60000;
+                const markerPosition = Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100);
+
+                // Segmentos de la línea de tiempo
+                const segments = [
+                    { class: "reunion", width: (30 / totalDuration) * 100, label: `Reunión: ${formatDate(localStart)}` },
+                    { class: "viaje", width: (60 / totalDuration) * 100, label: `Salida: ${formatDate(salida)}` },
+                    { class: "despedida", width: (15 / totalDuration) * 100, label: `Llegada hasta: ${formatDate(llegada)}` },
+                    { class: "next-reunion", width: (15 / totalDuration) * 100, label: `Despedidas hasta: ${formatDate(despedida)}` },
+                    { class: "next-salida", width: (30 / totalDuration) * 100, label: `Próxima reunión: ${formatDate(nextReunion)}` }
+                ];
+
+                segments.forEach(segment => {
+                    const div = document.createElement("div");
+                    div.className = `timeline-segment ${segment.class}`;
+                    div.style.width = `${segment.width}%`;
+                    div.textContent = segment.label.split(': ')[0]; // Solo el texto (ej. "Reunión")
+                    timelineBar.appendChild(div);
+
+                    const label = document.createElement("div");
+                    label.textContent = segment.label;
+                    timelineLabels.appendChild(label);
+                });
+
+                if (markerPosition >= 0 && markerPosition <= 100) {
+                    const marker = document.createElement("div");
+                    marker.className = "timeline-marker";
+                    marker.style.left = `${markerPosition}%`;
+                    timelineBar.appendChild(marker);
+                }
+            } else {
+                timelineBar.innerHTML = `<div style="width: 100%; text-align: center; color: #333;">No hay evento activo en ${formatDateForDisplay(selectedDate)}</div>`;
+            }
+
+            // Configurar botón de copiar
+            copyButton.onclick = () => {
+                if (!selectedSlot) {
+                    alert('Por favor, selecciona un slot primero.');
+                    return;
+                }
+                const { name, localStart, salida, despedida, date } = selectedSlot;
+                const convoyInfo = `[**Convoy ${name} - ${formatDateForDisplay(date)}**](https://convoyrama.github.io/events.html)\nReunión: <t:${getUnixTimestamp(localStart)}:f>\nSalida: <t:${getUnixTimestamp(salida)}:f>\nEstimado de término: <t:${getUnixTimestamp(despedida)}:f>`;
+                navigator.clipboard.writeText(convoyInfo).then(() => {
+                    alert('¡Información del convoy copiada al portapapeles!');
+                }).catch(err => {
+                    console.error('Error al copiar:', err);
+                });
+            };
+        }
+
+        async function init() {
+            const dateSelect = document.getElementById("date-select");
+            selectedDate = new Date();
+            dateSelect.value = selectedDate.toISOString().split('T')[0];
+
+            const { userNow, userOffset } = await updateTime();
+            renderSlots(userNow, userOffset);
+
+            dateSelect.addEventListener("change", async () => {
+                selectedDate = new Date(dateSelect.value);
+                const { userNow, userOffset } = await updateTime();
+                renderSlots(userNow, userOffset);
+            });
+
+            document.getElementById("timezone-select").addEventListener("change", async () => {
+                const { userNow, userOffset } = await updateTime();
+                renderSlots(userNow, userOffset);
+            });
+
+            setInterval(async () => {
+                const { userNow, userOffset } = await updateTime();
+                renderSlots(userNow, userOffset);
+            }, 300000); // actualizar cada 5 minutos
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

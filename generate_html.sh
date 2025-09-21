@@ -41,23 +41,22 @@ cat << 'EOF' > "$OUTPUT_HTML"
             flex-direction: column;
         }
         header {
-            padding: 10px; /* Reducido para menos espacio */
+            padding: 8px;
             text-align: center;
             position: relative;
             z-index: 10;
             background: var(--accent-bg);
-            border-bottom: none; /* Eliminamos borde para evitar líneas */
         }
         header p {
             font-size: 1.2em;
             text-shadow: none;
             font-family: Arial, sans-serif;
             font-weight: normal;
-            margin: 5px 0; /* Reducido para menos espacio */
+            margin: 3px 0;
             color: #fff;
         }
         nav {
-            padding: 5px; /* Reducido */
+            padding: 5px;
             text-align: center;
         }
         nav a, nav a:visited {
@@ -72,31 +71,36 @@ cat << 'EOF' > "$OUTPUT_HTML"
         }
         .gallery {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 columnas */
-            gap: 15px; /* Reducido para menos espacio */
-            padding: 10px; /* Reducido */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px; /* Reducido ligeramente para coherencia */
+            padding: 8px;
             max-width: 1200px;
             margin: 0 auto;
         }
         .gallery-item {
             text-align: center;
         }
+        .gallery-item a {
+            display: block;
+            text-decoration: none;
+        }
         .gallery-item img {
-            width: 100%;
+            max-width: 40%; /* Reduce al 40% del tamaño original */
             height: auto;
             object-fit: cover;
             border: 1px solid #000;
             border-radius: 6px;
+            margin: 0 auto; /* Centra la imagen */
         }
         .gallery-item p {
-            font-size: 1em;
-            margin: 5px 0;
+            font-size: 0.8em; /* Reducido para proporcionalidad */
+            margin: 3px 0;
             color: #333;
         }
         .gallery-item button {
-            padding: 6px 12px;
-            font-size: 14px;
-            margin: 5px 2px;
+            padding: 5px 10px; /* Reducido ligeramente */
+            font-size: 12px; /* Reducido para proporcionalidad */
+            margin: 3px 2px;
             background: rgb(90,165,25);
             color: #fff;
             border: none;
@@ -109,7 +113,7 @@ cat << 'EOF' > "$OUTPUT_HTML"
         footer {
             color: white;
             text-align: center;
-            padding: 10px;
+            padding: 8px;
             margin-top: auto;
         }
         footer small {
@@ -129,7 +133,7 @@ cat << 'EOF' > "$OUTPUT_HTML"
     <div class="gallery">
 EOF
 
-# Busca imágenes en el directorio y genera contenedores con botones
+# Busca imágenes en el directorio y genera contenedores con enlaces y botones
 for img in "$IMG_DIR"/*.{jpg,jpeg,png,gif}; do
     if [ -f "$img" ]; then
         # Extrae el nombre del archivo (sin ruta ni extensión)
@@ -137,8 +141,10 @@ for img in "$IMG_DIR"/*.{jpg,jpeg,png,gif}; do
         name=$(echo "$filename" | sed 's/driver_license_\(.*\)\.\(jpg\|jpeg\|png\|gif\)/\1/')
         # URL base para las imágenes
         img_url="https://convoyrama.github.io/userid/$filename"
-        # Código TruckersMP
-        tmp_code="[![https://convoyrama.github.io/pages/id.html]($img_url)]"
+        # URL del enlace para la imagen
+        link_url="https://convoyrama.github.io/pages/id.html"
+        # Código TruckersMP (Markdown con enlace)
+        tmp_code="[![ID $name]($img_url)]($link_url)"
         # BBCode
         bbcode="[img]$img_url[/img]"
         # Enlace directo
@@ -146,7 +152,9 @@ for img in "$IMG_DIR"/*.{jpg,jpeg,png,gif}; do
         # Genera el contenedor para la imagen
         cat << EOF >> "$OUTPUT_HTML"
         <div class="gallery-item">
-            <img src="$img" alt="ID $name">
+            <a href="$link_url">
+                <img src="$img" alt="ID $name">
+            </a>
             <p>$name</p>
             <button onclick="copyToClipboard('$tmp_code')">Copiar TruckersMP</button>
             <button onclick="copyToClipboard('$bbcode')">Copiar BBCode</button>
