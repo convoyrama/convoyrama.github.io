@@ -792,12 +792,14 @@
             ctx.shadowOffsetY = 0;
             ctx.shadowBlur = 10;
 
-            // Dibujar título centrado en la parte superior
+            // Dibujar título (nombre del evento arriba, fecha debajo, centrados)
             ctx.font = `bold ${textSize + 10}px Arial`;
             ctx.fillStyle = textColor;
             ctx.textAlign = "center";
-            const title = `${formatDateForDisplay(new Date(customDate))} - ${customEventName}`;
-            ctx.fillText(title, canvas.width / 2, 50);
+            const eventName = customEventName;
+            const eventDate = formatDateForDisplay(new Date(customDate));
+            ctx.fillText(eventName, canvas.width / 2, 50); // Nombre del evento
+            ctx.fillText(eventDate, canvas.width / 2, 50 + (textSize + 15)); // Fecha debajo
 
             // Configurar bloque de texto
             ctx.font = `bold ${textSize}px Arial`;
@@ -833,7 +835,7 @@
 
             const textX = 20;
             const lineHeight = textSize + 15;
-            let textY = textAlign === "top-left" ? 100 : canvas.height - (textLines.length * lineHeight) - 20;
+            let textY = textAlign === "top-left" ? 100 + (textSize + 15) : canvas.height - (textLines.length * lineHeight) - 20; // Ajustar textY para el título
 
             // Dibujar fondo semiopaco si está habilitado
             if (textBackground === "with-background") {
@@ -866,16 +868,17 @@
             if (circleImageTop) {
                 circleCtxTop.save();
                 circleCtxTop.beginPath();
-                circleCtxTop.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2 - 3, 0, Math.PI * 2);
+                circleCtxTop.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
                 circleCtxTop.clip();
                 const scaledWidthTop = circleImageTop.width * circleImageScaleTop;
                 const scaledHeightTop = circleImageTop.height * circleImageScaleTop;
                 circleCtxTop.drawImage(circleImageTop, circleImageXTop, circleImageYTop, scaledWidthTop, scaledHeightTop);
                 circleCtxTop.restore();
+                // Contorno simple
                 circleCtxTop.beginPath();
-                circleCtxTop.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2 - 1.5, 0, Math.PI * 2);
+                circleCtxTop.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
                 circleCtxTop.strokeStyle = "rgb(90,165,25)";
-                circleCtxTop.lineWidth = 3;
+                circleCtxTop.lineWidth = 1; // Borde más fino
                 circleCtxTop.stroke();
             }
 
@@ -884,16 +887,17 @@
             if (circleImageBottom) {
                 circleCtxBottom.save();
                 circleCtxBottom.beginPath();
-                circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2 - 3, 0, Math.PI * 2);
+                circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
                 circleCtxBottom.clip();
                 const scaledWidthBottom = circleImageBottom.width * circleImageScaleBottom;
                 const scaledHeightBottom = circleImageBottom.height * circleImageScaleBottom;
                 circleCtxBottom.drawImage(circleImageBottom, circleImageXBottom, circleImageYBottom, scaledWidthBottom, scaledHeightBottom);
                 circleCtxBottom.restore();
+                // Contorno simple
                 circleCtxBottom.beginPath();
-                circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2 - 1.5, 0, Math.PI * 2);
+                circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
                 circleCtxBottom.strokeStyle = "rgb(90,165,25)";
-                circleCtxBottom.lineWidth = 3;
+                circleCtxBottom.lineWidth = 1; // Borde más fino
                 circleCtxBottom.stroke();
             }
 
