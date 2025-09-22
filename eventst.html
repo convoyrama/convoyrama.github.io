@@ -20,7 +20,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background: #333; /* Eliminado var(--accent-bg) ya que no se define */
+            background: #333;
         }
         header {
             padding: 10px;
@@ -160,30 +160,30 @@
         }
         #event-description, #custom-event-description {
             width: 100%;
-            max-height: 60px;
+            max-height: 50px;
             resize: vertical;
+            rows: 2;
         }
         .input-row {
             display: flex;
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
+            justify-content: flex-start;
         }
-        .input-row input {
-            width: 45%;
-        }
-        #date-display, #custom-date-display {
-            font-size: .9em;
-            color: rgb(90, 165, 25);
+        .time-info {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
             margin: 5px 0;
-            text-align: center;
-        }
-        #current-user-time {
-            font-size: 1.1em;
-            font-weight: bold;
-            margin: 10px 0;
-            text-align: center;
+            font-size: 0.9em;
             color: rgb(240, 240, 240);
+        }
+        #date-display, #current-user-time {
+            font-size: 0.9em;
+            color: rgb(90, 165, 25);
+            text-align: center;
         }
         .event-timeline {
             margin-top: 20px;
@@ -268,7 +268,7 @@
         .copy-container, .custom-event {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: 10px;
         }
         #copy-message {
@@ -302,7 +302,7 @@
                 font-size: .8em;
                 padding: 5px;
             }
-            #custom-date, #custom-time {
+            #date-select, #custom-date, #custom-time {
                 width: 120px;
             }
             #event-name, #event-link, #custom-event-name, #custom-event-link {
@@ -314,17 +314,18 @@
             }
             .input-row {
                 flex-direction: column;
-                align-items: stretch;
+                align-items: flex-start;
             }
-            .input-row input {
-                width: 100%;
+            .time-info {
+                flex-direction: column;
+                gap: 5px;
             }
         }
         @media (max-width: 480px) {
             .slot {
                 width: 100%;
             }
-            .timeline-indicator, #current-user-time, #date-display, #custom-date-display {
+            .timeline-indicator, #date-display, #current-user-time {
                 font-size: .9em;
             }
             .timeline-bar {
@@ -346,20 +347,24 @@
         <p id="t2">Horarios de Convoys</p>
     </header>
     <div class="contenedor">
-        <label for="date-select">Fecha:</label>
-        <input type="date" id="date-select">
-        <div id="date-display"></div>
-        <label for="timezone-select">Zona Horaria:</label>
-        <select id="timezone-select">
-            <option value="auto" selected>Detectar automáticamente</option>
-            <option value="-6">UTC-6 (México, Guatemala, Honduras, Costa Rica)</option>
-            <option value="-5">UTC-5 (Colombia, Perú, Ecuador)</option>
-            <option value="-4.5">UTC-4:30 (Venezuela)</option>
-            <option value="-4">UTC-4 (Bolivia, Chile, Paraguay)</option>
-            <option value="-3">UTC-3 (Uruguay, Argentina, Brasil)</option>
-            <option value="1">UTC+1 (España)</option>
-        </select>
-        <div id="current-user-time"></div>
+        <div class="input-row">
+            <label for="date-select">Fecha:</label>
+            <input type="date" id="date-select">
+            <label for="timezone-select">Zona Horaria:</label>
+            <select id="timezone-select">
+                <option value="auto" selected>Detectar automáticamente</option>
+                <option value="-6">UTC-6 (México, Guatemala, Honduras, Costa Rica)</option>
+                <option value="-5">UTC-5 (Colombia, Perú, Ecuador)</option>
+                <option value="-4.5">UTC-4:30 (Venezuela)</option>
+                <option value="-4">UTC-4 (Bolivia, Chile, Paraguay)</option>
+                <option value="-3">UTC-3 (Uruguay, Argentina, Brasil)</option>
+                <option value="1">UTC+1 (España)</option>
+            </select>
+        </div>
+        <div class="time-info">
+            <div id="date-display"></div>
+            <div id="current-user-time"></div>
+        </div>
         <div class="timeline-container">
             <div id="timeline-indicator" class="timeline-indicator"></div>
             <p class="slots-explanation">
@@ -373,6 +378,7 @@
                     <input type="text" id="event-name" placeholder="Nombre del evento">
                     <input type="text" id="event-link" placeholder="Enlace del evento">
                 </div>
+                <label for="event-description">Descripción:</label>
                 <textarea id="event-description" placeholder="Descripción del evento" rows="2"></textarea>
                 <button id="copy-convoy-info">Código para Discord</button>
             </div>
@@ -510,7 +516,7 @@
             const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
             const userNow = new Date(utc + (userOffset * 3600000));
             const offsetDisplay = userOffset % 1 === 0 ? userOffset : userOffset.toFixed(1);
-            document.getElementById("current-user-time").textContent = `Tu hora actual: ${formatTime(userNow)} (UTC${userOffset >= 0 ? "+" : ""}${offsetDisplay})`;
+            document.getElementById("current-user-time").textContent = `Hora actual: ${formatTime(userNow)} (UTC${userOffset >= 0 ? "+" : ""}${offsetDisplay})`;
             localStorage.setItem('userOffset', userOffset.toString());
             return { userNow, userOffset };
         }
@@ -555,8 +561,7 @@
                 div.innerHTML = `
                     <h4>${slot.name}</h4>
                     <div class="event">Reunión: ${formatTime(localStart)}</div>
-                    <div class="event">Convoy en ruta: ${formatTime(convoyEnRuta)}</div>
-                    <div class="event">Finalización: ${formatTime(finalizacion)}</div>
+                    <div class="event">Salida: ${formatTime(convoyEnRuta)}</div>
                     <div class="range-bar"></div>
                 `;
                 div.onclick = () => {
@@ -622,7 +627,7 @@
                 const markerPosition = Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100);
                 const segments = [
                     { class: "reunion", width: (30 / totalDuration) * 100, label: `Reunión: ${formatTime(localStart)}` },
-                    { class: "viaje", width: (50 / totalDuration) * 100, label: `Convoy en ruta: ${formatTime(convoyEnRuta)}` },
+                    { class: "viaje", width: (50 / totalDuration) * 100, label: `Salida: ${formatTime(convoyEnRuta)}` },
                     { class: "despedida", width: (10 / totalDuration) * 100, label: `Finalización: ${formatTime(finalizacion)}` }
                 ];
                 segments.forEach(segment => {
@@ -654,7 +659,7 @@
                 const eventLink = eventLinkInput.value || "https://convoyrama.github.io/events.html";
                 const eventDescription = eventDescriptionInput.value || "Sin descripción";
                 const { localStart, convoyEnRuta, finalizacion, date } = selectedSlot;
-                const convoyInfo = `[**${eventName} - ${formatDateForDisplay(date)}**](${eventLink})\nReunión: <t:${getUnixTimestamp(localStart)}:f>\nConvoy en ruta: <t:${getUnixTimestamp(convoyEnRuta)}:f>\nFinalización: <t:${getUnixTimestamp(finalizacion)}:f>\nDescripción: ${eventDescription}`;
+                const convoyInfo = `[**${eventName} - ${formatDateForDisplay(date)}**](${eventLink})\nReunión: <t:${getUnixTimestamp(localStart)}:f>\nSalida: <t:${getUnixTimestamp(convoyEnRuta)}:f>\nFinalización: <t:${getUnixTimestamp(finalizacion)}:f>\nDescripción: ${eventDescription}`;
                 navigator.clipboard.writeText(convoyInfo).then(() => {
                     showCopyMessage();
                 }).catch(err => console.error('Error al copiar:', err));
@@ -677,7 +682,7 @@
                 const localStart = new Date(utcBase.getTime() + userOffset * 3600000);
                 const convoyEnRuta = new Date(localStart.getTime() + 30 * 60000);
                 const finalizacion = new Date(convoyEnRuta.getTime() + 50 * 60000);
-                const convoyInfo = `[**${customEventName} - ${formatDateForDisplay(customDateObj)}**](${customEventLink})\nReunión: <t:${getUnixTimestamp(localStart)}:f>\nConvoy en ruta: <t:${getUnixTimestamp(convoyEnRuta)}:f>\nFinalización: <t:${getUnixTimestamp(finalizacion)}:f>\nDescripción: ${customEventDescription}`;
+                const convoyInfo = `[**${customEventName} - ${formatDateForDisplay(customDateObj)}**](${customEventLink})\nReunión: <t:${getUnixTimestamp(localStart)}:f>\nSalida: <t:${getUnixTimestamp(convoyEnRuta)}:f>\nFinalización: <t:${getUnixTimestamp(finalizacion)}:f>\nDescripción: ${customEventDescription}`;
                 navigator.clipboard.writeText(convoyInfo).then(() => {
                     showCopyMessage();
                 }).catch(err => console.error('Error al copiar:', err));
