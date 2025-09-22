@@ -511,21 +511,7 @@
                   savedOffset = localStorage.getItem('userOffset'),
                   selValue = select.value;
             console.log(`updateTime: selValue=${selValue}, savedOffset=${savedOffset}`);
-            if (selValue !== "auto" && savedOffset && savedOffset === selValue) {
-                userOffset = parseFloat(selValue);
-                console.log(`Offset desde selección manual: ${userOffset}`);
-            } else {
-                const { time, offset } = await fetchTimezone();
-                userOffset = offset;
-                const supportedOffsets = [-6, -5, -4.5, -4, -3, 1];
-                userOffset = supportedOffsets.reduce((prev, curr) => Math.abs(curr - offset) < Math.abs(prev - offset) ? curr : prev);
-                if (userOffset !== -3 && (timezoneMap[Intl.DateTimeFormat().resolvedOptions().timeZone] === -3 || selValue === "-3")) {
-                    console.warn(`Forzando userOffset a -3 (UTC-3) debido a detección incorrecta: ${userOffset}`);
-                    userOffset = -3;
-                }
-                console.log(`Offset calculado: ${userOffset}, original: ${offset}`);
-                if (selValue === "auto") select.value = userOffset.toString();
-            }
+            userOffset = -3; // Forzar UTC-3 para consistencia
             const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000),
                   userNow = new Date(utc + (userOffset * 3600000)),
                   offsetDisplay = userOffset % 1 === 0 ? userOffset : userOffset.toFixed(1);
