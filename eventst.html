@@ -146,7 +146,8 @@
         }
         #timezone-select, #date-select, #event-name, #event-link, #event-description,
         #custom-date, #custom-time, #custom-event-name, #custom-event-link,
-        #custom-event-description, #custom-start-place, #custom-destination, #custom-server {
+        #custom-event-description, #custom-start-place, #custom-destination, #custom-server,
+        #map-upload, #circle-upload-top, #circle-upload-bottom {
             padding: 6px;
             margin: 5px;
             font-size: .85em;
@@ -305,10 +306,11 @@
         }
         .circle-canvas {
             position: absolute;
-            width: 135px; /* 1080 / 4 / 2 para visualización */
-            height: 135px;
+            width: 180px; /* 360 / 2 para visualización */
+            height: 180px;
             border-radius: 50%;
             overflow: hidden;
+            border: 3px solid rgb(90,165,25);
         }
         #circle-canvas-top {
             top: 10px;
@@ -340,11 +342,6 @@
         .canvas-controls button:hover, .canvas-controls select:hover {
             opacity: .8;
         }
-        #map-upload, #circle-upload-top, #circle-upload-bottom {
-            padding: 6px;
-            margin: 5px;
-            font-size: .85em;
-        }
         @media (max-width: 768px) {
             .slot {
                 width: calc(50% - 10px);
@@ -357,7 +354,8 @@
             }
             #timezone-select, #date-select, #event-name, #event-link, #event-description,
             #custom-date, #custom-time, #custom-event-name, #custom-event-link,
-            #custom-event-description, #custom-start-place, #custom-destination, #custom-server {
+            #custom-event-description, #custom-start-place, #custom-destination, #custom-server,
+            #map-upload, #circle-upload-top, #circle-upload-bottom {
                 font-size: .8em;
                 padding: 5px;
             }
@@ -385,8 +383,8 @@
                 height: 300px; /* Ajustado para pantallas más pequeñas */
             }
             .circle-canvas {
-                width: 75px; /* Ajustado para pantallas más pequeñas */
-                height: 75px;
+                width: 100px; /* Ajustado para pantallas más pequeñas */
+                height: 100px;
             }
         }
         @media (max-width: 480px) {
@@ -406,8 +404,8 @@
                 height: 200px; /* Más pequeño para móviles */
             }
             .circle-canvas {
-                width: 50px; /* Más pequeño para móviles */
-                height: 50px;
+                width: 66px; /* Más pequeño para móviles */
+                height: 66px;
             }
         }
     </style>
@@ -480,20 +478,26 @@
                 </div>
                 <label for="custom-event-description">Descripción:</label>
                 <textarea id="custom-event-description" placeholder="Descripción del evento" rows="2"></textarea>
-                <label for="map-upload">Subir Mapa:</label>
-                <input type="file" id="map-upload" accept="image/*">
-                <label for="circle-upload-top">Subir Imagen Superior (Círculo):</label>
-                <input type="file" id="circle-upload-top" accept="image/*">
-                <label for="circle-upload-bottom">Subir Imagen Inferior (Círculo):</label>
-                <input type="file" id="circle-upload-bottom" accept="image/*">
+                <div class="input-row">
+                    <label for="map-upload">Subir Mapa:</label>
+                    <input type="file" id="map-upload" accept="image/*">
+                    <label for="circle-upload-top">Punto de partida:</label>
+                    <input type="file" id="circle-upload-top" accept="image/*">
+                    <label for="circle-upload-bottom">Punto de llegada:</label>
+                    <input type="file" id="circle-upload-bottom" accept="image/*">
+                </div>
                 <div class="canvas-container">
                     <canvas id="map-canvas"></canvas>
                     <canvas id="circle-canvas-top" class="circle-canvas"></canvas>
                     <canvas id="circle-canvas-bottom" class="circle-canvas"></canvas>
                 </div>
                 <div class="canvas-controls">
-                    <button id="zoom-in">Zoom In</button>
-                    <button id="zoom-out">Zoom Out</button>
+                    <button id="zoom-in">Zoom In (Mapa)</button>
+                    <button id="zoom-out">Zoom Out (Mapa)</button>
+                    <button id="zoom-in-top">Zoom In (Punto de partida)</button>
+                    <button id="zoom-out-top">Zoom Out (Punto de partida)</button>
+                    <button id="zoom-in-bottom">Zoom In (Punto de llegada)</button>
+                    <button id="zoom-out-bottom">Zoom Out (Punto de llegada)</button>
                     <button id="reset-canvas">Restablecer</button>
                     <select id="text-align">
                         <option value="top-left">Arriba a la Izquierda</option>
@@ -560,7 +564,15 @@
         let imageX = 0;
         let imageY = 0;
         let imageScale = 1;
+        let circleImageXTop = 0;
+        let circleImageYTop = 0;
+        let circleImageScaleTop = 1;
+        let circleImageXBottom = 0;
+        let circleImageYBottom = 0;
+        let circleImageScaleBottom = 1;
         let isDragging = false;
+        let isDraggingTop = false;
+        let isDraggingBottom = false;
         let startX, startY;
 
         function pad(n) {
@@ -666,13 +678,29 @@
                 ctx.drawImage(mapImage, imageX, imageY, scaledWidth, scaledHeight);
             }
 
-            // Configurar texto
-            ctx.font = `${textSize}px Arial`;
+            // Configurar sombra para el texto
+            ctx.shadowColor = "rgba(0, 0, 0, 0.8)"; // Negro con opacidad para mayor contraste
+            ctx.shadowOffsetX = 8;
+            ctx.shadowOffsetY = 8;
+            ctx.shadowBlur = 15;
+
+            // Dibujar título centrado en la parte superior
+            ctx.font = `${textSize + 10}px Arial`; // Título un poco más grande
             ctx.fillStyle = "rgb(240,240,240)";
-            ctx.shadowColor = "rgb(20,20,20)";
-            ctx.shadowOffsetX = 6;
-            ctx.shadowOffsetY = 6;
-            ctx.shadowBlur = 12;
+            ctx.textAlign = "center";
+            const title = `${formatDateForDisplay(new Date(customDate))} - ${customEventName}`;
+            ctx.fillText(title, canvas.width / 2, 50);
+
+            // Configurar texto del bloque
+            ctx.font = `${textSize}px Arial`;
+            ctx.textAlign = "left";
+            const textLines = [
+                `Servidor: ${customServer}`,
+                `Partida: ${customStartPlace}`,
+                `Destino: ${customDestination}`,
+                "",
+                "Hora de reunión / Hora de partida:"
+            ];
 
             // Calcular horas en diferentes zonas horarias
             let localStart = null;
@@ -683,15 +711,6 @@
                 const utcBase = new Date(customDateObj.getTime() - userOffset * 3600000);
                 localStart = new Date(utcBase.getTime() + userOffset * 3600000);
             }
-
-            const textLines = [
-                `${formatDateForDisplay(new Date(customDate))} - ${customEventName}`,
-                `Servidor: ${customServer}`,
-                `Partida: ${customStartPlace}`,
-                `Destino: ${customDestination}`,
-                "",
-                "Hora de reunión / Hora de partida:"
-            ];
 
             const timezones = [-6, -5, -4.5, -4, -3];
             timezones.forEach(offset => {
@@ -706,9 +725,8 @@
 
             const textX = 20;
             const lineHeight = textSize + 10;
-            let textY = textAlign === "top-left" ? 40 : canvas.height - (textLines.length * lineHeight) - 20;
+            let textY = textAlign === "top-left" ? 100 : canvas.height - (textLines.length * lineHeight) - 20;
 
-            ctx.textAlign = "left";
             textLines.forEach((line, index) => {
                 ctx.fillText(line, textX, textY + (index * lineHeight));
             });
@@ -719,7 +737,7 @@
             const circleCtxTop = circleCanvasTop.getContext("2d");
             const circleCtxBottom = circleCanvasBottom.getContext("2d");
 
-            const circleDiameter = 270; // 1080 / 4
+            const circleDiameter = 360; // 1080 / 3
             circleCanvasTop.width = circleDiameter;
             circleCanvasTop.height = circleDiameter;
             circleCanvasBottom.width = circleDiameter;
@@ -730,24 +748,18 @@
             if (circleImageTop) {
                 circleCtxTop.save();
                 circleCtxTop.beginPath();
-                circleCtxTop.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+                circleCtxTop.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2 - 3, 0, Math.PI * 2);
                 circleCtxTop.clip();
-                const imgAspect = circleImageTop.width / circleImageTop.height;
-                const canvasAspect = 1;
-                let drawWidth, drawHeight, offsetX, offsetY;
-                if (imgAspect > canvasAspect) {
-                    drawHeight = circleDiameter;
-                    drawWidth = circleDiameter * imgAspect;
-                    offsetX = (circleDiameter - drawWidth) / 2;
-                    offsetY = 0;
-                } else {
-                    drawWidth = circleDiameter;
-                    drawHeight = circleDiameter / imgAspect;
-                    offsetX = 0;
-                    offsetY = (circleDiameter - drawHeight) / 2;
-                }
-                circleCtxTop.drawImage(circleImageTop, offsetX, offsetY, drawWidth, drawHeight);
+                const scaledWidthTop = circleImageTop.width * circleImageScaleTop;
+                const scaledHeightTop = circleImageTop.height * circleImageScaleTop;
+                circleCtxTop.drawImage(circleImageTop, circleImageXTop, circleImageYTop, scaledWidthTop, scaledHeightTop);
                 circleCtxTop.restore();
+                // Dibujar contorno
+                circleCtxTop.beginPath();
+                circleCtxTop.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2 - 1.5, 0, Math.PI * 2);
+                circleCtxTop.strokeStyle = "rgb(90,165,25)";
+                circleCtxTop.lineWidth = 3;
+                circleCtxTop.stroke();
             }
 
             // Dibujar círculo inferior
@@ -755,23 +767,18 @@
             if (circleImageBottom) {
                 circleCtxBottom.save();
                 circleCtxBottom.beginPath();
-                circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+                circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2 - 3, 0, Math.PI * 2);
                 circleCtxBottom.clip();
-                const imgAspect = circleImageBottom.width / circleImageBottom.height;
-                let drawWidthB, drawHeightB, offsetXB, offsetYB;
-                if (imgAspect > canvasAspect) {
-                    drawHeightB = circleDiameter;
-                    drawWidthB = circleDiameter * imgAspect;
-                    offsetXB = (circleDiameter - drawWidthB) / 2;
-                    offsetYB = 0;
-                } else {
-                    drawWidthB = circleDiameter;
-                    drawHeightB = circleDiameter / imgAspect;
-                    offsetXB = 0;
-                    offsetYB = (circleDiameter - drawHeightB) / 2;
-                }
-                circleCtxBottom.drawImage(circleImageBottom, offsetXB, offsetYB, drawWidthB, drawHeightB);
+                const scaledWidthBottom = circleImageBottom.width * circleImageScaleBottom;
+                const scaledHeightBottom = circleImageBottom.height * circleImageScaleBottom;
+                circleCtxBottom.drawImage(circleImageBottom, circleImageXBottom, circleImageYBottom, scaledWidthBottom, scaledHeightBottom);
                 circleCtxBottom.restore();
+                // Dibujar contorno
+                circleCtxBottom.beginPath();
+                circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2 - 1.5, 0, Math.PI * 2);
+                circleCtxBottom.strokeStyle = "rgb(90,165,25)";
+                circleCtxBottom.lineWidth = 3;
+                circleCtxBottom.stroke();
             }
 
             // Combinar canvases circulares en el canvas principal
@@ -998,6 +1005,58 @@
                 isDragging = false;
             });
 
+            // Configurar eventos del canvas circular superior
+            const circleCanvasTop = document.getElementById("circle-canvas-top");
+            circleCanvasTop.addEventListener("mousedown", (e) => {
+                if (circleImageTop) {
+                    isDraggingTop = true;
+                    startX = e.offsetX - circleImageXTop;
+                    startY = e.offsetY - circleImageYTop;
+                }
+            });
+
+            circleCanvasTop.addEventListener("mousemove", (e) => {
+                if (isDraggingTop && circleImageTop) {
+                    circleImageXTop = e.offsetX - startX;
+                    circleImageYTop = e.offsetY - startY;
+                    drawCanvas();
+                }
+            });
+
+            circleCanvasTop.addEventListener("mouseup", () => {
+                isDraggingTop = false;
+            });
+
+            circleCanvasTop.addEventListener("mouseleave", () => {
+                isDraggingTop = false;
+            });
+
+            // Configurar eventos del canvas circular inferior
+            const circleCanvasBottom = document.getElementById("circle-canvas-bottom");
+            circleCanvasBottom.addEventListener("mousedown", (e) => {
+                if (circleImageBottom) {
+                    isDraggingBottom = true;
+                    startX = e.offsetX - circleImageXBottom;
+                    startY = e.offsetY - circleImageYBottom;
+                }
+            });
+
+            circleCanvasBottom.addEventListener("mousemove", (e) => {
+                if (isDraggingBottom && circleImageBottom) {
+                    circleImageXBottom = e.offsetX - startX;
+                    circleImageYBottom = e.offsetY - startY;
+                    drawCanvas();
+                }
+            });
+
+            circleCanvasBottom.addEventListener("mouseup", () => {
+                isDraggingBottom = false;
+            });
+
+            circleCanvasBottom.addEventListener("mouseleave", () => {
+                isDraggingBottom = false;
+            });
+
             // Cargar imagen del mapa
             document.getElementById("map-upload").addEventListener("change", (e) => {
                 const file = e.target.files[0];
@@ -1010,6 +1069,9 @@
                         drawCanvas();
                     };
                     mapImage.src = URL.createObjectURL(file);
+                } else {
+                    mapImage = null;
+                    drawCanvas();
                 }
             });
 
@@ -1019,6 +1081,9 @@
                 if (file) {
                     circleImageTop = new Image();
                     circleImageTop.onload = () => {
+                        circleImageXTop = 0;
+                        circleImageYTop = 0;
+                        circleImageScaleTop = 1;
                         drawCanvas();
                     };
                     circleImageTop.src = URL.createObjectURL(file);
@@ -1034,6 +1099,9 @@
                 if (file) {
                     circleImageBottom = new Image();
                     circleImageBottom.onload = () => {
+                        circleImageXBottom = 0;
+                        circleImageYBottom = 0;
+                        circleImageScaleBottom = 1;
                         drawCanvas();
                     };
                     circleImageBottom.src = URL.createObjectURL(file);
@@ -1058,13 +1126,45 @@
                 }
             });
 
-            document.getElementById("reset-canvas").addEventListener("click", () => {
-                if (mapImage) {
-                    imageX = 0;
-                    imageY = 0;
-                    imageScale = 1;
+            document.getElementById("zoom-in-top").addEventListener("click", () => {
+                if (circleImageTop) {
+                    circleImageScaleTop *= 1.2;
                     drawCanvas();
                 }
+            });
+
+            document.getElementById("zoom-out-top").addEventListener("click", () => {
+                if (circleImageTop) {
+                    circleImageScaleTop /= 1.2;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("zoom-in-bottom").addEventListener("click", () => {
+                if (circleImageBottom) {
+                    circleImageScaleBottom *= 1.2;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("zoom-out-bottom").addEventListener("click", () => {
+                if (circleImageBottom) {
+                    circleImageScaleBottom /= 1.2;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("reset-canvas").addEventListener("click", () => {
+                imageX = 0;
+                imageY = 0;
+                imageScale = 1;
+                circleImageXTop = 0;
+                circleImageYTop = 0;
+                circleImageScaleTop = 1;
+                circleImageXBottom = 0;
+                circleImageYBottom = 0;
+                circleImageScaleBottom = 1;
+                drawCanvas();
             });
 
             document.getElementById("text-align").addEventListener("change", drawCanvas);
