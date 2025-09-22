@@ -335,7 +335,7 @@
             flex-wrap: wrap;
             align-items: center;
         }
-        .canvas-controls button, .canvas-controls select {
+        .canvas-controls button {
             padding: 6px 12px;
             font-size: .85em;
             background: rgb(90,165,25);
@@ -345,11 +345,7 @@
             cursor: pointer;
             min-width: 100px;
         }
-        .canvas-controls select {
-            background: #333;
-            border: 2px solid rgb(90,165,25);
-        }
-        .canvas-controls button:hover, .canvas-controls select:hover {
+        .canvas-controls button:hover {
             opacity: .8;
         }
         .zoom-buttons {
@@ -367,9 +363,9 @@
             background: #444;
             border-radius: 8px;
             display: flex;
+            flex-direction: column;
             gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
+            align-items: flex-start;
         }
         .text-controls label {
             color: #fff;
@@ -382,7 +378,10 @@
             background: #333;
             border: 2px solid rgb(90,165,25);
             border-radius: 6px;
-            min-width: 100px;
+            min-width: 150px;
+        }
+        .text-controls select:hover {
+            opacity: .8;
         }
         @media (max-width: 768px) {
             .slot {
@@ -428,10 +427,7 @@
                 width: 100px;
                 height: 100px;
             }
-            .canvas-controls button, .canvas-controls select {
-                min-width: 80px;
-            }
-            .text-controls select {
+            .canvas-controls button, .text-controls select {
                 min-width: 80px;
             }
             .zoom-buttons button {
@@ -462,10 +458,7 @@
                 width: 66px;
                 height: 66px;
             }
-            .canvas-controls button, .canvas-controls select {
-                min-width: 60px;
-            }
-            .text-controls select {
+            .canvas-controls button, .text-controls select {
                 min-width: 60px;
             }
             #map-upload, #circle-upload-top, #circle-upload-bottom {
@@ -579,22 +572,35 @@
                     <button id="copy-custom-info">Código para Discord</button>
                 </div>
                 <div class="text-controls">
-                    <label for="text-size">Tamaño del texto:</label>
-                    <select id="text-size">
-                        <option value="20">Pequeño (20px)</option>
-                        <option value="30" selected>Mediano (30px)</option>
-                        <option value="40">Grande (40px)</option>
-                    </select>
-                    <label for="text-align">Alineación:</label>
-                    <select id="text-align">
-                        <option value="top-left">Arriba a la Izquierda</option>
-                        <option value="bottom-left">Abajo a la Izquierda</option>
-                    </select>
-                    <label for="text-style">Estilo:</label>
-                    <select id="text-style">
-                        <option value="white-on-black" selected>Blanco con fondo negro</option>
-                        <option value="black-on-white">Negro con fondo blanco</option>
-                    </select>
+                    <div>
+                        <label for="text-size">Tamaño del texto:</label>
+                        <select id="text-size">
+                            <option value="20">Pequeño (20px)</option>
+                            <option value="30" selected>Mediano (30px)</option>
+                            <option value="40">Grande (40px)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="text-align">Alineación:</label>
+                        <select id="text-align">
+                            <option value="top-left">Arriba a la Izquierda</option>
+                            <option value="bottom-left">Abajo a la Izquierda</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="text-style">Estilo:</label>
+                        <select id="text-style">
+                            <option value="white-on-black" selected>Blanco con sombra negra</option>
+                            <option value="black-on-white">Negro con sombra blanca</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="text-background">Fondo:</label>
+                        <select id="text-background">
+                            <option value="none" selected>Sin fondo</option>
+                            <option value="with-background">Con fondo</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -744,6 +750,7 @@
             const textAlign = document.getElementById("text-align").value;
             const textSize = parseInt(document.getElementById("text-size").value);
             const textStyle = document.getElementById("text-style").value;
+            const textBackground = document.getElementById("text-background").value;
             const customDate = document.getElementById("custom-date").value;
             const customTime = document.getElementById("custom-time").value;
             const customEventName = document.getElementById("custom-event-name").value || "Evento Personalizado";
@@ -777,16 +784,15 @@
                 ctx.globalAlpha = 1.0;
             }
 
-            // Configurar sombra para el texto
-            ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+            // Configurar sombra y color del texto
+            const isWhiteOnBlack = textStyle === "white-on-black";
+            const textColor = isWhiteOnBlack ? "rgb(240,240,240)" : "rgb(0,0,0)";
+            const shadowColor = isWhiteOnBlack ? "rgba(0,0,0,0.8)" : "rgba(255,255,255,0.8)";
+            const bgColor = isWhiteOnBlack ? "rgba(0,0,0,0.7)" : "rgba(255,255,255,0.7)";
+            ctx.shadowColor = shadowColor;
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
             ctx.shadowBlur = 10;
-
-            // Configurar estilo del texto
-            const isWhiteOnBlack = textStyle === "white-on-black";
-            const textColor = isWhiteOnBlack ? "rgb(240,240,240)" : "rgb(0,0,0)";
-            const bgColor = isWhiteOnBlack ? "rgba(0,0,0,0.7)" : "rgba(255,255,255,0.7)";
 
             // Dibujar título centrado en la parte superior
             ctx.font = `bold ${textSize + 10}px Arial`;
@@ -831,11 +837,13 @@
             const lineHeight = textSize + 15;
             let textY = textAlign === "top-left" ? 100 : canvas.height - (textLines.length * lineHeight) - 20;
 
-            // Dibujar fondo semiopaco para el bloque de texto
-            const textWidth = Math.max(...textLines.map(line => ctx.measureText(line).width)) + 20;
-            const textHeight = textLines.length * lineHeight + 10;
-            ctx.fillStyle = bgColor;
-            ctx.fillRect(textX - 10, textY - lineHeight + 5, textWidth, textHeight);
+            // Dibujar fondo semiopaco si está habilitado
+            if (textBackground === "with-background") {
+                const textWidth = Math.max(...textLines.map(line => ctx.measureText(line).width)) + 20;
+                const textHeight = textLines.length * lineHeight + 10;
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(textX - 10, textY - lineHeight + 5, textWidth, textHeight);
+            }
 
             // Dibujar texto
             ctx.fillStyle = textColor;
@@ -1280,6 +1288,7 @@
             document.getElementById("text-align").addEventListener("change", drawCanvas);
             document.getElementById("text-size").addEventListener("change", drawCanvas);
             document.getElementById("text-style").addEventListener("change", drawCanvas);
+            document.getElementById("text-background").addEventListener("change", drawCanvas);
 
             // Descargar canvas
             document.getElementById("download-canvas").addEventListener("click", () => {
