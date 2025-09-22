@@ -587,6 +587,13 @@
                         </select>
                     </div>
                     <div>
+                        <label for="text-style">Estilo:</label>
+                        <select id="text-style">
+                            <option value="white-on-black" selected>Blanco con sombra negra</option>
+                            <option value="white-on-green">Blanco con sombra verde</option>
+                        </select>
+                    </div>
+                    <div>
                         <label for="text-background">Fondo:</label>
                         <select id="text-background">
                             <option value="none" selected>Sin fondo</option>
@@ -741,6 +748,7 @@
             const ctx = canvas.getContext("2d");
             const textAlign = document.getElementById("text-align").value;
             const textSize = parseInt(document.getElementById("text-size").value);
+            const textStyle = document.getElementById("text-style").value;
             const textBackground = document.getElementById("text-background").value;
             const customDate = document.getElementById("custom-date").value;
             const customTime = document.getElementById("custom-time").value;
@@ -777,7 +785,7 @@
 
             // Configurar sombra y color del texto
             const textColor = "rgb(240,240,240)"; // Blanco
-            const shadowColor = "rgb(90,165,25)"; // Verde
+            const shadowColor = textStyle === "white-on-black" ? "rgba(0,0,0,0.8)" : "rgb(90,165,25)"; // Negro o verde
             const bgColor = "rgba(0,0,0,0.35)"; // Fondo negro más transparente
             ctx.shadowColor = shadowColor;
             ctx.shadowOffsetX = 0;
@@ -1264,6 +1272,7 @@
 
             document.getElementById("text-align").addEventListener("change", drawCanvas);
             document.getElementById("text-size").addEventListener("change", drawCanvas);
+            document.getElementById("text-style").addEventListener("change", drawCanvas);
             document.getElementById("text-background").addEventListener("change", drawCanvas);
 
             // Descargar canvas
