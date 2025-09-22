@@ -292,8 +292,8 @@
         .canvas-container {
             position: relative;
             width: 100%;
-            max-width: 960px; /* Escala para visualización */
-            height: 540px; /* Escala para visualización (1920x1080 / 2) */
+            max-width: 640px; /* Escala para visualización (1280x720 / 2) */
+            height: 360px; /* Escala para visualización */
             margin: 10px 0;
             border: 2px solid rgb(90,165,25);
             border-radius: 6px;
@@ -366,7 +366,7 @@
             }
             .canvas-container {
                 max-width: 100%;
-                height: 300px; /* Ajustado para pantallas más pequeñas */
+                height: 200px; /* Ajustado para pantallas más pequeñas */
             }
         }
         @media (max-width: 480px) {
@@ -383,7 +383,7 @@
                 font-size: .9em;
             }
             .canvas-container {
-                height: 200px; /* Más pequeño para móviles */
+                height: 150px; /* Más pequeño para móviles */
             }
         }
     </style>
@@ -466,8 +466,8 @@
                     <button id="zoom-out">Zoom Out</button>
                     <button id="reset-canvas">Restablecer</button>
                     <select id="text-align">
-                        <option value="left">Arriba a la Izquierda</option>
-                        <option value="right">Arriba a la Derecha</option>
+                        <option value="top-left">Arriba a la Izquierda</option>
+                        <option value="bottom-left">Abajo a la Izquierda</option>
                     </select>
                     <button id="download-canvas">Descargar Imagen</button>
                 </div>
@@ -506,6 +506,14 @@
             'America/Buenos_Aires': -3,
             'America/Sao_Paulo': -3,
             'Europe/Madrid': 1
+        };
+
+        const timezoneLabels = {
+            '-6': 'México/Guatemala/Honduras/CR',
+            '-5': 'Colombia/Perú/Ecuador',
+            '-4.5': 'Venezuela',
+            '-4': 'Bolivia/Chile/Paraguay',
+            '-3': 'Uruguay/Argentina/Brasil'
         };
 
         let selectedSlot = null;
@@ -605,9 +613,9 @@
             const customDestination = document.getElementById("custom-destination").value || "Sin especificar";
             const customServer = document.getElementById("custom-server").value || "Sin especificar";
 
-            // Configurar canvas para resolución 1920x1080
-            canvas.width = 1920;
-            canvas.height = 1080;
+            // Configurar canvas para resolución 1280x720
+            canvas.width = 1280;
+            canvas.height = 720;
 
             // Limpiar canvas
             ctx.fillStyle = "#333";
@@ -621,12 +629,12 @@
             }
 
             // Configurar texto
-            ctx.font = "40px Arial";
+            ctx.font = "30px Arial";
             ctx.fillStyle = "rgb(240,240,240)";
             ctx.shadowColor = "rgb(20,20,20)";
-            ctx.shadowOffsetX = 2;
-            ctx.shadowOffsetY = 2;
-            ctx.shadowBlur = 4;
+            ctx.shadowOffsetX = 4;
+            ctx.shadowOffsetY = 4;
+            ctx.shadowBlur = 8;
 
             // Calcular horas en diferentes zonas horarias
             let localStart = null;
@@ -644,16 +652,25 @@
                 `Partida: ${customStartPlace}`,
                 `Destino: ${customDestination}`,
                 "",
-                "Hora",
-                `Urug/Bra/Arg: ${localStart ? formatTime(new Date(localStart.getTime() + (3 * 3600000))) : "N/A"}`,
-                `Méx/Guat: ${localStart ? formatTime(new Date(localStart.getTime() + (6 * 3600000))) : "N/A"}`
+                "Hora de reunión / Hora de partida:"
             ];
 
-            const textX = textAlign === "left" ? 20 : canvas.width - 20;
-            const textY = 50;
-            const lineHeight = 50;
+            const timezones = [-6, -5, -4.5, -4, -3];
+            timezones.forEach(offset => {
+                if (localStart) {
+                    const reunionTime = new Date(localStart.getTime() - (userOffset - offset) * 3600000);
+                    const partidaTime = new Date(reunionTime.getTime() + 30 * 60000);
+                    textLines.push(`${timezoneLabels[offset.toString()]}: ${formatTime(reunionTime)} / ${formatTime(partidaTime)}`);
+                } else {
+                    textLines.push(`${timezoneLabels[offset.toString()]}: N/A`);
+                }
+            });
 
-            ctx.textAlign = textAlign;
+            const textX = 20;
+            const lineHeight = 40;
+            let textY = textAlign === "top-left" ? 40 : canvas.height - (textLines.length * lineHeight) - 20;
+
+            ctx.textAlign = "left";
             textLines.forEach((line, index) => {
                 ctx.fillText(line, textX, textY + (index * lineHeight));
             });
@@ -826,14 +843,20 @@
                 const convoyEnRuta = new Date(localStart.getTime() + 30 * 60000);
                 const finalizacion = new Date(convoyEnRuta.getTime() + 50 * 60000);
 
-                const convoyInfo = `[**${formatDateForDisplay(customDateObj)} - ${customEventName}**](${customEventLink})\n` +
-                                  `Servidor: ${customServer}\n` +
-                                  `Partida: ${customStartPlace}\n` +
-                                  `Destino: ${customDestination}\n` +
-                                  `Hora\n` +
-                                  `Urug/Bra/Arg: <t:${getUnixTimestamp(new Date(localStart.getTime() + (3 * 3600000)))}:t>\n` +
-                                  `Méx/Guat: <t:${getUnixTimestamp(new Date(localStart.getTime() + (6 * 3600000)))}:t>\n` +
-                                  `Descripción: ${customEventDescription}`;
+                let convoyInfo = `[**${formatDateForDisplay(customDateObj)} - ${customEventName}**](${customEventLink})\n` +
+                                `Servidor: ${customServer}\n` +
+                                `Partida: ${customStartPlace}\n` +
+                                `Destino: ${customDestination}\n` +
+                                `Hora de reunión / Hora de partida:\n`;
+
+                const timezones = [-6, -5, -4.5, -4, -3];
+                timezones.forEach(offset => {
+                    const reunionTime = new Date(localStart.getTime() - (userOffset - offset) * 3600000);
+                    const partidaTime = new Date(reunionTime.getTime() + 30 * 60000);
+                    convoyInfo += `${timezoneLabels[offset.toString()]}: <t:${getUnixTimestamp(reunionTime)}:t> / <t:${getUnixTimestamp(partidaTime)}:t>\n`;
+                });
+
+                convoyInfo += `Descripción: ${customEventDescription}`;
 
                 navigator.clipboard.writeText(convoyInfo).then(() => {
                     showCopyMessage();
