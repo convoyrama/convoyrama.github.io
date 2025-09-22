@@ -146,13 +146,20 @@
         }
         #timezone-select, #date-select, #event-name, #event-link, #event-description,
         #custom-date, #custom-time, #custom-event-name, #custom-event-link,
-        #custom-event-description, #custom-start-place, #custom-destination, #custom-server,
-        #map-upload, #circle-upload-top, #circle-upload-bottom {
+        #custom-event-description, #custom-start-place, #custom-destination, #custom-server {
             padding: 6px;
             margin: 5px;
             font-size: .85em;
             border: 2px solid rgb(90,165,25);
             border-radius: 6px;
+        }
+        #map-upload, #circle-upload-top, #circle-upload-bottom {
+            padding: 4px;
+            margin: 5px;
+            font-size: .7em;
+            border: 2px solid rgb(90,165,25);
+            border-radius: 6px;
+            width: 100px; /* 1/3 del tamaño original (~300px) */
         }
         #date-select, #custom-date, #custom-time {
             width: 150px;
@@ -258,7 +265,7 @@
         #copy-convoy-info, #copy-custom-info, #download-canvas {
             padding: 8px 12px;
             font-size: .9em;
-            margin: 10px 0;
+            margin: 5px;
             background: rgb(90,165,25);
             color: #fff;
             border: none;
@@ -325,6 +332,7 @@
             gap: 10px;
             margin-top: 10px;
             flex-wrap: wrap;
+            align-items: center;
         }
         .canvas-controls button, .canvas-controls select {
             padding: 6px 12px;
@@ -334,6 +342,7 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
+            min-width: 100px;
         }
         .canvas-controls select {
             background: #333;
@@ -341,6 +350,32 @@
         }
         .canvas-controls button:hover, .canvas-controls select:hover {
             opacity: .8;
+        }
+        .zoom-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .zoom-buttons button {
+            padding: 4px 8px;
+            font-size: .7em;
+            min-width: auto;
+        }
+        .shadow-controls {
+            margin-top: 20px;
+            padding: 10px;
+            background: #444;
+            border-radius: 8px;
+        }
+        .shadow-controls label {
+            color: #fff;
+            margin-right: 10px;
+        }
+        .shadow-controls select, .shadow-controls input {
+            padding: 4px;
+            margin: 5px;
+            font-size: .8em;
+            border: 2px solid rgb(90,165,25);
+            border-radius: 6px;
         }
         @media (max-width: 768px) {
             .slot {
@@ -386,6 +421,16 @@
                 width: 100px; /* Ajustado para pantallas más pequeñas */
                 height: 100px;
             }
+            .canvas-controls button, .canvas-controls select {
+                min-width: 80px;
+            }
+            .zoom-buttons button {
+                padding: 3px 6px;
+                font-size: .6em;
+            }
+            #map-upload, #circle-upload-top, #circle-upload-bottom {
+                width: 80px;
+            }
         }
         @media (max-width: 480px) {
             .slot {
@@ -406,6 +451,12 @@
             .circle-canvas {
                 width: 66px; /* Más pequeño para móviles */
                 height: 66px;
+            }
+            .canvas-controls button, .canvas-controls select {
+                min-width: 60px;
+            }
+            #map-upload, #circle-upload-top, #circle-upload-bottom {
+                width: 60px;
             }
         }
     </style>
@@ -479,12 +530,30 @@
                 <label for="custom-event-description">Descripción:</label>
                 <textarea id="custom-event-description" placeholder="Descripción del evento" rows="2"></textarea>
                 <div class="input-row">
-                    <label for="map-upload">Subir Mapa:</label>
-                    <input type="file" id="map-upload" accept="image/*">
-                    <label for="circle-upload-top">Punto de partida:</label>
-                    <input type="file" id="circle-upload-top" accept="image/*">
-                    <label for="circle-upload-bottom">Punto de llegada:</label>
-                    <input type="file" id="circle-upload-bottom" accept="image/*">
+                    <div>
+                        <label for="map-upload">Subir Mapa:</label>
+                        <input type="file" id="map-upload" accept="image/*">
+                        <div class="zoom-buttons">
+                            <button id="zoom-in">+</button>
+                            <button id="zoom-out">-</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="circle-upload-top">Punto de partida:</label>
+                        <input type="file" id="circle-upload-top" accept="image/*">
+                        <div class="zoom-buttons">
+                            <button id="zoom-in-top">+</button>
+                            <button id="zoom-out-top">-</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="circle-upload-bottom">Punto de llegada:</label>
+                        <input type="file" id="circle-upload-bottom" accept="image/*">
+                        <div class="zoom-buttons">
+                            <button id="zoom-in-bottom">+</button>
+                            <button id="zoom-out-bottom">-</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="canvas-container">
                     <canvas id="map-canvas"></canvas>
@@ -492,12 +561,6 @@
                     <canvas id="circle-canvas-bottom" class="circle-canvas"></canvas>
                 </div>
                 <div class="canvas-controls">
-                    <button id="zoom-in">Zoom In (Mapa)</button>
-                    <button id="zoom-out">Zoom Out (Mapa)</button>
-                    <button id="zoom-in-top">Zoom In (Punto de partida)</button>
-                    <button id="zoom-out-top">Zoom Out (Punto de partida)</button>
-                    <button id="zoom-in-bottom">Zoom In (Punto de llegada)</button>
-                    <button id="zoom-out-bottom">Zoom Out (Punto de llegada)</button>
                     <button id="reset-canvas">Restablecer</button>
                     <select id="text-align">
                         <option value="top-left">Arriba a la Izquierda</option>
@@ -509,8 +572,24 @@
                         <option value="40">Grande (40px)</option>
                     </select>
                     <button id="download-canvas">Descargar Imagen</button>
+                    <button id="copy-custom-info">Código para Discord</button>
                 </div>
-                <button id="copy-custom-info">Código para Discord</button>
+                <div class="shadow-controls">
+                    <h3>Opciones de Sombra</h3>
+                    <div class="input-row">
+                        <label for="shadow-color">Color de sombra:</label>
+                        <select id="shadow-color">
+                            <option value="rgba(0, 0, 0, 0.8)" selected>Negro (80%)</option>
+                            <option value="rgba(0, 0, 0, 1)">Negro (100%)</option>
+                            <option value="rgba(90, 165, 25, 0.8)">Verde (80%)</option>
+                            <option value="rgba(255, 255, 255, 0.8)">Blanco (80%)</option>
+                        </select>
+                        <label for="shadow-offset">Offset (X/Y):</label>
+                        <input type="number" id="shadow-offset" value="8" min="0" max="20">
+                        <label for="shadow-blur">Desenfoque:</label>
+                        <input type="number" id="shadow-blur" value="15" min="0" max="30">
+                    </div>
+                </div>
             </div>
         </div>
         <div id="copy-message">¡Información copiada al portapapeles!</div>
@@ -561,6 +640,8 @@
         let mapImage = null;
         let circleImageTop = null;
         let circleImageBottom = null;
+        let watermarkImage = new Image();
+        watermarkImage.src = './assets/images/cr.png';
         let imageX = 0;
         let imageY = 0;
         let imageScale = 1;
@@ -662,6 +743,9 @@
             const customStartPlace = document.getElementById("custom-start-place").value || "Sin especificar";
             const customDestination = document.getElementById("custom-destination").value || "Sin especificar";
             const customServer = document.getElementById("custom-server").value || "Sin especificar";
+            const shadowColor = document.getElementById("shadow-color").value;
+            const shadowOffset = parseInt(document.getElementById("shadow-offset").value);
+            const shadowBlur = parseInt(document.getElementById("shadow-blur").value);
 
             // Configurar canvas principal para resolución 1920x1080
             canvas.width = 1920;
@@ -678,14 +762,25 @@
                 ctx.drawImage(mapImage, imageX, imageY, scaledWidth, scaledHeight);
             }
 
+            // Dibujar marca de agua
+            if (watermarkImage.complete && watermarkImage.naturalWidth !== 0) {
+                ctx.globalAlpha = 0.1;
+                const watermarkWidth = watermarkImage.width * 0.5; // Escala opcional
+                const watermarkHeight = watermarkImage.height * 0.5;
+                const watermarkX = (canvas.width - watermarkWidth) / 2;
+                const watermarkY = canvas.height - watermarkHeight - 20;
+                ctx.drawImage(watermarkImage, watermarkX, watermarkY, watermarkWidth, watermarkHeight);
+                ctx.globalAlpha = 1.0;
+            }
+
             // Configurar sombra para el texto
-            ctx.shadowColor = "rgba(0, 0, 0, 0.8)"; // Negro con opacidad para mayor contraste
-            ctx.shadowOffsetX = 8;
-            ctx.shadowOffsetY = 8;
-            ctx.shadowBlur = 15;
+            ctx.shadowColor = shadowColor;
+            ctx.shadowOffsetX = shadowOffset;
+            ctx.shadowOffsetY = shadowOffset;
+            ctx.shadowBlur = shadowBlur;
 
             // Dibujar título centrado en la parte superior
-            ctx.font = `${textSize + 10}px Arial`; // Título un poco más grande
+            ctx.font = `${textSize + 10}px Arial`;
             ctx.fillStyle = "rgb(240,240,240)";
             ctx.textAlign = "center";
             const title = `${formatDateForDisplay(new Date(customDate))} - ${customEventName}`;
@@ -1169,6 +1264,9 @@
 
             document.getElementById("text-align").addEventListener("change", drawCanvas);
             document.getElementById("text-size").addEventListener("change", drawCanvas);
+            document.getElementById("shadow-color").addEventListener("change", drawCanvas);
+            document.getElementById("shadow-offset").addEventListener("input", drawCanvas);
+            document.getElementById("shadow-blur").addEventListener("input", drawCanvas);
 
             // Descargar canvas
             document.getElementById("download-canvas").addEventListener("click", () => {
