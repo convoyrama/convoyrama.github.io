@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Merriweather:wght@700&family=Roboto:wght@700&family=Lora:wght@700&display=swap" rel="stylesheet">
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
     <style>
-        /* [Estilos CSS sin cambios, igual que en la versión anterior] */
         * {
             margin: 0;
             padding: 0;
@@ -433,7 +432,7 @@
             'America/Sao_Paulo': -3,
             'Europe/Madrid': 1
         };
-        let selectedSlot = null, selectedDate = new Date(), userOffset = -3; // Forzar UTC-3 por defecto
+        let selectedSlot = null, selectedDate = new Date(), userOffset = -3;
 
         async function loadConvoySlots() {
             try {
@@ -504,7 +503,7 @@
                 console.warn('Error fetching time from WorldTimeAPI:', error);
             }
             console.log(`Fallback: offset=-3 (forzando UTC-3)`);
-            return { time: new Date(), offset: -3 }; // Forzar UTC-3 como fallback
+            return { time: new Date(), offset: -3 };
         }
 
         async function updateTime() {
@@ -520,7 +519,6 @@
                 userOffset = offset;
                 const supportedOffsets = [-6, -5, -4.5, -4, -3, 1];
                 userOffset = supportedOffsets.reduce((prev, curr) => Math.abs(curr - offset) < Math.abs(prev - offset) ? curr : prev);
-                // Forzar UTC-3 si la detección falla o da un valor inesperado
                 if (userOffset !== -3 && (timezoneMap[Intl.DateTimeFormat().resolvedOptions().timeZone] === -3 || selValue === "-3")) {
                     console.warn(`Forzando userOffset a -3 (UTC-3) debido a detección incorrecta: ${userOffset}`);
                     userOffset = -3;
@@ -569,7 +567,7 @@
             convoySlots.forEach((slot, index) => {
                 const [hh, mm] = slot.start.split(":").map(Number),
                       utcBase = new Date(selectedDate);
-                if (hh < 12 && index > 2) { // Slots D, E, F, G son post-medianoche
+                if (hh < 12 && index > 2) {
                     utcBase.setDate(utcBase.getDate() + 1);
                 }
                 utcBase.setUTCHours(hh, mm, 0, 0);
@@ -581,7 +579,6 @@
                       nextSalida = new Date(nextReunion.getTime() + 30 * 60000),
                       div = document.createElement("div");
                 div.className = "slot";
-                // Depuración: Mostrar horarios antes de asignarlos al HTML
                 console.log(`Slot ${slot.name}: utcBase=${utcBase.toISOString()}, userOffset=${userOffset}, localStart=${formatTime(localStart)} (${localStart.toISOString()}), salida=${formatTime(salida)}`);
                 div.innerHTML = `<h4>${slot.name}</h4><div class="event">Reunión: ${formatTime(localStart)}</div><div class="event">Salida: ${formatTime(salida)}</div><div class="range-bar"></div>`;
                 div.onclick = () => {
@@ -630,51 +627,50 @@
                 }
             });
 
-            if (selectedDay.toDateString() === today.toDateString()) {
-                if (currentSlot) {
-                    const { slot, localStart, salida, llegada, despedida, nextReunion } = currentSlot,
-                          preSalida = new Date(salida.getTime() - 5 * 60000),
-                          nextSlotIndex = convoySlots.findIndex(s => s.name === slot.name) + 1,
-                          hasNextSlot = nextSlotIndex < convoySlots.length;
-                    if (userNow >= localStart && userNow < salida) {
-                        timelineIndicator.textContent = `El convoy de ${slot.name} está en reunión.`;
-                    } else if (userNow >= preSalida && userNow < salida) {
-                        timelineIndicator.textContent = `¡Prepárate! El convoy de ${slot.name} está por salir a las ${formatTime(salida)}.`;
-                    } else if (userNow >= salida && userNow < new Date(llegada.getTime() - 10 * 60000)) {
-                        timelineIndicator.textContent = `El convoy de ${slot.name} está en ruta.`;
-                    } else if (userNow >= new Date(llegada.getTime() - 10 * 60000) && userNow < llegada) {
-                        timelineIndicator.textContent = `El convoy de ${slot.name} está finalizando.`;
-                    } else if (userNow >= llegada && userNow < despedida) {
-                        timelineIndicator.textContent = `El convoy de ${slot.name} está en despedidas y agradecimientos.`;
-                    } else if (userNow >= despedida && userNow <= nextReunion) {
-                        let message = `El convoy de ${slot.name} está en despedidas y agradecimientos.`;
-                        if (hasNextSlot) message += ` ¡Atención! La reunión de ${convoySlots[nextSlotIndex].name} está por empezar.`;
-                        timelineIndicator.textContent = message;
-                    }
-                } else if (nextSlotInfo) {
-                    timelineIndicator.textContent = `Próximo: ${nextSlotInfo.name} - Reunión ${nextSlotInfo.time}`;
-                } else {
-                    const nextDay = new Date(today);
-                    nextDay.setDate(nextDay.getDate() + 1);
-                    let firstSlot = null, firstSlotTime = Infinity;
-                    convoySlots.forEach(slot => {
-                        const [hh, mm] = slot.start.split(":").map(Number),
-                              utcBase = new Date(selectedDate);
-                        if (hh < 12 && convoySlots.findIndex(s => s.name === slot.name) > 2) {
-                            utcBase.setDate(utcBase.getDate() + 1);
-                        }
-                        utcBase.setUTCHours(hh, mm, 0, 0);
-                        const localStart = new Date(utcBase.getTime() + userOffset * 3600000),
-                              diff = localStart - userNow;
-                        if (diff > 0 && diff < firstSlotTime) {
-                            firstSlotTime = diff;
-                            firstSlot = { name: slot.name, time: formatTime(localStart) };
-                        }
-                    });
-                    timelineIndicator.textContent = firstSlot ? `Próximo: ${firstSlot.name} - Reunión ${firstSlot.time}` : "No hay eventos próximos hoy";
+            if (selectedDay.toDateString() === today.toDateString() && currentSlot) {
+                timelineTitle.textContent = `Línea de Tiempo del Evento ${currentSlot.slot.name}`;
+                const { slot, localStart, salida, llegada, despedida, nextReunion } = currentSlot,
+                      preSalida = new Date(salida.getTime() - 5 * 60000),
+                      nextSlotIndex = convoySlots.findIndex(s => s.name === slot.name) + 1,
+                      hasNextSlot = nextSlotIndex < convoySlots.length;
+                if (userNow >= localStart && userNow < salida) {
+                    timelineIndicator.textContent = `El convoy de ${slot.name} está en reunión.`;
+                } else if (userNow >= preSalida && userNow < salida) {
+                    timelineIndicator.textContent = `¡Prepárate! El convoy de ${slot.name} está por salir a las ${formatTime(salida)}.`;
+                } else if (userNow >= salida && userNow < new Date(llegada.getTime() - 10 * 60000)) {
+                    timelineIndicator.textContent = `El convoy de ${slot.name} está en ruta.`;
+                } else if (userNow >= new Date(llegada.getTime() - 10 * 60000) && userNow < llegada) {
+                    timelineIndicator.textContent = `El convoy de ${slot.name} está finalizando.`;
+                } else if (userNow >= llegada && userNow < despedida) {
+                    timelineIndicator.textContent = `El convoy de ${slot.name} está en despedidas y agradecimientos.`;
+                } else if (userNow >= despedida && userNow <= nextReunion) {
+                    let message = `El convoy de ${slot.name} está en despedidas y agradecimientos.`;
+                    if (hasNextSlot) message += ` ¡Atención! La reunión de ${convoySlots[nextSlotIndex].name} está por empezar.`;
+                    timelineIndicator.textContent = message;
                 }
+            } else if (selectedDay.toDateString() === today.toDateString() && nextSlotInfo) {
+                timelineTitle.textContent = `Línea de Tiempo del Evento Actual`;
+                timelineIndicator.textContent = `Próximo: ${nextSlotInfo.name} - Reunión ${nextSlotInfo.time}`;
             } else {
-                timelineIndicator.textContent = `Horarios para ${formatDateForDisplay(selectedDate)}`;
+                timelineTitle.textContent = `Línea de Tiempo del Evento Actual`;
+                const nextDay = new Date(today);
+                nextDay.setDate(nextDay.getDate() + 1);
+                let firstSlot = null, firstSlotTime = Infinity;
+                convoySlots.forEach(slot => {
+                    const [hh, mm] = slot.start.split(":").map(Number),
+                          utcBase = new Date(selectedDate);
+                    if (hh < 12 && convoySlots.findIndex(s => s.name === slot.name) > 2) {
+                        utcBase.setDate(utcBase.getDate() + 1);
+                    }
+                    utcBase.setUTCHours(hh, mm, 0, 0);
+                    const localStart = new Date(utcBase.getTime() + userOffset * 3600000),
+                          diff = localStart - userNow;
+                    if (diff > 0 && diff < firstSlotTime) {
+                        firstSlotTime = diff;
+                        firstSlot = { name: slot.name, time: formatTime(localStart) };
+                    }
+                });
+                timelineIndicator.textContent = firstSlot ? `Próximo: ${firstSlot.name} - Reunión ${firstSlot.time}` : "No hay eventos próximos hoy";
             }
 
             if (selectedDay.toDateString() === today.toDateString() && nextSlotElem) {
@@ -740,7 +736,6 @@
                         timelineBar.appendChild(div);
                     }
                 } else {
-                    timelineTitle.textContent = `Línea de Tiempo del Evento ${slot.name}`;
                     segments.forEach(segment => {
                         const div = document.createElement("div");
                         div.className = `timeline-segment ${segment.class}`;
@@ -759,6 +754,7 @@
                     }
                 }
             } else {
+                timelineTitle.textContent = `Línea de Tiempo del Evento Actual`;
                 timelineBar.innerHTML = `<div style="width:100%;text-align:center;color:#333;">No hay evento activo en ${formatDateForDisplay(selectedDate)}</div>`;
             }
 
@@ -808,7 +804,6 @@
         }
 
         async function init() {
-            // Limpiar localStorage para evitar offsets en caché
             localStorage.removeItem('userOffset');
             console.log('localStorage.userOffset limpiado');
 
