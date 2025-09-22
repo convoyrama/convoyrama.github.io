@@ -432,7 +432,7 @@
             'America/Sao_Paulo': -3,
             'Europe/Madrid': 1
         };
-        let selectedSlot = null, selectedDate = new Date(), userOffset = -3;
+        let selectedSlot = null, selectedDate = new Date(), userOffset = null;
 
         async function loadConvoySlots() {
             try {
@@ -479,11 +479,17 @@
         }
 
         async function fetchTimezone() {
+            const select = document.getElementById("timezone-select");
+            let selValue = select.value;
+            if (selValue !== "auto") {
+                console.log(`Zona horaria seleccionada manualmente: UTC${selValue}`);
+                return { time: new Date(), offset: parseFloat(selValue) };
+            }
             try {
                 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                console.log(`Navegador: timezone=${timezone}`);
+                console.log(`Detectado navegador: timezone=${timezone}`);
                 if (timezoneMap[timezone]) {
-                    console.log(`Offset asignado desde timezoneMap: ${timezoneMap[timezone]}`);
+                    console.log(`Offset desde timezoneMap: ${timezoneMap[timezone]}`);
                     return { time: new Date(), offset: timezoneMap[timezone] };
                 }
             } catch (error) {
@@ -496,13 +502,12 @@
                 const time = new Date(data.datetime);
                 console.log(`WorldTimeAPI: offset=${offset}, time=${time}`);
                 if (!isNaN(offset)) {
-                    console.log(`Offset asignado desde WorldTimeAPI: ${offset}`);
                     return { time, offset };
                 }
             } catch (error) {
                 console.warn('Error fetching time from WorldTimeAPI:', error);
             }
-            console.log(`Fallback: offset=-3 (forzando UTC-3)`);
+            console.log('Fallback: offset=-3 (UTC-3)');
             return { time: new Date(), offset: -3 };
         }
 
@@ -511,14 +516,25 @@
                   savedOffset = localStorage.getItem('userOffset'),
                   selValue = select.value;
             console.log(`updateTime: selValue=${selValue}, savedOffset=${savedOffset}`);
-            userOffset = -3; // Forzar UTC-3 para consistencia
+            let { time: userNow, offset } = await fetchTimezone();
+            if (selValue !== "auto" && savedOffset && savedOffset === selValue) {
+                offset = parseFloat(selValue);
+                console.log(`Offset desde selección manual: ${offset}`);
+            } else if (savedOffset && selValue === "auto") {
+                offset = parseFloat(savedOffset);
+                console.log(`Offset desde localStorage: ${offset}`);
+            }
+            userOffset = offset;
+            const supportedOffsets = [-6, -5, -4.5, -4, -3, 1];
+            userOffset = supportedOffsets.includes(userOffset) ? userOffset : supportedOffsets.reduce((prev, curr) => Math.abs(curr - userOffset) < Math.abs(prev - userOffset) ? curr : prev);
+            console.log(`Offset final: ${userOffset}`);
             const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000),
-                  userNow = new Date(utc + (userOffset * 3600000)),
+                  adjustedNow = new Date(utc + (userOffset * 3600000)),
                   offsetDisplay = userOffset % 1 === 0 ? userOffset : userOffset.toFixed(1);
-            document.getElementById("current-user-time").textContent = `Tu hora actual: ${formatTime(userNow)} (UTC${userOffset >= 0 ? "+" : ""}${offsetDisplay})`;
+            document.getElementById("current-user-time").textContent = `Tu hora actual: ${formatTime(adjustedNow)} (UTC${userOffset >= 0 ? "+" : ""}${offsetDisplay})`;
             localStorage.setItem('userOffset', userOffset.toString());
-            console.log(`updateTime: userNow=${userNow.toISOString()}, userOffset=${userOffset}, selectedDate=${selectedDate.toISOString()}`);
-            return { userNow, userOffset };
+            console.log(`updateTime: userNow=${adjustedNow.toISOString()}, userOffset=${userOffset}, selectedDate=${selectedDate.toISOString()}`);
+            return { userNow: adjustedNow, userOffset };
         }
 
         function renderSlots(userNow, userOffset) {
@@ -542,7 +558,7 @@
             dateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(selectedDate)}`;
             customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(new Date(customDate.value))}`;
 
-            let nextSlotElem = null, minDiff = Infinity, nextSlotInfo = null, currentSlot = null, nextSlot = null;
+            let nextSlotElem = null, minDiff = Infinity, nextSlotInfo = null, currentSlot = null;
 
             const today = new Date(userNow);
             today.setHours(0, 0, 0, 0);
@@ -565,7 +581,7 @@
                       nextSalida = new Date(nextReunion.getTime() + 30 * 60000),
                       div = document.createElement("div");
                 div.className = "slot";
-                console.log(`Slot ${slot.name}: utcBase=${utcBase.toISOString()}, userOffset=${userOffset}, localStart=${formatTime(localStart)} (${localStart.toISOString()}), salida=${formatTime(salida)}`);
+                console.log(`Slot ${slot.name}: utcBase=${utcBase.toISOString()}, userOffset=${userOffset}, localStart=${formatTime(localStart)}`);
                 div.innerHTML = `<h4>${slot.name}</h4><div class="event">Reunión: ${formatTime(localStart)}</div><div class="event">Salida: ${formatTime(salida)}</div><div class="range-bar"></div>`;
                 div.onclick = () => {
                     document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
@@ -578,7 +594,6 @@
 
                 if (selectedDay.toDateString() === today.toDateString()) {
                     const diff = localStart - userNow;
-                    console.log(`Slot ${slot.name}: localStart=${formatTime(localStart)} (${localStart.toISOString()}), diff=${diff/60000} minutos, userOffset=${userOffset}`);
                     if (diff > 0 && diff < minDiff) {
                         minDiff = diff;
                         nextSlotElem = div;
@@ -588,27 +603,6 @@
                     if (userNow >= localStart && userNow <= despedidaEnd) {
                         currentSlot = { slot, localStart, salida, llegada, despedida, nextReunion, nextSalida };
                         console.log(`Evento activo: ${slot.name}, de ${formatTime(localStart)} a ${formatTime(despedidaEnd)}`);
-                    }
-                    if (userNow >= llegada && userNow <= nextReunion && index + 1 < convoySlots.length) {
-                        const next = convoySlots[index + 1],
-                              [nhh, nmm] = next.start.split(":").map(Number),
-                              nUtcBase = new Date(selectedDate);
-                        if (nhh < 12 && index + 1 > 2) nUtcBase.setDate(nUtcBase.getDate() + 1);
-                        nUtcBase.setUTCHours(nhh, nmm, 0, 0);
-                        const nLocalStart = new Date(nUtcBase.getTime() + userOffset * 3600000),
-                              nSalida = new Date(nLocalStart.getTime() + next.duration * 60000);
-                        if (userNow >= nLocalStart) {
-                            nextSlot = {
-                                slot: next,
-                                localStart: nLocalStart,
-                                salida: nSalida,
-                                llegada: new Date(nSalida.getTime() + 60 * 60000),
-                                despedida: new Date(nSalida.getTime() + 65 * 60000),
-                                nextReunion: new Date(nSalida.getTime() + 60 * 60000),
-                                nextSalida: new Date(nSalida.getTime() + 90 * 60000)
-                            };
-                            console.log(`Solapamiento detectado: ${next.name}, reunión a las ${formatTime(nLocalStart)}`);
-                        }
                     }
                 }
             });
@@ -639,8 +633,6 @@
                 timelineIndicator.textContent = `Próximo: ${nextSlotInfo.name} - Reunión ${nextSlotInfo.time}`;
             } else {
                 timelineTitle.textContent = `Línea de Tiempo del Evento Actual`;
-                const nextDay = new Date(today);
-                nextDay.setDate(nextDay.getDate() + 1);
                 let firstSlot = null, firstSlotTime = Infinity;
                 convoySlots.forEach(slot => {
                     const [hh, mm] = slot.start.split(":").map(Number),
@@ -676,68 +668,21 @@
                           { class: "despedida", width: (15 / totalDuration) * 100, label: `Hora de llegada: ${formatTime(llegada)}`, textContent: "Finalizando" },
                           { class: "next-reunion", width: (30 / totalDuration) * 100, label: `Próxima reunión: ${formatTime(nextReunion)}`, textContent: "Próxima reunión" }
                       ];
-                if (nextSlot && userNow >= nextSlot.localStart) {
-                    timelineTitle.textContent = `Línea de Tiempo de Eventos ${slot.name} y ${nextSlot.slot.name}`;
-                    const nTotalDuration = (nextSlot.nextSalida - nextSlot.localStart) / 60000,
-                          nElapsed = (userNow - nextSlot.localStart) / 60000,
-                          nMarkerPosition = Math.min(Math.max((nElapsed / nTotalDuration) * 100, 0), 100),
-                          nextSegments = [
-                              { class: "next-event-reunion", width: (30 / nTotalDuration) * 100, label: `Hora de Reunión (${nextSlot.slot.name}): ${formatTime(nextSlot.localStart)}`, textContent: `Reunión (${nextSlot.slot.name})` }
-                          ];
-                    if (userNow >= nextSlot.salida) {
-                        nextSegments.push({ class: "viaje", width: (50 / nTotalDuration) * 100, label: `Hora de Salida (${nextSlot.slot.name}): ${formatTime(nextSlot.salida)}`, textContent: `Convoy en camino (${nextSlot.slot.name})` });
-                    }
-                    const totalWidth = segments.reduce((sum, s) => sum + s.width, 0) + nextSegments.reduce((sum, s) => sum + s.width, 0),
-                          currentWidth = segments.reduce((sum, s) => sum + s.width, 0);
-                    segments.forEach(segment => {
-                        const div = document.createElement("div");
-                        div.className = `timeline-segment ${segment.class}`;
-                        div.style.width = `${(segment.width / totalWidth) * 100}%`;
-                        div.textContent = segment.textContent;
-                        timelineBar.appendChild(div);
-                        const label = document.createElement("div");
-                        label.textContent = segment.label;
-                        timelineLabels.appendChild(label);
-                    });
-                    nextSegments.forEach(segment => {
-                        const div = document.createElement("div");
-                        div.className = `timeline-segment ${segment.class}`;
-                        div.style.width = `${(segment.width / totalWidth) * 100}%`;
-                        div.textContent = segment.textContent;
-                        timelineBar.appendChild(div);
-                        const label = document.createElement("div");
-                        label.textContent = segment.label;
-                        timelineLabels.appendChild(label);
-                    });
-                    if (markerPosition >= 0 && markerPosition <= 100) {
-                        const div = document.createElement("div");
-                        div.className = "timeline-marker";
-                        div.style.left = `${(markerPosition / totalWidth) * 100}%`;
-                        timelineBar.appendChild(div);
-                    }
-                    if (nMarkerPosition >= 0 && nMarkerPosition <= 100) {
-                        const div = document.createElement("div");
-                        div.className = "timeline-marker";
-                        div.style.left = `${((currentWidth + nMarkerPosition) / totalWidth) * 100}%`;
-                        timelineBar.appendChild(div);
-                    }
-                } else {
-                    segments.forEach(segment => {
-                        const div = document.createElement("div");
-                        div.className = `timeline-segment ${segment.class}`;
-                        div.style.width = `${segment.width}%`;
-                        div.textContent = segment.textContent;
-                        timelineBar.appendChild(div);
-                        const label = document.createElement("div");
-                        label.textContent = segment.label;
-                        timelineLabels.appendChild(label);
-                    });
-                    if (markerPosition >= 0 && markerPosition <= 100) {
-                        const div = document.createElement("div");
-                        div.className = "timeline-marker";
-                        div.style.left = `${markerPosition}%`;
-                        timelineBar.appendChild(div);
-                    }
+                segments.forEach(segment => {
+                    const div = document.createElement("div");
+                    div.className = `timeline-segment ${segment.class}`;
+                    div.style.width = `${segment.width}%`;
+                    div.textContent = segment.textContent;
+                    timelineBar.appendChild(div);
+                    const label = document.createElement("div");
+                    label.textContent = segment.label;
+                    timelineLabels.appendChild(label);
+                });
+                if (markerPosition >= 0 && markerPosition <= 100) {
+                    const div = document.createElement("div");
+                    div.className = "timeline-marker";
+                    div.style.left = `${markerPosition}%`;
+                    timelineBar.appendChild(div);
                 }
             } else {
                 timelineTitle.textContent = `Línea de Tiempo del Evento Actual`;
