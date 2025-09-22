@@ -634,7 +634,7 @@
                     const div = document.createElement("div");
                     div.className = `timeline-segment ${segment.class}`;
                     div.style.width = `${segment.width}%`;
-                    div.textContent = segment.label.split(': ')[0];
+                    div.textContent = segment.class === "viaje" ? "Convoy en ruta" : segment.label.split(': ')[0];
                     timelineBar.appendChild(div);
                     const label = document.createElement("div");
                     label.textContent = segment.label;
