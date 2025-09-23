@@ -1,9 +1,0 @@
-[
-    { "name": "Slot A", "start": "20:00", "duration": 30 },
-    { "name": "Slot B", "start": "21:30", "duration": 30 },
-    { "name": "Slot C", "start": "23:00", "duration": 30 },
-    { "name": "Slot D", "start": "00:30", "duration": 30 },
-    { "name": "Slot E", "start": "02:00", "duration": 30 },
-    { "name": "Slot F", "start": "03:30", "duration": 30 },
-    { "name": "Slot G", "start": "05:00", "duration": 30 }
-]
