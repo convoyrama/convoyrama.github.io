@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Convoyrama | Crear Evento Personalizado</title>
+    <meta name="description" content="Convoyrama - Crear eventos personalizados para convoys">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="icon" href="./assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/images/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #333;
+        }
+        header {
+            padding: 10px;
+            text-align: center;
+            background: #333;
+            color: #fff;
+        }
+        header p {
+            font-size: 1.2em;
+            margin: 5px 0;
+            font-weight: normal;
+        }
+        nav {
+            padding: 5px;
+            text-align: center;
+        }
+        nav a, nav a:visited {
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 1em;
+            color: #fff;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .contenedor {
+            padding: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+        }
+        .custom-event {
+            margin-top: 20px;
+            padding: 15px;
+            background: #333;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,.1);
+        }
+        .custom-event h3 {
+            font-size: 1em;
+            color: rgb(90,165,25);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .custom-event label {
+            color: #fff;
+            font-size: .9em;
+            margin-right: 5px;
+        }
+        .input-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        #custom-date, #custom-time, #custom-event-name, #custom-event-link,
+        #custom-start-place, #custom-destination, #custom-server {
+            padding: 6px;
+            margin: 5px;
+            font-size: .85em;
+            border: 2px solid rgb(90,165,25);
+            border-radius: 6px;
+        }
+        #custom-date, #custom-time {
+            width: 150px;
+        }
+        #custom-event-name, #custom-event-link, #custom-start-place, #custom-destination, #custom-server {
+            width: 45%;
+        }
+        #custom-event-description {
+            width: 100%;
+            max-height: 50px;
+            resize: vertical;
+            rows: 2;
+            padding: 6px;
+            margin: 5px;
+            font-size: .85em;
+            border: 2px solid rgb(90,165,25);
+            border-radius: 6px;
+        }
+        #map-upload, #circle-upload-top, #circle-upload-bottom {
+            padding: 4px;
+            margin: 5px;
+            font-size: .7em;
+            border: 2px solid rgb(90,165,25);
+            border-radius: 6px;
+            width: 100px;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 960px;
+            height: 540px;
+            margin: 10px 0;
+            border: 2px solid rgb(90,165,25);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        #map-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        .circle-canvas {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgb(90,165,25);
+        }
+        #circle-canvas-top {
+            top: 10px;
+            right: 10px;
+        }
+        #circle-canvas-bottom {
+            bottom: 10px;
+            right: 10px;
+        }
+        .canvas-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .canvas-controls button {
+            padding: 6px 12px;
+            font-size: .85em;
+            background: rgb(90,165,25);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            min-width: 100px;
+        }
+        .canvas-controls button:hover {
+            opacity: .8;
+        }
+        .zoom-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .zoom-buttons button {
+            padding: 4px 8px;
+            font-size: .7em;
+            min-width: auto;
+        }
+        .text-controls {
+            margin-top: 10px;
+            padding: 10px;
+            background: #444;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .text-controls label {
+            color: #fff;
+            font-size: .9em;
+            margin-right: 5px;
+        }
+        .text-controls select {
+            padding: 6px;
+            font-size: .85em;
+            background: #333;
+            border: 2px solid rgb(90,165,25);
+            border-radius: 6px;
+            min-width: 150px;
+        }
+        .text-controls select:hover {
+            opacity: .8;
+        }
+        #copy-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            background: linear-gradient(to right, #f0f0f0, #e0f0e0);
+            border: 2px solid rgb(90,165,25);
+            border-radius: 6px;
+            color: rgb(90,165,25);
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+            max-width: 90%;
+        }
+        #custom-date-display {
+            font-size: .9em;
+            color: rgb(90,165,25);
+            text-align: center;
+            margin: 5px 0;
+        }
+        #timezone-select {
+            padding: 6px;
+            margin: 5px;
+            font-size: .85em;
+            border: 2px solid rgb(90,165,25);
+            border-radius: 6px;
+        }
+        @media (max-width: 768px) {
+            #custom-date, #custom-time {
+                width: 120px;
+            }
+            #custom-event-name, #custom-event-link, #custom-start-place, #custom-destination, #custom-server {
+                width: 100%;
+            }
+            #map-upload, #circle-upload-top, #circle-upload-bottom {
+                width: 80px;
+            }
+            .canvas-container {
+                max-width: 100%;
+                height: 300px;
+            }
+            .circle-canvas {
+                width: 100px;
+                height: 100px;
+            }
+            .canvas-controls button, .text-controls select {
+                min-width: 80px;
+            }
+            .zoom-buttons button {
+                padding: 3px 6px;
+                font-size: .6em;
+            }
+            .input-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        @media (max-width: 480px) {
+            .canvas-container {
+                height: 200px;
+            }
+            .circle-canvas {
+                width: 66px;
+                height: 66px;
+            }
+            .canvas-controls button, .text-controls select {
+                min-width: 60px;
+            }
+            #map-upload, #circle-upload-top, #circle-upload-bottom {
+                width: 60px;
+            }
+            #custom-date-display {
+                font-size: .8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="pages/pc.html">Creador de Perfil</a>
+            <a href="pages/id.html">Licencia</a>
+            <a href="events.html">Horarios de Convoys</a>
+        </nav>
+        <p>Crear Evento Personalizado</p>
+    </header>
+    <div class="contenedor">
+        <div class="input-row">
+            <label for="timezone-select">Zona Horaria:</label>
+            <select id="timezone-select">
+                <option value="auto" selected>Detectar automáticamente</option>
+                <option value="-6">UTC-6 (México, Guatemala, Honduras, Costa Rica)</option>
+                <option value="-5">UTC-5 (Colombia, Perú, Ecuador)</option>
+                <option value="-4.5">UTC-4:30 (Venezuela)</option>
+                <option value="-4">UTC-4 (Bolivia, Chile, Paraguay)</option>
+                <option value="-3">UTC-3 (Uruguay, Argentina, Brasil)</option>
+                <option value="1">UTC+1 (España)</option>
+            </select>
+        </div>
+        <div class="custom-event">
+            <h3>Crear Evento Personalizado</h3>
+            <div class="input-row">
+                <label for="custom-date">Fecha:</label>
+                <input type="date" id="custom-date">
+                <label for="custom-time">Hora de reunión:</label>
+                <input type="time" id="custom-time">
+            </div>
+            <div id="custom-date-display"></div>
+            <div class="input-row">
+                <input type="text" id="custom-event-name" placeholder="Nombre del evento">
+                <input type="text" id="custom-event-link" placeholder="Enlace del evento">
+            </div>
+            <div class="input-row">
+                <input type="text" id="custom-start-place" placeholder="Lugar de partida">
+                <input type="text" id="custom-destination" placeholder="Lugar de destino">
+            </div>
+            <div class="input-row">
+                <input type="text" id="custom-server" placeholder="Servidor">
+            </div>
+            <label for="custom-event-description">Descripción:</label>
+            <textarea id="custom-event-description" placeholder="Descripción del evento" rows="2"></textarea>
+            <div class="input-row">
+                <div>
+                    <label for="map-upload">Mapa:</label>
+                    <input type="file" id="map-upload" accept="image/*">
+                    <div class="zoom-buttons">
+                        <button id="zoom-in">+</button>
+                        <button id="zoom-out">-</button>
+                    </div>
+                </div>
+                <div>
+                    <label for="circle-upload-top">Partida:</label>
+                    <input type="file" id="circle-upload-top" accept="image/*">
+                    <div class="zoom-buttons">
+                        <button id="zoom-in-top">+</button>
+                        <button id="zoom-out-top">-</button>
+                    </div>
+                </div>
+                <div>
+                    <label for="circle-upload-bottom">Destino:</label>
+                    <input type="file" id="circle-upload-bottom" accept="image/*">
+                    <div class="zoom-buttons">
+                        <button id="zoom-in-bottom">+</button>
+                        <button id="zoom-out-bottom">-</button>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas-container">
+                <canvas id="map-canvas"></canvas>
+                <canvas id="circle-canvas-top" class="circle-canvas"></canvas>
+                <canvas id="circle-canvas-bottom" class="circle-canvas"></canvas>
+            </div>
+            <div class="canvas-controls">
+                <button id="download-canvas">Descargar Imagen</button>
+                <button id="copy-custom-info">Código para Discord</button>
+            </div>
+            <div class="text-controls">
+                <div>
+                    <label for="text-size">Tamaño del texto:</label>
+                    <select id="text-size">
+                        <option value="20">Pequeño (20px)</option>
+                        <option value="30" selected>Mediano (30px)</option>
+                        <option value="40">Grande (40px)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="text-align">Alineación:</label>
+                    <select id="text-align">
+                        <option value="top-left">Arriba a la Izquierda</option>
+                        <option value="bottom-left">Abajo a la Izquierda</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="text-style">Estilo:</label>
+                    <select id="text-style">
+                        <option value="white-on-black" selected>Blanco con sombra negra</option>
+                        <option value="white-on-green">Blanco con sombra verde</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="text-background">Fondo:</label>
+                    <select id="text-background">
+                        <option value="none" selected>Sin fondo</option>
+                        <option value="with-background">Con fondo</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="copy-message">¡Información copiada al portapapeles!</div>
+    </div>
+    <footer>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+    </footer>
+    <script>
+        const timezoneMap = {
+            'America/Mexico_City': -6,
+            'America/Guatemala': -6,
+            'America/Tegucigalpa': -6,
+            'America/Costa_Rica': -6,
+            'America/Bogota': -5,
+            'America/Lima': -5,
+            'America/Guayaquil': -5,
+            'America/Caracas': -4.5,
+            'America/La_Paz': -4,
+            'America/Santiago': -4,
+            'America/Asuncion': -4,
+            'America/Montevideo': -3,
+            'America/Buenos_Aires': -3,
+            'America/Sao_Paulo': -3,
+            'Europe/Madrid': 1
+        };
+
+        const timezoneLabels = {
+            '-6': 'MX/GT/HN/CR',
+            '-5': 'CO/PE/EC',
+            '-4.5': 'VE',
+            '-4': 'BO/CL/PY',
+            '-3': 'UY/AR/BR',
+            '1': 'ES'
+        };
+
+        let userOffset = -3; // Por defecto UTC-3
+        let mapImage = null;
+        let circleImageTop = null;
+        let circleImageBottom = null;
+        let watermarkImage = new Image();
+        watermarkImage.src = './assets/images/cr.png';
+        let imageX = 0;
+        let imageY = 0;
+        let imageScale = 1;
+        let circleImageXTop = 0;
+        let circleImageYTop = 0;
+        let circleImageScaleTop = 1;
+        let circleImageXBottom = 0;
+        let circleImageYBottom = 0;
+        let circleImageScaleBottom = 1;
+        let isDragging = false;
+        let isDraggingTop = false;
+        let isDraggingBottom = false;
+        let startX, startY;
+
+        function pad(n) {
+            return n < 10 ? "0" + n : n;
+        }
+
+        function formatTime(d) {
+            return pad(d.getHours()) + ":" + pad(d.getMinutes());
+        }
+
+        function formatDateForDisplay(d) {
+            const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+            return `${d.getDate()} de ${months[d.getMonth()]} de ${d.getFullYear()}`;
+        }
+
+        function getUnixTimestamp(date) {
+            return Math.floor(date.getTime() / 1000);
+        }
+
+        function showCopyMessage(message = "¡Información copiada al portapapeles!") {
+            const copyMessage = document.getElementById("copy-message");
+            copyMessage.textContent = message;
+            copyMessage.style.display = "block";
+            setTimeout(() => { copyMessage.style.display = "none"; }, 2000);
+        }
+
+        async function fetchTimezone() {
+            try {
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                console.log(`[fetchTimezone] Navegador detectó timezone: ${timezone}`);
+                if (timezoneMap[timezone]) {
+                    console.log(`[fetchTimezone] Offset encontrado en timezoneMap: ${timezoneMap[timezone]}`);
+                    return { time: new Date(), offset: timezoneMap[timezone] };
+                } else {
+                    console.warn(`[fetchTimezone] Timezone ${timezone} no está en timezoneMap, intentando WorldTimeAPI`);
+                }
+            } catch (error) {
+                console.error(`[fetchTimezone] Error en Intl.DateTimeFormat: ${error.message}`);
+            }
+
+            for (let i = 0; i < 3; i++) {
+                try {
+                    const response = await fetch('https://worldtimeapi.org/api/ip', { mode: 'cors' });
+                    const data = await response.json();
+                    const offset = data.utc_offset ? parseFloat(data.utc_offset) : null;
+                    const time = new Date(data.datetime);
+                    console.log(`[fetchTimezone] WorldTimeAPI éxito: offset=${offset}, time=${time}`);
+                    if (!isNaN(offset)) {
+                        return { time, offset };
+                    }
+                } catch (error) {
+                    console.error(`[fetchTimezone] Intento ${i+1} fallido en WorldTimeAPI: ${error.message}`);
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+
+            const fallbackOffset = -3;
+            console.warn(`[fetchTimezone] Fallback a offset por defecto: ${fallbackOffset}`);
+            showCopyMessage("No se pudo detectar la zona horaria. Usando UTC-3 por defecto. Selecciona una manualmente si es necesario.");
+            return { time: new Date(), offset: fallbackOffset };
+        }
+
+        async function updateTime() {
+            const select = document.getElementById("timezone-select");
+            const savedOffset = localStorage.getItem('userOffset');
+            const selValue = select.value;
+
+            if (selValue !== "auto" && savedOffset && savedOffset === selValue) {
+                userOffset = parseFloat(selValue);
+                console.log(`[updateTime] Usando offset guardado: ${userOffset}`);
+            } else {
+                const { time, offset } = await fetchTimezone();
+                userOffset = offset;
+                const supportedOffsets = [-6, -5, -4.5, -4, -3, 1];
+                userOffset = supportedOffsets.includes(offset) ? offset : supportedOffsets.reduce((prev, curr) => Math.abs(curr - offset) < Math.abs(prev - offset) ? curr : prev);
+                console.log(`[updateTime] Offset calculado: ${userOffset}`);
+                if (selValue === "auto") {
+                    select.value = userOffset.toString();
+                }
+            }
+
+            localStorage.setItem('userOffset', userOffset.toString());
+            console.log(`[updateTime] userOffset=${userOffset}`);
+            return userOffset;
+        }
+
+        function drawCanvas() {
+            const canvas = document.getElementById("map-canvas");
+            const ctx = canvas.getContext("2d");
+            const textAlign = document.getElementById("text-align").value;
+            const textSize = parseInt(document.getElementById("text-size").value);
+            const textStyle = document.getElementById("text-style").value;
+            const textBackground = document.getElementById("text-background").value;
+            const customDate = document.getElementById("custom-date").value;
+            const customTime = document.getElementById("custom-time").value;
+            const customEventName = document.getElementById("custom-event-name").value || "Evento Personalizado";
+            const customStartPlace = document.getElementById("custom-start-place").value || "Sin especificar";
+            const customDestination = document.getElementById("custom-destination").value || "Sin especificar";
+            const customServer = document.getElementById("custom-server").value || "Sin especificar";
+
+            canvas.width = 1920;
+            canvas.height = 1080;
+
+            ctx.fillStyle = "#333";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (mapImage) {
+                const scaledWidth = mapImage.width * imageScale;
+                const scaledHeight = mapImage.height * imageScale;
+                ctx.drawImage(mapImage, imageX, imageY, scaledWidth, scaledHeight);
+            }
+
+            if (watermarkImage.complete && watermarkImage.naturalWidth !== 0) {
+                ctx.globalAlpha = 0.1;
+                const watermarkWidth = watermarkImage.width * 0.5;
+                const watermarkHeight = watermarkImage.height * 0.5;
+                const watermarkX = (canvas.width - watermarkWidth) / 2;
+                const watermarkY = canvas.height - watermarkHeight - 20;
+                ctx.drawImage(watermarkImage, watermarkX, watermarkY, watermarkWidth, watermarkHeight);
+                ctx.globalAlpha = 1.0;
+            }
+
+            const textColor = "rgb(240,240,240)";
+            const shadowColor = textStyle === "white-on-black" ? "rgba(0,0,0,0.8)" : "rgb(90,165,25)";
+            const bgColor = "rgba(0,0,0,0.35)";
+            ctx.shadowColor = shadowColor;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.shadowBlur = 10;
+
+            ctx.font = `bold ${textSize + 10}px Arial`;
+            ctx.fillStyle = textColor;
+            ctx.textAlign = "center";
+            const eventName = customEventName;
+            const eventDate = customDate ? formatDateForDisplay(new Date(customDate)) : "Fecha no seleccionada";
+            ctx.fillText(eventName, canvas.width / 2, 50);
+            ctx.fillText(eventDate, canvas.width / 2, 50 + (textSize + 15));
+
+            ctx.font = `bold ${textSize}px Arial`;
+            ctx.textAlign = "left";
+            const textLines = [
+                `Servidor: ${customServer}`,
+                `Partida: ${customStartPlace}`,
+                `Destino: ${customDestination}`,
+                "",
+                "Hora de reunión / Hora de partida:"
+            ];
+
+            let localStart = null;
+            if (customDate && customTime) {
+                const [hh, mm] = customTime.split(":").map(Number);
+                const customDateObj = new Date(customDate);
+                customDateObj.setHours(hh, mm, 0, 0);
+                const utcBase = new Date(customDateObj.getTime() - userOffset * 3600000);
+                localStart = new Date(utcBase.getTime() + userOffset * 3600000);
+            }
+
+            const timezones = [-6, -5, -4.5, -4, -3];
+            timezones.forEach(offset => {
+                if (localStart) {
+                    const reunionTime = new Date(localStart.getTime() - (userOffset - offset) * 3600000);
+                    const partidaTime = new Date(reunionTime.getTime() + 30 * 60000);
+                    textLines.push(`${timezoneLabels[offset.toString()]}: ${formatTime(reunionTime)} / ${formatTime(partidaTime)}`);
+                } else {
+                    textLines.push(`${timezoneLabels[offset.toString()]}: N/A`);
+                }
+            });
+
+            const textX = 20;
+            const lineHeight = textSize + 15;
+            let textY = textAlign === "top-left" ? 100 + (textSize + 15) : canvas.height - (textLines.length * lineHeight) - 20;
+
+            if (textBackground === "with-background") {
+                const textWidth = Math.max(...textLines.map(line => ctx.measureText(line).width)) + 20;
+                const textHeight = textLines.length * lineHeight + 10;
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(textX - 10, textY - lineHeight + 5, textWidth, textHeight);
+            }
+
+            ctx.fillStyle = textColor;
+            textLines.forEach((line, index) => {
+                ctx.fillText(line, textX, textY + (index * lineHeight));
+            });
+
+            const circleCanvasTop = document.getElementById("circle-canvas-top");
+            const circleCanvasBottom = document.getElementById("circle-canvas-bottom");
+            const circleCtxTop = circleCanvasTop.getContext("2d");
+            const circleCtxBottom = circleCanvasBottom.getContext("2d");
+
+            const circleDiameter = 360;
+            circleCanvasTop.width = circleDiameter;
+            circleCanvasTop.height = circleDiameter;
+            circleCanvasBottom.width = circleDiameter;
+            circleCanvasBottom.height = circleDiameter;
+
+            circleCtxTop.clearRect(0, 0, circleDiameter, circleDiameter);
+            if (circleImageTop) {
+                circleCtxTop.save();
+                circleCtxTop.beginPath();
+                circleCtxTop.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+                circleCtxTop.clip();
+                const scaledWidthTop = circleImageTop.width * circleImageScaleTop;
+                const scaledHeightTop = circleImageTop.height * circleImageScaleTop;
+                circleCtxTop.drawImage(circleImageTop, circleImageXTop, circleImageYTop, scaledWidthTop, scaledHeightTop);
+                circleCtxTop.restore();
+                circleCtxTop.beginPath();
+                circleCtxTop.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+                circleCtxTop.strokeStyle = "rgb(90,165,25)";
+                circleCtxTop.lineWidth = 1;
+                circleCtxTop.stroke();
+            }
+
+            circleCtxBottom.clearRect(0, 0, circleDiameter, circleDiameter);
+            if (circleImageBottom) {
+                circleCtxBottom.save();
+                circleCtxBottom.beginPath();
+                circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+                circleCtxBottom.clip();
+                const scaledWidthBottom = circleImageBottom.width * circleImageScaleBottom;
+                const scaledHeightBottom = circleImageBottom.height * circleImageScaleBottom;
+                circleCtxBottom.drawImage(circleImageBottom, circleImageXBottom, circleImageYBottom, scaledWidthBottom, scaledHeightBottom);
+                circleCtxBottom.restore();
+                circleCtxBottom.beginPath();
+                circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+                circleCtxBottom.strokeStyle = "rgb(90,165,25)";
+                circleCtxBottom.lineWidth = 1;
+                circleCtxBottom.stroke();
+            }
+
+            ctx.drawImage(circleCanvasTop, canvas.width - circleDiameter - 10, 10, circleDiameter, circleDiameter);
+            ctx.drawImage(circleCanvasBottom, canvas.width - circleDiameter - 10, canvas.height - circleDiameter - 10, circleDiameter, circleDiameter);
+        }
+
+        async function init() {
+            const customDate = document.getElementById("custom-date");
+            const customDateDisplay = document.getElementById("custom-date-display");
+            const userOffset = await updateTime();
+            const userNow = new Date();
+            customDate.value = userNow.toISOString().split('T')[0];
+            customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(userNow)}`;
+
+            customDate.onchange = () => {
+                const customDateObj = new Date(customDate.value);
+                customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`;
+                drawCanvas();
+            };
+
+            document.getElementById("timezone-select").addEventListener("change", async () => {
+                const select = document.getElementById("timezone-select");
+                localStorage.setItem('userOffset', select.value);
+                await updateTime();
+                drawCanvas();
+                const customDateObj = new Date(customDate.value);
+                customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`;
+            });
+
+            document.getElementById("copy-custom-info").onclick = () => {
+                const customDate = document.getElementById("custom-date").value;
+                const customTime = document.getElementById("custom-time").value;
+                const customEventName = document.getElementById("custom-event-name").value || "Evento Personalizado";
+                const customEventLink = document.getElementById("custom-event-link").value || "https://convoyrama.github.io/events.html";
+                const customEventDescription = document.getElementById("custom-event-description").value || "Sin descripción";
+                const customStartPlace = document.getElementById("custom-start-place").value || "Sin especificar";
+                const customDestination = document.getElementById("custom-destination").value || "Sin especificar";
+                const customServer = document.getElementById("custom-server").value || "Sin especificar";
+
+                if (!customDate || !customTime) {
+                    showCopyMessage("Por favor, selecciona una fecha y hora.");
+                    return;
+                }
+
+                const [hh, mm] = customTime.split(":").map(Number);
+                const customDateObj = new Date(customDate);
+                customDateObj.setHours(hh, mm, 0, 0);
+                const utcBase = new Date(customDateObj.getTime() - userOffset * 3600000);
+                const localStart = new Date(utcBase.getTime() + userOffset * 3600000);
+                const convoyEnRuta = new Date(localStart.getTime() + 30 * 60000);
+                const finalizacion = new Date(convoyEnRuta.getTime() + 50 * 60000);
+
+                let convoyInfo = `[**${formatDateForDisplay(customDateObj)} - ${customEventName}**](${customEventLink})\n` +
+                                `Servidor: ${customServer}\n` +
+                                `Partida: ${customStartPlace}\n` +
+                                `Destino: ${customDestination}\n` +
+                                `Hora de reunión / Hora de partida:\n`;
+
+                const timezones = [-6, -5, -4.5, -4, -3];
+                timezones.forEach(offset => {
+                    const reunionTime = new Date(localStart.getTime() - (userOffset - offset) * 3600000);
+                    const partidaTime = new Date(reunionTime.getTime() + 30 * 60000);
+                    convoyInfo += `${timezoneLabels[offset.toString()]}: <t:${getUnixTimestamp(reunionTime)}:t> / <t:${getUnixTimestamp(partidaTime)}:t>\n`;
+                });
+
+                convoyInfo += `Descripción: ${customEventDescription}`;
+
+                navigator.clipboard.writeText(convoyInfo).then(() => {
+                    showCopyMessage();
+                }).catch(err => console.error(`[copyCustomInfo] Error al copiar: ${err.message}`));
+            };
+
+            const canvas = document.getElementById("map-canvas");
+            canvas.addEventListener("mousedown", (e) => {
+                if (mapImage) {
+                    isDragging = true;
+                    startX = e.offsetX - imageX;
+                    startY = e.offsetY - imageY;
+                }
+            });
+
+            canvas.addEventListener("mousemove", (e) => {
+                if (isDragging && mapImage) {
+                    imageX = e.offsetX - startX;
+                    imageY = e.offsetY - startY;
+                    drawCanvas();
+                }
+            });
+
+            canvas.addEventListener("mouseup", () => {
+                isDragging = false;
+            });
+
+            canvas.addEventListener("mouseleave", () => {
+                isDragging = false;
+            });
+
+            const circleCanvasTop = document.getElementById("circle-canvas-top");
+            circleCanvasTop.addEventListener("mousedown", (e) => {
+                if (circleImageTop) {
+                    isDraggingTop = true;
+                    startX = e.offsetX - circleImageXTop;
+                    startY = e.offsetY - circleImageYTop;
+                }
+            });
+
+            circleCanvasTop.addEventListener("mousemove", (e) => {
+                if (isDraggingTop && circleImageTop) {
+                    circleImageXTop = e.offsetX - startX;
+                    circleImageYTop = e.offsetY - startY;
+                    drawCanvas();
+                }
+            });
+
+            circleCanvasTop.addEventListener("mouseup", () => {
+                isDraggingTop = false;
+            });
+
+            circleCanvasTop.addEventListener("mouseleave", () => {
+                isDraggingTop = false;
+            });
+
+            const circleCanvasBottom = document.getElementById("circle-canvas-bottom");
+            circleCanvasBottom.addEventListener("mousedown", (e) => {
+                if (circleImageBottom) {
+                    isDraggingBottom = true;
+                    startX = e.offsetX - circleImageXBottom;
+                    startY = e.offsetY - circleImageYBottom;
+                }
+            });
+
+            circleCanvasBottom.addEventListener("mousemove", (e) => {
+                if (isDraggingBottom && circleImageBottom) {
+                    circleImageXBottom = e.offsetX - startX;
+                    circleImageYBottom = e.offsetY - startY;
+                    drawCanvas();
+                }
+            });
+
+            circleCanvasBottom.addEventListener("mouseup", () => {
+                isDraggingBottom = false;
+            });
+
+            circleCanvasBottom.addEventListener("mouseleave", () => {
+                isDraggingBottom = false;
+            });
+
+            document.getElementById("map-upload").addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    mapImage = new Image();
+                    mapImage.onload = () => {
+                        imageX = 0;
+                        imageY = 0;
+                        imageScale = 1;
+                        drawCanvas();
+                    };
+                    mapImage.src = URL.createObjectURL(file);
+                } else {
+                    mapImage = null;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("circle-upload-top").addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    circleImageTop = new Image();
+                    circleImageTop.onload = () => {
+                        circleImageXTop = 0;
+                        circleImageYTop = 0;
+                        circleImageScaleTop = 1;
+                        drawCanvas();
+                    };
+                    circleImageTop.src = URL.createObjectURL(file);
+                } else {
+                    circleImageTop = null;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("circle-upload-bottom").addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    circleImageBottom = new Image();
+                    circleImageBottom.onload = () => {
+                        circleImageXBottom = 0;
+                        circleImageYBottom = 0;
+                        circleImageScaleBottom = 1;
+                        drawCanvas();
+                    };
+                    circleImageBottom.src = URL.createObjectURL(file);
+                } else {
+                    circleImageBottom = null;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("zoom-in").addEventListener("click", () => {
+                if (mapImage) {
+                    imageScale *= 1.2;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("zoom-out").addEventListener("click", () => {
+                if (mapImage) {
+                    imageScale /= 1.2;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("zoom-in-top").addEventListener("click", () => {
+                if (circleImageTop) {
+                    circleImageScaleTop *= 1.2;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("zoom-out-top").addEventListener("click", () => {
+                if (circleImageTop) {
+                    circleImageScaleTop /= 1.2;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("zoom-in-bottom").addEventListener("click", () => {
+                if (circleImageBottom) {
+                    circleImageScaleBottom *= 1.2;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("zoom-out-bottom").addEventListener("click", () => {
+                if (circleImageBottom) {
+                    circleImageScaleBottom /= 1.2;
+                    drawCanvas();
+                }
+            });
+
+            document.getElementById("text-align").addEventListener("change", drawCanvas);
+            document.getElementById("text-size").addEventListener("change", drawCanvas);
+            document.getElementById("text-style").addEventListener("change", drawCanvas);
+            document.getElementById("text-background").addEventListener("change", drawCanvas);
+
+            document.getElementById("download-canvas").addEventListener("click", () => {
+                const canvas = document.getElementById("map-canvas");
+                const link = document.createElement("a");
+                link.download = "convoy-map.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+
+            document.getElementById("custom-event-name").addEventListener("input", drawCanvas);
+            document.getElementById("custom-start-place").addEventListener("input", drawCanvas);
+            document.getElementById("custom-destination").addEventListener("input", drawCanvas);
+            document.getElementById("custom-server").addEventListener("input", drawCanvas);
+            document.getElementById("custom-time").addEventListener("input", drawCanvas);
+
+            drawCanvas();
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
