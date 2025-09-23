@@ -346,6 +346,10 @@
                 <div>
                     <label for="logo-upload">Logo VTC:</label>
                     <input type="file" id="logo-upload" accept="image/*">
+                    <div class="zoom-buttons" style="visibility: hidden;">
+                        <button>+</button>
+                        <button>-</button>
+                    </div>
                 </div>
             </div>
             <div class="canvas-container">
@@ -653,7 +657,6 @@
                 const scaledHeightTop = circleImageTop.height * circleImageScaleTop;
                 circleCtxTop.drawImage(circleImageTop, circleImageXTop, circleImageYTop, scaledWidthTop, scaledHeightTop);
                 circleCtxTop.restore();
-                // Removed stroke here to avoid double border
             }
 
             circleCtxBottom.clearRect(0, 0, circleDiameter, circleDiameter);
@@ -666,7 +669,6 @@
                 const scaledHeightBottom = circleImageBottom.height * circleImageScaleBottom;
                 circleCtxBottom.drawImage(circleImageBottom, circleImageXBottom, circleImageYBottom, scaledWidthBottom, scaledHeightBottom);
                 circleCtxBottom.restore();
-                // Removed stroke here to avoid double border
             }
 
             const circleX = canvas.width - circleDiameter - 10;
