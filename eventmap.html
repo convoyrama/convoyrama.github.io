@@ -110,6 +110,9 @@
             border-radius: 6px;
             width: 100px;
         }
+        input[type="file"] {
+            color: transparent;
+        }
         .canvas-container {
             position: relative;
             width: 100%;
@@ -179,10 +182,17 @@
             gap: 10px;
             align-items: flex-start;
         }
+        .text-controls div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
         .text-controls label {
             color: #fff;
             font-size: .9em;
-            margin-right: 5px;
+            min-width: 140px;
+            text-align: right;
         }
         .text-controls select {
             padding: 6px;
@@ -190,6 +200,7 @@
             background: #333;
             border: 2px solid rgb(90,165,25);
             border-radius: 6px;
+            flex: 1;
             min-width: 150px;
         }
         .text-controls select:hover {
@@ -389,13 +400,6 @@
                     <select id="text-background">
                         <option value="none" selected>Sin fondo</option>
                         <option value="with-background">Con fondo</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="logo-position">Posición del Logo:</label>
-                    <select id="logo-position">
-                        <option value="single-side">Al lado del título</option>
-                        <option value="both-sides">A ambos lados del título</option>
                     </select>
                 </div>
             </div>
@@ -708,7 +712,6 @@
             if (logoImage) {
                 const logoHeight = 100;
                 const logoWidth = logoImage.width * (logoHeight / logoImage.height);
-                const position = document.getElementById("logo-position").value;
                 ctx.font = `bold ${textSize + 10}px Arial`;
                 const nameWidth = ctx.measureText(eventName).width;
                 const dateWidth = ctx.measureText(eventDate).width;
@@ -717,16 +720,10 @@
                 const dateY = 50 + (textSize + 15);
                 const logoY = (titleY + dateY) / 2 - (logoHeight / 2);
                 const centerX = canvas.width / 2;
-                if (position === "single-side") {
-                    // Right side
-                    const rightX = centerX + (maxTitleWidth / 2) + 20;
-                    ctx.drawImage(logoImage, rightX, logoY, logoWidth, logoHeight);
-                } else if (position === "both-sides") {
-                    const leftX = centerX - (maxTitleWidth / 2) - logoWidth - 20;
-                    const rightX = centerX + (maxTitleWidth / 2) + 20;
-                    ctx.drawImage(logoImage, leftX, logoY, logoWidth, logoHeight);
-                    ctx.drawImage(logoImage, rightX, logoY, logoWidth, logoHeight);
-                }
+                const leftX = centerX - (maxTitleWidth / 2) - logoWidth - 20;
+                const rightX = centerX + (maxTitleWidth / 2) + 20;
+                ctx.drawImage(logoImage, leftX, logoY, logoWidth, logoHeight);
+                ctx.drawImage(logoImage, rightX, logoY, logoWidth, logoHeight);
             }
         }
 
@@ -982,7 +979,6 @@
             document.getElementById("text-size").addEventListener("change", drawCanvas);
             document.getElementById("text-style").addEventListener("change", drawCanvas);
             document.getElementById("text-background").addEventListener("change", drawCanvas);
-            document.getElementById("logo-position").addEventListener("change", drawCanvas);
 
             document.getElementById("download-canvas").addEventListener("click", () => {
                 const canvas = document.getElementById("map-canvas");
