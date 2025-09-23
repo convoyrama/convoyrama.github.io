@@ -102,7 +102,7 @@
             border: 2px solid rgb(90,165,25);
             border-radius: 6px;
         }
-        #map-upload, #circle-upload-top, #circle-upload-bottom {
+        #map-upload, #circle-upload-top, #circle-upload-bottom, #logo-upload {
             padding: 4px;
             margin: 5px;
             font-size: .7em;
@@ -231,7 +231,7 @@
             #custom-event-name, #custom-event-link, #custom-start-place, #custom-destination, #custom-server {
                 width: 100%;
             }
-            #map-upload, #circle-upload-top, #circle-upload-bottom {
+            #map-upload, #circle-upload-top, #circle-upload-bottom, #logo-upload {
                 width: 80px;
             }
             .canvas-container {
@@ -265,7 +265,7 @@
             .canvas-controls button, .text-controls select {
                 min-width: 60px;
             }
-            #map-upload, #circle-upload-top, #circle-upload-bottom {
+            #map-upload, #circle-upload-top, #circle-upload-bottom, #logo-upload {
                 width: 60px;
             }
             #custom-date-display {
@@ -343,6 +343,10 @@
                         <button id="zoom-out-bottom">-</button>
                     </div>
                 </div>
+                <div>
+                    <label for="logo-upload">Logo VTC:</label>
+                    <input type="file" id="logo-upload" accept="image/*">
+                </div>
             </div>
             <div class="canvas-container">
                 <canvas id="map-canvas"></canvas>
@@ -381,6 +385,13 @@
                     <select id="text-background">
                         <option value="none" selected>Sin fondo</option>
                         <option value="with-background">Con fondo</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="logo-position">Posición del Logo:</label>
+                    <select id="logo-position">
+                        <option value="single-side">Al lado del título</option>
+                        <option value="both-sides">A ambos lados del título</option>
                     </select>
                 </div>
             </div>
@@ -422,6 +433,7 @@
         let mapImage = null;
         let circleImageTop = null;
         let circleImageBottom = null;
+        let logoImage = null;
         let watermarkImage = new Image();
         watermarkImage.src = './assets/images/cr.png';
         let imageX = 0;
@@ -641,11 +653,7 @@
                 const scaledHeightTop = circleImageTop.height * circleImageScaleTop;
                 circleCtxTop.drawImage(circleImageTop, circleImageXTop, circleImageYTop, scaledWidthTop, scaledHeightTop);
                 circleCtxTop.restore();
-                circleCtxTop.beginPath();
-                circleCtxTop.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
-                circleCtxTop.strokeStyle = "rgb(90,165,25)";
-                circleCtxTop.lineWidth = 1;
-                circleCtxTop.stroke();
+                // Removed stroke here to avoid double border
             }
 
             circleCtxBottom.clearRect(0, 0, circleDiameter, circleDiameter);
@@ -658,15 +666,66 @@
                 const scaledHeightBottom = circleImageBottom.height * circleImageScaleBottom;
                 circleCtxBottom.drawImage(circleImageBottom, circleImageXBottom, circleImageYBottom, scaledWidthBottom, scaledHeightBottom);
                 circleCtxBottom.restore();
-                circleCtxBottom.beginPath();
-                circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
-                circleCtxBottom.strokeStyle = "rgb(90,165,25)";
-                circleCtxBottom.lineWidth = 1;
-                circleCtxBottom.stroke();
+                // Removed stroke here to avoid double border
             }
 
-            ctx.drawImage(circleCanvasTop, canvas.width - circleDiameter - 10, 10, circleDiameter, circleDiameter);
-            ctx.drawImage(circleCanvasBottom, canvas.width - circleDiameter - 10, canvas.height - circleDiameter - 10, circleDiameter, circleDiameter);
+            const circleX = canvas.width - circleDiameter - 10;
+            const topY = 10;
+            const bottomY = canvas.height - circleDiameter - 10;
+
+            ctx.drawImage(circleCanvasTop, circleX, topY, circleDiameter, circleDiameter);
+            ctx.drawImage(circleCanvasBottom, circleX, bottomY, circleDiameter, circleDiameter);
+
+            // Draw borders on main canvas
+            ctx.beginPath();
+            ctx.arc(circleX + circleDiameter / 2, topY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+            ctx.strokeStyle = "rgb(90,165,25)";
+            ctx.lineWidth = 6; // Adjusted for full res
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(circleX + circleDiameter / 2, bottomY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+            ctx.strokeStyle = "rgb(90,165,25)";
+            ctx.lineWidth = 6;
+            ctx.stroke();
+
+            // Draw titles
+            ctx.font = `bold 40px Arial`; // Size for full res
+            ctx.fillStyle = "rgb(90,165,25)";
+            ctx.textAlign = "center";
+            ctx.shadowBlur = 0; // Disable shadow for titles
+
+            // Partida title below top circle
+            ctx.fillText("Partida", circleX + circleDiameter / 2, topY + circleDiameter + 50);
+
+            // Destino title above bottom circle
+            ctx.fillText("Destino", circleX + circleDiameter / 2, bottomY - 20);
+
+            ctx.shadowBlur = 10; // Restore shadow
+
+            if (logoImage) {
+                const logoHeight = 100;
+                const logoWidth = logoImage.width * (logoHeight / logoImage.height);
+                const position = document.getElementById("logo-position").value;
+                ctx.font = `bold ${textSize + 10}px Arial`;
+                const nameWidth = ctx.measureText(eventName).width;
+                const dateWidth = ctx.measureText(eventDate).width;
+                const maxTitleWidth = Math.max(nameWidth, dateWidth);
+                const titleY = 50;
+                const dateY = 50 + (textSize + 15);
+                const logoY = (titleY + dateY) / 2 - (logoHeight / 2);
+                const centerX = canvas.width / 2;
+                if (position === "single-side") {
+                    // Right side
+                    const rightX = centerX + (maxTitleWidth / 2) + 20;
+                    ctx.drawImage(logoImage, rightX, logoY, logoWidth, logoHeight);
+                } else if (position === "both-sides") {
+                    const leftX = centerX - (maxTitleWidth / 2) - logoWidth - 20;
+                    const rightX = centerX + (maxTitleWidth / 2) + 20;
+                    ctx.drawImage(logoImage, leftX, logoY, logoWidth, logoHeight);
+                    ctx.drawImage(logoImage, rightX, logoY, logoWidth, logoHeight);
+                }
+            }
         }
 
         async function init() {
@@ -861,6 +920,20 @@
                 }
             });
 
+            document.getElementById("logo-upload").addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    logoImage = new Image();
+                    logoImage.onload = () => {
+                        drawCanvas();
+                    };
+                    logoImage.src = URL.createObjectURL(file);
+                } else {
+                    logoImage = null;
+                    drawCanvas();
+                }
+            });
+
             document.getElementById("zoom-in").addEventListener("click", () => {
                 if (mapImage) {
                     imageScale *= 1.2;
@@ -907,6 +980,7 @@
             document.getElementById("text-size").addEventListener("change", drawCanvas);
             document.getElementById("text-style").addEventListener("change", drawCanvas);
             document.getElementById("text-background").addEventListener("change", drawCanvas);
+            document.getElementById("logo-position").addEventListener("change", drawCanvas);
 
             document.getElementById("download-canvas").addEventListener("click", () => {
                 const canvas = document.getElementById("map-canvas");
