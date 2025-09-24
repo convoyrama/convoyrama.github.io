@@ -8,6 +8,7 @@ export async function getCurrentDate() {
     const apis = [
         { url: 'https://worldtimeapi.org/api/timezone/Etc/UTC', parse: data => new Date(data.datetime) },
         { url: 'https://timeapi.io/api/Time/current/utc', parse: data => new Date(data.dateTime) },
+        { url: 'https://worldclockapi.herokuapp.com/api/json/utc/now', parse: data => new Date(data.currentDateTime) },
     ];
 
     for (const api of apis) {
@@ -58,6 +59,17 @@ export async function loadCountries() {
         return await response.json();
     } catch (error) {
         console.error('Error loading countries.json:', error);
+        return [];
+    }
+}
+
+export async function loadNicknames() {
+    try {
+        const response = await fetch('./license_generator/data/nicknames.json');
+        if (!response.ok) throw new Error('Failed to load nicknames.json');
+        return await response.json();
+    } catch (error) {
+        console.error('Error loading nicknames.json:', error);
         return [];
     }
 }

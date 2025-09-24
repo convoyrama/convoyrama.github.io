@@ -39,6 +39,8 @@ export const dom = {
     customTitleLabel: document.getElementById("customTitleLabel"),
     watermarkToggleLabel: document.getElementById("watermarkToggleLabel"),
     qrColorToggleLabel: document.getElementById("qrColorToggleLabel"),
+    textColorToggleInput: document.getElementById("textColorToggle"),
+    textColorToggleLabel: document.getElementById("textColorToggleLabel"),
     vtcLogoLabel: document.getElementById("vtcLogoLabel"),
     backgroundToggleLabel: document.getElementById("backgroundToggleLabel"),
     colorLabel: document.getElementById("colorLabel"),

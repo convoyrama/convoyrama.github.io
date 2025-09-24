@@ -1,7 +1,7 @@
 import { dom } from './dom-elements.js';
 import { config, translations } from './config.js';
 import { debounce } from './utils.js';
-import { getCurrentDate, loadVtcData, loadCountries } from './api.js';
+import { getCurrentDate, loadVtcData, loadCountries, loadNicknames } from './api.js';
 import { generateImage } from './canvas.js';
 
 const state = {
@@ -15,6 +15,7 @@ const state = {
     dbusworldToggle: false,
     watermarkToggle: true,
     qrColorToggle: false,
+    textColorToggle: false,
     backgroundTemplate: 'modern.png',
     language: 'es',
     colorHue: 0,
@@ -22,19 +23,27 @@ const state = {
     customTitle: '',
     userImage: null,
     vtcLogoImage: null,
-    isNicknameUnlocked: localStorage.getItem("nicknameUnlocked") === "true",
     currentDate: null,
     lastDateFetch: 0,
     isDateFromInternet: false,
     vtcData: { vtcOwners: [], starMap: {} },
     countries: [],
+    nicknames: [],
 };
 
 function updateUI() {
     // Update UI elements based on state
-    dom.nicknameGroup.classList.toggle("hidden", !state.isNicknameUnlocked);
-    dom.titleToggleGroup.classList.toggle("hidden", !state.isNicknameUnlocked);
     updateLanguage(state.language);
+}
+
+function populateNicknames() {
+    dom.nicknameSelect.innerHTML = '<option value="">Seleccione un TAG</option>';
+    state.nicknames.forEach(nickname => {
+        const option = document.createElement('option');
+        option.value = nickname;
+        option.textContent = nickname;
+        dom.nicknameSelect.appendChild(option);
+    });
 }
 
 function populateCountries(lang) {
@@ -85,10 +94,15 @@ function updateLanguage(lang) {
 }
 
 async function initialize() {
-    state.countries = await loadCountries();
-    state.vtcData = await loadVtcData();
+    [state.countries, state.vtcData, state.nicknames, state.currentDate] = await Promise.all([
+        loadCountries(),
+        loadVtcData(),
+        loadNicknames(),
+        getCurrentDate()
+    ]);
     
     populateCountries(state.language);
+    populateNicknames();
 
     updateUI();
     addEventListeners();
@@ -100,11 +114,6 @@ async function initialize() {
 function addEventListeners() {
     dom.nameInput.addEventListener('input', (e) => {
         state.name = e.target.value;
-        if (state.name.toLowerCase().trim() === "nocturno") {
-            state.isNicknameUnlocked = true;
-            localStorage.setItem("nicknameUnlocked", "true");
-            updateUI();
-        }
         debounce(() => generateImage(state), 100)();
     });
 
@@ -211,6 +220,11 @@ function addEventListeners() {
 
     dom.qrColorToggleInput.addEventListener('change', (e) => {
         state.qrColorToggle = e.target.checked;
+        debounce(() => generateImage(state), 100)();
+    });
+
+    dom.textColorToggleInput.addEventListener('change', (e) => {
+        state.textColorToggle = e.target.checked;
         debounce(() => generateImage(state), 100)();
     });
 

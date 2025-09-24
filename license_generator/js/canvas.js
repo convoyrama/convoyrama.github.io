@@ -51,6 +51,7 @@ async function generateQR(ctx, value, x, y, size, color) {
 export async function generateImage(state) {
     const { ctx, canvas } = dom;
     const scaleFactor = canvas.width / config.baseWidth;
+    const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -101,7 +102,7 @@ export async function generateImage(state) {
 
     // Draw Name
     ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
-    ctx.fillStyle = config.color;
+    ctx.fillStyle = textColor;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     
@@ -117,7 +118,7 @@ export async function generateImage(state) {
     }
 
     // Reset fillStyle for subsequent drawings
-    ctx.fillStyle = config.color;
+    ctx.fillStyle = textColor;
 
     // Draw Country
     const selectedCountry = state.countries.find(c => c.code === state.country);
@@ -139,6 +140,13 @@ export async function generateImage(state) {
     ctx.fillText(t.canvasLicenseNo, config.labelX * scaleFactor, 348 * scaleFactor);
     ctx.fillText(t.canvasLevel, config.labelX * scaleFactor, 382 * scaleFactor);
     ctx.fillText(t.canvasDate, config.labelX * scaleFactor, 416 * scaleFactor);
+
+    if (state.currentDate) {
+        const dateStr = `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}`;
+        const dateSymbol = state.currentDate.fromInternet ? '✓' : '✗';
+        ctx.fillText(dateStr, config.textX * scaleFactor, 416 * scaleFactor);
+        ctx.fillText(dateSymbol, (config.textX + ctx.measureText(dateStr).width + 10) * scaleFactor, 416 * scaleFactor);
+    }
 
     // Draw Nickname if available
     if (state.nickname) {
