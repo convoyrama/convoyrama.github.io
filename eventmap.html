@@ -289,8 +289,9 @@
     <header>
         <nav>
             <a href="index.html">Home</a>
-            <a href="pages/pc.html">Creador de Perfil</a>
-            <a href="pages/id.html">Licencia</a>
+            <a href="pc.html">Creador de Perfil</a>
+            <a href="id.html">Licencia</a>
+            <a href="eventmap.html">Crear Evento</a>
         </nav>
         <p>Crear Evento Personalizado</p>
     </header>
@@ -682,11 +683,10 @@
             ctx.drawImage(circleCanvasTop, circleX, topY, circleDiameter, circleDiameter);
             ctx.drawImage(circleCanvasBottom, circleX, bottomY, circleDiameter, circleDiameter);
 
-            // Draw borders on main canvas
             ctx.beginPath();
             ctx.arc(circleX + circleDiameter / 2, topY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
             ctx.strokeStyle = "rgb(90,165,25)";
-            ctx.lineWidth = 6; // Adjusted for full res
+            ctx.lineWidth = 6;
             ctx.stroke();
 
             ctx.beginPath();
@@ -695,19 +695,16 @@
             ctx.lineWidth = 6;
             ctx.stroke();
 
-            // Draw titles
-            ctx.font = `bold 40px Arial`; // Size for full res
+            ctx.font = `bold 40px Arial`;
             ctx.fillStyle = "rgb(90,165,25)";
             ctx.textAlign = "center";
-            ctx.shadowBlur = 0; // Disable shadow for titles
+            ctx.shadowBlur = 0;
 
-            // Partida title below top circle
             ctx.fillText("Partida", circleX + circleDiameter / 2, topY + circleDiameter + 50);
 
-            // Destino title above bottom circle
             ctx.fillText("Destino", circleX + circleDiameter / 2, bottomY - 20);
 
-            ctx.shadowBlur = 10; // Restore shadow
+            ctx.shadowBlur = 10;
 
             if (logoImage) {
                 const logoHeight = 100;
@@ -770,23 +767,15 @@
                 customDateObj.setHours(hh, mm, 0, 0);
                 const utcBase = new Date(customDateObj.getTime() - userOffset * 3600000);
                 const localStart = new Date(utcBase.getTime() + userOffset * 3600000);
-                const convoyEnRuta = new Date(localStart.getTime() + 30 * 60000);
-                const finalizacion = new Date(convoyEnRuta.getTime() + 50 * 60000);
+                const partidaTime = new Date(localStart.getTime() + 30 * 60000);
 
                 let convoyInfo = `[**${formatDateForDisplay(customDateObj)} - ${customEventName}**](${customEventLink})\n` +
                                 `Servidor: ${customServer}\n` +
                                 `Partida: ${customStartPlace}\n` +
                                 `Destino: ${customDestination}\n` +
-                                `Hora de reunión / Hora de partida:\n`;
-
-                const timezones = [-6, -5, -4.5, -4, -3];
-                timezones.forEach(offset => {
-                    const reunionTime = new Date(localStart.getTime() - (userOffset - offset) * 3600000);
-                    const partidaTime = new Date(reunionTime.getTime() + 30 * 60000);
-                    convoyInfo += `${timezoneLabels[offset.toString()]}: <t:${getUnixTimestamp(reunionTime)}:t> / <t:${getUnixTimestamp(partidaTime)}:t>\n`;
-                });
-
-                convoyInfo += `Descripción: ${customEventDescription}`;
+                                `Hora de reunión / Hora de partida:\n` +
+                                `<t:${getUnixTimestamp(localStart)}:t> / <t:${getUnixTimestamp(partidaTime)}:t>\n\n` +
+                                `Descripción: ${customEventDescription}`;
 
                 navigator.clipboard.writeText(convoyInfo).then(() => {
                     showCopyMessage();

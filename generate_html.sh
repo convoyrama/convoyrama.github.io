@@ -85,7 +85,7 @@ cat << 'EOF' > "$OUTPUT_HTML"
             text-decoration: none;
         }
         .gallery-item img {
-            max-width: 40%; /* Reduce al 40% del tamaño original */
+            max-width: 52%; /* Aumentado un 30% */
             height: auto;
             object-fit: cover;
             border: 1px solid #000;
@@ -95,7 +95,7 @@ cat << 'EOF' > "$OUTPUT_HTML"
         .gallery-item p {
             font-size: 0.8em; /* Reducido para proporcionalidad */
             margin: 3px 0;
-            color: #333;
+            color: rgb(240, 240, 240);
         }
         .gallery-item button {
             padding: 5px 10px; /* Reducido ligeramente */
