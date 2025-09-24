@@ -210,6 +210,11 @@ function addEventListeners() {
         debounce(() => generateImage(state), 100)();
     });
 
+    dom.qrColorToggleInput.addEventListener('change', (e) => {
+        state.qrColorToggle = e.target.checked;
+        debounce(() => generateImage(state), 100)();
+    });
+
 }
 
 document.addEventListener('DOMContentLoaded', initialize);

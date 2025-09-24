@@ -1,5 +1,5 @@
 import { dom } from './dom-elements.js';
-import { config } from './config.js';
+import { config, translations } from './config.js';
 
 async function loadImage(src) {
     return new Promise((resolve, reject) => {
@@ -16,6 +16,37 @@ async function renderTwemoji(emoji, size) {
     if (!src) return null;
     return await loadImage(src);
 }
+
+async function generateQR(ctx, value, x, y, size, color) {
+    return new Promise(resolve => {
+        try {
+            const qr = new QRCode({
+                content: value,
+                width: size,
+                height: size,
+                color: color,
+                background: "transparent",
+                ecl: "M",
+                padding: 0,
+            });
+            const svgString = qr.svg();
+            const img = new Image();
+            img.src = 'data:image/svg+xml;base64,' + btoa(svgString);
+            img.onload = () => {
+                ctx.drawImage(img, x, y, size, size);
+                resolve();
+            };
+            img.onerror = () => {
+                console.error(`Error loading QR SVG for ${value}`);
+                resolve();
+            };
+        } catch (error) {
+            console.error(`Error generating QR for ${value}:`, error);
+            resolve();
+        }
+    });
+}
+
 
 export async function generateImage(state) {
     const { ctx, canvas } = dom;
@@ -39,11 +70,11 @@ export async function generateImage(state) {
 
     // Draw VTC Logo as Watermark if enabled
     if (state.watermarkToggle && state.vtcLogoImage) {
-        ctx.globalAlpha = 0.1; // 10% opacity
-        // Draw it large and centered
-        const watermarkSize = canvas.width / 2;
-        ctx.drawImage(state.vtcLogoImage, (canvas.width - watermarkSize) / 2, (canvas.height - watermarkSize) / 2, watermarkSize, watermarkSize);
-        ctx.globalAlpha = 1.0; // Reset alpha for other elements
+        const centerX = ((config.baseWidth - config.watermarkWidth) / 2 + 150) * scaleFactor;
+        const centerY = ((config.baseHeight - config.watermarkHeight) / 2 + 100) * scaleFactor;
+        ctx.globalAlpha = 0.1;
+        ctx.drawImage(state.vtcLogoImage, centerX, centerY, config.watermarkWidth * scaleFactor, config.watermarkHeight * scaleFactor);
+        ctx.globalAlpha = 1.0;
     }
 
     // Draw Title
@@ -58,13 +89,14 @@ export async function generateImage(state) {
         ctx.drawImage(state.userImage, config.photoX * scaleFactor, config.photoY * scaleFactor, config.defaultPhotoSize * scaleFactor, config.defaultPhotoSize * scaleFactor);
     } else {
         const defaultPhoto = await renderTwemoji("👤", config.defaultPhotoSize * scaleFactor);
-        if(defaultPhoto) ctx.drawImage(defaultPhoto, config.photoX * scaleFactor, config.photoY * scaleFactor, config.defaultPhotoSize * scaleFactor, config.defaultPhotoSize * scaleFactor);
+        if (defaultPhoto) ctx.drawImage(defaultPhoto, config.photoX * scaleFactor, config.photoY * scaleFactor, config.defaultPhotoSize * scaleFactor, config.defaultPhotoSize * scaleFactor);
     }
-    
+
     // Draw VTC Logo
     if (state.vtcLogoImage) {
         const vtcLogoSize = config.vtcLogoSize * scaleFactor;
-        ctx.drawImage(state.vtcLogoImage, (config.photoX + config.defaultPhotoSize + 20) * scaleFactor, config.photoY * scaleFactor, vtcLogoSize, vtcLogoSize);
+        const vtcLogoX = (config.qrX - 2 * config.qrSize - 2 * config.qrSpacing) * scaleFactor;
+        ctx.drawImage(state.vtcLogoImage, vtcLogoX, config.qrY * scaleFactor, vtcLogoSize, vtcLogoSize);
     }
 
     // Draw Name
@@ -90,7 +122,7 @@ export async function generateImage(state) {
             if (flagEmoji) {
                 ctx.drawImage(flagEmoji, config.flagX * scaleFactor, config.flagY * scaleFactor, config.flagSize * scaleFactor, config.flagSize * scaleFactor);
             }
-        } catch(e) { console.error('failed to render flag', e); }
+        } catch (e) { console.error('failed to render flag', e); }
     }
 
     // Draw other text fields
@@ -110,7 +142,7 @@ export async function generateImage(state) {
     if (state.promodsToggle) {
         try {
             const promodsImage = await loadImage('./license_generator/images/promods.png');
-            ctx.drawImage(promodsImage, config.promodsX * scaleFactor, config.promodsY * scaleFactor, promodsImage.width * scaleFactor, promodsImage.height * scaleFactor);
+            ctx.drawImage(promodsImage, config.promodsX * scaleFactor, config.promodsY * scaleFactor, config.logoWidth * scaleFactor, config.logoHeight * scaleFactor);
         } catch (error) {
             console.error('Failed to load promods image', error);
         }
@@ -120,11 +152,24 @@ export async function generateImage(state) {
     if (state.dbusworldToggle) {
         try {
             const dbusImage = await loadImage('./license_generator/images/dbusworld.png');
-            ctx.drawImage(dbusImage, config.dbusworldX * scaleFactor, config.dbusworldY * scaleFactor, dbusImage.width * scaleFactor, dbusImage.height * scaleFactor);
+            const dbusworldY = state.promodsToggle ? config.dbusworldY : config.promodsY;
+            ctx.drawImage(dbusImage, config.dbusworldX * scaleFactor, dbusworldY * scaleFactor, config.logoWidth * scaleFactor, config.logoHeight * scaleFactor);
         } catch (error) {
             console.error('Failed to load dbusworld image', error);
         }
     }
+    
+    // Draw QR Codes
+    const qrColor = state.qrColorToggle ? "#F0F0F0" : "#141414";
+    const qrSize = config.qrSize * scaleFactor;
+    if (state.truckersmpLink) {
+        await generateQR(ctx, state.truckersmpLink, config.qrX * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
+    }
+    if (state.companyLink) {
+        await generateQR(ctx, state.companyLink, (config.qrX - config.qrSize - config.qrSpacing) * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
+    }
+    await generateQR(ctx, "https://convoyrama.github.io/id.html", (config.qrX + config.qrSize + config.qrSpacing) * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
+
 
     updateDownloadLink(state.name);
 }
