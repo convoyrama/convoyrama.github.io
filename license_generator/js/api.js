@@ -73,3 +73,14 @@ export async function loadNicknames() {
         return [];
     }
 }
+
+export async function loadStarMap() {
+    try {
+        const response = await fetch('./license_generator/data/starMap.json');
+        if (!response.ok) throw new Error('Failed to load starMap.json');
+        return await response.json();
+    } catch (error) {
+        console.error('Error loading starMap.json:', error);
+        return {};
+    }
+}

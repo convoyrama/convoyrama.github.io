@@ -1,7 +1,7 @@
 import { dom } from './dom-elements.js';
 import { config, translations } from './config.js';
 import { debounce } from './utils.js';
-import { getCurrentDate, loadVtcData, loadCountries, loadNicknames } from './api.js';
+import { getCurrentDate, loadVtcData, loadCountries, loadNicknames, loadStarMap } from './api.js';
 import { generateImage } from './canvas.js';
 
 const state = {
@@ -26,7 +26,8 @@ const state = {
     currentDate: null,
     lastDateFetch: 0,
     isDateFromInternet: false,
-    vtcData: { vtcOwners: [], starMap: {} },
+    vtcData: { vtcOwners: [] },
+    starMap: {},
     countries: [],
     nicknames: [],
 };
@@ -94,11 +95,12 @@ function updateLanguage(lang) {
 }
 
 async function initialize() {
-    [state.countries, state.vtcData, state.nicknames, state.currentDate] = await Promise.all([
+    [state.countries, state.vtcData, state.nicknames, state.currentDate, state.starMap] = await Promise.all([
         loadCountries(),
         loadVtcData(),
         loadNicknames(),
-        getCurrentDate()
+        getCurrentDate(),
+        loadStarMap()
     ]);
     
     populateCountries(state.language);

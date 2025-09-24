@@ -184,8 +184,23 @@ export async function generateImage(state) {
     if (state.companyLink) {
         await generateQR(ctx, state.companyLink, (config.qrX - config.qrSize - config.qrSpacing) * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
     }
-    await generateQR(ctx, "https://convoyrama.github.io/id.html", (config.qrX + config.qrSize + config.qrSpacing) * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
+    await generateQR(ctx, "https://convoyrama.github.io/id.html", (config.qrX + config.qrSize + config.qrSpacing) * scaleFactor, qrSize, qrColor);
 
+    // Draw Silver Stars
+    const starConfig = state.starMap[state.truckersmpLink] || { silver: 0 };
+    const silverStarCount = starConfig.silver || 0;
+    if (silverStarCount > 0) {
+        ctx.font = `bold ${config.textFontSize * scaleFactor}px ${config.font}`;
+        ctx.textAlign = "right";
+        const starX = (config.baseWidth - 20) * scaleFactor;
+        let currentY = config.promodsY * scaleFactor;
+        ctx.fillStyle = "#C0C0C0"; // Silver color
+        for (let i = 0; i < silverStarCount; i++) {
+            ctx.fillText("★", starX, currentY);
+            currentY += config.textFontSize * scaleFactor;
+        }
+        ctx.textAlign = "left";
+    }
 
     updateDownloadLink(state.name);
 }
