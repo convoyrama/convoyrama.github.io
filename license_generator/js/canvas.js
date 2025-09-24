@@ -1,6 +1,6 @@
 import { dom } from './dom-elements.js';
 import { config, translations } from './config.js';
-import { normalizeLink } from './utils.js';
+import { normalizeLink, generateLicenseNumber, getUserLevel } from './utils.js';
 
 async function loadImage(src) {
     return new Promise((resolve, reject) => {
@@ -101,17 +101,29 @@ export async function generateImage(state) {
         ctx.drawImage(state.vtcLogoImage, vtcLogoX, config.qrY * scaleFactor, vtcLogoSize, vtcLogoSize);
     }
 
-    // --- Text Drawing --- //
+    // --- Text & Rank Drawing --- //
+    const normalizedTruckersmpLink = normalizeLink(state.truckersmpLink);
+    const normalizedCompanyLink = normalizeLink(state.companyLink);
+    const { licenseNumber, userId, vtcId } = generateLicenseNumber(normalizedTruckersmpLink, normalizedCompanyLink, state.country);
+
+    // Draw Rank Image
+    const userLevel = getUserLevel(userId, state.levelRanges.user);
+    if (userLevel) {
+        try {
+            const rankImage = await loadImage(`./license_generator/rank/${userLevel}.png`);
+            ctx.drawImage(rankImage, config.labelX * scaleFactor, 280 * scaleFactor, rankImage.width * scaleFactor, rankImage.height * scaleFactor);
+        } catch (error) {
+            console.error(`Failed to load rank image for level ${userLevel}`, error);
+        }
+    }
+
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
 
     const t = translations[state.language] || translations.es;
-    const normalizedTruckersmpLink = normalizeLink(state.truckersmpLink);
-    const normalizedCompanyLink = normalizeLink(state.companyLink);
     const selectedCountry = state.countries.find(c => c.code === state.country);
 
     // Prepare data for drawing
-    const { licenseNumber, userId, vtcId } = generateLicenseNumber(normalizedTruckersmpLink, normalizedCompanyLink, selectedCountry ? selectedCountry.code : 'XX');
     const isOwner = state.vtcData.vtcOwners.some(owner => normalizeLink(owner.profileLink) === normalizedTruckersmpLink && normalizeLink(owner.companyLink) === normalizedCompanyLink);
     const countryName = selectedCountry ? (selectedCountry[`name_${state.language}`] || selectedCountry.name_en) : '';
     const dateStr = state.currentDate ? `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}` : '';

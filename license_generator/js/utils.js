@@ -67,4 +67,30 @@ export function generateLicenseNumber(truckersmpLink, companyLink, countryCode =
     return { licenseNumber, userId, vtcId };
 }
 
+export function getUserLevel(userId, userLevelRanges) {
+    if (!userId || isNaN(userId) || !userLevelRanges || userLevelRanges.length === 0) return null;
+    const id = parseInt(userId);
+    for (const range of userLevelRanges) {
+        if (id <= range.maxId) {
+            return range.level;
+        }
+    }
+    // Extrapolate for future IDs
+    const lastRange = userLevelRanges[userLevelRanges.length - 1];
+    const yearsSinceLast = Math.floor((id - lastRange.maxId) / 400000) + 1; // Approx. 400k users/year
+    const extrapolatedLevel = lastRange.level + yearsSinceLast;
+    return Math.min(extrapolatedLevel, 12); // Cap at 12
+}
+
+export function getVtcLevel(vtcId, vtcLevelRanges) {
+    if (!vtcId || isNaN(vtcId) || !vtcLevelRanges) return null;
+    const id = parseInt(vtcId);
+    for (const range of vtcLevelRanges) {
+        if (id <= range.maxId) return range.level;
+    }
+    return null;
+}
+
+
+
 
