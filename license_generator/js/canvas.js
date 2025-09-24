@@ -1,5 +1,6 @@
 import { dom } from './dom-elements.js';
 import { config, translations } from './config.js';
+import { normalizeLink } from './utils.js';
 
 async function loadImage(src) {
     return new Promise((resolve, reject) => {
@@ -100,58 +101,63 @@ export async function generateImage(state) {
         ctx.drawImage(state.vtcLogoImage, vtcLogoX, config.qrY * scaleFactor, vtcLogoSize, vtcLogoSize);
     }
 
-    // Draw Name
-    ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
-    ctx.fillStyle = textColor;
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
-    
-    const displayName = state.name.toUpperCase();
-    ctx.fillText(displayName, config.textX * scaleFactor, 280 * scaleFactor);
+    // --- Text Drawing --- //
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
 
-    // Draw Gold Star if owner
-    const isOwner = state.vtcData.vtcOwners.some(owner => owner.profileLink === state.truckersmpLink && owner.companyLink === state.companyLink);
-    if (isOwner) {
-        const nameWidth = ctx.measureText(displayName).width;
-        ctx.fillStyle = '#FFD700'; // Gold color
-        ctx.fillText(' ✵', (config.textX * scaleFactor) + nameWidth, 280 * scaleFactor);
+    const t = translations[state.language] || translations.es;
+    const normalizedTruckersmpLink = normalizeLink(state.truckersmpLink);
+    const normalizedCompanyLink = normalizeLink(state.companyLink);
+    const selectedCountry = state.countries.find(c => c.code === state.country);
+
+    // Prepare data for drawing
+    const { licenseNumber, userLevel, vtcLevel } = generateLicenseNumber(normalizedTruckersmpLink, normalizedCompanyLink, selectedCountry ? selectedCountry.code : 'XX');
+    const isOwner = state.vtcData.vtcOwners.some(owner => normalizeLink(owner.profileLink) === normalizedTruckersmpLink && normalizeLink(owner.companyLink) === normalizedCompanyLink);
+    const countryName = selectedCountry ? (selectedCountry[`name_${state.language}`] || selectedCountry.name_en) : '';
+    const dateStr = state.currentDate ? `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}` : '';
+    const dateSymbol = state.currentDate ? (state.currentDate.fromInternet ? ' ✓' : ' ✗') : '';
+
+    // Define text lines in order
+    const lines = [
+        { label: t.canvasName, value: state.name.toUpperCase(), isName: true },
+        { label: t.canvasCountry, value: countryName.toUpperCase() },
+        { label: t.canvasLicenseNo, value: licenseNumber },
+        { label: t.canvasDate, value: dateStr + dateSymbol },
+    ];
+    if (state.nickname) {
+        lines.push({ label: t.canvasTag, value: state.nickname });
     }
 
-    // Reset fillStyle for subsequent drawings
-    ctx.fillStyle = textColor;
+    // Draw lines
+    let yPos = 280 * scaleFactor;
+    lines.forEach(line => {
+        ctx.font = `${config.textFontSize * scaleFactor}px 'Verdana'`;
+        ctx.fillStyle = textColor;
+        ctx.fillText(line.label, config.labelX * scaleFactor, yPos);
 
-    // Draw Country
-    const selectedCountry = state.countries.find(c => c.code === state.country);
+        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
+        if (line.isName) {
+            const nameWithoutStar = line.value;
+            ctx.fillText(nameWithoutStar, config.textX * scaleFactor, yPos);
+            if (isOwner) {
+                const nameWidth = ctx.measureText(nameWithoutStar).width;
+                ctx.fillStyle = '#FFD700';
+                ctx.fillText(' ✵', (config.textX * scaleFactor) + nameWidth, yPos);
+            }
+        } else {
+            ctx.fillText(line.value, config.textX * scaleFactor, yPos);
+        }
+        yPos += config.lineHeight * scaleFactor;
+    });
+
+    // Draw flag emoji separately as it might not align perfectly with text
     if (selectedCountry) {
-        const nameKey = `name_${state.language}`;
-        const countryName = selectedCountry[nameKey] || selectedCountry.name_en;
-        ctx.fillText(countryName.toUpperCase(), config.textX * scaleFactor, 314 * scaleFactor);
         try {
             const flagEmoji = await renderTwemoji(selectedCountry.emoji, config.flagSize * scaleFactor);
             if (flagEmoji) {
                 ctx.drawImage(flagEmoji, config.flagX * scaleFactor, config.flagY * scaleFactor, config.flagSize * scaleFactor, config.flagSize * scaleFactor);
             }
         } catch (e) { console.error('failed to render flag', e); }
-    }
-
-    // Draw other text fields
-    const t = translations[state.language] || translations.es;
-    ctx.font = `${config.textFontSize * scaleFactor}px 'Verdana'`;
-    ctx.fillText(t.canvasLicenseNo, config.labelX * scaleFactor, 348 * scaleFactor);
-    ctx.fillText(t.canvasLevel, config.labelX * scaleFactor, 382 * scaleFactor);
-    ctx.fillText(t.canvasDate, config.labelX * scaleFactor, 416 * scaleFactor);
-
-    if (state.currentDate) {
-        const dateStr = `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}`;
-        const dateSymbol = state.currentDate.fromInternet ? '✓' : '✗';
-        ctx.fillText(dateStr, config.textX * scaleFactor, 416 * scaleFactor);
-        ctx.fillText(dateSymbol, (config.textX + ctx.measureText(dateStr).width + 10) * scaleFactor, 416 * scaleFactor);
-    }
-
-    // Draw Nickname if available
-    if (state.nickname) {
-        ctx.fillText(t.canvasTag, config.labelX * scaleFactor, 450 * scaleFactor);
-        ctx.fillText(state.nickname, config.textX * scaleFactor, 450 * scaleFactor);
     }
 
     // Draw ProMods Logo
@@ -179,15 +185,15 @@ export async function generateImage(state) {
     const qrColor = state.qrColorToggle ? "#F0F0F0" : "#141414";
     const qrSize = config.qrSize * scaleFactor;
     if (state.truckersmpLink) {
-        await generateQR(ctx, state.truckersmpLink, config.qrX * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
+        await generateQR(ctx, normalizedTruckersmpLink, config.qrX * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
     }
     if (state.companyLink) {
-        await generateQR(ctx, state.companyLink, (config.qrX - config.qrSize - config.qrSpacing) * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
+        await generateQR(ctx, normalizedCompanyLink, (config.qrX - config.qrSize - config.qrSpacing) * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
     }
     await generateQR(ctx, "https://convoyrama.github.io/id.html", (config.qrX + config.qrSize + config.qrSpacing) * scaleFactor, qrSize, qrColor);
 
     // Draw Silver Stars
-    const starConfig = state.starMap[state.truckersmpLink] || { silver: 0 };
+    const starConfig = state.starMap[normalizedTruckersmpLink] || { silver: 0 };
     const silverStarCount = starConfig.silver || 0;
     if (silverStarCount > 0) {
         ctx.font = `bold ${config.textFontSize * scaleFactor}px ${config.font}`;
@@ -200,6 +206,23 @@ export async function generateImage(state) {
             currentY += config.textFontSize * scaleFactor;
         }
         ctx.textAlign = "left";
+    }
+
+    // --- Draw Bottom Title ---
+    const selectedTitle = state.titles.find(t => t.key === state.selectedTitleKey);
+    if (selectedTitle) {
+        const titleText = selectedTitle[state.language] || selectedTitle.en;
+        const titleY = config.baseHeight - 5;
+        ctx.font = `bold ${config.footerFontSize * scaleFactor}px 'Verdana-Bold'`;
+        ctx.fillStyle = 'rgb(240, 240, 240)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.shadowColor = 'rgb(20, 20, 20)';
+        ctx.shadowOffsetX = 1 * scaleFactor;
+        ctx.shadowOffsetY = 1 * scaleFactor;
+        ctx.shadowBlur = 2 * scaleFactor;
+        ctx.fillText(titleText.toUpperCase(), canvas.width / 2, titleY * scaleFactor);
+        ctx.shadowColor = 'transparent'; // Reset shadow
     }
 
     updateDownloadLink(state.name);

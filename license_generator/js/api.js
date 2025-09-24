@@ -84,3 +84,25 @@ export async function loadStarMap() {
         return {};
     }
 }
+
+export async function loadTitles() {
+    try {
+        const response = await fetch('./license_generator/data/titles.json');
+        if (!response.ok) throw new Error('Failed to load titles.json');
+        return await response.json();
+    } catch (error) {
+        console.error('Error loading titles.json:', error);
+        return [];
+    }
+}
+
+export async function loadLevelRanges() {
+    try {
+        const response = await fetch('./license_generator/data/levelRanges.json');
+        if (!response.ok) throw new Error('Failed to load levelRanges.json');
+        return await response.json();
+    } catch (error) {
+        console.error('Error loading levelRanges.json:', error);
+        return { user: [], vtc: [] };
+    }
+}

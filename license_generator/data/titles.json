@@ -1,0 +1,44 @@
+[
+  {
+    "key": "INTERNATIONAL_DRIVING_LICENSE",
+    "type": "serious",
+    "es": "Licencia de Conducir Internacional",
+    "en": "International Driving License",
+    "pt": "Licença Internacional de Condução"
+  },
+  {
+    "key": "CONVOY_CRASHING_PERMIT",
+    "type": "comedic",
+    "es": "Licencia para Chocar en Convoy",
+    "en": "Convoy Crashing Permit",
+    "pt": "Permissão para Causar Caos em Comboio"
+  },
+  {
+    "key": "PROFESSIONAL_TRUCKER_ID",
+    "type": "serious",
+    "es": "Identificación de Camionero Profesional",
+    "en": "Professional Trucker ID",
+    "pt": "Identificação de Caminhoneiro Profissional"
+  },
+  {
+    "key": "MASTER_OF_THE_HIGHWAY",
+    "type": "serious",
+    "es": "Maestro de la Carretera",
+    "en": "Master of the Highway",
+    "pt": "Mestre da Estrada"
+  },
+  {
+    "key": "KING_OF_THE_LAG",
+    "type": "comedic",
+    "es": "Rey del Lag",
+    "en": "King of Lag",
+    "pt": "Rei do Lag"
+  },
+  {
+    "key": "CALAIS_DUISBURG_SURVIVOR",
+    "type": "comedic",
+    "es": "Sobreviviente de Calais-Duisburg",
+    "en": "Calais-Duisburg Survivor",
+    "pt": "Sobrevivente de Calais-Duisburg"
+  }
+]

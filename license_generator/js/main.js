@@ -1,7 +1,7 @@
 import { dom } from './dom-elements.js';
 import { config, translations } from './config.js';
-import { debounce } from './utils.js';
-import { getCurrentDate, loadVtcData, loadCountries, loadNicknames, loadStarMap } from './api.js';
+import { debounce, validateTruckersmpLink, validateCompanyLink } from './utils.js';
+import { getCurrentDate, loadVtcData, loadCountries, loadNicknames, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
 import { generateImage } from './canvas.js';
 
 const state = {
@@ -21,6 +21,7 @@ const state = {
     colorHue: 0,
     saturation: 100,
     customTitle: '',
+    selectedTitleKey: 'INTERNATIONAL_DRIVING_LICENSE',
     userImage: null,
     vtcLogoImage: null,
     currentDate: null,
@@ -30,6 +31,8 @@ const state = {
     starMap: {},
     countries: [],
     nicknames: [],
+    titles: [],
+    levelRanges: {},
 };
 
 function updateUI() {
@@ -45,6 +48,18 @@ function populateNicknames() {
         option.textContent = nickname;
         dom.nicknameSelect.appendChild(option);
     });
+}
+
+function populateTitles(lang) {
+    const selectedValue = dom.titleSelect.value;
+    dom.titleSelect.innerHTML = '';
+    state.titles.forEach(title => {
+        const option = document.createElement('option');
+        option.value = title.key;
+        option.textContent = title[lang] || title.en;
+        dom.titleSelect.appendChild(option);
+    });
+    dom.titleSelect.value = selectedValue;
 }
 
 function populateCountries(lang) {
@@ -92,19 +107,23 @@ function updateLanguage(lang) {
     dom.downloadButton.setAttribute('data-tooltip', t.tooltipMessage);
     
     populateCountries(lang);
+    populateTitles(lang);
 }
 
 async function initialize() {
-    [state.countries, state.vtcData, state.nicknames, state.currentDate, state.starMap] = await Promise.all([
+    [state.countries, state.vtcData, state.nicknames, state.currentDate, state.starMap, state.titles, state.levelRanges] = await Promise.all([
         loadCountries(),
         loadVtcData(),
         loadNicknames(),
         getCurrentDate(),
-        loadStarMap()
+        loadStarMap(),
+        loadTitles(),
+        loadLevelRanges()
     ]);
     
     populateCountries(state.language);
     populateNicknames();
+    populateTitles(state.language);
 
     updateUI();
     addEventListeners();
@@ -121,11 +140,13 @@ function addEventListeners() {
 
     dom.truckersmpLinkInput.addEventListener('input', (e) => {
         state.truckersmpLink = e.target.value;
+        validateTruckersmpLink(state.truckersmpLink, translations, state.language);
         debounce(() => generateImage(state), 100)();
     });
 
     dom.companyLinkInput.addEventListener('input', (e) => {
         state.companyLink = e.target.value;
+        validateCompanyLink(state.companyLink, translations, state.language);
         debounce(() => generateImage(state), 100)();
     });
 
@@ -166,6 +187,11 @@ function addEventListeners() {
 
     dom.nicknameSelect.addEventListener('change', (e) => {
         state.nickname = e.target.value;
+        debounce(() => generateImage(state), 100)();
+    });
+
+    dom.titleSelect.addEventListener('change', (e) => {
+        state.selectedTitleKey = e.target.value;
         debounce(() => generateImage(state), 100)();
     });
 
