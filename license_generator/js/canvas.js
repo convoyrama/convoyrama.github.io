@@ -72,12 +72,19 @@ export async function generateImage(state) {
     ctx.fillStyle = "#fff";
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillText(state.name.toUpperCase(), config.textX * scaleFactor, 280 * scaleFactor);
+    let displayName = state.name.toUpperCase();
+    const isOwner = state.vtcData.vtcOwners.some(owner => owner.profileLink === state.truckersmpLink && owner.companyLink === state.companyLink);
+    if (isOwner) {
+        displayName += ' ✵';
+    }
+    ctx.fillText(displayName, config.textX * scaleFactor, 280 * scaleFactor);
 
     // Draw Country
     const selectedCountry = state.countries.find(c => c.code === state.country);
     if (selectedCountry) {
-        ctx.fillText(selectedCountry.name.toUpperCase(), config.textX * scaleFactor, 314 * scaleFactor);
+        const nameKey = `name_${state.language}`;
+        const countryName = selectedCountry[nameKey] || selectedCountry.name_en;
+        ctx.fillText(countryName.toUpperCase(), config.textX * scaleFactor, 314 * scaleFactor);
         try {
             const flagEmoji = await renderTwemoji(selectedCountry.emoji, config.flagSize * scaleFactor);
             if (flagEmoji) {

@@ -67,6 +67,16 @@ function updateLanguage(lang) {
     if (countryPlaceholder) {
         countryPlaceholder.textContent = t.countryPlaceholder;
     }
+
+    const nameKey = `name_${lang}`;
+    dom.countrySelect.querySelectorAll('option').forEach(option => {
+        if (option.value) { // Don't change the placeholder
+            const country = state.countries.find(c => c.code === option.value);
+            if (country) {
+                option.textContent = country[nameKey] || country.name_en; // Fallback to English
+            }
+        }
+    });
 }
 
 async function initialize() {
@@ -74,11 +84,10 @@ async function initialize() {
     state.vtcData = await loadVtcData();
     
     // Populate countries dropdown
-    const placeholderOption = dom.countrySelect.querySelector('option[value=""]');
     state.countries.forEach(country => {
         const option = document.createElement('option');
         option.value = country.code;
-        option.textContent = country.name;
+        option.textContent = country.name_es; // Default to Spanish
         dom.countrySelect.appendChild(option);
     });
 
@@ -97,6 +106,16 @@ function addEventListeners() {
             localStorage.setItem("nicknameUnlocked", "true");
             updateUI();
         }
+        debounce(() => generateImage(state), 100)();
+    });
+
+    dom.truckersmpLinkInput.addEventListener('input', (e) => {
+        state.truckersmpLink = e.target.value;
+        debounce(() => generateImage(state), 100)();
+    });
+
+    dom.companyLinkInput.addEventListener('input', (e) => {
+        state.companyLink = e.target.value;
         debounce(() => generateImage(state), 100)();
     });
 
