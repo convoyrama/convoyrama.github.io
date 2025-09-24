@@ -31,14 +31,16 @@ export const config = {
     lineHeight: 28
 };
 
+export const BASE_URL = 'https://convoyrama.github.io/';
+
 export const translations = {};
 
 export async function loadTranslations() {
     try {
         const [enRes, esRes, ptRes] = await Promise.all([
-            fetch('/license_generator/locales/en.json'),
-            fetch('/license_generator/locales/es.json'),
-            fetch('/license_generator/locales/pt.json'),
+            fetch(`${BASE_URL}license_generator/locales/en.json`),
+            fetch(`${BASE_URL}license_generator/locales/es.json`),
+            fetch(`${BASE_URL}license_generator/locales/pt.json`),
         ]);
         const [enData, esData, ptData] = await Promise.all([
             enRes.json(),
