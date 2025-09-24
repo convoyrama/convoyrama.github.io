@@ -10,7 +10,6 @@ const state = {
     nickname: '',
     truckersmpLink: '',
     companyLink: '',
-    titleToggle: false,
     promodsToggle: false,
     dbusworldToggle: false,
     watermarkToggle: true,
@@ -89,7 +88,7 @@ function updateLanguage(lang) {
     dom.navLicense.textContent = t.navLicense;
     dom.nameLabel.textContent = t.nameLabel;
     dom.nicknameLabel.textContent = t.nicknameLabel;
-    dom.titleToggleLabel.textContent = t.titleToggleLabel;
+    dom.titleSelectLabel.textContent = t.titleSelectLabel;
     dom.photoLabel.textContent = t.photoLabel;
     dom.countryLabel.textContent = t.countryLabel;
     dom.companyLinkLabel.textContent = t.companyLinkLabel;

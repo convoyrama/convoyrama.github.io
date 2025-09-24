@@ -31,7 +31,7 @@ export const dom = {
     navLicense: document.getElementById("navLicense"),
     nameLabel: document.getElementById("nameLabel"),
     nicknameLabel: document.getElementById("nicknameLabel"),
-    titleToggleLabel: document.getElementById("titleToggleLabel"),
+
     photoLabel: document.getElementById("photoLabel"),
     countryLabel: document.getElementById("countryLabel"),
     companyLinkLabel: document.getElementById("companyLinkLabel"),

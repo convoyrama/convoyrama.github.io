@@ -67,24 +67,26 @@ export function generateLicenseNumber(truckersmpLink, companyLink, countryCode =
     return { licenseNumber, userId, vtcId };
 }
 
-export function getUserLevel(userId, userLevelRanges) {
-    if (!userId || isNaN(userId) || !userLevelRanges || userLevelRanges.length === 0) return null;
+export function getUserLevel(userId, userLevelRanges, currentYear) {
+    if (!userId || isNaN(userId) || !userLevelRanges || !currentYear) return null;
     const id = parseInt(userId);
+    let registrationYear = null;
+
     for (const range of userLevelRanges) {
         if (id <= range.maxId) {
-            return range.level;
+            registrationYear = range.year;
+            break;
         }
     }
-    return null; // Return null if no range is matched
-}
 
-export function getVtcLevel(vtcId, vtcLevelRanges) {
-    if (!vtcId || isNaN(vtcId) || !vtcLevelRanges) return null;
-    const id = parseInt(vtcId);
-    for (const range of vtcLevelRanges) {
-        if (id <= range.maxId) return range.level;
-    }
-    return null;
+    if (!registrationYear) return null; // User is newer than all defined ranges
+
+    const accountAge = currentYear - registrationYear;
+
+    if (accountAge < 1) return null; // Less than a year old, no rank
+    if (accountAge > 12) return 12; // Cap at rank 12
+
+    return accountAge;
 }
 
 
