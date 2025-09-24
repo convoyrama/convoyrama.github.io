@@ -51,7 +51,9 @@ async function generateQR(ctx, value, x, y, size, color) {
 
 export async function generateImage(state) {
     const { ctx, canvas } = dom;
+    console.log('Canvas width:', canvas.width, 'Canvas height:', canvas.height);
     const scaleFactor = canvas.width / config.baseWidth;
+    console.log('Config baseWidth:', config.baseWidth, 'Scale Factor:', scaleFactor);
     const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
 
     // Clear canvas
