@@ -25,7 +25,7 @@ export async function generateImage(state) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw background
-    const bgPath = `./assets/images/${state.backgroundTemplate}`;
+    const bgPath = `./license_generator/images/${state.backgroundTemplate}`;
     try {
         const bgImage = await loadImage(bgPath);
         ctx.filter = `hue-rotate(${state.colorHue}deg) saturate(${state.saturation}%)`;
@@ -35,6 +35,19 @@ export async function generateImage(state) {
         console.error(`Failed to load background image: ${bgPath}`, error);
         ctx.fillStyle = "#fff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Draw Watermark
+    if (state.watermarkToggle) {
+        try {
+            const watermarkImage = await loadImage('./license_generator/images/cr.png');
+            ctx.globalAlpha = 0.2;
+            const watermarkSize = config.watermarkWidth * scaleFactor;
+            ctx.drawImage(watermarkImage, (canvas.width - watermarkSize) / 1.5, (canvas.height - watermarkSize) / 1.5, watermarkSize, watermarkSize);
+            ctx.globalAlpha = 1.0;
+        } catch (error) {
+            console.error('Failed to load watermark image', error);
+        }
     }
 
     // Draw Title
@@ -50,6 +63,12 @@ export async function generateImage(state) {
     } else {
         const defaultPhoto = await renderTwemoji("👤", config.defaultPhotoSize * scaleFactor);
         if(defaultPhoto) ctx.drawImage(defaultPhoto, config.photoX * scaleFactor, config.photoY * scaleFactor, config.defaultPhotoSize * scaleFactor, config.defaultPhotoSize * scaleFactor);
+    }
+    
+    // Draw VTC Logo
+    if (state.vtcLogoImage) {
+        const vtcLogoSize = config.vtcLogoSize * scaleFactor;
+        ctx.drawImage(state.vtcLogoImage, (config.photoX + config.defaultPhotoSize + 20) * scaleFactor, config.photoY * scaleFactor, vtcLogoSize, vtcLogoSize);
     }
 
     // Draw Name
@@ -82,6 +101,26 @@ export async function generateImage(state) {
     if (state.nickname) {
         ctx.fillText(t.canvasTag, config.labelX * scaleFactor, 450 * scaleFactor);
         ctx.fillText(state.nickname, config.textX * scaleFactor, 450 * scaleFactor);
+    }
+
+    // Draw ProMods Logo
+    if (state.promodsToggle) {
+        try {
+            const promodsImage = await loadImage('./license_generator/images/promods.png');
+            ctx.drawImage(promodsImage, config.promodsX * scaleFactor, config.promodsY * scaleFactor, promodsImage.width * scaleFactor, promodsImage.height * scaleFactor);
+        } catch (error) {
+            console.error('Failed to load promods image', error);
+        }
+    }
+
+    // Draw DBUS Logo
+    if (state.dbusworldToggle) {
+        try {
+            const dbusImage = await loadImage('./license_generator/images/dbusworld.png');
+            ctx.drawImage(dbusImage, config.dbusworldX * scaleFactor, config.dbusworldY * scaleFactor, dbusImage.width * scaleFactor, dbusImage.height * scaleFactor);
+        } catch (error) {
+            console.error('Failed to load dbusworld image', error);
+        }
     }
 
     updateDownloadLink(state.name);

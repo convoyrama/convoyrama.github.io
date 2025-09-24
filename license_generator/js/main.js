@@ -151,6 +151,46 @@ function addEventListeners() {
         dom.saturationValue.textContent = `${state.saturation}%`;
         debounce(() => generateImage(state), 100)();
     });
+
+    dom.customTitleInput.addEventListener('input', (e) => {
+        state.customTitle = e.target.value;
+        debounce(() => generateImage(state), 100)();
+    });
+
+    dom.vtcLogoInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.src = ev.target.result;
+                img.onload = () => {
+                    state.vtcLogoImage = img;
+                    debounce(() => generateImage(state), 100)();
+                };
+            };
+            reader.readAsDataURL(file);
+        } else {
+            state.vtcLogoImage = null;
+            debounce(() => generateImage(state), 100)();
+        }
+    });
+
+    dom.promodsToggleInput.addEventListener('change', (e) => {
+        state.promodsToggle = e.target.checked;
+        debounce(() => generateImage(state), 100)();
+    });
+
+    dom.dbusworldToggleInput.addEventListener('change', (e) => {
+        state.dbusworldToggle = e.target.checked;
+        debounce(() => generateImage(state), 100)();
+    });
+
+    dom.watermarkToggleInput.addEventListener('change', (e) => {
+        state.watermarkToggle = e.target.checked;
+        debounce(() => generateImage(state), 100)();
+    });
+
 }
 
 document.addEventListener('DOMContentLoaded', initialize);
