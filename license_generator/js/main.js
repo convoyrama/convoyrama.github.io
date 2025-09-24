@@ -37,6 +37,24 @@ function updateUI() {
     updateLanguage(state.language);
 }
 
+function populateCountries(lang) {
+    const t = translations[lang] || translations.es;
+    const nameKey = `name_${lang}` || 'name_en';
+
+    const selectedValue = dom.countrySelect.value;
+
+    dom.countrySelect.innerHTML = `<option value="">${t.countryPlaceholder}</option>`;
+
+    state.countries.sort((a, b) => a[nameKey].localeCompare(b[nameKey])).forEach(country => {
+        const option = document.createElement('option');
+        option.value = country.code;
+        option.textContent = `${country.emoji} ${country[nameKey]}`;
+        dom.countrySelect.appendChild(option);
+    });
+
+    dom.countrySelect.value = selectedValue;
+}
+
 function updateLanguage(lang) {
     const t = translations[lang];
     if (!t) return;
@@ -63,33 +81,14 @@ function updateLanguage(lang) {
     dom.infoButton.setAttribute('data-tooltip', t.infoTooltip);
     dom.downloadButton.setAttribute('data-tooltip', t.tooltipMessage);
     
-    const countryPlaceholder = dom.countrySelect.querySelector('option[value=""]');
-    if (countryPlaceholder) {
-        countryPlaceholder.textContent = t.countryPlaceholder;
-    }
-
-    const nameKey = `name_${lang}`;
-    dom.countrySelect.querySelectorAll('option').forEach(option => {
-        if (option.value) { // Don't change the placeholder
-            const country = state.countries.find(c => c.code === option.value);
-            if (country) {
-                option.textContent = country[nameKey] || country.name_en; // Fallback to English
-            }
-        }
-    });
+    populateCountries(lang);
 }
 
 async function initialize() {
     state.countries = await loadCountries();
     state.vtcData = await loadVtcData();
     
-    // Populate countries dropdown
-    state.countries.forEach(country => {
-        const option = document.createElement('option');
-        option.value = country.code;
-        option.textContent = country.name_es; // Default to Spanish
-        dom.countrySelect.appendChild(option);
-    });
+    populateCountries(state.language);
 
     updateUI();
     addEventListeners();
