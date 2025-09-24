@@ -42,7 +42,7 @@ export async function getCurrentDate() {
 
 export async function loadVtcData() {
     try {
-        const response = await fetch('./assets/data/vtcData.json');
+        const response = await fetch('./license_generator/data/vtcData.json');
         if (!response.ok) throw new Error('Failed to load vtcData.json');
         return await response.json();
     } catch (error) {
@@ -53,7 +53,7 @@ export async function loadVtcData() {
 
 export async function loadCountries() {
     try {
-        const response = await fetch('./assets/data/countries.json');
+        const response = await fetch('./license_generator/data/countries.json');
         if (!response.ok) throw new Error('Failed to load countries.json');
         return await response.json();
     } catch (error) {

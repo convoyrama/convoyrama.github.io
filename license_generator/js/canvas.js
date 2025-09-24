@@ -37,17 +37,13 @@ export async function generateImage(state) {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    // Draw Watermark
-    if (state.watermarkToggle) {
-        try {
-            const watermarkImage = await loadImage('./license_generator/images/cr.png');
-            ctx.globalAlpha = 0.2;
-            const watermarkSize = config.watermarkWidth * scaleFactor;
-            ctx.drawImage(watermarkImage, (canvas.width - watermarkSize) / 1.5, (canvas.height - watermarkSize) / 1.5, watermarkSize, watermarkSize);
-            ctx.globalAlpha = 1.0;
-        } catch (error) {
-            console.error('Failed to load watermark image', error);
-        }
+    // Draw VTC Logo as Watermark if enabled
+    if (state.watermarkToggle && state.vtcLogoImage) {
+        ctx.globalAlpha = 0.1; // 10% opacity
+        // Draw it large and centered
+        const watermarkSize = canvas.width / 2;
+        ctx.drawImage(state.vtcLogoImage, (canvas.width - watermarkSize) / 2, (canvas.height - watermarkSize) / 2, watermarkSize, watermarkSize);
+        ctx.globalAlpha = 1.0; // Reset alpha for other elements
     }
 
     // Draw Title
