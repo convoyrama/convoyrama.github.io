@@ -75,11 +75,7 @@ export function getUserLevel(userId, userLevelRanges) {
             return range.level;
         }
     }
-    // Extrapolate for future IDs
-    const lastRange = userLevelRanges[userLevelRanges.length - 1];
-    const yearsSinceLast = Math.floor((id - lastRange.maxId) / 400000) + 1; // Approx. 400k users/year
-    const extrapolatedLevel = lastRange.level + yearsSinceLast;
-    return Math.min(extrapolatedLevel, 12); // Cap at 12
+    return null; // Return null if no range is matched
 }
 
 export function getVtcLevel(vtcId, vtcLevelRanges) {
