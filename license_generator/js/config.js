@@ -1,3 +1,7 @@
+import en from '../locales/en.json';
+import es from '../locales/es.json';
+import pt from '../locales/pt.json';
+
 export const config = {
     baseWidth: 800,
     baseHeight: 500,
@@ -31,3 +35,8 @@ export const config = {
     lineHeight: 28
 };
 
+export const translations = {
+    en,
+    es,
+    pt,
+};
