@@ -58,9 +58,13 @@ export function validateCompanyLink(link, translations, lang) {
     return true;
 }
 
-export function generateLicenseNumber(truckersmpLink, countryCode = 'XX') {
+export function generateLicenseNumber(truckersmpLink, companyLink, countryCode = 'XX') {
     const userMatch = truckersmpLink.match(/truckersmp\.com\/user\/(\d+)/);
     const userId = userMatch ? userMatch[1] : "";
+    const vtcMatch = companyLink.match(/truckersmp\.com\/vtc\/(\d+)/);
+    const vtcId = vtcMatch ? vtcMatch[1] : "";
     const licenseNumber = userId ? `${countryCode}${userId}` : "";
-    return { licenseNumber };
+    return { licenseNumber, userId, vtcId };
 }
+
+

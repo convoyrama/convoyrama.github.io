@@ -111,7 +111,7 @@ export async function generateImage(state) {
     const selectedCountry = state.countries.find(c => c.code === state.country);
 
     // Prepare data for drawing
-    const { licenseNumber, userLevel, vtcLevel } = generateLicenseNumber(normalizedTruckersmpLink, normalizedCompanyLink, selectedCountry ? selectedCountry.code : 'XX');
+    const { licenseNumber, userId, vtcId } = generateLicenseNumber(normalizedTruckersmpLink, normalizedCompanyLink, selectedCountry ? selectedCountry.code : 'XX');
     const isOwner = state.vtcData.vtcOwners.some(owner => normalizeLink(owner.profileLink) === normalizedTruckersmpLink && normalizeLink(owner.companyLink) === normalizedCompanyLink);
     const countryName = selectedCountry ? (selectedCountry[`name_${state.language}`] || selectedCountry.name_en) : '';
     const dateStr = state.currentDate ? `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}` : '';
