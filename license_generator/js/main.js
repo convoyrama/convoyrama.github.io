@@ -16,7 +16,7 @@ const state = {
     qrColorToggle: false,
     textColorToggle: false,
     rankToggle: true,
-    backgroundTemplate: 'modern.png',
+    backgroundTemplate: 'aura.png',
     language: 'es',
     colorHue: 0,
     saturation: 100,
