@@ -1,5 +1,5 @@
 import { dom } from './dom-elements.js';
-import { config, translations } from './config.js';
+import { config, translations, loadTranslations } from './config.js';
 import { debounce, validateTruckersmpLink, validateCompanyLink } from './utils.js';
 import { getCurrentDate, loadVtcData, loadCountries, loadNicknames, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
 import { generateImage } from './canvas.js';
@@ -111,6 +111,8 @@ function updateLanguage(lang) {
 }
 
 async function initialize() {
+    await loadTranslations(); // Call and await translation loading
+
     [state.countries, state.vtcData, state.nicknames, state.currentDate, state.starMap, state.titles, state.levelRanges] = await Promise.all([
         loadCountries(),
         loadVtcData(),

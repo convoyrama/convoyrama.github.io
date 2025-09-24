@@ -1,7 +1,3 @@
-import en from '../locales/en.json';
-import es from '../locales/es.json';
-import pt from '../locales/pt.json';
-
 export const config = {
     baseWidth: 800,
     baseHeight: 500,
@@ -35,8 +31,24 @@ export const config = {
     lineHeight: 28
 };
 
-export const translations = {
-    en,
-    es,
-    pt,
-};
+export const translations = {};
+
+export async function loadTranslations() {
+    try {
+        const [enRes, esRes, ptRes] = await Promise.all([
+            fetch('./locales/en.json'),
+            fetch('./locales/es.json'),
+            fetch('./locales/pt.json'),
+        ]);
+        const [enData, esData, ptData] = await Promise.all([
+            enRes.json(),
+            esRes.json(),
+            ptRes.json(),
+        ]);
+        translations.en = enData;
+        translations.es = esData;
+        translations.pt = ptData;
+    } catch (error) {
+        console.error('Error loading translations:', error);
+    }
+}
