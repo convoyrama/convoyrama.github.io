@@ -61,7 +61,37 @@ export async function generateImage(state) {
         if(defaultPhoto) ctx.drawImage(defaultPhoto, config.photoX * scaleFactor, config.photoY * scaleFactor, config.defaultPhotoSize * scaleFactor, config.defaultPhotoSize * scaleFactor);
     }
 
-    // ... (rest of the drawing logic will be added in the next steps)
+    // Draw Name
+    ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.fillText(state.name.toUpperCase(), config.textX * scaleFactor, 280 * scaleFactor);
+
+    // Draw Country
+    const selectedCountry = state.countries.find(c => c.code === state.country);
+    if (selectedCountry) {
+        ctx.fillText(selectedCountry.name.toUpperCase(), config.textX * scaleFactor, 314 * scaleFactor);
+        try {
+            const flagEmoji = await renderTwemoji(selectedCountry.emoji, config.flagSize * scaleFactor);
+            if (flagEmoji) {
+                ctx.drawImage(flagEmoji, config.flagX * scaleFactor, config.flagY * scaleFactor, config.flagSize * scaleFactor, config.flagSize * scaleFactor);
+            }
+        } catch(e) { console.error('failed to render flag', e); }
+    }
+
+    // Draw other text fields
+    const t = translations[state.language] || translations.es;
+    ctx.font = `${config.textFontSize * scaleFactor}px 'Verdana'`;
+    ctx.fillText(t.canvasLicenseNo, config.labelX * scaleFactor, 348 * scaleFactor);
+    ctx.fillText(t.canvasLevel, config.labelX * scaleFactor, 382 * scaleFactor);
+    ctx.fillText(t.canvasDate, config.labelX * scaleFactor, 416 * scaleFactor);
+
+    // Draw Nickname if available
+    if (state.nickname) {
+        ctx.fillText(t.canvasTag, config.labelX * scaleFactor, 450 * scaleFactor);
+        ctx.fillText(state.nickname, config.textX * scaleFactor, 450 * scaleFactor);
+    }
 
     updateDownloadLink(state.name);
 }

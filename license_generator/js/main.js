@@ -130,6 +130,16 @@ function addEventListeners() {
         debounce(() => generateImage(state), 100)();
     });
 
+    dom.countrySelect.addEventListener('change', (e) => {
+        state.country = e.target.value;
+        debounce(() => generateImage(state), 100)();
+    });
+
+    dom.nicknameSelect.addEventListener('change', (e) => {
+        state.nickname = e.target.value;
+        debounce(() => generateImage(state), 100)();
+    });
+
     dom.colorSlider.addEventListener('input', (e) => {
         state.colorHue = e.target.value;
         dom.colorValue.textContent = `${state.colorHue}°`;
@@ -141,8 +151,6 @@ function addEventListeners() {
         dom.saturationValue.textContent = `${state.saturation}%`;
         debounce(() => generateImage(state), 100)();
     });
-
-    // ... (rest of the event listeners will be added in the next steps)
 }
 
 document.addEventListener('DOMContentLoaded', initialize);
