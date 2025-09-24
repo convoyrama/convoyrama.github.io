@@ -41,6 +41,8 @@ export const dom = {
     qrColorToggleLabel: document.getElementById("qrColorToggleLabel"),
     textColorToggleInput: document.getElementById("textColorToggle"),
     textColorToggleLabel: document.getElementById("textColorToggleLabel"),
+    rankToggleInput: document.getElementById("rankToggle"),
+    rankToggleLabel: document.getElementById("rankToggleLabel"),
     vtcLogoLabel: document.getElementById("vtcLogoLabel"),
     backgroundToggleLabel: document.getElementById("backgroundToggleLabel"),
     colorLabel: document.getElementById("colorLabel"),

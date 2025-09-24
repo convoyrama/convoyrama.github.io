@@ -57,6 +57,22 @@ export async function generateImage(state) {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Draw top dark section
+    ctx.fillStyle = 'rgb(20, 20, 20)';
+    ctx.fillRect(0, 0, canvas.width, 81.535 * scaleFactor);
+
+    // Draw top-left watermark (cr.png)
+    try {
+        const crImage = await loadImage('./license_generator/images/cr.png');
+        const crImageHeight = 80 * scaleFactor; // Max height 80px
+        const crImageWidth = (crImage.width / crImage.height) * crImageHeight;
+        const crX = 25 * scaleFactor;
+        const crY = (81.535 / 2 - crImageHeight / 2) * scaleFactor;
+        ctx.drawImage(crImage, crX, crY, crImageWidth, crImageHeight);
+    } catch (error) {
+        console.error('Failed to load cr.png watermark', error);
+    }
+
     // Draw background
     const bgPath = `./license_generator/images/${state.backgroundTemplate}`;
     try {
@@ -111,7 +127,11 @@ export async function generateImage(state) {
     if (userLevel) {
         try {
             const rankImage = await loadImage(`./license_generator/rank/${userLevel}.png`);
-            ctx.drawImage(rankImage, config.labelX * scaleFactor, 280 * scaleFactor, rankImage.width * scaleFactor, rankImage.height * scaleFactor);
+            const rankImageHeight = Math.min(rankImage.height, 80);
+            const rankImageWidth = (rankImage.width / rankImage.height) * rankImageHeight;
+            const rankX = canvas.width - (25 * scaleFactor) - rankImageWidth * scaleFactor;
+            const rankY = (81.535 / 2 - rankImageHeight / 2) * scaleFactor;
+            ctx.drawImage(rankImage, rankX, rankY, rankImageWidth, rankImageHeight);
         } catch (error) {
             console.error(`Failed to load rank image for level ${userLevel}`, error);
         }

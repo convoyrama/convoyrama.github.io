@@ -15,6 +15,7 @@ const state = {
     watermarkToggle: true,
     qrColorToggle: false,
     textColorToggle: false,
+    rankToggle: true,
     backgroundTemplate: 'modern.png',
     language: 'es',
     colorHue: 0,
@@ -252,6 +253,11 @@ function addEventListeners() {
 
     dom.textColorToggleInput.addEventListener('change', (e) => {
         state.textColorToggle = e.target.checked;
+        debounce(() => generateImage(state), 100)();
+    });
+
+    dom.rankToggleInput.addEventListener('change', (e) => {
+        state.rankToggle = e.target.checked;
         debounce(() => generateImage(state), 100)();
     });
 
