@@ -64,7 +64,7 @@ export async function generateImage(state) {
         ctx.filter = "none";
     } catch (error) {
         console.error(`Failed to load background image: ${bgPath}`, error);
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = config.color;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
@@ -79,7 +79,7 @@ export async function generateImage(state) {
 
     // Draw Title
     ctx.font = `bold ${config.titleFontSize * scaleFactor}px 'Verdana-Bold'`;
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = config.color;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(state.customTitle.trim() || "TRUCKERSMP", canvas.width / 2, 40.77 * scaleFactor);
@@ -101,15 +101,23 @@ export async function generateImage(state) {
 
     // Draw Name
     ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = config.color;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    let displayName = state.name.toUpperCase();
+    
+    const displayName = state.name.toUpperCase();
+    ctx.fillText(displayName, config.textX * scaleFactor, 280 * scaleFactor);
+
+    // Draw Gold Star if owner
     const isOwner = state.vtcData.vtcOwners.some(owner => owner.profileLink === state.truckersmpLink && owner.companyLink === state.companyLink);
     if (isOwner) {
-        displayName += ' ✵';
+        const nameWidth = ctx.measureText(displayName).width;
+        ctx.fillStyle = '#FFD700'; // Gold color
+        ctx.fillText(' ✵', (config.textX * scaleFactor) + nameWidth, 280 * scaleFactor);
     }
-    ctx.fillText(displayName, config.textX * scaleFactor, 280 * scaleFactor);
+
+    // Reset fillStyle for subsequent drawings
+    ctx.fillStyle = config.color;
 
     // Draw Country
     const selectedCountry = state.countries.find(c => c.code === state.country);

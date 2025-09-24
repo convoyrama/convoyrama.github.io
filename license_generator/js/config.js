@@ -1,7 +1,7 @@
 export const config = {
     baseWidth: 800,
     baseHeight: 500,
-    color: "white",
+    color: "rgb(240, 240, 240)",
     flagSize: 80,
     photoX: 45,
     photoY: 80,
