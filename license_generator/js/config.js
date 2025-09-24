@@ -36,9 +36,9 @@ export const translations = {};
 export async function loadTranslations() {
     try {
         const [enRes, esRes, ptRes] = await Promise.all([
-            fetch('./locales/en.json'),
-            fetch('./locales/es.json'),
-            fetch('./locales/pt.json'),
+            fetch('../locales/en.json'),
+            fetch('../locales/es.json'),
+            fetch('../locales/pt.json'),
         ]);
         const [enData, esData, ptData] = await Promise.all([
             enRes.json(),
