@@ -124,10 +124,10 @@ export async function generateImage(state) {
 
     // Draw Rank Image
     const userLevel = getUserLevel(userId, state.levelRanges.user, state.currentDate ? state.currentDate.year : null);
-    if (userLevel) {
+    if (state.rankToggle && userLevel) {
         try {
             const rankImage = await loadImage(`./license_generator/rank/${userLevel}.png`);
-            const rankImageHeight = Math.min(rankImage.height, 80);
+            const rankImageHeight = Math.min(rankImage.height, 80); // Cap height at 80px
             const rankImageWidth = (rankImage.width / rankImage.height) * rankImageHeight;
             const rankX = canvas.width - (25 * scaleFactor) - rankImageWidth * scaleFactor;
             const rankY = (81.535 / 2 - rankImageHeight / 2) * scaleFactor;
