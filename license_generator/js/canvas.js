@@ -37,15 +37,6 @@ export async function generateImage(state) {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    // Draw language overlay
-    const langPath = `./assets/images/${state.language}.png`;
-    try {
-        const langImage = await loadImage(langPath);
-        ctx.drawImage(langImage, 0, 0, canvas.width, canvas.height);
-    } catch (error) {
-        console.error(`Failed to load language image: ${langPath}`, error);
-    }
-
     // Draw Title
     ctx.font = `bold ${config.titleFontSize * scaleFactor}px 'Verdana-Bold'`;
     ctx.fillStyle = "#fff";
