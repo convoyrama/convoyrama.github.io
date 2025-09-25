@@ -187,7 +187,7 @@ export async function generateImage(state) {
     }
 
     // Draw QR Codes (in their new positions)
-    const qrColor = state.qrColorToggle ? "#F0F0F0" : "#141414";
+    const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
     if (state.truckersmpLink) {
         await generateQR(ctx, normalizedTruckersmpLink, qrUser_x, itemY, itemSize, qrColor);
     }

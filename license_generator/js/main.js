@@ -15,7 +15,7 @@ const state = {
     watermarkToggle: true,
     qrColorToggle: false,
     textColorToggle: false,
-    rankToggle: true,
+    rankToggle: false,
     backgroundTemplate: 'aura.png',
     language: 'es',
     colorHue: 0,
