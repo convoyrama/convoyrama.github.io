@@ -132,21 +132,21 @@ function renderRankLegend() {
     itemsContainer.className = 'rank-legend-items';
     container.appendChild(itemsContainer);
 
-    state.levelRanges.user.forEach(level => {
+    for (let i = 1; i <= 12; i++) {
         const item = document.createElement('div');
         item.className = 'rank-legend-item';
 
         const img = document.createElement('img');
-        img.src = `./license_generator/rank/${level.level}.png`;
-        img.alt = `Rank ${level.level}`;
+        img.src = `./license_generator/rank/${i}.png`;
+        img.alt = `Rank ${i}`;
 
         const span = document.createElement('span');
-        span.textContent = level.age;
+        span.textContent = i;
 
         item.appendChild(img);
         item.appendChild(span);
         itemsContainer.appendChild(item);
-    });
+    }
 }
 
 async function initialize() {

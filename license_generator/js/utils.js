@@ -72,7 +72,6 @@ export function getUserLevel(userId, userLevelRanges, currentYear) {
     const id = parseInt(userId);
     let registrationYear = null;
 
-    // The ranges are sorted by year descending, so we find the first match for the userId
     const sortedRanges = [...userLevelRanges].sort((a, b) => a.year - b.year);
 
     for (const range of sortedRanges) {
@@ -82,11 +81,14 @@ export function getUserLevel(userId, userLevelRanges, currentYear) {
         }
     }
 
-    if (!registrationYear) return null; // User is newer than all defined ranges
+    if (!registrationYear) {
+        registrationYear = currentYear;
+    }
 
     const accountAge = currentYear - registrationYear;
 
-    if (accountAge < 1) return null; // Less than a year old, no rank
+    if (accountAge < 1) return null;
+    if (accountAge > 12) return 12;
 
     return accountAge;
 }
