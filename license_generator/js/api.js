@@ -7,11 +7,11 @@ export async function getCurrentDate() {
 
     const apis = [
         {
-            url: 'http://worldtimeapi.org/api/timezone/Etc/UTC',
+            url: 'https://worldtimeapi.org/api/timezone/Etc/UTC',
             parse: data => new Date(data.utc_datetime)
         },
         {
-            url: 'http://worldtimeapi.org/api/timezone/America/New_York',
+            url: 'https://worldtimeapi.org/api/timezone/America/New_York',
             parse: data => new Date(data.utc_datetime)
         }
     ];
