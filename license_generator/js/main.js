@@ -41,8 +41,9 @@ function updateUI() {
     updateLanguage(state.language);
 }
 
-function populateNicknames() {
-    dom.nicknameSelect.innerHTML = '<option value="">Seleccione un TAG</option>';
+function populateNicknames(lang) {
+    const t = translations[lang] || translations.es;
+    dom.nicknameSelect.innerHTML = `<option value="">${t.nicknamePlaceholder}</option>`;
     state.nicknames.forEach(nickname => {
         const option = document.createElement('option');
         option.value = nickname;
@@ -107,9 +108,13 @@ function updateLanguage(lang) {
     dom.downloadButton.textContent = t.downloadButton;
     dom.infoButton.setAttribute('data-tooltip', t.infoTooltip);
     dom.downloadButton.setAttribute('data-tooltip', t.tooltipMessage);
+    dom.rankToggleLabel.textContent = t.rankToggleLabel;
+    dom.textColorToggleLabel.textContent = t.textColorToggleLabel;
+    dom.truckersmpToggleLabel.textContent = t.truckersmpToggleLabel;
     
     populateCountries(lang);
     populateTitles(lang);
+    populateNicknames(lang);
 }
 
 function renderRankLegend() {
@@ -165,7 +170,7 @@ async function initialize() {
     ]);
     
     populateCountries(state.language);
-    populateNicknames();
+    populateNicknames(state.language);
     populateTitles(state.language);
 
     updateUI();

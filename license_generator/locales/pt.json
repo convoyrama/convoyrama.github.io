@@ -32,6 +32,10 @@
     "titleNormal": "LICENÇA INTERNACIONAL DE CONDUÇÃO",
     "titleComedic": "PERMISSÃO PARA CAUSAR CAOS EM COMBOIO",
     "countryPlaceholder": "Selecione um país",
+    "nicknamePlaceholder": "Selecione uma TAG",
+    "rankToggleLabel": "Mostrar Rank",
+    "textColorToggleLabel": "Cor do Texto: Escuro / Claro",
+    "truckersmpToggleLabel": "Logo TruckersMP",
     "tooltipMessage": "Esta licença é uma brincadeira e uma homenagem à comunidade, não pretende ser profissional.",
     "infoTooltip": "Significado dos elementos:\n- Gerações: TruckersMP começou em 2013 e as VTCs em 2019. As gerações são calculadas aproximando o ano de registro do perfil e da VTC.\n- Estrela dourada (✵) ao lado do nome: Indica que o usuário é dono de uma VTC. Pode ser solicitada abrindo um ticket no Discord do LAG'S SPEED.\n- Estrelas prateadas (★) à direita: Uma homenagem à extinta VTC Convoy Nocturno.\n- Marca de verificação (✓) ao lado da data: Indica que a data vem de uma fonte online confiável. Atualize a página para tentar obter a data online novamente.\n- Cruz (✗) ao lado da data: Indica que a data é local, não verificada. Atualize a página para tentar obter a data online novamente.\n- Um verso noturno sussurra um segredo, que palavra desvenda o caminho oculto?"
 }

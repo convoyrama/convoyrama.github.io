@@ -243,7 +243,9 @@ export async function generateImage(state) {
     if (state.truckersmpToggle) {
         try {
             const truckersmpImage = await loadImage('./license_generator/images/truckersmp-logo-sm.png');
-            ctx.drawImage(truckersmpImage, vtcLogo_x, flag_y, config.logoWidth * scaleFactor, config.logoHeight * scaleFactor);
+            const logoWidth = config.logoWidth * scaleFactor;
+            const logoHeight = (truckersmpImage.height / truckersmpImage.width) * logoWidth;
+            ctx.drawImage(truckersmpImage, vtcLogo_x, flag_y, logoWidth, logoHeight);
         } catch (error) {
             console.error('Failed to load truckersmp-logo-sm image', error);
         }
