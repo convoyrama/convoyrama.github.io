@@ -14,7 +14,7 @@ export const config = {
     flagY: 206,
     font: "'Verdana', sans-serif",
     defaultPhotoSize: 192,
-    qrSize: 100,
+  qrSize: 128,
     qrSpacing: 10,
     promodsX: 20,
     promodsY: 314,
