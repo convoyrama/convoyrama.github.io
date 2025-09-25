@@ -76,7 +76,7 @@ export async function generateImage(state) {
     try {
         ctx.globalAlpha = 0.1; // 10% opacity
         const crImage = await loadImage('./license_generator/images/cr.png');
-        const crImageHeight = 80 * scaleFactor; // Max height 80px
+        const crImageHeight = 80 * scaleFactor;
         const crImageWidth = (crImage.width / crImage.height) * crImageHeight;
         const crX = 25 * scaleFactor;
         const crY = (81.535 * scaleFactor / 2) - (crImageHeight / 2);
@@ -136,7 +136,7 @@ export async function generateImage(state) {
 
     // Define text lines in order
     const lines = [
-        { label: t.canvasName, value: state.name.toUpperCase(), isName: true },
+        { label: t.canvasName, value: state.name, isName: true },
         { label: t.canvasCountry, value: countryName.toUpperCase() },
         { label: t.canvasLicenseNo, value: licenseNumber },
         { label: t.canvasDate, value: dateStr + dateSymbol },
@@ -210,8 +210,8 @@ export async function generateImage(state) {
     if (state.watermarkToggle && state.vtcLogoImage) {
         const watermarkWidth = config.watermarkWidth * scaleFactor;
         const watermarkHeight = config.watermarkHeight * scaleFactor;
-        const watermarkX = (qrUser_x + itemSize) - watermarkWidth;
-        const watermarkY = ((config.baseHeight * scaleFactor - watermarkHeight) / 2) + (100 * scaleFactor);
+        const watermarkX = (flag_x + itemSize) - watermarkWidth;
+        const watermarkY = flag_y + itemSize + itemSpacing;
 
         ctx.globalAlpha = 0.1;
         ctx.drawImage(state.vtcLogoImage, watermarkX, watermarkY, watermarkWidth, watermarkHeight);
@@ -243,10 +243,11 @@ export async function generateImage(state) {
     const starConfig = state.starMap[normalizedTruckersmpLink] || { silver: 0 };
     const silverStarCount = starConfig.silver || 0;
     if (silverStarCount > 0) {
+        const totalStarHeight = silverStarCount * config.textFontSize * scaleFactor;
         ctx.font = `bold ${config.textFontSize * scaleFactor}px ${config.font}`;
         ctx.textAlign = "center";
         const starX = (config.photoX / 2) * scaleFactor;
-        let currentY = config.promodsY * scaleFactor;
+        let currentY = (canvas.height / 2) - (totalStarHeight / 2) + (config.textFontSize * scaleFactor / 2);
         ctx.fillStyle = "#C0C0C0"; // Silver color
         for (let i = 0; i < silverStarCount; i++) {
             ctx.fillText("★", starX, currentY);
