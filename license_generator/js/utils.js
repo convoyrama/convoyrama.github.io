@@ -67,26 +67,30 @@ export function generateLicenseNumber(truckersmpLink, companyLink, countryCode =
     return { licenseNumber, userId, vtcId };
 }
 
-export function getUserLevel(userId, userLevelRanges, currentYear) {
-    if (!userId || isNaN(userId) || !userLevelRanges || !currentYear) return null;
-    const id = parseInt(userId);
-    let registrationYear = null;
+export function getUserLevel(joinDate, userLevelRanges, currentDate) {
+    if (!joinDate || !userLevelRanges || !currentDate) return null;
 
+    const join = new Date(joinDate);
+    const current = new Date(currentDate.year, currentDate.month - 1, currentDate.day);
+
+    let accountAge = current.getFullYear() - join.getFullYear();
+    const m = current.getMonth() - join.getMonth();
+    if (m < 0 || (m === 0 && current.getDate() < join.getDate())) {
+        accountAge--;
+    }
+
+    if (accountAge < 0) return null;
+
+    // The ranges are sorted by age descending in the json, so the first match is the correct one
+    let userLevel = null;
     for (const range of userLevelRanges) {
-        if (id <= range.maxId) {
-            registrationYear = range.year;
+        if (accountAge >= range.age) {
+            userLevel = range.level;
             break;
         }
     }
 
-    if (!registrationYear) return null; // User is newer than all defined ranges
-
-    const accountAge = currentYear - registrationYear;
-
-    if (accountAge < 1) return null; // Less than a year old, no rank
-    if (accountAge > 12) return 12; // Cap at rank 12
-
-    return accountAge;
+    return userLevel;
 }
 
 

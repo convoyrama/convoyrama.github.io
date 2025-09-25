@@ -107,7 +107,7 @@ export async function generateImage(state) {
     const { licenseNumber, userId, vtcId } = generateLicenseNumber(normalizedTruckersmpLink, normalizedCompanyLink, state.country);
 
     // Draw Rank Image
-    const userLevel = getUserLevel(userId, state.levelRanges.user, state.currentDate ? state.currentDate.year : null);
+    const userLevel = state.truckersMPData ? getUserLevel(state.truckersMPData.joinDate, state.levelRanges.user, state.currentDate) : null;
     console.log("User level for rank:", userLevel);
     if (state.rankToggle && userLevel) {
         try {
