@@ -81,10 +81,6 @@ export async function generateImage(state) {
         ctx.globalAlpha = 1.0;
     }
 
-    // Draw top dark section
-    ctx.fillStyle = 'rgb(20, 20, 20)';
-    ctx.fillRect(0, 0, canvas.width, 81.535 * scaleFactor);
-
     // Draw top-left watermark (cr.png)
     try {
         const crImage = await loadImage('./license_generator/images/cr.png');
@@ -99,7 +95,7 @@ export async function generateImage(state) {
 
     // Draw Title
     ctx.font = `bold ${config.titleFontSize * scaleFactor}px 'Verdana-Bold'`;
-    ctx.fillStyle = config.color;
+    ctx.fillStyle = textColor;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(state.customTitle.trim() || "TRUCKERSMP", canvas.width / 2, 40.77 * scaleFactor);
@@ -126,6 +122,7 @@ export async function generateImage(state) {
 
     // Draw Rank Image
     const userLevel = getUserLevel(userId, state.levelRanges.user, state.currentDate ? state.currentDate.year : null);
+    console.log("User level for rank:", userLevel);
     if (state.rankToggle && userLevel) {
         try {
             const rankImage = await loadImage(`./license_generator/rank/${userLevel}.png`);
@@ -163,13 +160,13 @@ export async function generateImage(state) {
     }
 
     // Draw lines
-    let yPos = 280 * scaleFactor;
+    let yPos = (config.photoY + config.defaultPhotoSize + 20) * scaleFactor;
     lines.forEach(line => {
-        ctx.font = `${config.textFontSize * scaleFactor}px 'Verdana'`;
+        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
         ctx.fillStyle = textColor;
         ctx.fillText(line.label, config.labelX * scaleFactor, yPos);
 
-        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana'`;
+        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
         if (line.isName) {
             const nameWithoutStar = line.value;
             ctx.fillText(nameWithoutStar, config.textX * scaleFactor, yPos);
