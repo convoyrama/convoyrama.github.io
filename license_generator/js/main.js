@@ -26,6 +26,7 @@ const state = {
     vtcLogoImage: null,
     currentDate: null,
     truckersMPData: null,
+    isTruckersMPLinkValid: false,
     lastDateFetch: 0,
     isDateFromInternet: false,
     vtcData: { vtcOwners: [] },
@@ -122,7 +123,16 @@ function renderRankLegend() {
         return;
     }
 
-    container.style.display = 'flex';
+    container.style.display = 'block';
+
+    const intro = document.createElement('p');
+    intro.className = 'rank-legend-intro';
+    intro.textContent = 'El rango corresponde a la antigüedad de la cuenta en TruckersMP. A partir del primer año, se asigna un nuevo rango por cada año de antigüedad.';
+    container.appendChild(intro);
+
+    const itemsContainer = document.createElement('div');
+    itemsContainer.className = 'rank-legend-items';
+    container.appendChild(itemsContainer);
 
     state.levelRanges.user.forEach(level => {
         const item = document.createElement('div');
@@ -132,12 +142,12 @@ function renderRankLegend() {
         img.src = `./license_generator/rank/${level.level}.png`;
         img.alt = `Rank ${level.level}`;
 
-        const p = document.createElement('p');
-        p.textContent = `${level.age}+ Años`;
+        const span = document.createElement('span');
+        span.textContent = level.age;
 
         item.appendChild(img);
-        item.appendChild(p);
-        container.appendChild(item);
+        item.appendChild(span);
+        itemsContainer.appendChild(item);
     });
 }
 
@@ -174,10 +184,12 @@ function addEventListeners() {
 
     dom.truckersmpLinkInput.addEventListener('input', async (e) => {
         state.truckersmpLink = e.target.value;
-        const isValid = validateTruckersmpLink(state.truckersmpLink, translations, state.language);
-        if (isValid) {
+        state.isTruckersMPLinkValid = validateTruckersmpLink(state.truckersmpLink, translations, state.language);
+        if (state.isTruckersMPLinkValid) {
             const userId = state.truckersmpLink.match(/\/user\/(\d+)/)[1];
             state.truckersMPData = await getTruckersMPUser(userId);
+        } else {
+            state.truckersMPData = null;
         }
         debounce(() => generateImage(state), 100)();
     });
