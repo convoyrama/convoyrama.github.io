@@ -11,8 +11,8 @@ export async function getCurrentDate() {
             parse: data => new Date(data.utc_datetime)
         },
         {
-            url: 'https://timeapi.org/api/Time/current/zone?timeZone=Etc/UTC',
-            parse: data => new Date(data.dateTime)
+            url: 'http://worldtimeapi.org/api/timezone/America/New_York',
+            parse: data => new Date(data.utc_datetime)
         }
     ];
 
@@ -111,4 +111,16 @@ export async function loadLevelRanges() {
         return { user: [], vtc: [] };
     }
 }
-\nexport async function getTruckersMPUser(userId) {\n    if (!userId) return null;\n    try {\n        const response = await fetch(`https://api.truckersmp.com/v2/player/${userId}`);\n        if (!response.ok) throw new Error(Failed to fetch TruckersMP user data);\n        const data = await response.json();\n        return data.response;\n    } catch (error) {\n        console.error(`Error loading TruckersMP user data for ID ${userId}:`, error);\n        return null;\n    }\n}\n
+
+export async function getTruckersMPUser(userId) {
+    if (!userId) return null;
+    try {
+        const response = await fetch(`https://api.truckersmp.com/v2/player/${userId}`);
+        if (!response.ok) throw new Error('Failed to fetch TruckersMP user data');
+        const data = await response.json();
+        return data.response;
+    } catch (error) {
+        console.error(`Error loading TruckersMP user data for ID ${userId}:`, error);
+        return null;
+    }
+}
