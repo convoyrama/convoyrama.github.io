@@ -246,8 +246,10 @@ export async function generateImage(state) {
             const logoWidth = config.truckersmpLogoWidth * scaleFactor;
             const logoHeight = (truckersmpImage.height / truckersmpImage.width) * logoWidth;
             const truckersmpLogo_x = qrCompany_x;
-            const truckersmpLogo_y = flag_y + itemSize + itemSpacing;
+            const truckersmpLogo_y = flag_y;
+            ctx.globalAlpha = 0.1; // 10% opacity
             ctx.drawImage(truckersmpImage, truckersmpLogo_x, truckersmpLogo_y, logoWidth, logoHeight);
+            ctx.globalAlpha = 1.0; // Reset opacity
         } catch (error) {
             console.error('Failed to load truckersmp-logo-sm image', error);
         }
