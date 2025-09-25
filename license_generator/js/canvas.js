@@ -245,7 +245,9 @@ export async function generateImage(state) {
             const truckersmpImage = await loadImage('./license_generator/images/truckersmp-logo-sm.png');
             const logoWidth = config.truckersmpLogoWidth * scaleFactor;
             const logoHeight = (truckersmpImage.height / truckersmpImage.width) * logoWidth;
-            ctx.drawImage(truckersmpImage, vtcLogo_x, flag_y, logoWidth, logoHeight);
+            const truckersmpLogo_x = qrCompany_x;
+            const truckersmpLogo_y = flag_y + itemSize + itemSpacing;
+            ctx.drawImage(truckersmpImage, truckersmpLogo_x, truckersmpLogo_y, logoWidth, logoHeight);
         } catch (error) {
             console.error('Failed to load truckersmp-logo-sm image', error);
         }
