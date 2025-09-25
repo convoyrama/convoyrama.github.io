@@ -83,12 +83,14 @@ export async function generateImage(state) {
 
     // Draw top-left watermark (cr.png)
     try {
+        ctx.globalAlpha = 0.1; // 10% opacity
         const crImage = await loadImage('./license_generator/images/cr.png');
         const crImageHeight = 80 * scaleFactor; // Max height 80px
         const crImageWidth = (crImage.width / crImage.height) * crImageHeight;
         const crX = 25 * scaleFactor;
         const crY = (81.535 * scaleFactor / 2) - (crImageHeight / 2);
         ctx.drawImage(crImage, crX, crY, crImageWidth, crImageHeight);
+        ctx.globalAlpha = 1.0; // Reset opacity
     } catch (error) {
         console.error('Failed to load cr.png watermark', error);
     }
@@ -126,7 +128,7 @@ export async function generateImage(state) {
     if (state.rankToggle && userLevel) {
         try {
             const rankImage = await loadImage(`./license_generator/rank/${userLevel}.png`);
-            const rankImageHeight = 80 * scaleFactor;
+            const rankImageHeight = 64 * scaleFactor; // 20% smaller than 80
             const rankImageWidth = (rankImage.width / rankImage.height) * rankImageHeight;
             const rankX = canvas.width - (25 * scaleFactor) - rankImageWidth;
             const rankY = (81.535 * scaleFactor / 2) - (rankImageHeight / 2);
