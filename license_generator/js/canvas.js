@@ -110,13 +110,6 @@ export async function generateImage(state) {
         if (defaultPhoto) ctx.drawImage(defaultPhoto, config.photoX * scaleFactor, config.photoY * scaleFactor, config.defaultPhotoSize * scaleFactor, config.defaultPhotoSize * scaleFactor);
     }
 
-    // Draw VTC Logo
-    if (state.vtcLogoImage) {
-        const vtcLogoSize = config.vtcLogoSize * scaleFactor;
-        const vtcLogoX = (config.qrX - 2 * config.qrSize - 2 * config.qrSpacing) * scaleFactor;
-        ctx.drawImage(state.vtcLogoImage, vtcLogoX, config.qrY * scaleFactor, vtcLogoSize, vtcLogoSize);
-    }
-
     // --- Text & Rank Drawing --- //
     const normalizedTruckersmpLink = normalizeLink(state.truckersmpLink);
     const normalizedCompanyLink = normalizeLink(state.companyLink);
@@ -183,12 +176,41 @@ export async function generateImage(state) {
         yPos += config.lineHeight * scaleFactor;
     });
 
-    // Draw flag emoji separately as it might not align perfectly with text
+    // --- Right-aligned items (VTC Logo, QRs, Flag) ---
+    const itemSize = config.vtcLogoSize * scaleFactor;
+    const itemSpacing = config.qrSpacing * scaleFactor;
+    const rightMargin = 20 * scaleFactor;
+    const itemY = config.qrY * scaleFactor;
+
+    const qrId_x = canvas.width - rightMargin - itemSize;
+    const qrUser_x = qrId_x - itemSize - itemSpacing;
+    const qrCompany_x = qrUser_x - itemSize - itemSpacing;
+    const vtcLogo_x = qrCompany_x - itemSize - itemSpacing;
+
+    const flag_x = qrId_x;
+    const flag_y = itemY + itemSize + itemSpacing;
+
+    // Draw VTC Logo (in its new position)
+    if (state.vtcLogoImage) {
+        ctx.drawImage(state.vtcLogoImage, vtcLogo_x, itemY, itemSize, itemSize);
+    }
+
+    // Draw QR Codes (in their new positions)
+    const qrColor = state.qrColorToggle ? "#F0F0F0" : "#141414";
+    if (state.truckersmpLink) {
+        await generateQR(ctx, normalizedTruckersmpLink, qrUser_x, itemY, itemSize, qrColor);
+    }
+    if (state.companyLink) {
+        await generateQR(ctx, normalizedCompanyLink, qrCompany_x, itemY, itemSize, qrColor);
+    }
+    await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, itemY, itemSize, qrColor);
+
+    // Draw flag emoji (in its new position)
     if (selectedCountry) {
         try {
-            const flagEmoji = await renderTwemoji(selectedCountry.emoji, config.flagSize * scaleFactor);
+            const flagEmoji = await renderTwemoji(selectedCountry.emoji, itemSize);
             if (flagEmoji) {
-                ctx.drawImage(flagEmoji, config.flagX * scaleFactor, config.flagY * scaleFactor, config.flagSize * scaleFactor, config.flagSize * scaleFactor);
+                ctx.drawImage(flagEmoji, flag_x, flag_y, itemSize, itemSize);
             }
         } catch (e) { console.error('failed to render flag', e); }
     }
@@ -213,17 +235,6 @@ export async function generateImage(state) {
             console.error('Failed to load dbusworld image', error);
         }
     }
-    
-    // Draw QR Codes
-    const qrColor = state.qrColorToggle ? "#F0F0F0" : "#141414";
-    const qrSize = config.qrSize * scaleFactor;
-    if (state.truckersmpLink) {
-        await generateQR(ctx, normalizedTruckersmpLink, config.qrX * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
-    }
-    if (state.companyLink) {
-        await generateQR(ctx, normalizedCompanyLink, (config.qrX - config.qrSize - config.qrSpacing) * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
-    }
-    await generateQR(ctx, "https://convoyrama.github.io/id.html", (config.qrX + config.qrSize + config.qrSpacing) * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
 
     // Draw Silver Stars
     const starConfig = state.starMap[normalizedTruckersmpLink] || { silver: 0 };
