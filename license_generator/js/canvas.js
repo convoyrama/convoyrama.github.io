@@ -72,15 +72,6 @@ export async function generateImage(state) {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    // Draw VTC Logo as Watermark if enabled
-    if (state.watermarkToggle && state.vtcLogoImage) {
-        const centerX = ((config.baseWidth - config.watermarkWidth) / 2 + 150) * scaleFactor;
-        const centerY = ((config.baseHeight - config.watermarkHeight) / 2 + 100) * scaleFactor;
-        ctx.globalAlpha = 0.1;
-        ctx.drawImage(state.vtcLogoImage, centerX, centerY, config.watermarkWidth * scaleFactor, config.watermarkHeight * scaleFactor);
-        ctx.globalAlpha = 1.0;
-    }
-
     // Draw top-left watermark (cr.png)
     try {
         ctx.globalAlpha = 0.1; // 10% opacity
@@ -155,7 +146,7 @@ export async function generateImage(state) {
     }
 
     // Draw lines
-    let yPos = (config.photoY + config.defaultPhotoSize + 20) * scaleFactor;
+    let yPos = (config.photoY + config.defaultPhotoSize + 40) * scaleFactor;
     lines.forEach(line => {
         ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
         ctx.fillStyle = textColor;
@@ -214,6 +205,18 @@ export async function generateImage(state) {
             }
         } catch (e) { console.error('failed to render flag', e); }
     }
+    
+    // Draw VTC Logo as Watermark if enabled
+    if (state.watermarkToggle && state.vtcLogoImage) {
+        const watermarkWidth = config.watermarkWidth * scaleFactor;
+        const watermarkHeight = config.watermarkHeight * scaleFactor;
+        const watermarkX = (qrUser_x + itemSize) - watermarkWidth;
+        const watermarkY = ((config.baseHeight * scaleFactor - watermarkHeight) / 2) + (100 * scaleFactor);
+
+        ctx.globalAlpha = 0.1;
+        ctx.drawImage(state.vtcLogoImage, watermarkX, watermarkY, watermarkWidth, watermarkHeight);
+        ctx.globalAlpha = 1.0;
+    }
 
     // Draw ProMods Logo
     if (state.promodsToggle) {
@@ -241,8 +244,8 @@ export async function generateImage(state) {
     const silverStarCount = starConfig.silver || 0;
     if (silverStarCount > 0) {
         ctx.font = `bold ${config.textFontSize * scaleFactor}px ${config.font}`;
-        ctx.textAlign = "right";
-        const starX = (config.baseWidth - 20) * scaleFactor;
+        ctx.textAlign = "center";
+        const starX = (config.photoX / 2) * scaleFactor;
         let currentY = config.promodsY * scaleFactor;
         ctx.fillStyle = "#C0C0C0"; // Silver color
         for (let i = 0; i < silverStarCount; i++) {
@@ -268,8 +271,6 @@ export async function generateImage(state) {
         ctx.fillText(titleText.toUpperCase(), canvas.width / 2, titleY * scaleFactor);
         ctx.shadowColor = 'transparent'; // Reset shadow
     }
-
-    updateDownloadLink(state.name);
 }
 
 function updateDownloadLink(name) {
