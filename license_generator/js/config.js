@@ -20,6 +20,7 @@ export const config = {
     logoWidth: 80,
     logoHeight: 60,
     vtcLogoSize: 100,
+    truckersmpLogoWidth: 210,
     titleFontSize: 30,
     textFontSize: 24,
     footerFontSize: 22,
