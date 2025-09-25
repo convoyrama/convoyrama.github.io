@@ -44,6 +44,7 @@ export const dom = {
     textColorToggleLabel: document.getElementById("textColorToggleLabel"),
     rankToggleInput: document.getElementById("rankToggle"),
     rankToggleLabel: document.getElementById("rankToggleLabel"),
+    truckersmpToggleLabel: document.getElementById("truckersmpToggleLabel"),
     vtcLogoLabel: document.getElementById("vtcLogoLabel"),
     backgroundToggleLabel: document.getElementById("backgroundToggleLabel"),
     colorLabel: document.getElementById("colorLabel"),
