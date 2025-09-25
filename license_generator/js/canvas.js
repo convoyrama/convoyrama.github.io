@@ -239,6 +239,16 @@ export async function generateImage(state) {
         }
     }
 
+    // Draw TruckersMP Logo
+    if (state.truckersmpToggle) {
+        try {
+            const truckersmpImage = await loadImage('./license_generator/images/truckersmp-logo-sm.png');
+            ctx.drawImage(truckersmpImage, vtcLogo_x, flag_y, config.logoWidth * scaleFactor, config.logoHeight * scaleFactor);
+        } catch (error) {
+            console.error('Failed to load truckersmp-logo-sm image', error);
+        }
+    }
+
     // Draw Silver Stars
     const starConfig = state.starMap[normalizedTruckersmpLink] || { silver: 0 };
     const silverStarCount = starConfig.silver || 0;

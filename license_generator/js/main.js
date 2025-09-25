@@ -12,6 +12,7 @@ const state = {
     companyLink: '',
     promodsToggle: false,
     dbusworldToggle: false,
+    truckersmpToggle: false,
     watermarkToggle: true,
     qrColorToggle: false,
     textColorToggle: false,
@@ -82,6 +83,7 @@ function populateCountries(lang) {
 
 function updateLanguage(lang) {
     const t = translations[lang];
+    console.log('Translation object for ', lang, t);
     if (!t) return;
 
     dom.pageTitle.textContent = t.pageTitle;
@@ -280,6 +282,11 @@ function addEventListeners() {
 
     dom.dbusworldToggleInput.addEventListener('change', (e) => {
         state.dbusworldToggle = e.target.checked;
+        debounce(() => generateImage(state), 100)();
+    });
+
+    dom.truckersmpToggleInput.addEventListener('change', (e) => {
+        state.truckersmpToggle = e.target.checked;
         debounce(() => generateImage(state), 100)();
     });
 

@@ -15,6 +15,7 @@ export const dom = {
     titleSelectLabel: document.getElementById("titleSelectLabel"),
     promodsToggleInput: document.getElementById("promodsToggle"),
     dbusworldToggleInput: document.getElementById("dbusworldToggle"),
+    truckersmpToggleInput: document.getElementById("truckersmpToggle"),
     watermarkToggleInput: document.getElementById("watermarkToggle"),
     qrColorToggleInput: document.getElementById("qrColorToggle"),
     backgroundSelect: document.getElementById("backgroundSelect"),
