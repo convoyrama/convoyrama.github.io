@@ -110,6 +110,36 @@ function updateLanguage(lang) {
     populateTitles(lang);
 }
 
+function renderRankLegend() {
+    const container = document.getElementById('rank-legend');
+    if (!container) return;
+
+    container.innerHTML = ''; // Clear previous content
+
+    if (!state.rankToggle) {
+        container.style.display = 'none';
+        return;
+    }
+
+    container.style.display = 'flex';
+
+    state.levelRanges.user.forEach(level => {
+        const item = document.createElement('div');
+        item.className = 'rank-legend-item';
+
+        const img = document.createElement('img');
+        img.src = `./license_generator/rank/${level.level}.png`;
+        img.alt = `Rank ${level.level}`;
+
+        const p = document.createElement('p');
+        p.textContent = `Año: ${level.year}`;
+
+        item.appendChild(img);
+        item.appendChild(p);
+        container.appendChild(item);
+    });
+}
+
 async function initialize() {
     await loadTranslations(); // Call and await translation loading
 
@@ -132,6 +162,7 @@ async function initialize() {
     
     const debouncedGenerate = debounce(() => generateImage(state), 100);
     debouncedGenerate();
+    renderRankLegend(); // Initial render
 }
 
 function addEventListeners() {
@@ -261,6 +292,7 @@ function addEventListeners() {
     dom.rankToggleInput.addEventListener('change', (e) => {
         state.rankToggle = e.target.checked;
         debounce(() => generateImage(state), 100)();
+        renderRankLegend(); // Update legend on toggle change
     });
 
 }
