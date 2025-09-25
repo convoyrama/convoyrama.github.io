@@ -67,30 +67,28 @@ export function generateLicenseNumber(truckersmpLink, companyLink, countryCode =
     return { licenseNumber, userId, vtcId };
 }
 
-export function getUserLevel(joinDate, userLevelRanges, currentDate) {
-    if (!joinDate || !userLevelRanges || !currentDate) return null;
+export function getUserLevel(userId, userLevelRanges, currentYear) {
+    if (!userId || isNaN(userId) || !userLevelRanges || !currentYear) return null;
+    const id = parseInt(userId);
+    let registrationYear = null;
 
-    const join = new Date(joinDate);
-    const current = new Date(currentDate.year, currentDate.month - 1, currentDate.day);
+    // The ranges are sorted by year descending, so we find the first match for the userId
+    const sortedRanges = [...userLevelRanges].sort((a, b) => a.year - b.year);
 
-    let accountAge = current.getFullYear() - join.getFullYear();
-    const m = current.getMonth() - join.getMonth();
-    if (m < 0 || (m === 0 && current.getDate() < join.getDate())) {
-        accountAge--;
-    }
-
-    if (accountAge < 0) return null;
-
-    // The ranges are sorted by age descending in the json, so the first match is the correct one
-    let userLevel = null;
-    for (const range of userLevelRanges) {
-        if (accountAge >= range.age) {
-            userLevel = range.level;
+    for (const range of sortedRanges) {
+        if (id <= range.maxId) {
+            registrationYear = range.year;
             break;
         }
     }
 
-    return userLevel;
+    if (!registrationYear) return null; // User is newer than all defined ranges
+
+    const accountAge = currentYear - registrationYear;
+
+    if (accountAge < 1) return null; // Less than a year old, no rank
+
+    return accountAge;
 }
 
 

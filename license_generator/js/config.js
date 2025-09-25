@@ -6,7 +6,7 @@ export const config = {
     photoX: 45,
     photoY: 80,
     labelX: 120,
-    textX: 315,
+    textX: 325,
     textY: 314,
     qrY: 101,
     font: "'Verdana', sans-serif",

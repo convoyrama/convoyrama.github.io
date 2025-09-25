@@ -1,7 +1,5 @@
-import { dom } from './dom-elements.js';
-import { config, translations, loadTranslations } from './config.js';
 import { debounce, validateTruckersmpLink, validateCompanyLink } from './utils.js';
-import { getTruckersMPUser, getCurrentDate, loadVtcData, loadCountries, loadNicknames, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
+import { getCurrentDate, loadVtcData, loadCountries, loadNicknames, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
 import { generateImage } from './canvas.js';
 
 const state = {
@@ -25,8 +23,6 @@ const state = {
     userImage: null,
     vtcLogoImage: null,
     currentDate: null,
-    truckersMPData: null,
-    isTruckersMPLinkValid: false,
     lastDateFetch: 0,
     isDateFromInternet: false,
     vtcData: { vtcOwners: [] },
@@ -182,15 +178,9 @@ function addEventListeners() {
         debounce(() => generateImage(state), 100)();
     });
 
-    dom.truckersmpLinkInput.addEventListener('input', async (e) => {
+    dom.truckersmpLinkInput.addEventListener('input', (e) => {
         state.truckersmpLink = e.target.value;
-        state.isTruckersMPLinkValid = validateTruckersmpLink(state.truckersmpLink, translations, state.language);
-        if (state.isTruckersMPLinkValid) {
-            const userId = state.truckersmpLink.match(/\/user\/(\d+)/)[1];
-            state.truckersMPData = await getTruckersMPUser(userId);
-        } else {
-            state.truckersMPData = null;
-        }
+        validateTruckersmpLink(state.truckersmpLink, translations, state.language);
         debounce(() => generateImage(state), 100)();
     });
 

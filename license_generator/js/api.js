@@ -111,16 +111,3 @@ export async function loadLevelRanges() {
         return { user: [], vtc: [] };
     }
 }
-
-export async function getTruckersMPUser(userId) {
-    if (!userId) return null;
-    try {
-        const response = await fetch(`https://api.truckersmp.com/v2/player/${userId}`);
-        if (!response.ok) throw new Error('Failed to fetch TruckersMP user data');
-        const data = await response.json();
-        return data.response;
-    } catch (error) {
-        console.error(`Error loading TruckersMP user data for ID ${userId}:`, error);
-        return null;
-    }
-}

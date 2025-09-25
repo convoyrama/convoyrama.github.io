@@ -107,9 +107,9 @@ export async function generateImage(state) {
     const { licenseNumber, userId, vtcId } = generateLicenseNumber(normalizedTruckersmpLink, normalizedCompanyLink, state.country);
 
     // Draw Rank Image
-    const userLevel = state.truckersMPData ? getUserLevel(state.truckersMPData.joinDate, state.levelRanges.user, state.currentDate) : null;
+    const userLevel = getUserLevel(userId, state.levelRanges.user, state.currentDate ? state.currentDate.year : null);
     console.log("User level for rank:", userLevel);
-    if (state.rankToggle && userLevel && state.currentDate.fromInternet && state.isTruckersMPLinkValid) {
+    if (state.rankToggle && userLevel) {
         try {
             const rankImage = await loadImage(`./license_generator/rank/${userLevel}.png`);
             const rankImageHeight = 64 * scaleFactor; // 20% smaller than 80

@@ -1,16 +1,17 @@
 {
   "user": [
-    { "age": 11, "level": 12 },
-    { "age": 10, "level": 11 },
-    { "age": 9, "level": 10 },
-    { "age": 8, "level": 9 },
-    { "age": 7, "level": 8 },
-    { "age": 6, "level": 7 },
-    { "age": 5, "level": 6 },
-    { "age": 4, "level": 5 },
-    { "age": 3, "level": 4 },
-    { "age": 2, "level": 3 },
-    { "age": 1, "level": 2 }
+    { "year": 2014, "maxId": 200000, "level": 12 },
+    { "year": 2015, "maxId": 800000, "level": 11 },
+    { "year": 2016, "maxId": 1300000, "level": 10 },
+    { "year": 2017, "maxId": 1800000, "level": 9 },
+    { "year": 2018, "maxId": 2600000, "level": 8 },
+    { "year": 2019, "maxId": 3200000, "level": 7 },
+    { "year": 2020, "maxId": 4000000, "level": 6 },
+    { "year": 2021, "maxId": 4600000, "level": 5 },
+    { "year": 2022, "maxId": 4900000, "level": 4 },
+    { "year": 2023, "maxId": 5200000, "level": 3 },
+    { "year": 2024, "maxId": 5600000, "level": 2 },
+    { "year": 2025, "maxId": 6000000, "level": 1 }
   ],
   "vtc": [
     {"year":2019,"maxId":100,"level":1},
