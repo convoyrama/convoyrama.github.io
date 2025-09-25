@@ -59,22 +59,6 @@ export async function generateImage(state) {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw top dark section
-    ctx.fillStyle = 'rgb(20, 20, 20)';
-    ctx.fillRect(0, 0, canvas.width, 81.535 * scaleFactor);
-
-    // Draw top-left watermark (cr.png)
-    try {
-        const crImage = await loadImage('./license_generator/images/cr.png');
-        const crImageHeight = 80 * scaleFactor; // Max height 80px
-        const crImageWidth = (crImage.width / crImage.height) * crImageHeight;
-        const crX = 25 * scaleFactor;
-        const crY = (81.535 / 2 - crImageHeight / 2) * scaleFactor;
-        ctx.drawImage(crImage, crX, crY, crImageWidth, crImageHeight);
-    } catch (error) {
-        console.error('Failed to load cr.png watermark', error);
-    }
-
     // Draw background
     const bgPath = `./license_generator/images/${state.backgroundTemplate}`;
     try {
@@ -95,6 +79,22 @@ export async function generateImage(state) {
         ctx.globalAlpha = 0.1;
         ctx.drawImage(state.vtcLogoImage, centerX, centerY, config.watermarkWidth * scaleFactor, config.watermarkHeight * scaleFactor);
         ctx.globalAlpha = 1.0;
+    }
+
+    // Draw top dark section
+    ctx.fillStyle = 'rgb(20, 20, 20)';
+    ctx.fillRect(0, 0, canvas.width, 81.535 * scaleFactor);
+
+    // Draw top-left watermark (cr.png)
+    try {
+        const crImage = await loadImage('./license_generator/images/cr.png');
+        const crImageHeight = 80 * scaleFactor; // Max height 80px
+        const crImageWidth = (crImage.width / crImage.height) * crImageHeight;
+        const crX = 25 * scaleFactor;
+        const crY = (81.535 * scaleFactor / 2) - (crImageHeight / 2);
+        ctx.drawImage(crImage, crX, crY, crImageWidth, crImageHeight);
+    } catch (error) {
+        console.error('Failed to load cr.png watermark', error);
     }
 
     // Draw Title
@@ -129,10 +129,10 @@ export async function generateImage(state) {
     if (state.rankToggle && userLevel) {
         try {
             const rankImage = await loadImage(`./license_generator/rank/${userLevel}.png`);
-            const rankImageHeight = Math.min(rankImage.height, 80); // Cap height at 80px
+            const rankImageHeight = 80 * scaleFactor;
             const rankImageWidth = (rankImage.width / rankImage.height) * rankImageHeight;
-            const rankX = canvas.width - (25 * scaleFactor) - rankImageWidth * scaleFactor;
-            const rankY = (81.535 / 2 - rankImageHeight / 2) * scaleFactor;
+            const rankX = canvas.width - (25 * scaleFactor) - rankImageWidth;
+            const rankY = (81.535 * scaleFactor / 2) - (rankImageHeight / 2);
             ctx.drawImage(rankImage, rankX, rankY, rankImageWidth, rankImageHeight);
         } catch (error) {
             console.error(`Failed to load rank image for level ${userLevel}`, error);
@@ -169,7 +169,7 @@ export async function generateImage(state) {
         ctx.fillStyle = textColor;
         ctx.fillText(line.label, config.labelX * scaleFactor, yPos);
 
-        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
+        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana'`;
         if (line.isName) {
             const nameWithoutStar = line.value;
             ctx.fillText(nameWithoutStar, config.textX * scaleFactor, yPos);
@@ -224,7 +224,7 @@ export async function generateImage(state) {
     if (state.companyLink) {
         await generateQR(ctx, normalizedCompanyLink, (config.qrX - config.qrSize - config.qrSpacing) * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
     }
-    await generateQR(ctx, "https://convoyrama.github.io/id.html", (config.qrX + config.qrSize + config.qrSpacing) * scaleFactor, qrSize, qrColor);
+    await generateQR(ctx, "https://convoyrama.github.io/id.html", (config.qrX + config.qrSize + config.qrSpacing) * scaleFactor, config.qrY * scaleFactor, qrSize, qrColor);
 
     // Draw Silver Stars
     const starConfig = state.starMap[normalizedTruckersmpLink] || { silver: 0 };
