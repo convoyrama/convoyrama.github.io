@@ -22,7 +22,7 @@ const state = {
     colorHue: 0,
     saturation: 100,
     customTitle: '',
-    selectedTitleKey: 'INTERNATIONAL_DRIVING_LICENSE',
+    selectedTitleKey: 'LOGISTICS_OPERATOR_REGISTRY',
     userImage: null,
     vtcLogoImage: null,
     currentDate: null,

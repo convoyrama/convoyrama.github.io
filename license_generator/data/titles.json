@@ -39,6 +39,166 @@
     "type": "comedic",
     "es": "Sobreviviente de Calais-Duisburg",
     "en": "Calais-Duisburg Survivor",
-    "pt": "Sobrevivente de Calais-Duisburg"
+    "pt": "Sobreviviente de Calais-Duisburg"
+  },
+  {
+    "key": "ADVANCED_FLEET_MANAGER",
+    "type": "serious",
+    "es": "Gestor de Flotas Avanzado",
+    "en": "Advanced Fleet Manager",
+    "pt": "Gerente de Frota Avançado"
+  },
+  {
+    "key": "GLOBAL_TRANSPORT_STRATEGIST",
+    "type": "serious",
+    "es": "Estratega de Transporte Global",
+    "en": "Global Transport Strategist",
+    "pt": "Estrategista de Transporte Global"
+  },
+  {
+    "key": "ELITE_TRUCK_PILOT",
+    "type": "serious",
+    "es": "Piloto de Camiones de Élite",
+    "en": "Elite Truck Pilot",
+    "pt": "Piloto de Caminhões de Elite"
+  },
+  {
+    "key": "CARGO_LOGISTICS_INSPECTOR",
+    "type": "serious",
+    "es": "Inspector de Carga y Logística",
+    "en": "Cargo and Logistics Inspector",
+    "pt": "Inspetor de Carga e Logística"
+  },
+  {
+    "key": "PRECISION_MANEUVER_EXPERT",
+    "es": "Experto en Maniobras de Precisión",
+    "en": "Precision Maneuver Expert",
+    "pt": "Especialista em Manobras de Precisão"
+  },
+  {
+    "key": "INTERNATIONAL_CONVOY_COORDINATOR",
+    "type": "serious",
+    "es": "Coordinador de Convoyes Internacionales",
+    "en": "International Convoy Coordinator",
+    "pt": "Coordenador de Comboios Internacionais"
+  },
+  {
+    "key": "INVOLUNTARY_DRIFT_DOCTOR",
+    "type": "comedic",
+    "es": "Doctor en Derrapes Involuntarios",
+    "en": "Involuntary Drift Doctor",
+    "pt": "Doutor em Derrapagens Involuntárias"
+  },
+  {
+    "key": "VIRTUAL_DRIVER_ID",
+    "type": "serious",
+    "es": "Cédula de Conductor Virtual",
+    "en": "Virtual Driver ID",
+    "pt": "Carteira de Motorista Virtual"
+  },
+  {
+    "key": "LOGISTICS_OPERATOR_REGISTRY",
+    "type": "serious",
+    "es": "Registro de Operador Logístico",
+    "en": "Logistics Operator Registry",
+    "pt": "Registro de Operador Logístico"
+  },
+  {
+    "key": "SIMULATED_DRIVING_CREDENTIAL",
+    "type": "serious",
+    "es": "Credencial de Conducción Simulada",
+    "en": "Simulated Driving Credential",
+    "pt": "Credencial de Condução Simulada"
+  },
+  {
+    "key": "TRANSPORTER_ID_DOCUMENT",
+    "type": "serious",
+    "es": "Documento de Identidad de Transportista",
+    "en": "Transporter ID Document",
+    "pt": "Documento de Identidade de Transportador"
+  },
+  {
+    "key": "VIRTUAL_CIRCULATION_PERMIT",
+    "type": "serious",
+    "es": "Permiso de Circulación Virtual",
+    "en": "Virtual Circulation Permit",
+    "pt": "Permissão de Circulação Virtual"
+  },
+  {
+    "key": "DRIVER_ID_CARD",
+    "type": "serious",
+    "es": "Tarjeta de Identificación de Conductor",
+    "en": "Driver ID Card",
+    "pt": "Cartão de Identificação de Motorista"
+  },
+  {
+    "key": "CARGO_PILOT_ACCREDITATION",
+    "type": "serious",
+    "es": "Acreditación de Piloto de Carga",
+    "en": "Cargo Pilot Accreditation",
+    "pt": "Acreditação de Piloto de Carga"
+  },
+  {
+    "key": "LAG_ZONE_ACCESS_PASS",
+    "type": "comedic",
+    "es": "Pase de Acceso a Zonas de Lag",
+    "en": "Lag Zone Access Pass",
+    "pt": "Passe de Acesso a Zonas de Lag"
+  },
+  {
+    "key": "CROSSING_BLOCK_AUTHORIZATION",
+    "type": "comedic",
+    "es": "Autorización para Bloquear Cruces",
+    "en": "Crossing Block Authorization",
+    "pt": "Autorização para Bloquear Cruzamentos"
+  },
+  {
+    "key": "ELITE_DRIVING_PASS",
+    "type": "serious",
+    "es": "Pase de Conducción de Élite",
+    "en": "Elite Driving Pass",
+    "pt": "Passe de Condução de Elite"
+  },
+  {
+    "key": "CERTIFIED_DRIVER_REGISTRY",
+    "type": "serious",
+    "es": "Registro de Conductor Certificado",
+    "en": "Certified Driver Registry",
+    "pt": "Registro de Motorista Certificado"
+  },
+  {
+    "key": "ADVANCED_TRANSPORT_LICENSE",
+    "type": "serious",
+    "es": "Licencia de Transporte Avanzado",
+    "en": "Advanced Transport License",
+    "pt": "Licença de Transporte Avançado"
+  },
+  {
+    "key": "CONVOY_DRIVER_ACCREDITATION",
+    "type": "serious",
+    "es": "Acreditación de Conductor de Convoy",
+    "en": "Convoy Driver Accreditation",
+    "pt": "Acreditação de Motorista de Comboio"
+  },
+  {
+    "key": "GLOBAL_CIRCULATION_PERMIT",
+    "type": "serious",
+    "es": "Permiso de Circulación Global",
+    "en": "Global Circulation Permit",
+    "pt": "Permissão de Circulação Global"
+  },
+  {
+    "key": "PROFESSIONAL_DRIVER_CARD",
+    "type": "serious",
+    "es": "Tarjeta de Conductor Profesional",
+    "en": "Professional Driver Card",
+    "pt": "Cartão de Motorista Profissional"
+  },
+  {
+    "key": "LICENSE_TO_IGNORE_GPS",
+    "type": "comedic",
+    "es": "Licencia para Ignorar el GPS",
+    "en": "License to Ignore GPS",
+    "pt": "Licença para Ignorar GPS"
   }
 ]
