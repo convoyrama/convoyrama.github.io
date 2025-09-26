@@ -111,6 +111,7 @@ function updateLanguage(lang) {
     dom.rankToggleLabel.textContent = t.rankToggleLabel;
     dom.textColorToggleLabel.textContent = t.textColorToggleLabel;
     dom.truckersmpToggleLabel.textContent = t.truckersmpToggleLabel;
+    dom.warningMessage.textContent = t.warning_refresh_page;
     
     populateCountries(lang);
     populateTitles(lang);
