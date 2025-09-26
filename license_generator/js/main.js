@@ -175,6 +175,59 @@ async function initialize() {
     populateNicknames(state.language);
     populateTitles(state.language);
 
+    // Populate dom object after DOM is ready
+    Object.assign(dom, {
+        canvas: document.getElementById("canvas"),
+        ctx: document.getElementById("canvas").getContext("2d"),
+        nameInput: document.getElementById("nombre"),
+        photoInput: document.getElementById("foto"),
+        vtcLogoInput: document.getElementById("vtcLogo"),
+        countrySelect: document.getElementById("pais"),
+        nicknameSelect: document.getElementById("nickname"),
+        companyLinkInput: document.getElementById("empresaLink"),
+        truckersmpLinkInput: document.getElementById("truckersmpLink"),
+        truckersmpStatus: document.getElementById("truckersmpStatus"),
+        companyLinkStatus: document.getElementById("companyLinkStatus"),
+        nicknameGroup: document.getElementById("nicknameGroup"),
+        titleSelect: document.getElementById("titleSelect"),
+        titleSelectLabel: document.getElementById("titleSelectLabel"),
+        promodsToggleInput: document.getElementById("promodsToggle"),
+        dbusworldToggleInput: document.getElementById("dbusworldToggle"),
+        watermarkToggleInput: document.getElementById("watermarkToggle"),
+        qrColorToggleInput: document.getElementById("qrColorToggle"),
+        backgroundSelect: document.getElementById("backgroundSelect"),
+        languageSelect: document.getElementById("languageToggle"),
+        colorSlider: document.getElementById("colorSlider"),
+        colorValue: document.getElementById("colorValue"),
+        saturationSlider: document.getElementById("saturationSlider"),
+        saturationValue: document.getElementById("saturationValue"),
+        downloadButton: document.getElementById("botonDescargar"),
+        infoButton: document.getElementById("infoButton"),
+        customTitleInput: document.getElementById("customTitle"),
+        pageTitle: document.getElementById("pageTitle"),
+        headerTitle: document.getElementById("headerTitle"),
+        navLicense: document.getElementById("navLicense"),
+        nameLabel: document.getElementById("nameLabel"),
+        nicknameLabel: document.getElementById("nicknameLabel"),
+        photoLabel: document.getElementById("photoLabel"),
+        countryLabel: document.getElementById("countryLabel"),
+        companyLinkLabel: document.getElementById("companyLinkLabel"),
+        truckersmpLinkLabel: document.getElementById("truckersmpLinkLabel"),
+        customTitleLabel: document.getElementById("customTitleLabel"),
+        watermarkToggleLabel: document.getElementById("watermarkToggleLabel"),
+        qrColorToggleLabel: document.getElementById("qrColorToggleLabel"),
+        textColorToggleInput: document.getElementById("textColorToggle"),
+        textColorToggleLabel: document.getElementById("textColorToggleLabel"),
+        rankToggleInput: document.getElementById("rankToggle"),
+        rankToggleLabel: document.getElementById("rankToggleLabel"),
+        vtcLogoLabel: document.getElementById("vtcLogoLabel"),
+        backgroundToggleLabel: document.getElementById("backgroundToggleLabel"),
+        colorLabel: document.getElementById("colorLabel"),
+        saturationLabel: document.getElementById("saturationLabel"),
+        downloadLink: document.getElementById("descargar"),
+        warningMessage: document.getElementById("warningMessage"), // Added warningMessage
+    });
+
     updateUI();
     addEventListeners();
     
