@@ -234,6 +234,8 @@ async function initialize() {
         saturationLabel: document.getElementById("saturationLabel"),
         downloadLink: document.getElementById("descargar"),
         userbarBackgroundSelect: document.getElementById("userbarBackgroundSelect"),
+        userbarCanvas: document.getElementById("userbar-canvas"),
+        downloadUserbar: document.getElementById("download-userbar"),
         warningMessage: document.getElementById("warningMessage"), // Added warningMessage
     });
 
@@ -246,7 +248,7 @@ async function initialize() {
         generateImage(state).then(() => {
             updateDownloadLink(state.name);
         });
-        generateUserbar(state);
+        generateUserbar(state, dom);
     }, 100);
 
     addEventListeners(debouncedGenerate);

@@ -1,5 +1,3 @@
-import { dom } from './dom-elements.js';
-import { config } from './config.js';
 import { normalizeLink, generateLicenseNumber, getUserLevel } from './utils.js';
 
 async function loadImage(src) {
@@ -13,17 +11,17 @@ async function loadImage(src) {
 }
 
 async function renderTwemoji(emoji, size) {
-    const src = twemoji.parse(emoji, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)?. [1] || '';
+    const src = twemoji.parse(emoji, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)_?.[1]_ || '';
     if (!src) return null;
     return await loadImage(src);
 }
 
-export async function generateUserbar(state) {
-    const canvas = document.getElementById('userbar-canvas');
+export async function generateUserbar(state, dom) {
+    const canvas = dom.userbarCanvas;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    const userbarBg = document.getElementById('userbarBackgroundSelect').value;
+    const userbarBg = dom.userbarBackgroundSelect.value;
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -101,7 +99,7 @@ export async function generateUserbar(state) {
     }
     
     // Update download link
-    const downloadLink = document.getElementById('download-userbar');
+    const downloadLink = dom.downloadUserbar;
     if(downloadLink) {
         downloadLink.href = canvas.toDataURL('image/png');
         downloadLink.download = `userbar_${state.name || 'unknown'}.png`;
