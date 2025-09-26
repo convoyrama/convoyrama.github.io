@@ -240,14 +240,14 @@ export async function generateImage(state) {
     }
 
     // Draw TruckersMP Logo
-    if (state.truckersmpToggle) {
+    if (state.watermarkToggle) { // Changed condition
         try {
             const truckersmpImage = await loadImage('./license_generator/images/truckersmp-logo-sm.png');
             const logoWidth = config.truckersmpLogoWidth * scaleFactor;
             const logoHeight = (truckersmpImage.height / truckersmpImage.width) * logoWidth;
             const truckersmpLogo_x = qrCompany_x;
             const truckersmpLogo_y = flag_y;
-            ctx.globalAlpha = 0.1; // 10% opacity
+            ctx.globalAlpha = 0.15; // 15% opacity
             ctx.drawImage(truckersmpImage, truckersmpLogo_x, truckersmpLogo_y, logoWidth, logoHeight);
             ctx.globalAlpha = 1.0; // Reset opacity
         } catch (error) {

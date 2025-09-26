@@ -12,11 +12,10 @@ const state = {
     companyLink: '',
     promodsToggle: false,
     dbusworldToggle: false,
-    truckersmpToggle: false,
     watermarkToggle: true,
     qrColorToggle: false,
     textColorToggle: false,
-    rankToggle: false,
+    rankToggle: true,
     backgroundTemplate: 'aura.png',
     language: 'es',
     colorHue: 0,
@@ -133,7 +132,7 @@ function renderRankLegend() {
 
     const intro = document.createElement('p');
     intro.className = 'rank-legend-intro';
-    intro.textContent = 'El rango corresponde a la antigüedad de la cuenta en TruckersMP. A partir del primer año, se asigna un nuevo rango por cada año de antigüedad.';
+    intro.textContent = t.rank_explanation_text;
     container.appendChild(intro);
 
     const itemsContainer = document.createElement('div');
@@ -290,11 +289,6 @@ function addEventListeners() {
 
     dom.dbusworldToggleInput.addEventListener('change', (e) => {
         state.dbusworldToggle = e.target.checked;
-        debounce(() => generateImage(state), 100)();
-    });
-
-    dom.truckersmpToggleInput.addEventListener('change', (e) => {
-        state.truckersmpToggle = e.target.checked;
         debounce(() => generateImage(state), 100)();
     });
 
