@@ -111,6 +111,7 @@ function updateLanguage(lang) {
     dom.rankToggleLabel.textContent = t.rankToggleLabel;
     dom.textColorToggleLabel.textContent = t.textColorToggleLabel;
     dom.truckersmpToggleLabel.textContent = t.truckersmpToggleLabel;
+    dom.warningMessage.textContent = t.warning_refresh_page;
     
     populateCountries(lang);
     populateTitles(lang);
@@ -146,6 +147,8 @@ function renderRankLegend() {
         const img = document.createElement('img');
         img.src = `./license_generator/rank/${i}.png`;
         img.alt = `Rank ${i}`;
+        img.width = "16";
+        img.height = "16";
 
         const span = document.createElement('span');
         span.textContent = i;

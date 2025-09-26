@@ -34,6 +34,7 @@
     "countryPlaceholder": "Select a country",
     "nicknamePlaceholder": "Select a TAG",
     "rankToggleLabel": "Show Rank",
+    "warning_refresh_page": "Please refresh the page until a checkmark appears next to the date.",
     "textColorToggleLabel": "Text Color: Dark / Light",
     "truckersmpToggleLabel": "TruckersMP Logo",
     "tooltipMessage": "This license is a joke and a nod to the community, not intended to be professional.",
