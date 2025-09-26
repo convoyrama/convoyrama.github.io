@@ -3,6 +3,7 @@ import { config, translations, loadTranslations } from './config.js';
 import { debounce, validateTruckersmpLink, validateCompanyLink, generateLicenseNumber, getUserLevel } from './utils.js';
 import { getCurrentDate, loadVtcData, loadCountries, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
 import { generateImage, updateDownloadLink } from './canvas.js';
+import { generateUserbar } from './userbar.js';
 
 const state = {
     name: '',
@@ -232,6 +233,7 @@ async function initialize() {
         colorLabel: document.getElementById("colorLabel"),
         saturationLabel: document.getElementById("saturationLabel"),
         downloadLink: document.getElementById("descargar"),
+        userbarBackgroundSelect: document.getElementById("userbarBackgroundSelect"),
         warningMessage: document.getElementById("warningMessage"), // Added warningMessage
     });
 
@@ -244,6 +246,7 @@ async function initialize() {
         generateImage(state).then(() => {
             updateDownloadLink(state.name);
         });
+        generateUserbar(state);
     }, 100);
 
     addEventListeners(debouncedGenerate);
@@ -257,6 +260,12 @@ function addEventListeners(debouncedGenerate) {
         state.name = e.target.value;
         debouncedGenerate();
     });
+
+    if (dom.userbarBackgroundSelect) {
+        dom.userbarBackgroundSelect.addEventListener('change', (e) => {
+            debouncedGenerate();
+        });
+    }
 
     dom.truckersmpLinkInput.addEventListener('input', (e) => {
         state.truckersmpLink = e.target.value;
