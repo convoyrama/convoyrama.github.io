@@ -101,7 +101,6 @@ function updateLanguage(lang) {
     dom.watermarkToggleLabel.textContent = t.watermarkToggleLabel;
     dom.qrColorToggleLabel.textContent = t.qrColorToggleLabel;
     dom.vtcLogoLabel.textContent = t.vtcLogoLabel;
-    dom.backgroundToggleLabel.textContent = t.backgroundToggleLabel;
     dom.colorLabel.textContent = t.colorLabel;
     dom.saturationLabel.textContent = t.saturationLabel;
     dom.customTitleInput.placeholder = t.customTitlePlaceholder;
@@ -222,7 +221,6 @@ async function initialize() {
         rankToggleInput: document.getElementById("rankToggle"),
         rankToggleLabel: document.getElementById("rankToggleLabel"),
         vtcLogoLabel: document.getElementById("vtcLogoLabel"),
-        backgroundToggleLabel: document.getElementById("backgroundToggleLabel"),
         colorLabel: document.getElementById("colorLabel"),
         saturationLabel: document.getElementById("saturationLabel"),
         downloadLink: document.getElementById("descargar"),
