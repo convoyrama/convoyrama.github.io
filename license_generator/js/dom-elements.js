@@ -32,7 +32,6 @@ export const dom = {
     navLicense: document.getElementById("navLicense"),
     nameLabel: document.getElementById("nameLabel"),
     nicknameLabel: document.getElementById("nicknameLabel"),
-    warningMessage: document.getElementById("warningMessage"),
 
     photoLabel: document.getElementById("photoLabel"),
     countryLabel: document.getElementById("countryLabel"),

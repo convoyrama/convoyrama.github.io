@@ -35,8 +35,7 @@
     "nicknamePlaceholder": "Selecione uma TAG",
     "rankToggleLabel": "Mostrar Rank",
     "textColorToggleLabel": "Cor do Texto: Escuro / Claro",
-    "truckersmpToggleLabel": "Marca d'água TMP",
-    "warning_refresh_page": "Por favor, atualize a página até que um visto apareça ao lado da data.",
+    "truckersmpToggleLabel": "Logo TruckersMP",
     "tooltipMessage": "Esta licença é uma brincadeira e uma homenagem à comunidade, não pretende ser profissional.",
     "infoTooltip": "Significado dos elementos:\n- Ranks: O rank é calculado com base na idade da conta do TruckersMP. Cada ano de antiguidade equivale a um nível de rank, até um máximo de 12 anos.\n- Estrela dourada (✵) ao lado do nome: Indica que o usuário é dono de uma VTC. Pode ser solicitada abrindo um ticket no Discord do LAG'S SPEED.\n- Estrelas prateadas (★) à direita: Uma homenagem à extinta VTC Convoy Nocturno.\n- Marca de verificação (✓) ao lado da data: Indica que a data vem de uma fonte online confiável. Atualize a página para tentar obter a data online novamente.\n- Cruz (✗) ao lado da data: Indica que a data é local, não verificada. Atualize a página para tentar obter a data online novamente.\n- Um verso noturno sussurra um segredo, que palavra desvenda o caminho oculto?"
 }

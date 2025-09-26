@@ -16,7 +16,7 @@ const state = {
     watermarkToggle: true,
     qrColorToggle: false,
     textColorToggle: false,
-    rankToggle: true,
+    rankToggle: false,
     backgroundTemplate: 'aura.png',
     language: 'es',
     colorHue: 0,
@@ -111,7 +111,6 @@ function updateLanguage(lang) {
     dom.rankToggleLabel.textContent = t.rankToggleLabel;
     dom.textColorToggleLabel.textContent = t.textColorToggleLabel;
     dom.truckersmpToggleLabel.textContent = t.truckersmpToggleLabel;
-    dom.warningMessage.textContent = t.warning_refresh_page;
     
     populateCountries(lang);
     populateTitles(lang);
