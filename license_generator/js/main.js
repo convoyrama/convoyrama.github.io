@@ -114,6 +114,7 @@ function updateLanguage(lang) {
     populateCountries(lang);
     populateTitles(lang);
     populateNicknames(lang);
+    renderRankLegend(); // Re-render rank legend for new language
 }
 
 function renderRankLegend() {
