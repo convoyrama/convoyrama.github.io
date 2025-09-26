@@ -25,6 +25,7 @@
         <p id="headerTitle">Generador de Licencia de Conductor</p>
     </header>
     <div class="contenedor">
+        <div id="warningMessage" class="warning-message" data-translate="warning_refresh_page"></div>
         <div class="panel">
             <div class="input-group">
                 <label for="languageToggle">Idioma / Language / Língua:</label><br>
@@ -95,23 +96,29 @@
             </div>
             <div class="toggle-container">
                 <div class="toggle-group">
-                    <div class="toggle-item">
-                        <label for="promodsToggle">ProMods:</label><input type="checkbox" id="promodsToggle">
+                    <div class="toggle-group-section">
+                        <div class="toggle-item">
+                            <label for="promodsToggle">ProMods:</label><input type="checkbox" id="promodsToggle">
+                        </div>
+                        <div class="toggle-item">
+                            <label for="dbusworldToggle">DBUS:</label><input type="checkbox" id="dbusworldToggle">
+                        </div>
                     </div>
-                    <div class="toggle-item">
-                        <label for="dbusworldToggle">DBUS:</label><input type="checkbox" id="dbusworldToggle">
+                    <div class="toggle-group-section">
+                        <div class="toggle-item">
+                            <label for="truckersmpToggle" id="truckersmpToggleLabel">Marca de agua de tmp:</label><input type="checkbox" id="truckersmpToggle">
+                        </div>
+                        <div class="toggle-item">
+                            <label for="watermarkToggle" id="watermarkToggleLabel">Usar marca de agua:</label><input type="checkbox" id="watermarkToggle" checked>
+                        </div>
                     </div>
-                    <div class="toggle-item">
-                        <label for="truckersmpToggle" id="truckersmpToggleLabel">TruckersMP:</label><input type="checkbox" id="truckersmpToggle">
-                    </div>
-                    <div class="toggle-item">
-                        <label for="watermarkToggle" id="watermarkToggleLabel">Usar marca de agua:</label><input type="checkbox" id="watermarkToggle" checked>
-                    </div>
-                    <div class="toggle-item">
-                        <label for="qrColorToggle" id="qrColorToggleLabel">Color QR: Oscuro / Claro</label><input type="checkbox" id="qrColorToggle">
-                    </div>
-                    <div class="toggle-item">
-                        <label for="textColorToggle" id="textColorToggleLabel">Color Texto: Oscuro / Claro</label><input type="checkbox" id="textColorToggle">
+                    <div class="toggle-group-section">
+                        <div class="toggle-item">
+                            <label for="textColorToggle" id="textColorToggleLabel">Color Texto: Oscuro / Claro</label><input type="checkbox" id="textColorToggle">
+                        </div>
+                        <div class="toggle-item">
+                            <label for="qrColorToggle" id="qrColorToggleLabel">Color QR: Oscuro / Claro</label><input type="checkbox" id="qrColorToggle">
+                        </div>
                     </div>
                     <div class="toggle-item">
                         <label for="rankToggle" id="rankToggleLabel">Mostrar Rango</label><input type="checkbox" id="rankToggle">
@@ -136,7 +143,7 @@
     </div>
     <div id="rank-legend" class="rank-legend-container"></div>
     <footer>
-        <small>© LAG'S SPEED - CONVOYRAMA 2025 - v164</small>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025 - v165</small>
     </footer>
     <script type="module" src="./license_generator/js/main.js"></script>
 </body>

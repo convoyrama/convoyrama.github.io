@@ -3,5 +3,10 @@
 .rank-legend-intro { font-size: 12px; margin-bottom: 10px; }
 .rank-legend-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
 .rank-legend-item { display: flex; align-items: center; gap: 5px; }
-.rank-legend-item img { width: 12px; height: auto; }
-.rank-legend-item span { font-size: 8px; }
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+}
+
+.legend-item span {
+    font-size: 24px;
