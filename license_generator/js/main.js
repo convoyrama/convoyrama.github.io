@@ -150,6 +150,7 @@ function renderRankLegend() {
         img.alt = `Rank ${i}`;
         img.width = "16";
         img.height = "16";
+        img.setAttribute('data-tooltip', t.rank_names[i-1]);
 
         const span = document.createElement('span');
         span.textContent = i;
