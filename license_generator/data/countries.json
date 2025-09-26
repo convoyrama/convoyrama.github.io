@@ -355,5 +355,12 @@
     "name_es": "Pirata",
     "name_en": "Pirate",
     "name_pt": "Pirata"
+  },
+  {
+    "code": "LGBT",
+    "emoji": "🏳️‍🌈",
+    "name_es": "LGBT",
+    "name_en": "LGBT",
+    "name_pt": "LGBT"
   }
 ]
