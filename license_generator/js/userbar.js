@@ -42,46 +42,42 @@ export async function generateUserbar(state, dom) {
     ctx.font = `bold 10px 'Verdana'`;
     ctx.textBaseline = 'middle';
 
-    let xPos = 5;
+    // Shadow
+    ctx.shadowColor = 'rgb(20, 20, 20)';
+    ctx.shadowOffsetX = 1;
+    ctx.shadowOffsetY = 1;
+    ctx.shadowBlur = 2;
+
+    const normalizedTruckersmpLink = normalizeLink(state.truckersmpLink);
+    const normalizedCompanyLink = normalizeLink(state.companyLink);
+    const { userId } = generateLicenseNumber(normalizedTruckersmpLink, normalizedCompanyLink, state.country);
+
+    // --- Right side ---
+    let rightX = canvas.width - 10;
 
     // Draw cr.png
     try {
         const crImage = await loadImage('./license_generator/images/cr.png');
         const crImageHeight = 15;
         const crImageWidth = (crImage.width / crImage.height) * crImageHeight;
-        ctx.drawImage(crImage, xPos, (canvas.height - crImageHeight) / 2, crImageWidth, crImageHeight);
-        xPos += crImageWidth + 5;
+        rightX -= crImageWidth;
+        ctx.drawImage(crImage, rightX, (canvas.height - crImageHeight) / 2, crImageWidth, crImageHeight);
     } catch (error) {
         console.error('Failed to load cr.png watermark', error);
     }
 
-    // Draw Name and Star
-    const normalizedTruckersmpLink = normalizeLink(state.truckersmpLink);
-    const normalizedCompanyLink = normalizeLink(state.companyLink);
-    const isOwner = state.vtcData.vtcOwners.some(owner => normalizeLink(owner.profileLink) === normalizedTruckersmpLink && normalizeLink(owner.companyLink) === normalizedCompanyLink);
-
-    const name = state.name || 'Anonymous';
-    ctx.fillText(name, xPos, canvas.height / 2);
-    xPos += ctx.measureText(name).width;
-
-    if (isOwner) {
-        ctx.fillStyle = '#FFD700';
-        ctx.fillText(' ✵', xPos, canvas.height / 2);
-        ctx.fillStyle = textColor;
-        xPos += ctx.measureText(' ✵').width;
-    }
-    xPos += 10;
+    // --- Left side ---
+    let leftX = 10;
 
     // Draw Rank Image
-    const { userId } = generateLicenseNumber(normalizedTruckersmpLink, normalizedCompanyLink, state.country);
     const userLevel = getUserLevel(userId, state.levelRanges.user, state.currentDate ? state.currentDate.year : null);
     if (state.rankToggle && userLevel) {
         try {
             const rankImage = await loadImage(`./license_generator/rank/${userLevel}.png`);
             const rankImageHeight = 15;
             const rankImageWidth = (rankImage.width / rankImage.height) * rankImageHeight;
-            ctx.drawImage(rankImage, xPos, (canvas.height - rankImageHeight) / 2, rankImageWidth, rankImageHeight);
-            xPos += rankImageWidth + 5;
+            ctx.drawImage(rankImage, leftX, (canvas.height - rankImageHeight) / 2, rankImageWidth, rankImageHeight);
+            leftX += rankImageWidth + 5;
         } catch (error) {
             console.error(`Failed to load rank image for level ${userLevel}`, error);
         }
@@ -93,11 +89,35 @@ export async function generateUserbar(state, dom) {
         try {
             const flagEmoji = await renderTwemoji(selectedCountry.emoji, 15);
             if (flagEmoji) {
-                ctx.drawImage(flagEmoji, xPos, (canvas.height - 15) / 2, 15, 15);
+                ctx.drawImage(flagEmoji, leftX, (canvas.height - 15) / 2, 15, 15);
+                leftX += 15 + 5;
             }
         } catch (e) { console.error('failed to render flag', e); }
     }
-    
+
+    // Draw Name and Star
+    const isOwner = state.vtcData.vtcOwners.some(owner => normalizeLink(owner.profileLink) === normalizedTruckersmpLink && normalizeLink(owner.companyLink) === normalizedCompanyLink);
+    const name = state.name || 'Anonymous';
+    ctx.fillText(name, leftX, canvas.height / 2);
+    leftX += ctx.measureText(name).width;
+
+    if (isOwner) {
+        ctx.save();
+        ctx.fillStyle = '#FFD700';
+        ctx.fillText(' ✵', leftX, canvas.height / 2);
+        ctx.restore();
+        leftX += ctx.measureText(' ✵').width;
+    }
+    leftX += 5;
+
+    // Draw User ID
+    if (userId) {
+        ctx.fillText(`#${userId}`, leftX, canvas.height / 2);
+    }
+
+    // Reset shadow
+    ctx.shadowColor = 'transparent';
+
     // Update download link
     const downloadLink = dom.downloadUserbar;
     if(downloadLink) {
