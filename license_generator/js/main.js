@@ -117,6 +117,9 @@ function updateLanguage(lang) {
 }
 
 function renderRankLegend() {
+    console.log('Translations object in renderRankLegend:', translations);
+    console.log('State language in renderRankLegend:', state.language);
+    const t = translations[state.language] || translations.es;
     const container = document.getElementById('rank-legend');
     if (!container) return;
 
