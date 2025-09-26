@@ -145,7 +145,7 @@
     </footer>
     <script type="module" src="./license_generator/js/main.js"></script>
     <script>
-    document.fonts.ready.then(function() {
+    document.fonts.load('1em Verdana').then(function() {
       if (document.fonts.check('1em Verdana')) {
         console.log('La fuente Verdana se ha cargado correctamente.');
       } else {
