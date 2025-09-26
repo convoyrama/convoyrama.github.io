@@ -156,9 +156,11 @@ export async function generateImage(state) {
             const nameWithoutStar = line.value;
             ctx.fillText(nameWithoutStar, config.textX * scaleFactor, yPos);
             if (isOwner) {
+                ctx.save();
                 const nameWidth = ctx.measureText(nameWithoutStar).width;
                 ctx.fillStyle = '#FFD700';
                 ctx.fillText(' ✵', (config.textX * scaleFactor) + nameWidth, yPos);
+                ctx.restore();
             }
         } else {
             ctx.fillText(line.value, config.textX * scaleFactor, yPos);
