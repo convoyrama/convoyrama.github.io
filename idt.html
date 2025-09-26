@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title id="pageTitle">Convoyrama | Generador de Licencia</title>
+    <meta name="description" content="Convoyrama">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="stylesheet" href="./license_generatort/css/style.css">
+    <link rel="stylesheet" href="./license_generatort/css/legend.css">
+    <link rel="icon" href="./assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/images/favicon.png">
+    <script src="https://unpkg.com/qrcode-svg@1.1.0/dist/qrcode.min.js"></script>
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="pc.html">Creador de Perfil</a>
+            <a href="id.html" id="navLicense">Licencia</a>
+            <a href="eventmap.html">Crear Evento</a>
+        </nav>
+        <p id="headerTitle">Generador de Licencia de Conductor</p>
+        <div id="warningMessage" class="warning-message" data-translate="warning_refresh_page"></div>
+    </header>
+    <div class="contenedor">
+        <div class="panel">
+            <div class="input-group">
+                <label for="languageToggle">Idioma / Language / Língua:</label><br>
+                <select id="languageToggle">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                    <option value="pt">Português</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="customTitle" id="customTitleLabel">Cambiar título:</label><br>
+                <input type="text" id="customTitle" maxlength="36" placeholder="Título personalizado (máx. 36 caracteres, opcional)">
+            </div>
+            <div class="input-group">
+                <label for="nombre" id="nameLabel">Nombre:</label><br>
+                <input type="text" id="nombre" placeholder="Nombre / Name / Nome" required>
+            </div>
+            <div class="input-group">
+                <label for="pais" id="countryLabel">País:</label><br>
+                <select id="pais" required>
+                    <option value="">Seleccione un país / Select a country / Selecione um país</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="truckersmpLink" id="truckersmpLinkLabel">Enlace Perfil en TMP:</label><br>
+                <input type="text" id="truckersmpLink" placeholder="TruckersMP Profile Link" required>
+                <div id="truckersmpStatus"></div>
+            </div>
+            <div class="input-group">
+                <label for="empresaLink" id="companyLinkLabel">Enlace Perfil Empresa en TMP:</label><br>
+                <input type="text" id="empresaLink" placeholder="TruckersMP Company Profile Link" required>
+                <div id="empresaLinkStatus"></div>
+            </div>
+            <div class="input-group">
+                <label for="foto" id="photoLabel">Foto (Opcional):</label><br>
+                <input type="file" id="foto" accept="image/*">
+            </div>
+            <div class="input-group">
+                <label for="vtcLogo" id="vtcLogoLabel">Logo VTC (Opcional):</label><br>
+                <input type="file" id="vtcLogo" accept="image/*">
+            </div>
+            <div class="input-group" id="nicknameGroup">
+                <label for="nickname" id="nicknameLabel">TAG Épico:</label><br>
+                <select id="nickname">
+                    <option value="">Seleccione un TAG</option>
+                </select>
+            </div>
+            <div class="input-group" id="titleSelectGroup">
+                <label for="titleSelect" id="titleSelectLabel">Título de la Licencia:</label><br>
+                <select id="titleSelect">
+                    <option value="" data-translate="select_subtitle_placeholder" selected>Seleccione un Tipo de Licencia</option>
+                </select>
+            </div>
+        </div>
+        <div id="preview">
+            <div class="canvas-container">
+                <canvas id="canvas" width="800" height="500"></canvas>
+            </div>
+            <div class="input-group">
+                <select id="backgroundSelect">
+                    <option value="aura.png" selected>Aura</option>
+                    <option value="3D.png">3D</option>
+                    <option value="dystopia.png">Dystopia</option>
+                    <option value="gentle.png">Gentle</option>
+                    <option value="muscle.png">Muscle</option>
+                    <option value="retrowave.png">Retrowave</option>
+                    <option value="rain.png">Rain</option>
+                    <option value="tropico.png">Tropico</option>
+                    <option value="modern.png">Modern</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="colorSlider" id="colorLabel">Tono del fondo:</label><br>
+                <input type="range" id="colorSlider" min="0" max="360" value="0"><span id="colorValue">0°</span>
+            </div>
+            <div class="input-group">
+                <label for="saturationSlider" id="saturationLabel">Saturación:</label><br>
+                <input type="range" id="saturationSlider" min="0" max="200" value="100"><span id="saturationValue">100%</span>
+            </div>
+            <div class="button-group">
+                <button id="infoButton" class="info-tooltip" data-tooltip="">?</button>
+                <a id="descargar" download="driver_license.png"><button id="botonDescargar" class="info-tooltip" data-tooltip="Esta licencia es una broma y un guiño a la comunidad, no pretende ser algo profesional.">Descargar Licencia</button></a>
+            </div>
+            <div class="toggle-container">
+                <div class="toggle-group">
+                    <div class="toggle-group-section">
+                        <div class="toggle-item">
+                            <label for="promodsToggle">ProMods:</label><input type="checkbox" id="promodsToggle">
+                        </div>
+                        <div class="toggle-item">
+                            <label for="dbusworldToggle">DBUS:</label><input type="checkbox" id="dbusworldToggle">
+                        </div>
+                    </div>
+                    <div class="toggle-group-section">
+                        <div class="toggle-item">
+                            <label for="watermarkToggle" id="watermarkToggleLabel">Marca de Agua:</label><input type="checkbox" id="watermarkToggle" checked>
+                        </div>
+                        <div class="toggle-item">
+                            <label for="rankToggle" id="rankToggleLabel">Mostrar Rango</label><input type="checkbox" id="rankToggle" checked>
+                        </div>
+                    </div>
+                    <div class="toggle-group-section">
+                        <div class="toggle-item">
+                            <label for="textColorToggle" id="textColorToggleLabel">Color Texto: Oscuro / Claro</label><input type="checkbox" id="textColorToggle">
+                        </div>
+                        <div class="toggle-item">
+                            <label for="qrColorToggle" id="qrColorToggleLabel">Color QR: Oscuro / Claro</label><input type="checkbox" id="qrColorToggle">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="rank-legend" class="rank-legend-container"></div>
+    <footer>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025 - v2.0</small>
+    </footer>
+    <script type="module" src="./license_generatort/js/main.js"></script>
+</body>
+</html>
