@@ -35,7 +35,7 @@
     "nicknamePlaceholder": "Select a TAG",
     "rankToggleLabel": "Show Rank",
     "select_subtitle_placeholder": "Select a License Type",
-    "warning_refresh_page": "The generator looks better on mobile and Linux than on Windows. Refreshing the page might fix display issues.",
+    "warning_refresh_page": "The generator looks better on mobile and Linux than on Windows. You have to reload the page until a check appears on the date.",
     "textColorToggleLabel": "Text Color: Dark / Light",
     "rank_explanation_text": "The rank is an approximation based on the TruckersMP profile number. Each year of account age is associated with a rank.",
     "rank_names": [
