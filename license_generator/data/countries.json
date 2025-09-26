@@ -348,5 +348,12 @@
     "name_es": "Venezuela",
     "name_en": "Venezuela",
     "name_pt": "Venezuela"
+  },
+  {
+    "code": "XX",
+    "emoji": "🏴‍☠️",
+    "name_es": "Pirata",
+    "name_en": "Pirate",
+    "name_pt": "Pirata"
   }
 ]

@@ -52,8 +52,9 @@ function populateNicknames(lang) {
 }
 
 function populateTitles(lang) {
+    const t = translations[lang] || translations.es;
     const selectedValue = dom.titleSelect.value;
-    dom.titleSelect.innerHTML = '';
+    dom.titleSelect.innerHTML = `<option value="">${t.select_subtitle_placeholder}</option>`;
     state.titles.forEach(title => {
         const option = document.createElement('option');
         option.value = title.key;
