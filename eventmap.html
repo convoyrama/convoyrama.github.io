@@ -358,7 +358,7 @@
                 <div>
                     <label for="logo-upload">Logo VTC:</label>
                     <input type="file" id="logo-upload" accept="image/*">
-                    <div class="zoom-buttons" style="visibility: hidden;">
+                    <div class="zoom-buttons" style="display: none;">
                         <button>+</button>
                         <button>-</button>
                     </div>
@@ -411,6 +411,40 @@
         <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
     </footer>
     <script>
+    (function() {
+        const dom = {
+            timezoneSelect: document.getElementById("timezone-select"),
+            customDate: document.getElementById("custom-date"),
+            customTime: document.getElementById("custom-time"),
+            customDateDisplay: document.getElementById("custom-date-display"),
+            customEventName: document.getElementById("custom-event-name"),
+            customEventLink: document.getElementById("custom-event-link"),
+            customStartPlace: document.getElementById("custom-start-place"),
+            customDestination: document.getElementById("custom-destination"),
+            customServer: document.getElementById("custom-server"),
+            customEventDescription: document.getElementById("custom-event-description"),
+            mapUpload: document.getElementById("map-upload"),
+            circleUploadTop: document.getElementById("circle-upload-top"),
+            circleUploadBottom: document.getElementById("circle-upload-bottom"),
+            logoUpload: document.getElementById("logo-upload"),
+            mapCanvas: document.getElementById("map-canvas"),
+            circleCanvasTop: document.getElementById("circle-canvas-top"),
+            circleCanvasBottom: document.getElementById("circle-canvas-bottom"),
+            downloadCanvas: document.getElementById("download-canvas"),
+            copyCustomInfo: document.getElementById("copy-custom-info"),
+            textSize: document.getElementById("text-size"),
+            textAlign: document.getElementById("text-align"),
+            textStyle: document.getElementById("text-style"),
+            textBackground: document.getElementById("text-background"),
+            copyMessage: document.getElementById("copy-message"),
+            zoomIn: document.getElementById("zoom-in"),
+            zoomOut: document.getElementById("zoom-out"),
+            zoomInTop: document.getElementById("zoom-in-top"),
+            zoomOutTop: document.getElementById("zoom-out-top"),
+            zoomInBottom: document.getElementById("zoom-in-bottom"),
+            zoomOutBottom: document.getElementById("zoom-out-bottom"),
+        };
+
         const timezoneMap = {
             'America/Mexico_City': -6,
             'America/Guatemala': -6,
@@ -477,10 +511,9 @@
         }
 
         function showCopyMessage(message = "¡Información copiada al portapapeles!") {
-            const copyMessage = document.getElementById("copy-message");
-            copyMessage.textContent = message;
-            copyMessage.style.display = "block";
-            setTimeout(() => { copyMessage.style.display = "none"; }, 2000);
+            dom.copyMessage.textContent = message;
+            dom.copyMessage.style.display = "block";
+            setTimeout(() => { dom.copyMessage.style.display = "none"; }, 2000);
         }
 
         async function fetchTimezone() {
@@ -520,7 +553,7 @@
         }
 
         async function updateTime() {
-            const select = document.getElementById("timezone-select");
+            const select = dom.timezoneSelect;
             const savedOffset = localStorage.getItem('userOffset');
             const selValue = select.value;
 
@@ -544,18 +577,18 @@
         }
 
         function drawCanvas() {
-            const canvas = document.getElementById("map-canvas");
+            const canvas = dom.mapCanvas;
             const ctx = canvas.getContext("2d");
-            const textAlign = document.getElementById("text-align").value;
-            const textSize = parseInt(document.getElementById("text-size").value);
-            const textStyle = document.getElementById("text-style").value;
-            const textBackground = document.getElementById("text-background").value;
-            const customDate = document.getElementById("custom-date").value;
-            const customTime = document.getElementById("custom-time").value;
-            const customEventName = document.getElementById("custom-event-name").value || "Evento Personalizado";
-            const customStartPlace = document.getElementById("custom-start-place").value || "Sin especificar";
-            const customDestination = document.getElementById("custom-destination").value || "Sin especificar";
-            const customServer = document.getElementById("custom-server").value || "Sin especificar";
+            const textAlign = dom.textAlign.value;
+            const textSize = parseInt(dom.textSize.value);
+            const textStyle = dom.textStyle.value;
+            const textBackground = dom.textBackground.value;
+            const customDateValue = dom.customDate.value;
+            const customTimeValue = dom.customTime.value;
+            const customEventNameValue = dom.customEventName.value || "Evento Personalizado";
+            const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar";
+            const customDestinationValue = dom.customDestination.value || "Sin especificar";
+            const customServerValue = dom.customServer.value || "Sin especificar";
 
             canvas.width = 1920;
             canvas.height = 1080;
@@ -590,25 +623,25 @@
             ctx.font = `bold ${textSize + 10}px Arial`;
             ctx.fillStyle = textColor;
             ctx.textAlign = "center";
-            const eventName = customEventName;
-            const eventDate = customDate ? formatDateForDisplay(new Date(customDate)) : "Fecha no seleccionada";
+            const eventName = customEventNameValue;
+            const eventDate = customDateValue ? formatDateForDisplay(new Date(customDateValue)) : "Fecha no seleccionada";
             ctx.fillText(eventName, canvas.width / 2, 50);
             ctx.fillText(eventDate, canvas.width / 2, 50 + (textSize + 15));
 
             ctx.font = `bold ${textSize}px Arial`;
             ctx.textAlign = "left";
             const textLines = [
-                `Servidor: ${customServer}`,
-                `Partida: ${customStartPlace}`,
-                `Destino: ${customDestination}`,
+                `Servidor: ${customServerValue}`,
+                `Partida: ${customStartPlaceValue}`,
+                `Destino: ${customDestinationValue}`,
                 "",
                 "Hora de reunión / Hora de partida:"
             ];
 
             let localStart = null;
-            if (customDate && customTime) {
-                const [hh, mm] = customTime.split(":").map(Number);
-                const customDateObj = new Date(customDate);
+            if (customDateValue && customTimeValue) {
+                const [hh, mm] = customTimeValue.split(":").map(Number);
+                const customDateObj = new Date(customDateValue);
                 customDateObj.setHours(hh, mm, 0, 0);
                 const utcBase = new Date(customDateObj.getTime() - userOffset * 3600000);
                 localStart = new Date(utcBase.getTime() + userOffset * 3600000);
@@ -641,8 +674,8 @@
                 ctx.fillText(line, textX, textY + (index * lineHeight));
             });
 
-            const circleCanvasTop = document.getElementById("circle-canvas-top");
-            const circleCanvasBottom = document.getElementById("circle-canvas-bottom");
+            const circleCanvasTop = dom.circleCanvasTop;
+            const circleCanvasBottom = dom.circleCanvasBottom;
             const circleCtxTop = circleCanvasTop.getContext("2d");
             const circleCtxBottom = circleCanvasBottom.getContext("2d");
 
@@ -725,64 +758,69 @@
         }
 
         async function init() {
-            const customDate = document.getElementById("custom-date");
-            const customDateDisplay = document.getElementById("custom-date-display");
             const userOffset = await updateTime();
             const userNow = new Date();
-            customDate.value = userNow.toISOString().split('T')[0];
-            customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(userNow)}`;
+            dom.customDate.value = userNow.toISOString().split('T')[0];
+            dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(userNow)}`;
 
-            customDate.onchange = () => {
-                const customDateObj = new Date(customDate.value);
-                customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`;
+            dom.customDate.onchange = () => {
+                const customDateObj = new Date(dom.customDate.value);
+                dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`;
                 drawCanvas();
             };
 
-            document.getElementById("timezone-select").addEventListener("change", async () => {
-                const select = document.getElementById("timezone-select");
+            dom.timezoneSelect.addEventListener("change", async () => {
+                const select = dom.timezoneSelect;
                 localStorage.setItem('userOffset', select.value);
                 await updateTime();
                 drawCanvas();
-                const customDateObj = new Date(customDate.value);
-                customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`;
+                const customDateObj = new Date(dom.customDate.value);
+                dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`;
             });
 
-            document.getElementById("copy-custom-info").onclick = () => {
-                const customDate = document.getElementById("custom-date").value;
-                const customTime = document.getElementById("custom-time").value;
-                const customEventName = document.getElementById("custom-event-name").value || "Evento Personalizado";
-                const customEventLink = document.getElementById("custom-event-link").value || "https://convoyrama.github.io/events.html";
-                const customEventDescription = document.getElementById("custom-event-description").value || "Sin descripción";
-                const customStartPlace = document.getElementById("custom-start-place").value || "Sin especificar";
-                const customDestination = document.getElementById("custom-destination").value || "Sin especificar";
-                const customServer = document.getElementById("custom-server").value || "Sin especificar";
+            dom.copyCustomInfo.onclick = () => {
+                const customDateValue = dom.customDate.value;
+                const customTimeValue = dom.customTime.value;
+                const customEventNameValue = dom.customEventName.value || "Evento Personalizado";
+                const customEventLinkValue = dom.customEventLink.value || "https://convoyrama.github.io/events.html";
+                const customEventDescriptionValue = dom.customEventDescription.value || "Sin descripción";
+                const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar";
+                const customDestinationValue = dom.customDestination.value || "Sin especificar";
+                const customServerValue = dom.customServer.value || "Sin especificar";
 
-                if (!customDate || !customTime) {
+                if (!customDateValue || !customTimeValue) {
                     showCopyMessage("Por favor, selecciona una fecha y hora.");
                     return;
                 }
 
-                const [hh, mm] = customTime.split(":").map(Number);
-                const customDateObj = new Date(customDate);
+                const [hh, mm] = customTimeValue.split(":").map(Number);
+                const customDateObj = new Date(customDateValue);
                 customDateObj.setHours(hh, mm, 0, 0);
                 const utcBase = new Date(customDateObj.getTime() - userOffset * 3600000);
                 const localStart = new Date(utcBase.getTime() + userOffset * 3600000);
                 const partidaTime = new Date(localStart.getTime() + 30 * 60000);
 
-                let convoyInfo = `[**${formatDateForDisplay(customDateObj)} - ${customEventName}**](${customEventLink})\n` +
-                                `Servidor: ${customServer}\n` +
-                                `Partida: ${customStartPlace}\n` +
-                                `Destino: ${customDestination}\n` +
-                                `Hora de reunión / Hora de partida:\n` +
-                                `<t:${getUnixTimestamp(localStart)}:t> / <t:${getUnixTimestamp(partidaTime)}:t>\n\n` +
-                                `Descripción: ${customEventDescription}`;
+                let convoyInfo = `[**${formatDateForDisplay(customDateObj)} - ${customEventNameValue}**](${customEventLinkValue})
+` +
+                                `Servidor: ${customServerValue}
+` +
+                                `Partida: ${customStartPlaceValue}
+` +
+                                `Destino: ${customDestinationValue}
+` +
+                                `Hora de reunión / Hora de partida:
+` +
+                                `<t:${getUnixTimestamp(localStart)}:t> / <t:${getUnixTimestamp(partidaTime)}:t>
+
+` +
+                                `Descripción: ${customEventDescriptionValue}`;
 
                 navigator.clipboard.writeText(convoyInfo).then(() => {
                     showCopyMessage();
                 }).catch(err => console.error(`[copyCustomInfo] Error al copiar: ${err.message}`));
             };
 
-            const canvas = document.getElementById("map-canvas");
+            const canvas = dom.mapCanvas;
             canvas.addEventListener("mousedown", (e) => {
                 if (mapImage) {
                     isDragging = true;
@@ -807,7 +845,7 @@
                 isDragging = false;
             });
 
-            const circleCanvasTop = document.getElementById("circle-canvas-top");
+            const circleCanvasTop = dom.circleCanvasTop;
             circleCanvasTop.addEventListener("mousedown", (e) => {
                 if (circleImageTop) {
                     isDraggingTop = true;
@@ -832,7 +870,7 @@
                 isDraggingTop = false;
             });
 
-            const circleCanvasBottom = document.getElementById("circle-canvas-bottom");
+            const circleCanvasBottom = dom.circleCanvasBottom;
             circleCanvasBottom.addEventListener("mousedown", (e) => {
                 if (circleImageBottom) {
                     isDraggingBottom = true;
@@ -857,7 +895,7 @@
                 isDraggingBottom = false;
             });
 
-            document.getElementById("map-upload").addEventListener("change", (e) => {
+            dom.mapUpload.addEventListener("change", (e) => {
                 const file = e.target.files[0];
                 if (file) {
                     mapImage = new Image();
@@ -874,7 +912,7 @@
                 }
             });
 
-            document.getElementById("circle-upload-top").addEventListener("change", (e) => {
+            dom.circleUploadTop.addEventListener("change", (e) => {
                 const file = e.target.files[0];
                 if (file) {
                     circleImageTop = new Image();
@@ -891,7 +929,7 @@
                 }
             });
 
-            document.getElementById("circle-upload-bottom").addEventListener("change", (e) => {
+            dom.circleUploadBottom.addEventListener("change", (e) => {
                 const file = e.target.files[0];
                 if (file) {
                     circleImageBottom = new Image();
@@ -908,7 +946,7 @@
                 }
             });
 
-            document.getElementById("logo-upload").addEventListener("change", (e) => {
+            dom.logoUpload.addEventListener("change", (e) => {
                 const file = e.target.files[0];
                 if (file) {
                     logoImage = new Image();
@@ -922,71 +960,72 @@
                 }
             });
 
-            document.getElementById("zoom-in").addEventListener("click", () => {
+            dom.zoomIn.addEventListener("click", () => {
                 if (mapImage) {
                     imageScale *= 1.2;
                     drawCanvas();
                 }
             });
 
-            document.getElementById("zoom-out").addEventListener("click", () => {
+            dom.zoomOut.addEventListener("click", () => {
                 if (mapImage) {
                     imageScale /= 1.2;
                     drawCanvas();
                 }
             });
 
-            document.getElementById("zoom-in-top").addEventListener("click", () => {
+            dom.zoomInTop.addEventListener("click", () => {
                 if (circleImageTop) {
                     circleImageScaleTop *= 1.2;
                     drawCanvas();
                 }
             });
 
-            document.getElementById("zoom-out-top").addEventListener("click", () => {
+            dom.zoomOutTop.addEventListener("click", () => {
                 if (circleImageTop) {
                     circleImageScaleTop /= 1.2;
                     drawCanvas();
                 }
             });
 
-            document.getElementById("zoom-in-bottom").addEventListener("click", () => {
+            dom.zoomInBottom.addEventListener("click", () => {
                 if (circleImageBottom) {
                     circleImageScaleBottom *= 1.2;
                     drawCanvas();
                 }
             });
 
-            document.getElementById("zoom-out-bottom").addEventListener("click", () => {
+            dom.zoomOutBottom.addEventListener("click", () => {
                 if (circleImageBottom) {
                     circleImageScaleBottom /= 1.2;
                     drawCanvas();
                 }
             });
 
-            document.getElementById("text-align").addEventListener("change", drawCanvas);
-            document.getElementById("text-size").addEventListener("change", drawCanvas);
-            document.getElementById("text-style").addEventListener("change", drawCanvas);
-            document.getElementById("text-background").addEventListener("change", drawCanvas);
+            dom.textAlign.addEventListener("change", drawCanvas);
+            dom.textSize.addEventListener("change", drawCanvas);
+            dom.textStyle.addEventListener("change", drawCanvas);
+            dom.textBackground.addEventListener("change", drawCanvas);
 
-            document.getElementById("download-canvas").addEventListener("click", () => {
-                const canvas = document.getElementById("map-canvas");
+            dom.downloadCanvas.addEventListener("click", () => {
+                const canvas = dom.mapCanvas;
                 const link = document.createElement("a");
                 link.download = "convoy-map.png";
                 link.href = canvas.toDataURL("image/png");
                 link.click();
             });
 
-            document.getElementById("custom-event-name").addEventListener("input", drawCanvas);
-            document.getElementById("custom-start-place").addEventListener("input", drawCanvas);
-            document.getElementById("custom-destination").addEventListener("input", drawCanvas);
-            document.getElementById("custom-server").addEventListener("input", drawCanvas);
-            document.getElementById("custom-time").addEventListener("input", drawCanvas);
+            dom.customEventName.addEventListener("input", drawCanvas);
+            dom.customStartPlace.addEventListener("input", drawCanvas);
+            dom.customDestination.addEventListener("input", drawCanvas);
+            dom.customServer.addEventListener("input", drawCanvas);
+            dom.customTime.addEventListener("input", drawCanvas);
 
             drawCanvas();
         }
 
         window.onload = init;
+    })();
     </script>
 </body>
 </html>

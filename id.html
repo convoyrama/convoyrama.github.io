@@ -144,5 +144,14 @@
         <small>© LAG'S SPEED - CONVOYRAMA 2025 - v2.0</small>
     </footer>
     <script type="module" src="./license_generator/js/main.js"></script>
+    <script>
+    document.fonts.ready.then(function() {
+      if (document.fonts.check('1em Verdana')) {
+        console.log('La fuente Verdana se ha cargado correctamente.');
+      } else {
+        console.error('La fuente Verdana no se ha podido cargar.');
+      }
+    });
+    </script>
 </body>
 </html>
