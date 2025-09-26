@@ -34,6 +34,7 @@
     "countryPlaceholder": "Selecione um país",
     "nicknamePlaceholder": "Selecione uma TAG",
     "rankToggleLabel": "Mostrar Rank",
+    "select_subtitle_placeholder": "Selecione um Subtítulo",
     "warning_refresh_page": "Por favor, atualize a página até que um visto apareça ao lado da data.",
     "textColorToggleLabel": "Cor do Texto: Escuro / Claro",
     "rank_explanation_text": "O rank é uma aproximação baseada no número de perfil do TruckersMP. Cada ano de idade da conta é associado a um rank.",
