@@ -171,10 +171,6 @@ async function initialize() {
         loadLevelRanges()
     ]);
     
-    populateCountries(state.language);
-    populateNicknames(state.language);
-    populateTitles(state.language);
-
     // Populate dom object after DOM is ready
     Object.assign(dom, {
         canvas: document.getElementById("canvas"),
@@ -227,6 +223,10 @@ async function initialize() {
         downloadLink: document.getElementById("descargar"),
         warningMessage: document.getElementById("warningMessage"), // Added warningMessage
     });
+
+    populateCountries(state.language);
+    populateNicknames(state.language);
+    populateTitles(state.language);
 
     updateUI();
     addEventListeners();
