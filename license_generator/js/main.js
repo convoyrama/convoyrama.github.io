@@ -1,7 +1,7 @@
 import { dom } from './dom-elements.js';
 import { config, translations, loadTranslations } from './config.js';
-import { debounce, validateTruckersmpLink, validateCompanyLink } from './utils.js';
-import { getCurrentDate, loadVtcData, loadCountries, loadNicknames, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
+import { debounce, validateTruckersmpLink, validateCompanyLink, generateLicenseNumber, getUserLevel } from './utils.js';
+import { getCurrentDate, loadVtcData, loadCountries, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
 import { generateImage } from './canvas.js';
 
 const state = {
@@ -30,9 +30,9 @@ const state = {
     vtcData: { vtcOwners: [] },
     starMap: {},
     countries: [],
-    nicknames: [],
     titles: [],
     levelRanges: {},
+    userLevel: null,
 };
 
 function updateUI() {
@@ -40,15 +40,24 @@ function updateUI() {
     updateLanguage(state.language);
 }
 
-function populateNicknames(lang) {
+function populateNicknames(lang, userLevel) {
     const t = translations[lang] || translations.es;
     dom.nicknameSelect.innerHTML = `<option value="">${t.nicknamePlaceholder}</option>`;
-    state.nicknames.forEach(nickname => {
-        const option = document.createElement('option');
-        option.value = nickname;
-        option.textContent = nickname;
-        dom.nicknameSelect.appendChild(option);
-    });
+
+    if (userLevel && t.rank_names) {
+        for (let i = 0; i < userLevel; i++) {
+            const option = document.createElement('option');
+            option.value = t.rank_names[i];
+            option.textContent = t.rank_names[i];
+            dom.nicknameSelect.appendChild(option);
+        }
+    }
+}
+
+function updateUserRank() {
+    const { userId } = generateLicenseNumber(state.truckersmpLink, state.companyLink, state.country);
+    state.userLevel = getUserLevel(userId, state.levelRanges.user, state.currentDate ? state.currentDate.year : null);
+    populateNicknames(state.language, state.userLevel);
 }
 
 function populateTitles(lang) {
@@ -113,7 +122,7 @@ function updateLanguage(lang) {
     
     populateCountries(lang);
     populateTitles(lang);
-    populateNicknames(lang);
+    populateNicknames(lang, state.userLevel);
     renderRankLegend(); // Re-render rank legend for new language
 }
 
@@ -165,10 +174,9 @@ function renderRankLegend() {
 async function initialize() {
     await loadTranslations(); // Call and await translation loading
 
-    [state.countries, state.vtcData, state.nicknames, state.currentDate, state.starMap, state.titles, state.levelRanges] = await Promise.all([
+    [state.countries, state.vtcData, state.currentDate, state.starMap, state.titles, state.levelRanges] = await Promise.all([
         loadCountries(),
         loadVtcData(),
-        loadNicknames(),
         getCurrentDate(),
         loadStarMap(),
         loadTitles(),
@@ -228,7 +236,7 @@ async function initialize() {
     });
 
     populateCountries(state.language);
-    populateNicknames(state.language);
+    populateNicknames(state.language, state.userLevel);
     populateTitles(state.language);
 
     updateUI();
@@ -248,6 +256,7 @@ function addEventListeners() {
     dom.truckersmpLinkInput.addEventListener('input', (e) => {
         state.truckersmpLink = e.target.value;
         validateTruckersmpLink(state.truckersmpLink, translations, state.language);
+        updateUserRank();
         debounce(() => generateImage(state), 100)();
     });
 
