@@ -11,7 +11,7 @@ async function loadImage(src) {
 }
 
 async function renderTwemoji(emoji, size) {
-    const src = twemoji.parse(emoji, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)_?.[1]_ || '';
+    const src = twemoji.parse(emoji, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)?. [1] || '';
     if (!src) return null;
     return await loadImage(src);
 }
