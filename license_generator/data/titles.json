@@ -21,75 +21,6 @@
     "pt": "Identificação de Caminhoneiro Profissional"
   },
   {
-    "key": "MASTER_OF_THE_HIGHWAY",
-    "type": "serious",
-    "es": "Maestro de la Carretera",
-    "en": "Master of the Highway",
-    "pt": "Mestre da Estrada"
-  },
-  {
-    "key": "KING_OF_THE_LAG",
-    "type": "comedic",
-    "es": "Rey del Lag",
-    "en": "King of Lag",
-    "pt": "Rei do Lag"
-  },
-  {
-    "key": "CALAIS_DUISBURG_SURVIVOR",
-    "type": "comedic",
-    "es": "Sobreviviente de Calais-Duisburg",
-    "en": "Calais-Duisburg Survivor",
-    "pt": "Sobreviviente de Calais-Duisburg"
-  },
-  {
-    "key": "ADVANCED_FLEET_MANAGER",
-    "type": "serious",
-    "es": "Gestor de Flotas Avanzado",
-    "en": "Advanced Fleet Manager",
-    "pt": "Gerente de Frota Avançado"
-  },
-  {
-    "key": "GLOBAL_TRANSPORT_STRATEGIST",
-    "type": "serious",
-    "es": "Estratega de Transporte Global",
-    "en": "Global Transport Strategist",
-    "pt": "Estrategista de Transporte Global"
-  },
-  {
-    "key": "ELITE_TRUCK_PILOT",
-    "type": "serious",
-    "es": "Piloto de Camiones de Élite",
-    "en": "Elite Truck Pilot",
-    "pt": "Piloto de Caminhões de Elite"
-  },
-  {
-    "key": "CARGO_LOGISTICS_INSPECTOR",
-    "type": "serious",
-    "es": "Inspector de Carga y Logística",
-    "en": "Cargo and Logistics Inspector",
-    "pt": "Inspetor de Carga e Logística"
-  },
-  {
-    "key": "PRECISION_MANEUVER_EXPERT",
-    "es": "Experto en Maniobras de Precisión",
-    "en": "Precision Maneuver Expert",
-    "pt": "Especialista em Manobras de Precisão"
-  },
-  {
-    "key": "INTERNATIONAL_CONVOY_COORDINATOR",
-    "type": "serious",
-    "es": "Coordinador de Convoyes Internacionales",
-    "en": "International Convoy Coordinator",
-    "pt": "Coordenador de Comboios Internacionais"
-  },
-  {
-    "key": "INVOLUNTARY_DRIFT_DOCTOR",
-    "type": "comedic",
-    "es": "Doctor en Derrapes Involuntarios",
-    "en": "Involuntary Drift Doctor",
-    "pt": "Doutor em Derrapagens Involuntárias"
-  },
-  {
     "key": "VIRTUAL_DRIVER_ID",
     "type": "serious",
     "es": "Cédula de Conductor Virtual",
@@ -102,20 +33,6 @@
     "es": "Registro de Operador Logístico",
     "en": "Logistics Operator Registry",
     "pt": "Registro de Operador Logístico"
-  },
-  {
-    "key": "SIMULATED_DRIVING_CREDENTIAL",
-    "type": "serious",
-    "es": "Credencial de Conducción Simulada",
-    "en": "Simulated Driving Credential",
-    "pt": "Credencial de Condução Simulada"
-  },
-  {
-    "key": "TRANSPORTER_ID_DOCUMENT",
-    "type": "serious",
-    "es": "Documento de Identidad de Transportista",
-    "en": "Transporter ID Document",
-    "pt": "Documento de Identidade de Transportador"
   },
   {
     "key": "VIRTUAL_CIRCULATION_PERMIT",
@@ -144,20 +61,6 @@
     "es": "Pase de Acceso a Zonas de Lag",
     "en": "Lag Zone Access Pass",
     "pt": "Passe de Acesso a Zonas de Lag"
-  },
-  {
-    "key": "CROSSING_BLOCK_AUTHORIZATION",
-    "type": "comedic",
-    "es": "Autorización para Bloquear Cruces",
-    "en": "Crossing Block Authorization",
-    "pt": "Autorização para Bloquear Cruzamentos"
-  },
-  {
-    "key": "ELITE_DRIVING_PASS",
-    "type": "serious",
-    "es": "Pase de Conducción de Élite",
-    "en": "Elite Driving Pass",
-    "pt": "Passe de Condução de Elite"
   },
   {
     "key": "CERTIFIED_DRIVER_REGISTRY",

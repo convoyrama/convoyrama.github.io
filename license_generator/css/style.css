@@ -25,7 +25,7 @@
 .toggle-item label {
     font-size: 13px;
 }
-[data-tooltip]:hover::after {
+.rank-legend-item[data-tooltip]:hover::after {
     content: attr(data-tooltip);
     position: absolute;
     bottom: 100%;
