@@ -1,4 +1,4 @@
-@font-face{font-family:Verdana;src:url(../verdana/Verdana.ttf) format('truetype');font-weight:400;font-style:normal} @font-face{font-family:Verdana-Bold;src:url(../verdana/Verdana-Bold.ttf) format('truetype');font-weight:700;font-style:normal} @font-face{font-family:Verdana-Italic;src:url(../verdana/Verdana-Italic.ttf) format('truetype');font-weight:400;font-style:italic} @font-face{font-family:Verdana-BoldItalic;src:url(../verdana/Verdana-BoldItalic.ttf) format('truetype');font-weight:700;font-style:italic}header{padding:15px;text-align:center;position:relative;z-index:10;background:var(--accent-bg);border-bottom:1px solid var(--border)}header p{font-size:1.2em;font-family:Arial,sans-serif;margin:10px 0;color:rgb(240,240,240)}nav{padding:10px;text-align:center}nav a,nav a:visited{text-decoration:none;margin:0 15px;font-size:1em;color:rgb(240,240,240)}nav a:hover{text-decoration:underline}.contenedor{display:flex;gap:15px;padding:15px;align-items:flex-start;font-family:Arial,sans-serif}.panel{flex:1;max-width:250px;font-size:13px}.panel h3{margin:10px 0 5px;font-size:13px}.input-group{margin:5px 0}.input-group input,.input-group select{width:230px;box-sizing:border-box;padding:8px;font-size:13px;border:1px solid #ccc;border-radius:4px}input[type="file"]{width:230px;box-sizing:border-box;font-size:13px;border:none;padding:8px 0}.toggle-item{margin:5px 0}.toggle-item input[type="checkbox"]{margin-right:5px}.toggle-group{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-start;align-items:center;margin:5px 0}.toggle-container{margin-top:10px;text-align:left}canvas{border:1px solid rgb(20,20,20);display:block;margin:0 auto;max-width:100%;height:auto}#preview{flex:1;text-align:center}button{padding:5px 10px;font-size:13px;margin-top:8px;background:rgb(90,165,25);color:rgb(240,240,240);border:none;border-radius:6px;cursor:pointer}button:hover{opacity:0.8}button.info-tooltip:hover::after{content:attr(data-tooltip);position:absolute;bottom:100%;left:50%;transform:translate(-50%, 0);background-color:rgba(0,0,0,0.8);color:#fff;padding:5px 10px;border-radius:5px;white-space:nowrap;z-index:1000;}
+@font-face{font-family:Verdana;src:url(../verdana/Verdana.ttf) format('truetype');font-weight:400;font-style:normal} @font-face{font-family:Verdana-Bold;src:url(../verdana/Verdana-Bold.ttf) format('truetype');font-weight:700;font-style:normal} @font-face{font-family:Verdana-Italic;src:url(../verdana/Verdana-Italic.ttf) format('truetype');font-weight:400;font-style:italic} @font-face{font-family:Verdana-BoldItalic;src:url(../verdana/Verdana-BoldItalic.ttf) format('truetype');font-weight:700;font-style:italic}header{padding:15px;text-align:center;position:relative;z-index:10;background:var(--accent-bg);border-bottom:1px solid var(--border)}header p{font-size:1.2em;font-family:Arial,sans-serif;margin:10px 0;color:rgb(240,240,240)}nav{padding:10px;text-align:center}nav a,nav a:visited{text-decoration:none;margin:0 15px;font-size:1em;color:rgb(240,240,240)}nav a:hover{text-decoration:underline}.contenedor{display:flex;gap:15px;padding:15px;align-items:flex-start;font-family:Arial,sans-serif}.panel{flex:1;max-width:250px;font-size:13px}.panel h3{margin:10px 0 5px;font-size:13px}.input-group{margin:5px 0}.input-group input,.input-group select{width:230px;box-sizing:border-box;padding:8px;font-size:13px;border:1px solid #ccc;border-radius:4px}input[type="file"]{width:230px;box-sizing:border-box;font-size:13px;border:none;padding:8px 0}.toggle-item{margin:5px 0}.toggle-item input[type="checkbox"]{margin-right:5px}.toggle-group{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-start;align-items:center;margin:5px 0}.toggle-container{margin-top:10px;text-align:left}canvas{border:1px solid rgb(20,20,20);display:block;margin:0 auto;max-width:100%;height:auto}#preview{flex:1;text-align:center}button{padding:5px 10px;font-size:13px;margin-top:8px;background:rgb(90,165,25);color:rgb(240,240,240);border:none;border-radius:6px;cursor:pointer}button:hover{opacity:0.8}button.info-tooltip:hover::after{content:attr(data-tooltip);position:absolute;bottom:100%;left:50%;transform:tra... [truncated]
 .warning-message {
     background-color: #ffc107;
     color: #343a40;
@@ -39,4 +39,29 @@
     width: 250px;
     z-index: 1000;
     text-align: center;
+}
+
+@media (max-width: 768px) {
+    .contenedor {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .panel {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .input-group input,
+    .input-group select {
+        width: 100%;
+    }
+
+    input[type="file"] {
+        width: 100%;
+    }
+
+    #backgroundSelect {
+        width: 100%;
+    }
 }
