@@ -2,7 +2,7 @@ import { dom } from './dom-elements.js';
 import { config, translations, loadTranslations } from './config.js';
 import { debounce, validateTruckersmpLink, validateCompanyLink, generateLicenseNumber, getUserLevel } from './utils.js';
 import { getCurrentDate, loadVtcData, loadCountries, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
-import { generateImage } from './canvas.js';
+import { generateImage, updateDownloadLink } from './canvas.js';
 
 const state = {
     name: '',
@@ -240,30 +240,35 @@ async function initialize() {
     populateTitles(state.language);
 
     updateUI();
-    addEventListeners();
+    const debouncedGenerate = debounce(() => {
+        generateImage(state).then(() => {
+            updateDownloadLink(state.name);
+        });
+    }, 100);
+
+    addEventListeners(debouncedGenerate);
     
-    const debouncedGenerate = debounce(() => generateImage(state), 100);
     debouncedGenerate();
     renderRankLegend(); // Initial render
 }
 
-function addEventListeners() {
+function addEventListeners(debouncedGenerate) {
     dom.nameInput.addEventListener('input', (e) => {
         state.name = e.target.value;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.truckersmpLinkInput.addEventListener('input', (e) => {
         state.truckersmpLink = e.target.value;
         validateTruckersmpLink(state.truckersmpLink, translations, state.language);
         updateUserRank();
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.companyLinkInput.addEventListener('input', (e) => {
         state.companyLink = e.target.value;
         validateCompanyLink(state.companyLink, translations, state.language);
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.photoInput.addEventListener("change", (event) => {
@@ -275,57 +280,57 @@ function addEventListeners() {
                 img.src = ev.target.result;
                 img.onload = () => {
                     state.userImage = img;
-                    debounce(() => generateImage(state), 100)();
+                    debouncedGenerate();
                 };
             };
             reader.readAsDataURL(file);
         } else {
             state.userImage = null;
-            debounce(() => generateImage(state), 100)();
+            debouncedGenerate();
         }
     });
 
     dom.backgroundSelect.addEventListener('change', (e) => {
         state.backgroundTemplate = e.target.value;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.languageSelect.addEventListener('change', (e) => {
         state.language = e.target.value;
         updateLanguage(state.language);
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.countrySelect.addEventListener('change', (e) => {
         state.country = e.target.value;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.nicknameSelect.addEventListener('change', (e) => {
         state.nickname = e.target.value;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.titleSelect.addEventListener('change', (e) => {
         state.selectedTitleKey = e.target.value;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.colorSlider.addEventListener('input', (e) => {
         state.colorHue = e.target.value;
         dom.colorValue.textContent = `${state.colorHue}°`;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.saturationSlider.addEventListener('input', (e) => {
         state.saturation = e.target.value;
         dom.saturationValue.textContent = `${state.saturation}%`;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.customTitleInput.addEventListener('input', (e) => {
         state.customTitle = e.target.value;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.vtcLogoInput.addEventListener("change", (event) => {
@@ -337,44 +342,44 @@ function addEventListeners() {
                 img.src = ev.target.result;
                 img.onload = () => {
                     state.vtcLogoImage = img;
-                    debounce(() => generateImage(state), 100)();
+                    debouncedGenerate();
                 };
             };
             reader.readAsDataURL(file);
         } else {
             state.vtcLogoImage = null;
-            debounce(() => generateImage(state), 100)();
+            debouncedGenerate();
         }
     });
 
     dom.promodsToggleInput.addEventListener('change', (e) => {
         state.promodsToggle = e.target.checked;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.dbusworldToggleInput.addEventListener('change', (e) => {
         state.dbusworldToggle = e.target.checked;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.watermarkToggleInput.addEventListener('change', (e) => {
         state.watermarkToggle = e.target.checked;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.qrColorToggleInput.addEventListener('change', (e) => {
         state.qrColorToggle = e.target.checked;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.textColorToggleInput.addEventListener('change', (e) => {
         state.textColorToggle = e.target.checked;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
     });
 
     dom.rankToggleInput.addEventListener('change', (e) => {
         state.rankToggle = e.target.checked;
-        debounce(() => generateImage(state), 100)();
+        debouncedGenerate();
         renderRankLegend(); // Update legend on toggle change
     });
 

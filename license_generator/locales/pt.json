@@ -35,7 +35,7 @@
     "nicknamePlaceholder": "Selecione uma TAG",
     "rankToggleLabel": "Mostrar Rank",
     "select_subtitle_placeholder": "Selecione um Tipo de Licença",
-    "warning_refresh_page": "Por favor, atualize a página até que um visto apareça ao lado da data.",
+    "warning_refresh_page": "O gerador funciona melhor em celulares e Linux do que no Windows. Atualizar a página pode corrigir problemas de exibição.",
     "textColorToggleLabel": "Cor do Texto: Escuro / Claro",
     "rank_explanation_text": "O rank é uma aproximação baseada no número de perfil do TruckersMP. Cada ano de idade da conta é associado a um rank.",
     "rank_names": [

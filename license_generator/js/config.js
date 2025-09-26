@@ -9,7 +9,7 @@ export const config = {
     textX: 325,
     textY: 314,
     qrY: 101,
-    font: "'Verdana', sans-serif",
+    font: "'VerdanaCustom', sans-serif",
     defaultPhotoSize: 192,
   qrSize: 100,
     qrSpacing: 10,

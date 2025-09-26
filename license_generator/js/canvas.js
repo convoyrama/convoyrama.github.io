@@ -87,7 +87,7 @@ export async function generateImage(state) {
     }
 
     // Draw Title
-    ctx.font = `bold ${config.titleFontSize * scaleFactor}px 'Verdana-Bold'`;
+    ctx.font = `bold ${config.titleFontSize * scaleFactor}px 'VerdanaCustom-Bold'`;
     ctx.fillStyle = textColor;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -148,11 +148,10 @@ export async function generateImage(state) {
     // Draw lines
     let yPos = (config.photoY + config.defaultPhotoSize + 40) * scaleFactor;
     lines.forEach(line => {
-        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
-        ctx.fillStyle = textColor;
+        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'VerdanaCustom-Bold'`;
         ctx.fillText(line.label, config.labelX * scaleFactor, yPos);
 
-        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'Verdana-Bold'`;
+        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'VerdanaCustom-Bold'`;
         if (line.isName) {
             const nameWithoutStar = line.value;
             ctx.fillText(nameWithoutStar, config.textX * scaleFactor, yPos);
@@ -277,7 +276,7 @@ export async function generateImage(state) {
     if (selectedTitle) {
         const titleText = selectedTitle[state.language] || selectedTitle.en;
         const titleY = config.baseHeight - 5;
-        ctx.font = `bold ${config.footerFontSize * scaleFactor}px 'Verdana-Bold'`;
+        ctx.font = `bold ${config.footerFontSize * scaleFactor}px 'VerdanaCustom-Bold'`;
         ctx.fillStyle = 'rgb(240, 240, 240)';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
@@ -290,7 +289,7 @@ export async function generateImage(state) {
     }
 }
 
-function updateDownloadLink(name) {
+export function updateDownloadLink(name) {
     const { canvas, downloadLink } = dom;
     try {
         downloadLink.href = canvas.toDataURL("image/png");
