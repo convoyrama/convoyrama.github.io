@@ -60,5 +60,6 @@
   "tz_wet": "WET (UTC+0)",
   "tz_cet_es": "CET (UTC+1) / Spain",
   "tz_eet_ao": "EET (UTC+2) / Angola",
-  "tz_msk": "MSK (UTC+3)"
+  "tz_msk": "MSK (UTC+3)",
+  "error_no_date": "Please select a date and time."
 }

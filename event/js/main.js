@@ -281,7 +281,10 @@
             const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || "Evento Personalizado";
             const customEventLinkValue = dom.customEventLink.value || "https://convoyrama.github.io/events.html", customEventDescriptionValue = dom.customEventDescription.value || "Sin descripción";
             const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
-            if (!customDateValue || !customTimeValue) { showCopyMessage("Por favor, selecciona una fecha y hora."); return; }
+            if (!customDateValue || !customTimeValue) { 
+                showCopyMessage(currentLangData.error_no_date || "Por favor, selecciona una fecha y hora."); 
+                return; 
+            }
             const [hh, mm] = customTimeValue.split(":").map(Number);
             const customDateObj = new Date(customDateValue);
             customDateObj.setHours(hh, mm, 0, 0);
