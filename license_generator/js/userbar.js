@@ -41,7 +41,7 @@ export async function generateUserbar(state, dom) {
 
     const textColor = 'rgb(240, 240, 240)';
     ctx.fillStyle = textColor;
-    ctx.font = `bold 10px 'Verdana'`;
+    ctx.font = `bold 12px 'Verdana'`;
     ctx.textBaseline = 'middle';
 
     // Shadow
@@ -60,7 +60,7 @@ export async function generateUserbar(state, dom) {
     // Draw cr.png
     try {
         const crImage = await loadImage('./license_generator/images/cr.png');
-        const crImageHeight = 15;
+        const crImageHeight = 20;
         const crImageWidth = (crImage.width / crImage.height) * crImageHeight;
         rightX -= crImageWidth;
         ctx.drawImage(crImage, rightX, (canvas.height - crImageHeight) / 2, crImageWidth, crImageHeight);
@@ -76,7 +76,7 @@ export async function generateUserbar(state, dom) {
     if (state.rankToggle && userLevel) {
         try {
             const rankImage = await loadImage(`./license_generator/rank/${userLevel}.png`);
-            const rankImageHeight = 15;
+            const rankImageHeight = 20;
             const rankImageWidth = (rankImage.width / rankImage.height) * rankImageHeight;
             ctx.drawImage(rankImage, leftX, (canvas.height - rankImageHeight) / 2, rankImageWidth, rankImageHeight);
             leftX += rankImageWidth + 5;
@@ -89,10 +89,10 @@ export async function generateUserbar(state, dom) {
     const selectedCountry = state.countries.find(c => c.code === state.country);
     if (selectedCountry) {
         try {
-            const flagEmoji = await renderTwemoji(selectedCountry.emoji, 15);
+            const flagEmoji = await renderTwemoji(selectedCountry.emoji, 20);
             if (flagEmoji) {
-                ctx.drawImage(flagEmoji, leftX, (canvas.height - 15) / 2, 15, 15);
-                leftX += 15 + 5;
+                ctx.drawImage(flagEmoji, leftX, (canvas.height - 20) / 2, 20, 20);
+                leftX += 20 + 5;
             }
         } catch (e) { console.error('failed to render flag', e); }
     }
@@ -121,7 +121,7 @@ export async function generateUserbar(state, dom) {
     // Draw TruckersMP Logo
     try {
         const truckersmpImage = await loadImage('./license_generator/images/truckersmp-logo-sm.png');
-        const logoHeight = 15;
+        const logoHeight = 20;
         const logoWidth = (truckersmpImage.width / truckersmpImage.height) * logoHeight;
         ctx.drawImage(truckersmpImage, leftX, (canvas.height - logoHeight) / 2, logoWidth, logoHeight);
     } catch (error) {
