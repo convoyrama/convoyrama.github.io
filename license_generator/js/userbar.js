@@ -27,10 +27,12 @@ export async function generateUserbar(state, dom) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw background
-    const bgPath = `./fondos/userbar/${userbarBg}`;
+    const bgPath = `./license_generator/images/${userbarBg}`;
     try {
         const bgImage = await loadImage(bgPath);
-        ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+        const sourceX = (bgImage.width - canvas.width) / 2;
+        const sourceY = (bgImage.height - canvas.height) / 2;
+        ctx.drawImage(bgImage, sourceX, sourceY, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
     } catch (error) {
         console.error(`Failed to load background image: ${bgPath}`, error);
         ctx.fillStyle = '#000';

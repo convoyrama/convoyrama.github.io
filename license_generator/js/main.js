@@ -119,6 +119,7 @@ function updateLanguage(lang) {
     dom.downloadButton.setAttribute('data-tooltip', t.tooltipMessage);
     dom.rankToggleLabel.textContent = t.rankToggleLabel;
     dom.textColorToggleLabel.textContent = t.textColorToggleLabel;
+    dom.downloadUserbarButton.textContent = t.downloadUserbarButton;
     dom.warningMessage.textContent = t.warning_refresh_page;
     
     populateCountries(lang);
@@ -239,6 +240,7 @@ async function initialize() {
         userbarBgPrev: document.getElementById("userbar-bg-prev"),
         userbarBgNext: document.getElementById("userbar-bg-next"),
         userbarBgName: document.getElementById("userbar-bg-name"),
+        downloadUserbarButton: document.getElementById("downloadUserbarButton"),
         warningMessage: document.getElementById("warningMessage"), // Added warningMessage
     });
 
