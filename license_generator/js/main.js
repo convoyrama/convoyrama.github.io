@@ -236,6 +236,9 @@ async function initialize() {
         userbarBackgroundSelect: document.getElementById("userbarBackgroundSelect"),
         userbarCanvas: document.getElementById("userbar-canvas"),
         downloadUserbar: document.getElementById("download-userbar"),
+        userbarBgPrev: document.getElementById("userbar-bg-prev"),
+        userbarBgNext: document.getElementById("userbar-bg-next"),
+        userbarBgName: document.getElementById("userbar-bg-name"),
         warningMessage: document.getElementById("warningMessage"), // Added warningMessage
     });
 
@@ -263,8 +266,18 @@ function addEventListeners(debouncedGenerate) {
         debouncedGenerate();
     });
 
-    if (dom.userbarBackgroundSelect) {
-        dom.userbarBackgroundSelect.addEventListener('change', (e) => {
+    if (dom.userbarBgPrev && dom.userbarBgNext && dom.userbarBackgroundSelect && dom.userbarBgName) {
+        dom.userbarBgPrev.addEventListener('click', () => {
+            const select = dom.userbarBackgroundSelect;
+            select.selectedIndex = (select.selectedIndex - 1 + select.options.length) % select.options.length;
+            dom.userbarBgName.textContent = select.options[select.selectedIndex].text;
+            debouncedGenerate();
+        });
+
+        dom.userbarBgNext.addEventListener('click', () => {
+            const select = dom.userbarBackgroundSelect;
+            select.selectedIndex = (select.selectedIndex + 1) % select.options.length;
+            dom.userbarBgName.textContent = select.options[select.selectedIndex].text;
             debouncedGenerate();
         });
     }

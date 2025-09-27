@@ -43,10 +43,10 @@ export async function generateUserbar(state, dom) {
     ctx.textBaseline = 'middle';
 
     // Shadow
-    ctx.shadowColor = 'rgb(20, 20, 20)';
+    ctx.shadowColor = 'rgba(20, 20, 20, 0.5)';
     ctx.shadowOffsetX = 1;
     ctx.shadowOffsetY = 1;
-    ctx.shadowBlur = 2;
+    ctx.shadowBlur = 4;
 
     const normalizedTruckersmpLink = normalizeLink(state.truckersmpLink);
     const normalizedCompanyLink = normalizeLink(state.companyLink);
@@ -113,6 +113,17 @@ export async function generateUserbar(state, dom) {
     // Draw User ID
     if (userId) {
         ctx.fillText(`#${userId}`, leftX, canvas.height / 2);
+        leftX += ctx.measureText(`#${userId}`).width + 5;
+    }
+
+    // Draw TruckersMP Logo
+    try {
+        const truckersmpImage = await loadImage('./license_generator/images/truckersmp-logo-sm.png');
+        const logoHeight = 15;
+        const logoWidth = (truckersmpImage.width / truckersmpImage.height) * logoHeight;
+        ctx.drawImage(truckersmpImage, leftX, (canvas.height - logoHeight) / 2, logoWidth, logoHeight);
+    } catch (error) {
+        console.error('Failed to load truckersmp-logo-sm image', error);
     }
 
     // Reset shadow

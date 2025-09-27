@@ -13,6 +13,17 @@
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
     <script src="https://unpkg.com/qrcode-svg@1.1.0/dist/qrcode.min.js"></script>
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+<style>
+.userbar-background-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+#userbar-bg-name {
+    font-weight: bold;
+}
+</style>
 </head>
 <body>
     <header>
@@ -139,7 +150,12 @@
             </div>
             <div id="userbar-generator" style="margin-top: 20px;">
                 <div class="input-group">
-                    <select id="userbarBackgroundSelect">
+                    <div class="userbar-background-selector">
+                        <button id="userbar-bg-prev">◀</button>
+                        <span id="userbar-bg-name">Yellow Green</span>
+                        <button id="userbar-bg-next">▶</button>
+                    </div>
+                    <select id="userbarBackgroundSelect" style="display: none;">
                         <option value="blue.png">Blue</option>
                         <option value="code.png">Code</option>
                         <option value="cyan.png">Cyan</option>
@@ -154,7 +170,7 @@
                         <option value="rainbow.png">Rainbow</option>
                         <option value="red.png">Red</option>
                         <option value="yellow.png">Yellow</option>
-                        <option value="yellowgreen.png">Yellow Green</option>
+                        <option value="yellowgreen.png" selected>Yellow Green</option>
                     </select>
                 </div>
                 <div class="canvas-container">
