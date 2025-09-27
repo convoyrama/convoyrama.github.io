@@ -74,7 +74,7 @@ export async function generateImage(state) {
 
     // Draw top-left watermark (cr.png)
     try {
-        ctx.globalAlpha = 0.1; // 10% opacity
+        ctx.globalAlpha = 1.0; // 100% opacity
         const crImage = await loadImage('./license_generator/images/cr.png');
         const crImageHeight = 80 * scaleFactor;
         const crImageWidth = (crImage.width / crImage.height) * crImageHeight;
