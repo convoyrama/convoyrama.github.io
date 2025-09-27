@@ -13,6 +13,13 @@
     let currentLangData = {};
     let selectedRegion = 'hispano'; // Default region
 
+    const languages = [
+        { code: 'es', name: 'Español' },
+        { code: 'en', name: 'English' },
+        { code: 'pt', name: 'Português' }
+    ];
+    let currentLangIndex = 0;
+
     const dom = {
         localTimeDisplay: document.getElementById('local-time-display'),
         gameTimeDisplay: document.getElementById('game-time-display'),
@@ -268,17 +275,28 @@
     }
 
     function init() {
-        const flags = document.querySelectorAll(".lang-flag");
-        flags.forEach(flag => {
-            flag.addEventListener("click", () => {
-                const lang = flag.getAttribute("data-lang");
-                loadLanguage(lang);
-                flags.forEach(f => f.classList.remove('selected'));
-                flag.classList.add('selected');
-            });
+        // --- Language Stepper Logic ---
+        const langPrevBtn = document.getElementById('lang-prev');
+        const langNextBtn = document.getElementById('lang-next');
+        const langCurrentSpan = document.getElementById('lang-current');
+
+        function updateLanguage() {
+            const lang = languages[currentLangIndex];
+            langCurrentSpan.textContent = lang.name;
+            loadLanguage(lang.code);
+        }
+
+        langPrevBtn.addEventListener('click', () => {
+            currentLangIndex = (currentLangIndex - 1 + languages.length) % languages.length;
+            updateLanguage();
         });
-        loadLanguage('es');
-        document.querySelector('.lang-flag[data-lang="es"]').classList.add('selected');
+
+        langNextBtn.addEventListener('click', () => {
+            currentLangIndex = (currentLangIndex + 1) % languages.length;
+            updateLanguage();
+        });
+
+        updateLanguage(); // Load default language on init
 
         const regionBtns = document.querySelectorAll(".region-btn");
         regionBtns.forEach(btn => {
