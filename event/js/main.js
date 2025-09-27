@@ -1,4 +1,18 @@
 (function() {
+    // --- Canvas State Variables ---
+    let mapImage = null, circleImageTop = null, circleImageBottom = null, logoImage = null;
+    let watermarkImage = new Image();
+    watermarkImage.src = './assets/images/cr.png';
+    let imageX = 0, imageY = 0, imageScale = 1;
+    let circleImageXTop = 0, circleImageYTop = 0, circleImageScaleTop = 1;
+    let circleImageXBottom = 0, circleImageYBottom = 0, circleImageScaleBottom = 1;
+    let isDragging = false, isDraggingTop = false, isDraggingBottom = false;
+    let startX, startY;
+
+    // --- I18n & Region State ---
+    let currentLangData = {};
+    let selectedRegion = 'hispano'; // Default region
+
     const dom = {
         localTimeDisplay: document.getElementById('local-time-display'),
         gameTimeDisplay: document.getElementById('game-time-display'),
@@ -33,41 +47,6 @@
         zoomInBottom: document.getElementById("zoom-in-bottom"),
         zoomOutBottom: document.getElementById("zoom-out-bottom"),
     };
-
-    function getGameTime(utcDate) {
-        const GAME_TIME_ANCHOR_UTC_MINUTES = 20 * 60 + 40;
-        const TIME_SCALE = 6;
-        const totalMinutesUTC = utcDate.getUTCHours() * 60 + utcDate.getUTCMinutes();
-        let realMinutesSinceAnchor = totalMinutesUTC - GAME_TIME_ANCHOR_UTC_MINUTES;
-        if (realMinutesSinceAnchor < 0) {
-            realMinutesSinceAnchor += 24 * 60;
-        }
-        let gameMinutes = realMinutesSinceAnchor * TIME_SCALE;
-        gameMinutes = gameMinutes % 1440;
-        const gameHours = Math.floor(gameMinutes / 60);
-        const remainingMinutes = Math.floor(gameMinutes % 60);
-        return { hours: gameHours, minutes: remainingMinutes };
-    }
-
-    function updateLiveClocks() {
-        const now = new Date();
-        dom.localTimeDisplay.textContent = now.toLocaleTimeString();
-        const gameTime = getGameTime(now);
-        const gameHours = gameTime.hours < 10 ? '0' + gameTime.hours : gameTime.hours;
-        const gameMinutes = gameTime.minutes < 10 ? '0' + gameTime.minutes : gameTime.minutes;
-        dom.gameTimeDisplay.textContent = `${gameHours}:${gameMinutes}`;
-        dom.gameTimeEmoji.textContent = getDetailedDayNightIcon(gameTime.hours);
-    }
-
-    function getDetailedDayNightIcon(hours) {
-        if (hours >= 6 && hours < 8) return '🌅';
-        if (hours >= 8 && hours < 19) return '☀️';
-        if (hours >= 19 && hours < 21) return '🌇';
-        return '🌙';
-    }
-
-    let currentLangData = {};
-    let selectedRegion = 'hispano'; // Default region
 
     const timezoneRegions = {
         hispano: {
@@ -109,6 +88,36 @@
             ]
         }
     };
+
+    function getGameTime(utcDate) {
+        const GAME_TIME_ANCHOR_UTC_MINUTES = 20 * 60 + 40;
+        const TIME_SCALE = 6;
+        const totalMinutesUTC = utcDate.getUTCHours() * 60 + utcDate.getUTCMinutes();
+        let realMinutesSinceAnchor = totalMinutesUTC - GAME_TIME_ANCHOR_UTC_MINUTES;
+        if (realMinutesSinceAnchor < 0) { realMinutesSinceAnchor += 24 * 60; }
+        let gameMinutes = realMinutesSinceAnchor * TIME_SCALE;
+        gameMinutes = gameMinutes % 1440;
+        const gameHours = Math.floor(gameMinutes / 60);
+        const remainingMinutes = Math.floor(gameMinutes % 60);
+        return { hours: gameHours, minutes: remainingMinutes };
+    }
+
+    function updateLiveClocks() {
+        const now = new Date();
+        dom.localTimeDisplay.textContent = now.toLocaleTimeString();
+        const gameTime = getGameTime(now);
+        const gameHours = pad(gameTime.hours);
+        const gameMinutes = pad(gameTime.minutes);
+        dom.gameTimeDisplay.textContent = `${gameHours}:${gameMinutes}`;
+        dom.gameTimeEmoji.textContent = getDetailedDayNightIcon(gameTime.hours);
+    }
+
+    function getDetailedDayNightIcon(hours) {
+        if (hours >= 6 && hours < 8) return '🌅';
+        if (hours >= 8 && hours < 19) return '☀️';
+        if (hours >= 19 && hours < 21) return '🌇';
+        return '🌙';
+    }
 
     function pad(n) { return n < 10 ? "0" + n : n; }
     function formatTime(d) { return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
@@ -168,17 +177,16 @@
             const [hh, mm] = customTimeValue.split(":").map(Number);
             const customDateObj = new Date(customDateValue);
             customDateObj.setHours(hh, mm, 0, 0);
-            const userOffset = -3; // Base offset for calculation, doesn't affect user display
+            const userOffset = -3;
             const utcBase = new Date(customDateObj.getTime() - userOffset * 3600000);
             localStart = new Date(utcBase.getTime() + userOffset * 3600000);
         }
 
-        // Use the selected region's timezones
         const activeTimezoneGroup = timezoneRegions[selectedRegion].zones;
         activeTimezoneGroup.forEach(tz => {
             const tzLabel = currentLangData[tz.key] || `UTC${tz.offset}`;
             if (localStart) {
-                const userOffset = -3; // Assuming a base for calculation
+                const userOffset = -3;
                 const reunionTime = new Date(localStart.getTime() - (userOffset - tz.offset) * 3600000);
                 const partidaTime = new Date(reunionTime.getTime() + 15 * 60000);
                 textLines.push(`${tzLabel}: ${formatTime(reunionTime)} / ${formatTime(partidaTime)}`);
@@ -187,12 +195,11 @@
             }
         });
 
-        // Add In-Game Time to canvas text
         if (localStart) {
             const gameTime = getGameTime(localStart);
             const gameTimeString = `${pad(gameTime.hours)}:${pad(gameTime.minutes)}`;
             const emoji = getDetailedDayNightIcon(gameTime.hours);
-            textLines.push(""); // Add a blank line for spacing
+            textLines.push("");
             textLines.push(`${currentLangData.canvas_ingame_time || 'Hora In-Game:'} ${gameTimeString} ${emoji}`);
         }
 
@@ -273,14 +280,13 @@
         loadLanguage('es');
         document.querySelector('.lang-flag[data-lang="es"]').classList.add('selected');
 
-        // --- Region Selector Logic ---
         const regionBtns = document.querySelectorAll(".region-btn");
         regionBtns.forEach(btn => {
             btn.addEventListener("click", () => {
                 selectedRegion = btn.getAttribute("data-region");
                 regionBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                drawCanvas(); // Redraw canvas with new region timezones
+                drawCanvas();
             });
         });
 
@@ -308,8 +314,6 @@
             const customDateObj = new Date(customDateValue);
             customDateObj.setHours(hh, mm, 0, 0);
 
-            // The timestamp for Discord is simply the UTC timestamp of the local date the user entered.
-            // No further offset calculation is needed.
             const meetingTimestamp = Math.floor(customDateObj.getTime() / 1000);
             const meetingGameTime = getGameTime(customDateObj);
             const meetingEmoji = getDetailedDayNightIcon(meetingGameTime.hours);
