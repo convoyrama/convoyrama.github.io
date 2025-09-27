@@ -13,13 +13,6 @@
     let currentLangData = {};
     let selectedRegion = 'hispano'; // Default region
 
-    const languages = [
-        { code: 'es', name: 'Español' },
-        { code: 'en', name: 'English' },
-        { code: 'pt', name: 'Português' }
-    ];
-    let currentLangIndex = 0;
-
     const dom = {
         localTimeDisplay: document.getElementById('local-time-display'),
         gameTimeDisplay: document.getElementById('game-time-display'),
@@ -277,38 +270,34 @@
     }
 
     function init() {
-        // --- Language Stepper Logic ---
-        const langPrevBtn = document.getElementById('lang-prev');
-        const langNextBtn = document.getElementById('lang-next');
-        const langCurrentSpan = document.getElementById('lang-current');
-
-        function updateLanguage() {
-            const lang = languages[currentLangIndex];
-            langCurrentSpan.textContent = lang.name;
-            loadLanguage(lang.code);
-        }
-
-        langPrevBtn.addEventListener('click', () => {
-            currentLangIndex = (currentLangIndex - 1 + languages.length) % languages.length;
-            updateLanguage();
-        });
-
-        langNextBtn.addEventListener('click', () => {
-            currentLangIndex = (currentLangIndex + 1) % languages.length;
-            updateLanguage();
-        });
-
-        updateLanguage(); // Load default language on init
-
-        const regionBtns = document.querySelectorAll(".region-btn");
-        regionBtns.forEach(btn => {
-            btn.addEventListener("click", () => {
-                selectedRegion = btn.getAttribute("data-region");
-                regionBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                drawCanvas();
+        // --- Language Emoji Selector Logic ---
+        const flags = document.querySelectorAll(".flag-emoji");
+        flags.forEach(flag => {
+            flag.addEventListener("click", () => {
+                const lang = flag.getAttribute("data-lang");
+                loadLanguage(lang);
+                flags.forEach(f => f.classList.remove('selected'));
+                flag.classList.add('selected');
             });
         });
+
+        // --- Region Select Dropdown Logic ---
+        const regionSelect = document.getElementById('region-select');
+        for (const regionKey in timezoneRegions) {
+            const option = document.createElement('option');
+            option.value = regionKey;
+            option.setAttribute('data-i18n', timezoneRegions[regionKey].name);
+            option.textContent = regionKey; // Fallback text
+            regionSelect.appendChild(option);
+        }
+        regionSelect.addEventListener('change', (e) => {
+            selectedRegion = e.target.value;
+            drawCanvas();
+        });
+
+        // --- Initial Load ---
+        loadLanguage('es'); // Load default language
+        document.querySelector('.flag-emoji[data-lang="es"]').classList.add('selected');
 
         updateLiveClocks();
         setInterval(updateLiveClocks, 1000);

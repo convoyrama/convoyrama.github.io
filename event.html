@@ -27,12 +27,15 @@
             <span data-i18n="ingame_time">Hora In-Game:</span> <span id="game-time-display">--:--:--</span> <span id="game-time-emoji"></span></span>
         </div>
 
-        <div id="lang-container">
-            <h4 data-i18n="language_selector_title">Idioma</h4>
-            <div id="lang-selector-stepper">
-                <button id="lang-prev" class="lang-arrow">&lt;</button>
-                <span id="lang-current">Español</span>
-                <button id="lang-next" class="lang-arrow">&gt;</button>
+        <div id="controls-bar">
+            <div id="lang-selector">
+                <span class="flag-emoji" data-lang="es">🇪🇸</span>
+                <span class="flag-emoji" data-lang="en">🇬🇧</span>
+                <span class="flag-emoji" data-lang="pt">🇧🇷</span>
+            </div>
+            <div id="region-selector-container">
+                <label for="region-select" data-i18n="region_selector_title">Regiones Horarias</label>
+                <select id="region-select"></select>
             </div>
         </div>
 
