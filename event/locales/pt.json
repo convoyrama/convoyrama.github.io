@@ -74,5 +74,8 @@
   "tz_es_fr_it_de_pl": "ES, FR, IT, DE, PL (UTC+1)",
   "tz_gr_fi": "GR, FI (UTC+2)",
   "tz_ru_tr": "RU, TR (UTC+3)",
+  "canvas_label_departure": "Partida",
+  "canvas_label_destination": "Destino",
+  "canvas_default_event_name": "Evento Personalizado",
   "error_no_date": "Por favor, selecione uma data e hora."
 }

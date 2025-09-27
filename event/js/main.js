@@ -138,7 +138,7 @@
         const canvas = dom.mapCanvas;
         const ctx = canvas.getContext("2d");
         const textAlign = dom.textAlign.value, textSize = parseInt(dom.textSize.value), textStyle = dom.textStyle.value, textBackground = dom.textBackground.value;
-        const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || "Evento Personalizado";
+        const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || (currentLangData.canvas_default_event_name || "Evento Personalizado");
         const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
 
         canvas.width = 1920;
@@ -254,8 +254,8 @@
         ctx.fillStyle = "rgb(90,165,25)";
         ctx.textAlign = "center";
         ctx.shadowBlur = 0;
-        ctx.fillText("Partida", circleX + circleDiameter / 2, topY + circleDiameter + 50);
-        ctx.fillText("Destino", circleX + circleDiameter / 2, bottomY - 20);
+        ctx.fillText(currentLangData.canvas_label_departure || "Partida", circleX + circleDiameter / 2, topY + circleDiameter + 50);
+        ctx.fillText(currentLangData.canvas_label_destination || "Destino", circleX + circleDiameter / 2, bottomY - 20);
         ctx.shadowBlur = 10;
 
         if (logoImage) {
