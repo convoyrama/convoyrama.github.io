@@ -69,35 +69,45 @@
     let currentLangData = {};
     let selectedRegion = 'hispano'; // Default region
 
-    // --- Canvas State Variables ---
-    let mapImage = null, circleImageTop = null, circleImageBottom = null, logoImage = null;
-    let watermarkImage = new Image();
-    watermarkImage.src = './assets/images/cr.png';
-    let imageX = 0, imageY = 0, imageScale = 1;
-    let circleImageXTop = 0, circleImageYTop = 0, circleImageScaleTop = 1;
-    let circleImageXBottom = 0, circleImageYBottom = 0, circleImageScaleBottom = 1;
-    let isDragging = false, isDraggingTop = false, isDraggingBottom = false;
-    let startX, startY;
-
     const timezoneRegions = {
-        hispano: { zones: [-6, -5, -4.5, -4, -3, 1] },
-        lusofono: { zones: [-4, -3, 1, 2] },
-        north_america: { zones: [-8, -7, -6, -5] },
-        europe: { zones: [0, 1, 2, 3] }
-    };
-
-    const timezoneLabels = {
-        '-8': 'tz_pst',
-        '-7': 'tz_mst',
-        '-6': 'tz_cst_mx',
-        '-5': 'tz_est_co',
-        '-4.5': 'tz_ve',
-        '-4': 'tz_bot_cl',
-        '-3': 'tz_art_brt',
-        '0': 'tz_wet',
-        '1': 'tz_cet_es',
-        '2': 'tz_eet_ao',
-        '3': 'tz_msk'
+        hispano: {
+            name: 'region_hispano',
+            zones: [
+                { offset: -6, key: 'tz_cst_mx' },
+                { offset: -5, key: 'tz_est_co' },
+                { offset: -4.5, key: 'tz_ve' },
+                { offset: -4, key: 'tz_bot_cl' },
+                { offset: -3, key: 'tz_art_brt' },
+                { offset: 1, key: 'tz_cet_es' }
+            ]
+        },
+        lusofono: {
+            name: 'region_lusofono',
+            zones: [
+                { offset: -3, key: 'tz_brt' },
+                { offset: 0, key: 'tz_wet_pt' },
+                { offset: 1, key: 'tz_cet' },
+                { offset: 2, key: 'tz_eet_ao' }
+            ]
+        },
+        north_america: {
+            name: 'region_north_america',
+            zones: [
+                { offset: -8, key: 'tz_pst' },
+                { offset: -7, key: 'tz_mst' },
+                { offset: -6, key: 'tz_cst' },
+                { offset: -5, key: 'tz_est' }
+            ]
+        },
+        europe: {
+            name: 'region_europe',
+            zones: [
+                { offset: 0, key: 'tz_wet_pt' },
+                { offset: 1, key: 'tz_cet' },
+                { offset: 2, key: 'tz_eet' },
+                { offset: 3, key: 'tz_msk' }
+            ]
+        }
     };
 
     function pad(n) { return n < 10 ? "0" + n : n; }
@@ -164,13 +174,12 @@
         }
 
         // Use the selected region's timezones
-        const activeTimezones = timezoneRegions[selectedRegion].zones;
-        activeTimezones.forEach(offset => {
-            const tzKey = timezoneLabels[offset.toString()];
-            const tzLabel = currentLangData[tzKey] || `UTC${offset}`;
+        const activeTimezoneGroup = timezoneRegions[selectedRegion].zones;
+        activeTimezoneGroup.forEach(tz => {
+            const tzLabel = currentLangData[tz.key] || `UTC${tz.offset}`;
             if (localStart) {
                 const userOffset = -3; // Assuming a base for calculation
-                const reunionTime = new Date(localStart.getTime() - (userOffset - offset) * 3600000);
+                const reunionTime = new Date(localStart.getTime() - (userOffset - tz.offset) * 3600000);
                 const partidaTime = new Date(reunionTime.getTime() + 15 * 60000);
                 textLines.push(`${tzLabel}: ${formatTime(reunionTime)} / ${formatTime(partidaTime)}`);
             } else {

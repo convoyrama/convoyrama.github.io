@@ -31,11 +31,10 @@ input[type="file"] { color: transparent; }
 .text-controls select:hover { opacity: .8; }
 #copy-message { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px 20px; background: linear-gradient(to right, #f0f0f0, #e0f0e0); border: 2px solid rgb(90,165,25); border-radius: 6px; color: rgb(90,165,25); font-weight: bold; text-align: center; display: none; z-index: 1000; max-width: 90%; }
 #custom-date-display { font-size: .9em; color: rgb(90,165,25); text-align: center; margin: 5px 0; }
-#lang-container { text-align: center; margin-bottom: 20px; padding: 10px; background: #2a2a2a; border-radius: 8px; color: #fff; }
+#lang-container { text-align: center; margin-bottom: 20px; padding: 10px; background: #2a2a2a; border-radius: 8px; color: #fff; border: 2px dashed red; } /* Debug border */
 #lang-container h4 { margin-bottom: 10px; font-size: 1em; font-weight: normal; }
 #lang-selector { display: flex; justify-content: center; gap: 10px; }
-#lang-selector { text-align: center; padding-bottom: 10px; }
-.lang-flag { cursor: pointer; width: 32px; margin: 0 5px; border: 2px solid transparent; border-radius: 4px; }
+.lang-flag { cursor: pointer; width: 52px; height: auto; margin: 0 5px; border: 3px solid transparent; border-radius: 5px; }
 .lang-flag.selected { border-color: rgb(90,165,25); }
 
 #region-selector-container {
