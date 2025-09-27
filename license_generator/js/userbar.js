@@ -68,6 +68,15 @@ export async function generateUserbar(state, dom) {
         console.error('Failed to load cr.png watermark', error);
     }
 
+    // Draw VTC Logo
+    if (state.vtcLogoImage) {
+        rightX -= 5; // spacing
+        const vtcLogoHeight = 20;
+        const vtcLogoWidth = (state.vtcLogoImage.width / state.vtcLogoImage.height) * vtcLogoHeight;
+        rightX -= vtcLogoWidth;
+        ctx.drawImage(state.vtcLogoImage, rightX, (canvas.height - vtcLogoHeight) / 2, vtcLogoWidth, vtcLogoHeight);
+    }
+
     // --- Left side ---
     let leftX = 10;
 
