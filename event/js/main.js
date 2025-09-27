@@ -59,39 +59,41 @@
         hispano: {
             name: 'region_hispano',
             zones: [
-                { offset: -6, key: 'tz_cst_mx' },
-                { offset: -5, key: 'tz_est_co' },
+                { offset: -6, key: 'tz_mx_gt_hn_cr' },
+                { offset: -5, key: 'tz_pe_ec_co' },
                 { offset: -4.5, key: 'tz_ve' },
-                { offset: -4, key: 'tz_bot_cl' },
-                { offset: -3, key: 'tz_art_brt' },
-                { offset: 1, key: 'tz_cet_es' }
+                { offset: -4, key: 'tz_bo_cl_py' },
+                { offset: -3, key: 'tz_uy_ar_br' },
+                { offset: 1, key: 'tz_es' }
             ]
         },
         lusofono: {
             name: 'region_lusofono',
             zones: [
-                { offset: -3, key: 'tz_brt' },
-                { offset: 0, key: 'tz_wet_pt' },
-                { offset: 1, key: 'tz_cet' },
-                { offset: 2, key: 'tz_eet_ao' }
+                { offset: -4, key: 'tz_br_manaus' },
+                { offset: -3, key: 'tz_br_brasilia' },
+                { offset: 0, key: 'tz_pt_gw' },
+                { offset: 1, key: 'tz_es_ma_ao' },
+                { offset: 2, key: 'tz_mz' }
             ]
         },
         north_america: {
             name: 'region_north_america',
             zones: [
-                { offset: -8, key: 'tz_pst' },
-                { offset: -7, key: 'tz_mst' },
-                { offset: -6, key: 'tz_cst' },
-                { offset: -5, key: 'tz_est' }
+                { offset: -8, key: 'tz_us_pst' },
+                { offset: -7, key: 'tz_us_mst' },
+                { offset: -6, key: 'tz_us_cst' },
+                { offset: -5, key: 'tz_us_est' },
+                { offset: 0, key: 'tz_gb' }
             ]
         },
         europe: {
             name: 'region_europe',
             zones: [
-                { offset: 0, key: 'tz_wet_pt' },
-                { offset: 1, key: 'tz_cet' },
-                { offset: 2, key: 'tz_eet' },
-                { offset: 3, key: 'tz_msk' }
+                { offset: 0, key: 'tz_pt_gb_ie' },
+                { offset: 1, key: 'tz_es_fr_it_de_pl' },
+                { offset: 2, key: 'tz_gr_fi' },
+                { offset: 3, key: 'tz_ru_tr' }
             ]
         }
     };
