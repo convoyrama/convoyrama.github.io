@@ -20,17 +20,22 @@
             <a href="event.html" data-i18n="nav_create_event">Crear Evento</a>
         </nav>
         <p data-i18n="header_title">Crear Evento Personalizado</p>
-        <div id="lang-selector">
-            <img src="./assets/images/es.png" alt="Español" data-lang="es" class="lang-flag">
-            <img src="./assets/images/en.png" alt="English" data-lang="en" class="lang-flag">
-            <img src="./assets/images/pt.png" alt="Português" data-lang="pt" class="lang-flag">
-        </div>
     </header>
     <div class="contenedor">
         <div id="live-clocks">
             <span data-i18n="local_time">Hora Local:</span> <span id="local-time-display">--:--:--</span></span> |
             <span data-i18n="ingame_time">Hora In-Game:</span> <span id="game-time-display">--:--:--</span> <span id="game-time-emoji"></span></span>
         </div>
+
+        <div id="lang-container">
+            <h4 data-i18n="language_selector_title">Idioma</h4>
+            <div id="lang-selector">
+                <img src="./assets/images/es.png" alt="Español" data-lang="es" class="lang-flag">
+                <img src="./assets/images/en.png" alt="English" data-lang="en" class="lang-flag">
+                <img src="./assets/images/pt.png" alt="Português" data-lang="pt" class="lang-flag">
+            </div>
+        </div>
+
         <div class="custom-event">
             <h3 data-i18n="event_section_title">Crear Evento Personalizado</h3>
             <div class="input-row">
@@ -97,6 +102,15 @@
                 <button id="copy-custom-info" data-i18n="btn_copy_discord">Código para Discord</button>
             </div>
             <div class="text-controls">
+                <div id="region-selector-container">
+                    <label data-i18n="region_selector_title">Regiones Horarias</label>
+                    <div id="region-selector">
+                        <button class="region-btn active" data-region="hispano" data-i18n="region_hispano">Hispano</button>
+                        <button class="region-btn" data-region="lusofono" data-i18n="region_lusofono">Lusófono</button>
+                        <button class="region-btn" data-region="north_america" data-i18n="region_north_america">Norteamérica</button>
+                        <button class="region-btn" data-region="europe" data-i18n="region_europe">Europa</button>
+                    </div>
+                </div>
                 <div>
                     <label for="text-size" data-i18n="label_text_size">Tamaño del texto:</label>
                     <select id="text-size">

@@ -66,20 +66,34 @@
         return '🌙';
     }
 
-    let userOffset = -3;
-    let mapImage = null, circleImageTop = null, circleImageBottom = null, logoImage = null;
-    let watermarkImage = new Image();
-    watermarkImage.src = './assets/images/cr.png';
-    let imageX = 0, imageY = 0, imageScale = 1;
-    let circleImageXTop = 0, circleImageYTop = 0, circleImageScaleTop = 1;
-    let circleImageXBottom = 0, circleImageYBottom = 0, circleImageScaleBottom = 1;
-    let isDragging = false, isDraggingTop = false, isDraggingBottom = false;
-    let startX, startY;
+    let currentLangData = {};
+    let selectedRegion = 'hispano'; // Default region
+
+    const timezoneRegions = {
+        hispano: { zones: [-6, -5, -4.5, -4, -3, 1] },
+        lusofono: { zones: [-4, -3, 1, 2] },
+        north_america: { zones: [-8, -7, -6, -5] },
+        europe: { zones: [0, 1, 2, 3] }
+    };
+
+    const timezoneLabels = {
+        '-8': 'tz_pst',
+        '-7': 'tz_mst',
+        '-6': 'tz_cst_mx',
+        '-5': 'tz_est_co',
+        '-4.5': 'tz_ve',
+        '-4': 'tz_bot_cl',
+        '-3': 'tz_art_brt',
+        '0': 'tz_wet',
+        '1': 'tz_cet_es',
+        '2': 'tz_eet_ao',
+        '3': 'tz_msk'
+    };
 
     function pad(n) { return n < 10 ? "0" + n : n; }
     function formatTime(d) { return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
     function formatDateForDisplay(d) {
-        const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+        const months = currentLangData.months || ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
         return `${d.getDate()} de ${months[d.getMonth()]} de ${d.getFullYear()}`;
     }
     function getUnixTimestamp(date) { return Math.floor(date.getTime() / 1000); }
@@ -122,24 +136,35 @@
 
         ctx.font = `bold ${textSize}px Arial`;
         ctx.textAlign = "left";
-        const timezoneLabels = { '-6': 'MX/GT/HN/CR', '-5': 'CO/PE/EC', '-4.5': 'VE', '-4': 'BO/CL/PY', '-3': 'UY/AR/BR', '1': 'ES' };
-        const textLines = [`Servidor: ${customServerValue}`, `Partida: ${customStartPlaceValue}`, `Destino: ${customDestinationValue}`, "", "Hora de reunión / Hora de partida:"];
+        const textLines = [
+            `${currentLangData.canvas_server || 'Servidor:'} ${customServerValue}`,
+            `${currentLangData.canvas_departure || 'Partida:'} ${customStartPlaceValue}`,
+            `${currentLangData.canvas_destination || 'Destino:'} ${customDestinationValue}`,
+            "",
+            currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'
+        ];
         let localStart = null;
         if (customDateValue && customTimeValue) {
             const [hh, mm] = customTimeValue.split(":").map(Number);
             const customDateObj = new Date(customDateValue);
             customDateObj.setHours(hh, mm, 0, 0);
-            const userOffset = -3;
+            const userOffset = -3; // Base offset for calculation, doesn't affect user display
             const utcBase = new Date(customDateObj.getTime() - userOffset * 3600000);
             localStart = new Date(utcBase.getTime() + userOffset * 3600000);
         }
-        const timezones = [-6, -5, -4.5, -4, -3, 1];
-        timezones.forEach(offset => {
+
+        // Use the selected region's timezones
+        const activeTimezones = timezoneRegions[selectedRegion].zones;
+        activeTimezones.forEach(offset => {
+            const tzKey = timezoneLabels[offset.toString()];
+            const tzLabel = currentLangData[tzKey] || `UTC${offset}`;
             if (localStart) {
+                const userOffset = -3; // Assuming a base for calculation
                 const reunionTime = new Date(localStart.getTime() - (userOffset - offset) * 3600000);
-                                    const partidaTime = new Date(reunionTime.getTime() + 15 * 60000);                textLines.push(`${timezoneLabels[offset.toString()]}: ${formatTime(reunionTime)} / ${formatTime(partidaTime)}`);
+                const partidaTime = new Date(reunionTime.getTime() + 15 * 60000);
+                textLines.push(`${tzLabel}: ${formatTime(reunionTime)} / ${formatTime(partidaTime)}`);
             } else {
-                textLines.push(`${timezoneLabels[offset.toString()]}: N/A`);
+                textLines.push(`${tzLabel}: N/A`);
             }
         });
 
@@ -149,7 +174,7 @@
             const gameTimeString = `${pad(gameTime.hours)}:${pad(gameTime.minutes)}`;
             const emoji = getDetailedDayNightIcon(gameTime.hours);
             textLines.push(""); // Add a blank line for spacing
-            textLines.push(`Hora In-Game: ${gameTimeString} ${emoji}`);
+            textLines.push(`${currentLangData.canvas_ingame_time || 'Hora In-Game:'} ${gameTimeString} ${emoji}`);
         }
 
         const textX = 20, lineHeight = textSize + 15;
@@ -228,6 +253,17 @@
         });
         loadLanguage('es');
         document.querySelector('.lang-flag[data-lang="es"]').classList.add('selected');
+
+        // --- Region Selector Logic ---
+        const regionBtns = document.querySelectorAll(".region-btn");
+        regionBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                selectedRegion = btn.getAttribute("data-region");
+                regionBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                drawCanvas(); // Redraw canvas with new region timezones
+            });
+        });
 
         updateLiveClocks();
         setInterval(updateLiveClocks, 1000);
@@ -335,8 +371,9 @@
     }
 
     async function loadLanguage(lang) {
-        const langData = await fetchLanguage(lang);
-        applyTranslations(langData);
+        currentLangData = await fetchLanguage(lang);
+        applyTranslations(currentLangData);
+        drawCanvas(); // Redraw canvas with new language
     }
 
     window.onload = init;
