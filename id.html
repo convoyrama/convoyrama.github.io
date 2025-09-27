@@ -23,6 +23,10 @@
 #userbar-bg-name {
     font-weight: bold;
 }
+.arrow-button {
+    font-size: 10px;
+    padding: 2px 5px;
+}
 </style>
 </head>
 <body>
@@ -96,7 +100,12 @@
                 <canvas id="canvas" width="800" height="500"></canvas>
             </div>
             <div class="input-group">
-                <select id="backgroundSelect">
+                <div class="userbar-background-selector">
+                    <button id="main-bg-prev" class="arrow-button">◀</button>
+                    <span id="main-bg-name">Aura</span>
+                    <button id="main-bg-next" class="arrow-button">▶</button>
+                </div>
+                <select id="backgroundSelect" style="display: none;">
                     <option value="aura.png" selected>Aura</option>
                     <option value="3D.png">3D</option>
                     <option value="dystopia.png">Dystopia</option>

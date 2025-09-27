@@ -241,6 +241,9 @@ async function initialize() {
         userbarBgNext: document.getElementById("userbar-bg-next"),
         userbarBgName: document.getElementById("userbar-bg-name"),
         downloadUserbarButton: document.getElementById("downloadUserbarButton"),
+        mainBgPrev: document.getElementById("main-bg-prev"),
+        mainBgNext: document.getElementById("main-bg-next"),
+        mainBgName: document.getElementById("main-bg-name"),
         warningMessage: document.getElementById("warningMessage"), // Added warningMessage
     });
 
@@ -316,10 +319,23 @@ function addEventListeners(debouncedGenerate) {
         }
     });
 
-    dom.backgroundSelect.addEventListener('change', (e) => {
-        state.backgroundTemplate = e.target.value;
-        debouncedGenerate();
-    });
+    if (dom.mainBgPrev && dom.mainBgNext && dom.backgroundSelect && dom.mainBgName) {
+        dom.mainBgPrev.addEventListener('click', () => {
+            const select = dom.backgroundSelect;
+            select.selectedIndex = (select.selectedIndex - 1 + select.options.length) % select.options.length;
+            dom.mainBgName.textContent = select.options[select.selectedIndex].text;
+            state.backgroundTemplate = select.value;
+            debouncedGenerate();
+        });
+
+        dom.mainBgNext.addEventListener('click', () => {
+            const select = dom.backgroundSelect;
+            select.selectedIndex = (select.selectedIndex + 1) % select.options.length;
+            dom.mainBgName.textContent = select.options[select.selectedIndex].text;
+            state.backgroundTemplate = select.value;
+            debouncedGenerate();
+        });
+    }
 
     dom.languageSelect.addEventListener('change', (e) => {
         state.language = e.target.value;
