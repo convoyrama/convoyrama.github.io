@@ -69,6 +69,16 @@
     let currentLangData = {};
     let selectedRegion = 'hispano'; // Default region
 
+    // --- Canvas State Variables ---
+    let mapImage = null, circleImageTop = null, circleImageBottom = null, logoImage = null;
+    let watermarkImage = new Image();
+    watermarkImage.src = './assets/images/cr.png';
+    let imageX = 0, imageY = 0, imageScale = 1;
+    let circleImageXTop = 0, circleImageYTop = 0, circleImageScaleTop = 1;
+    let circleImageXBottom = 0, circleImageYBottom = 0, circleImageScaleBottom = 1;
+    let isDragging = false, isDraggingTop = false, isDraggingBottom = false;
+    let startX, startY;
+
     const timezoneRegions = {
         hispano: { zones: [-6, -5, -4.5, -4, -3, 1] },
         lusofono: { zones: [-4, -3, 1, 2] },
