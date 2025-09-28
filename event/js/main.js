@@ -343,9 +343,8 @@
         ctx.beginPath();
         ctx.arc(circleX + circleDiameter / 2, bottomY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
         ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.stroke();
-        ctx.font = `bold 40px Arial`;
-        ctx.fillStyle = textColor;
-        ctx.textAlign = "center";
+        ctx.font = `bold ${textSize}px Arial`; // Use textSize for Partida/Destino
+        ctx.fillStyle = textFill;
         ctx.shadowColor = shadowColor;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
