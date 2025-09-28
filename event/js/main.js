@@ -128,10 +128,9 @@
         return `${d.getDate()} de ${months[d.getMonth()]} de ${d.getFullYear()}`;
     }
     function formatDateForDisplayShort(d) {
-        const day = pad(d.getDate());
-        const month = pad(d.getMonth() + 1);
-        const year = d.getFullYear();
-        return `${day}/${month}/${year}`;
+        const day = d.getDate();
+        const months = currentLangData.months_short || ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+        return `${day} ${months[d.getMonth()]}`;
     }
     function getUnixTimestamp(date) { return Math.floor(date.getTime() / 1000); }
     function showCopyMessage(message = "¡Información copiada al portapapeles!") {
@@ -225,6 +224,7 @@
         ctx.fillStyle = textFill;
         ctx.textAlign = "center";
         const eventName = customEventNameValue;
+        ctx.fillText(eventName, canvas.width / 2, 60);
         let eventDateFormatted = "Fecha no seleccionada"; // Keep this for internal logic, but don't draw here
 
         ctx.font = `bold ${textSize}px Arial`; // Set font for textLines
@@ -251,13 +251,11 @@
             activeTimezoneGroup.forEach(tz => {
                 const localTimeForTz = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
                 const dayString = formatDateForDisplayShort(localTimeForTz);
-                const countryCodes = timezoneCountryCodes[tz.key] || [tz.key.replace('tz_', '').toUpperCase()];
-
+                
                 if (!datesByDay.has(dayString)) {
-                    datesByDay.set(dayString, { codes: [], times: [] });
+                    datesByDay.set(dayString, { times: [] });
                 }
                 const dayEntry = datesByDay.get(dayString);
-                dayEntry.codes.push(...countryCodes);
 
                 const tzLabel = currentLangData[tz.key] || `UTC${tz.offset}`;
                 const reunionTime = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
@@ -265,24 +263,29 @@
                 dayEntry.times.push({ tzLabel, reunionTime: formatTime(reunionTime), partidaTime: formatTime(partidaTime) });
             });
 
+            const monthMap = (currentLangData.months_short || ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]).reduce((acc, month, index) => {
+                acc[month] = index;
+                return acc;
+            }, {});
+
             const sortedDays = Array.from(datesByDay.keys()).sort((a, b) => {
-                const [dayA, monthA, yearA] = a.split('/');
-                const [dayB, monthB, yearB] = b.split('/');
-                return new Date(`${yearA}-${monthA}-${dayA}`) - new Date(`${yearB}-${monthB}-${dayB}`);
+                const [dayA, monthAbbrA] = a.split(' ');
+                const [dayB, monthAbbrB] = b.split(' ');
+                const dateA = new Date(new Date().getFullYear(), monthMap[monthAbbrA], dayA);
+                const dateB = new Date(new Date().getFullYear(), monthMap[monthAbbrB], dayB);
+                return dateA - dateB;
             });
 
             const newTextLines = [];
             newTextLines.push(`${currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'}`);
 
             sortedDays.forEach(dayString => {
+                newTextLines.push(dayString);
                 const dayEntry = datesByDay.get(dayString);
-                const uniqueCodes = [...new Set(dayEntry.codes)].join(', ');
                 
-                const timeStrings = dayEntry.times.map(timeEntry => 
-                    `${timeEntry.tzLabel}: ${timeEntry.reunionTime} / ${timeEntry.partidaTime}`
-                ).join(', ');
-
-                newTextLines.push(`  ${dayString} (${uniqueCodes}): ${timeStrings}`);
+                dayEntry.times.forEach(timeEntry => {
+                    newTextLines.push(`  ${timeEntry.tzLabel}: ${timeEntry.reunionTime} / ${timeEntry.partidaTime}`);
+                });
             });
 
             textLines.splice(4, textLines.length - 4, ...newTextLines);
@@ -355,11 +358,15 @@
 
 
         if (logoImage) {
-            const logoHeight = 100, logoWidth = logoImage.width * (logoHeight / logoImage.height);
+            const logoHeight = 100;
+            const logoWidth = logoImage.width * (logoHeight / logoImage.height);
             ctx.font = `bold ${textSize + 10}px Arial`;
-            const nameWidth = ctx.measureText(eventName).width, dateWidth = ctx.measureText(eventDate).width, maxTitleWidth = Math.max(nameWidth, dateWidth);
-            const titleY = 50, dateY = 50 + (textSize + 15), logoY = (titleY + dateY) / 2 - (logoHeight / 2);
-            const centerX = canvas.width / 2, leftX = centerX - (maxTitleWidth / 2) - logoWidth - 20, rightX = centerX + (maxTitleWidth / 2) + 20;
+            const nameWidth = ctx.measureText(eventName).width;
+            const titleY = 60;
+            const logoY = titleY - (logoHeight / 2) - 10;
+            const centerX = canvas.width / 2;
+            const leftX = centerX - (nameWidth / 2) - logoWidth - 20;
+            const rightX = centerX + (nameWidth / 2) + 20;
             ctx.drawImage(logoImage, leftX, logoY, logoWidth, logoHeight);
             ctx.drawImage(logoImage, rightX, logoY, logoWidth, logoHeight);
         }

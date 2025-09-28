@@ -45,6 +45,7 @@
   "canvas_meeting_time": "Meeting time / Departure time:",
   "canvas_ingame_time": "In-Game Time:",
   "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+  "months_short": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   "region_selector_title": "Timezone Regions",
   "region_hispano": "Hispanic",
   "region_lusofono": "Lusophone",

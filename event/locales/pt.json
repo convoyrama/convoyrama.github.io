@@ -45,6 +45,7 @@
   "canvas_meeting_time": "Hora de encontro / Hora de partida:",
   "canvas_ingame_time": "Hora no Jogo:",
   "months": ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+  "months_short": ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
   "region_selector_title": "Regiões de Fuso Horário",
   "region_hispano": "Hispânico",
   "region_lusofono": "Lusófono",
