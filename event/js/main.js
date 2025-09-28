@@ -515,6 +515,8 @@
     }
 
     function init() {
+        console.log("dom.textBackground", dom.textBackground);
+        console.log("dom.textBackgroundOpacity", dom.textBackgroundOpacity);
         twemoji.parse(document.body);
         // --- Language Emoji Selector Logic ---
         const flags = document.querySelectorAll(".flag-emoji");
