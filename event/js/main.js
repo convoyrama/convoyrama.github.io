@@ -10,6 +10,69 @@
     let isDragging = false, isDraggingTop = false, isDraggingBottom = false, isDraggingDetail = false;
     let startX, startY;
 
+    function handleImageUpload(e, imageType) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                switch (imageType) {
+                    case 'map': mapImage = img; break;
+                    case 'circleTop': circleImageTop = img; break;
+                    case 'circleBottom': circleImageBottom = img; break;
+                    case 'logo': logoImage = img; break;
+                    case 'background': backgroundImage = img; break;
+                    case 'detail': detailImage = img; break;
+                }
+                drawCanvas();
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function downloadCanvas() {
+        const canvas = dom.mapCanvas;
+        const link = document.createElement("a");
+        let date = new Date();
+        const customDateValue = dom.customDate.value;
+        if (customDateValue) {
+            date = new Date(customDateValue);
+        }
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        link.download = `convoy-map-${day}-${month}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    }
+
+    function copyCustomInfo() {
+        const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || "Evento Personalizado";
+        const customEventLinkValue = dom.customEventLink.value || "https://convoyrama.github.io/events.html", customEventDescriptionValue = dom.customEventDescription.value || "Sin descripción";
+        const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
+        if (!customDateValue || !customTimeValue) { 
+            showCopyMessage(currentLangData.error_no_date || "Por favor, selecciona una fecha y hora."); 
+            return; 
+        }
+        const [hh, mm] = customTimeValue.split(":").map(Number);
+        const customDateObj = new Date(customDateValue);
+        customDateObj.setHours(hh, mm, 0, 0);
+
+        const meetingTimestamp = Math.floor(customDateObj.getTime() / 1000);
+        const meetingGameTime = getGameTime(customDateObj);
+        const meetingEmoji = getDetailedDayNightIcon(meetingGameTime.hours);
+
+        const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60 * 1000;
+        const departureDate = new Date(customDateObj.getTime() + departureOffset);
+        const departureTimestamp = Math.floor(departureDate.getTime() / 1000);
+        const departureGameTime = getGameTime(departureDate);
+        const departureEmoji = getDetailedDayNightIcon(departureGameTime.hours);
+
+        let convoyInfo = `[**${formatDateForDisplay(customDateObj)} - ${customEventNameValue}**](${customEventLinkValue})\nServidor: ${customServerValue}\nPartida: ${customStartPlaceValue}\nDestino: ${customDestinationValue}\n\n**Reunión:** <t:${meetingTimestamp}:F> (<t:${meetingTimestamp}:R>) ${meetingEmoji}\n**Salida:** <t:${departureTimestamp}:t> (<t:${departureTimestamp}:R>) ${departureEmoji}\n\nDescripción: ${customEventDescriptionValue}`;
+        navigator.clipboard.writeText(convoyInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyCustomInfo] Error al copiar: ${err.message}`));
+    }
+
     // --- I18n & Region State ---
     let currentLangData = {};
     let selectedRegion = 'hispano'; // Default region
