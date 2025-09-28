@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 </head>
-<body data-i18n-plurals>
+<body>
     <header>
         <nav>
             <a href="index.html" data-i18n="nav_home">Home</a>
@@ -22,152 +22,35 @@
         </nav>
         <p data-i18n="header_title">Crear Evento Personalizado</p>
     </header>
+
     <div class="contenedor">
         <div id="live-clocks">
             <span data-i18n="local_time">Hora Local:</span> <span id="local-time-display">--:--:--</span></span> |
             <span data-i18n="ingame_time">Hora In-Game:</span> <span id="game-time-display">--:--:--</span> <span id="game-time-emoji"></span></span>
         </div>
-
-        <div id="controls-bar">
-            <div id="lang-selector">
-                <span class="flag-emoji" data-lang="es">🇺🇾</span>
-                <span class="flag-emoji" data-lang="en">🇺🇸</span>
-                <span class="flag-emoji" data-lang="pt">🇧🇷</span>
-            </div>
-            <div id="region-selector-container">
-                <label for="region-select" data-i18n="region_selector_title">Regiones Horarias</label>
-                <select id="region-select"></select>
-            </div>
-        </div>
-
-        <div class="custom-event">
-            <h3 data-i18n="event_section_title">Crear Evento Personalizado</h3>
-            <div class="input-row">
-                <label for="custom-date" data-i18n="label_date">Fecha:</label>
-                <input type="date" id="custom-date">
-                <label for="custom-time" data-i18n="label_meeting_time">Hora de reunión:</label>
-                <input type="time" id="custom-time">
-                <label for="departure-time-offset" data-i18n="label_departure_time_offset">Hora de salida:</label>
-                <select id="departure-time-offset">
-                    <option value="10">10 min</option>
-                    <option value="15" selected>15 min</option>
-                    <option value="30">30 min</option>
-                    <option value="45">45 min</option>
-                </select>
-            </div>
-            <div id="custom-date-display"></div>
-            <div class="input-row">
-                <input type="text" id="custom-event-name" data-i18n-placeholder="placeholder_event_name" placeholder="Nombre del evento">
-                <input type="text" id="custom-event-link" data-i18n-placeholder="placeholder_event_link" placeholder="Enlace del evento">
-            </div>
-            <div class="input-row">
-                <input type="text" id="custom-start-place" data-i18n-placeholder="placeholder_start_place" placeholder="Lugar de partida">
-                <input type="text" id="custom-destination" data-i18n-placeholder="placeholder_destination" placeholder="Lugar de destino">
-            </div>
-            <div class="input-row">
-                <input type="text" id="custom-server" data-i18n-placeholder="placeholder_server" placeholder="Servidor">
-            </div>
-            <label for="custom-event-description" data-i18n="label_description">Descripción:</label>
-            <textarea id="custom-event-description" data-i18n-placeholder="placeholder_event_description" placeholder="Descripción del evento" rows="2"></textarea>
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="map-upload" data-i18n="label_map">Mapa:</label>
-                    <input type="file" id="map-upload" accept="image/*">
-                    <div class="zoom-buttons">
-                        <button id="zoom-in">+</button>
-                        <button id="zoom-out">-</button>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="circle-upload-top" data-i18n="label_departure_map">Partida:</label>
-                    <input type="file" id="circle-upload-top" accept="image/*">
-                    <div class="zoom-buttons">
-                        <button id="zoom-in-top">+</button>
-                        <button id="zoom-out-top">-</button>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="circle-upload-bottom" data-i18n="label_destination_map">Destino:</label>
-                    <input type="file" id="circle-upload-bottom" accept="image/*">
-                    <div class="zoom-buttons">
-                        <button id="zoom-in-bottom">+</button>
-                        <button id="zoom-out-bottom">-</button>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="logo-upload" data-i18n="label_vtc_logo">Logo VTC:</label>
-                    <input type="file" id="logo-upload" accept="image/*">
-                    <div class="zoom-buttons" style="display: none;">
-                        <button>+</button>
-                        <button>-</button>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="background-upload" data-i18n="label_background">Fondo:</label>
-                    <input type="file" id="background-upload" accept="image/*">
-                </div>
-                <div class="input-group">
-                    <label for="detail-upload" data-i18n="label_detail">Detalle:</label>
-                    <input type="file" id="detail-upload" accept="image/*">
-                    <div class="zoom-buttons">
-                        <button id="zoom-in-detail">+</button>
-                        <button id="zoom-out-detail">-</button>
-                    </div>
-                </div>
-            </div>
-            <div class="canvas-container">
-                <canvas id="map-canvas"></canvas>
-                <canvas id="circle-canvas-top" class="circle-canvas"></canvas>
-                <canvas id="circle-canvas-bottom" class="circle-canvas"></canvas>
-            </div>
-            <div class="canvas-controls">
-                <button id="download-canvas" data-i18n="btn_download_image">Descargar Imagen</button>
-                <button id="copy-custom-info" data-i18n="btn_copy_discord">Código para Discord</button>
-                <button id="reset-canvas" data-i18n="btn_reset_canvas">Resetear Canvas</button>
-            </div>
-            <div class="text-controls">
-                <div>
-                    <label for="text-size" data-i18n="label_text_size">Tamaño del texto:</label>
-                    <select id="text-size">
-                        <option value="20" data-i18n="size_small">Pequeño (20px)</option>
-                        <option value="30" selected data-i18n="size_medium">Mediano (30px)</option>
-                        <option value="40" data-i18n="size_large">Grande (40px)</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="text-align" data-i18n="label_text_align">Alineación:</label>
-                    <select id="text-align">
-                        <option value="top-left" data-i18n="align_top_left">Arriba a la Izquierda</option>
-                        <option value="bottom-left" data-i18n="align_bottom_left">Abajo a la Izquierda</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="text-style" data-i18n="label_text_style">Estilo:</label>
-                    <select id="text-style">
-                        <option value="white-on-black" selected data-i18n="style_white_black">Blanco con sombra negra</option>
-                        <option value="white-on-green" data-i18n="style_white_green">Blanco con sombra verde</option>
-                        <option value="white-on-blue" data-i18n="style_white_blue">Blanco con sombra azul</option>
-                        <option value="white-on-pink" data-i18n="style_white_pink">Blanco con sombra rosa</option>
-                        <option value="white-on-red" data-i18n="style_white_red">Blanco con sombra roja</option>
-                        <option value="black-on-white" data-i18n="style_black_white">Negro con sombra blanca</option>
-                        <option value="fire" data-i18n="style_fire">Fuego</option>
-                        <option value="ice" data-i18n="style_ice">Hielo</option>
-                        <option value="retro" data-i18n="style_retro">Retro</option>
-                        <option value="womens_day" data-i18n="style_womens_day">Día de la mujer</option>
-                        <option value="gold" data-i18n="style_gold">Dorado</option>
-                        <option value="rainbow" data-i18n="style_rainbow">Arcoíris</option>
-                        <option value="hacker" data-i18n="style_hacker">Hacker</option>
-                        <option value="love" data-i18n="style_love">Amor</option>
-                    </select>
-                </div>
-
-            </div>
-        </div>
-        <div id="copy-message" data-i18n="copy_message_text">¡Información copiada al portapapeles!</div>
     </div>
+
     <footer>
         <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+        <a href="#" class="help-link" id="helpLink">¿Necesitas ayuda?</a>
     </footer>
+
+    <div class="modal" id="diceModal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="cube-container" id="cube-container">
+                <div class="cube" id="cube">
+                    <div class="face front"></div>
+                    <div class="face back"></div>
+                    <div class="face right"></div>
+                    <div class="face left"></div>
+                    <div class="face top"></div>
+                    <div class="face bottom"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="./event/js/main.js"></script>
 </body>
 </html>
