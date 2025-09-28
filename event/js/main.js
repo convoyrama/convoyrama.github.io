@@ -134,6 +134,26 @@
         setTimeout(() => { dom.copyMessage.style.display = "none"; }, 2000);
     }
 
+    function wrapText(ctx, text, maxWidth) {
+        const words = text.split(' ');
+        let line = '';
+        const lines = [];
+
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = ctx.measureText(testLine);
+            const testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+                lines.push(line.trim());
+                line = words[n] + ' ';
+            } else {
+                line = testLine;
+            }
+        }
+        lines.push(line.trim());
+        return lines;
+    }
+
     const timezoneCountryCodes = {
         'tz_mx_gt_hn_cr': ['MX', 'GT', 'HN', 'CR'],
         'tz_pe_ec_co': ['PE', 'EC', 'CO'],
@@ -243,9 +263,11 @@
             sortedDays.forEach(dayString => {
                 const dayEntry = datesByDay.get(dayString);
                 const uniqueCodes = [...new Set(dayEntry.codes)].join(', ');
-                newTextLines.push(`  ${dayString} (${uniqueCodes})`); // Date header for this day
+                const dateHeaderPrefix = `${dayString} (${uniqueCodes})`;
+
                 dayEntry.times.forEach(timeEntry => {
-                    newTextLines.push(`    ${timeEntry.tzLabel}: ${timeEntry.reunionTime} / ${timeEntry.partidaTime}`);
+                    // Combine date header and time entry on the same line
+                    newTextLines.push(`  ${dateHeaderPrefix} ${timeEntry.tzLabel}: ${timeEntry.reunionTime} / ${timeEntry.partidaTime}`);
                 });
             });
 
@@ -269,12 +291,22 @@
             ctx.fillRect(textX - 10, textY - lineHeight + 5, textWidth, textHeight);
         }
         ctx.fillStyle = textColor;
+        const maxTextWidth = canvas.width - textX - 20; // Max width for text lines
+
         textLines.forEach((line, index) => {
             let currentTextX = textX;
-            if (line.startsWith('  ')) { // Check for indentation
+            let currentLineHeight = lineHeight;
+
+            // Apply indentation for lines that start with '  '
+            if (line.startsWith('  ')) {
                 currentTextX += 15; // Indent by 15px
             }
-            ctx.fillText(line, currentTextX, textY + (index * lineHeight));
+
+            const wrappedLines = wrapText(ctx, line, maxTextWidth - (currentTextX - textX)); // Adjust max width for indentation
+
+            wrappedLines.forEach((wrappedLine, wrappedIndex) => {
+                ctx.fillText(wrappedLine, currentTextX, textY + (index * lineHeight) + (wrappedIndex * currentLineHeight));
+            });
         });
 
 
