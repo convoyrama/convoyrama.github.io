@@ -365,10 +365,10 @@
 
         const circleCenterX = circleX + circleDiameter / 2;
         
-        const departureTextY = topY + 40;
+        const departureTextY = topY + circleDiameter + 40;
         ctx.fillText(departureText, circleCenterX, departureTextY);
 
-        const destinationTextY = bottomY + 40;
+        const destinationTextY = bottomY - 20;
         ctx.fillText(destinationText, circleCenterX, destinationTextY);
 
 
