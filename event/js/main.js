@@ -38,6 +38,7 @@
         circleCanvasBottom: document.getElementById("circle-canvas-bottom"),
         downloadCanvas: document.getElementById("download-canvas"),
         copyCustomInfo: document.getElementById("copy-custom-info"),
+        resetCanvas: document.getElementById("reset-canvas"),
         textSize: document.getElementById("text-size"),
         textAlign: document.getElementById("text-align"),
         textStyle: document.getElementById("text-style"),
@@ -261,6 +262,36 @@
                 textFill = womensDayGradient;
                 shadowColor = "rgba(0,0,0,0.8)";
                 break;
+            case "gold":
+                const goldGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+                goldGradient.addColorStop(0, "#FFD700");
+                goldGradient.addColorStop(1, "#B8860B");
+                textFill = goldGradient;
+                shadowColor = "rgba(0,0,0,0.8)";
+                break;
+            case "rainbow":
+                const rainbowGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                rainbowGradient.addColorStop(0, "red");
+                rainbowGradient.addColorStop(0.15, "orange");
+                rainbowGradient.addColorStop(0.3, "yellow");
+                rainbowGradient.addColorStop(0.45, "green");
+                rainbowGradient.addColorStop(0.6, "blue");
+                rainbowGradient.addColorStop(0.75, "indigo");
+                rainbowGradient.addColorStop(0.9, "violet");
+                textFill = rainbowGradient;
+                shadowColor = "rgba(0,0,0,0.8)";
+                break;
+            case "hacker":
+                textFill = "#00FF00"; // Green
+                shadowColor = "rgba(0,0,0,0)"; // No shadow
+                break;
+            case "love":
+                const loveGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+                loveGradient.addColorStop(0, "#FFC0CB");
+                loveGradient.addColorStop(1, "#FF0000");
+                textFill = loveGradient;
+                shadowColor = "rgba(0,0,0,0.8)";
+                break;
         }
 
         const bgColor = "rgba(0,0,0,0.35)";
@@ -467,6 +498,7 @@
     }
 
     function init() {
+        twemoji.parse(document.body);
         // --- Language Emoji Selector Logic ---
         const flags = document.querySelectorAll(".flag-emoji");
         flags.forEach(flag => {
@@ -616,6 +648,24 @@
         dom.customServer.addEventListener("input", drawCanvas);
         dom.customTime.addEventListener("input", drawCanvas);
         dom.departureTimeOffset.addEventListener("change", drawCanvas);
+
+        dom.resetCanvas.addEventListener("click", () => {
+            mapImage = null;
+            circleImageTop = null;
+            circleImageBottom = null;
+            logoImage = null;
+            backgroundImage = null;
+            detailImage = null;
+
+            dom.mapUpload.value = "";
+            dom.circleUploadTop.value = "";
+            dom.circleUploadBottom.value = "";
+            dom.logoUpload.value = "";
+            dom.backgroundUpload.value = "";
+            dom.detailUpload.value = "";
+
+            drawCanvas();
+        });
 
         drawCanvas();
     }
