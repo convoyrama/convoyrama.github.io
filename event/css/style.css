@@ -230,4 +230,37 @@ footer {
     background-color: #555;
     color: #fff;
 }
+
+/* Canvas */
+.canvas-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#map-canvas {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #666;
+}
+
+/* Canvas Controls */
+.canvas-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.canvas-controls button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.canvas-controls button:hover {
+    background-color: #0056b3;
+}
 }
