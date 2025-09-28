@@ -23,12 +23,6 @@
         <p data-i18n="header_title">Crear Evento Personalizado</p>
     </header>
 
-    <div class="contenedor">
-        <div id="live-clocks">
-            <span data-i18n="local_time">Hora Local:</span> <span id="local-time-display">--:--:--</span></span> |
-            <span data-i18n="ingame_time">Hora In-Game:</span> <span id="game-time-display">--:--:--</span> <span id="game-time-emoji"></span></span>
-        </div>
-
         <div id="controls-bar">
             <div id="lang-selector">
                 <span class="flag-emoji" data-lang="es">🇺🇾</span>
@@ -38,6 +32,154 @@
             <div id="region-selector-container">
                 <label for="region-select" data-i18n="region_selector_title">Regiones Horarias</label>
                 <select id="region-select"></select>
+            </div>
+        </div>
+
+        <div class="custom-event">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label for="custom-date" data-i18n="label_date">Fecha:</label>
+                    <input type="date" id="custom-date">
+                </div>
+                <div class="input-group">
+                    <label for="custom-time" data-i18n="label_meeting_time">Hora de reunión:</label>
+                    <input type="time" id="custom-time">
+                </div>
+                <div class="input-group">
+                    <label for="departure-time-offset" data-i18n="label_departure_time_offset">Hora de salida:</label>
+                    <select id="departure-time-offset">
+                        <option value="10">10 min</option>
+                        <option value="15" selected>15 min</option>
+                        <option value="30">30 min</option>
+                        <option value="45">45 min</option>
+                    </select>
+                </div>
+                <div class="input-group span-3">
+                    <label for="custom-event-name" data-i18n-placeholder="placeholder_event_name">Nombre del evento:</label>
+                    <input type="text" id="custom-event-name" placeholder="Nombre del evento">
+                </div>
+                <div class="input-group span-3">
+                    <label for="custom-event-link" data-i18n-placeholder="placeholder_event_link">Enlace del evento:</label>
+                    <input type="text" id="custom-event-link" placeholder="Enlace del evento">
+                </div>
+                <div class="input-group">
+                    <label for="custom-start-place" data-i18n-placeholder="placeholder_start_place">Lugar de partida:</label>
+                    <input type="text" id="custom-start-place" placeholder="Lugar de partida">
+                </div>
+                <div class="input-group">
+                    <label for="custom-destination" data-i18n-placeholder="placeholder_destination">Lugar de destino:</label>
+                    <input type="text" id="custom-destination" placeholder="Lugar de destino">
+                </div>
+                <div class="input-group">
+                    <label for="custom-server" data-i18n-placeholder="placeholder_server">Servidor:</label>
+                    <input type="text" id="custom-server" placeholder="Servidor">
+                </div>
+                <div class="input-group span-3">
+                    <label for="custom-event-description" data-i18n="label_description">Descripción:</label>
+                    <textarea id="custom-event-description" data-i18n-placeholder="placeholder_event_description" placeholder="Descripción del evento" rows="2"></textarea>
+                </div>
+            </div>
+
+            <div class="image-uploads">
+                <div class="input-group">
+                    <label for="map-upload" data-i18n="label_map">Mapa:</label>
+                    <input type="file" id="map-upload" accept="image/*">
+                    <div class="zoom-buttons">
+                        <button id="zoom-in-map">+</button>
+                        <button id="zoom-out-map">-</button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="circle-upload-top" data-i18n="label_departure_map">Partida:</label>
+                    <input type="file" id="circle-upload-top" accept="image/*">
+                    <div class="zoom-buttons">
+                        <button id="zoom-in-top">+</button>
+                        <button id="zoom-out-top">-</button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="circle-upload-bottom" data-i18n="label_destination_map">Destino:</label>
+                    <input type="file" id="circle-upload-bottom" accept="image/*">
+                    <div class="zoom-buttons">
+                        <button id="zoom-in-bottom">+</button>
+                        <button id="zoom-out-bottom">-</button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="logo-upload" data-i18n="label_vtc_logo">Logo VTC:</label>
+                    <input type="file" id="logo-upload" accept="image/*">
+                </div>
+                <div class="input-group">
+                    <label for="background-upload" data-i18n="label_background">Fondo:</label>
+                    <input type="file" id="background-upload" accept="image/*">
+                </div>
+                <div class="input-group">
+                    <label for="detail-upload" data-i18n="label_detail">Detalle:</label>
+                    <input type="file" id="detail-upload" accept="image/*">
+                    <div class="zoom-buttons">
+                        <button id="zoom-in-detail">+</button>
+                        <button id="zoom-out-detail">-</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="map-canvas"></canvas>
+            </div>
+
+            <div class="canvas-controls">
+                <button id="download-canvas" data-i18n="btn_download_image">Descargar Imagen</button>
+                <button id="copy-custom-info" data-i18n="btn_copy_discord">Código para Discord</button>
+                <button id="reset-canvas" data-i18n="btn_reset_canvas">Resetear Canvas</button>
+            </div>
+
+            <div class="text-controls">
+                <div class="input-group">
+                    <label for="text-size" data-i18n="label_text_size">Tamaño del texto:</label>
+                    <select id="text-size">
+                        <option value="20">Pequeño</option>
+                        <option value="30" selected>Mediano</option>
+                        <option value="40">Grande</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="text-align" data-i18n="label_text_align">Alineación:</label>
+                    <select id="text-align">
+                        <option value="top-left">Arriba a la Izquierda</option>
+                        <option value="bottom-left">Abajo a la Izquierda</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="text-style" data-i18n="label_text_style">Estilo:</label>
+                    <select id="text-style">
+                        <option value="classic" selected data-i18n="style_classic">Clásico</option>
+                        <option value="convoy" data-i18n="style_convoy">Convoy</option>
+                        <option value="neon_blue" data-i18n="style_neon_blue">Azul Neón</option>
+                        <option value="neon_pink" data-i18n="style_neon_pink">Rosa Neón</option>
+                        <option value="neon_red" data-i18n="style_neon_red">Rojo Neón</option>
+                        <option value="inverse" data-i18n="style_inverse">Inverso</option>
+                        <option value="fire" data-i18n="style_fire">Fuego</option>
+                        <option value="ice" data-i18n="style_ice">Hielo</option>
+                        <option value="retro" data-i18n="style_retro">Retro</option>
+                        <option value="womens_day" data-i18n="style_womens_day">Día de la mujer</option>
+                        <option value="gold" data-i18n="style_gold">Dorado</option>
+                        <option value="rainbow" data-i18n="style_rainbow">Arcoíris</option>
+                        <option value="hacker" data-i18n="style_hacker">Hacker</option>
+                        <option value="love" data-i18n="style_love">Amor</option>
+                        <option value="toxic" data-i18n="style_toxic">Tóxico</option>
+                        <option value="cyberpunk" data-i18n="style_cyberpunk">Cyberpunk</option>
+                        <option value="vaporwave" data-i18n="style_vaporwave">Vaporwave</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="text-background-opacity" data-i18n="label_background_opacity">Opacidad del fondo:</label>
+                    <select id="text-background-opacity">
+                        <option value="0.15">15%</option>
+                        <option value="0.30">30%</option>
+                        <option value="0.50" selected>50%</option>
+                        <option value="0.70">70%</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
