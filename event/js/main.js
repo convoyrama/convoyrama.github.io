@@ -219,7 +219,17 @@
         ctx.fillStyle = textFill;
         ctx.textAlign = "center";
         const eventName = customEventNameValue;
-        let eventDateFormatted = "Fecha no seleccionada";
+        let eventDateFormatted = "Fecha no seleccionada"; // Keep this for internal logic, but don't draw here
+
+        ctx.font = `bold ${textSize}px Arial`; // Set font for textLines
+        ctx.textAlign = "left";
+        const textLines = [
+            `${currentLangData.canvas_server || 'Servidor:'} ${customServerValue}`,
+            `${currentLangData.canvas_departure || 'Partida:'} ${customStartPlaceValue}`,
+            `${currentLangData.canvas_destination || 'Destino:'} ${customDestinationValue}`,
+            "",
+            currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'
+        ];
 
         if (customDateValue && customTimeValue) {
             const [hh, mm] = customTimeValue.split(":").map(Number);
