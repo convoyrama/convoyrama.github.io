@@ -59,3 +59,9 @@ input[type="file"] { color: transparent; }
     #map-upload, #circle-upload-top, #circle-upload-bottom, #logo-upload { width: 60px; }
     #custom-date-display { font-size: .8em; }
 }
+
+.input-row .input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
