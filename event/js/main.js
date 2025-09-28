@@ -191,7 +191,7 @@
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         ctx.shadowBlur = 10;
-        ctx.font = `bold ${textSize + 10}px Arial`;
+        ctx.font = `bold ${textSize + 10}px Arial`; // Font for eventName
         let textFill = textColor;
         if (textBackground === "with-background" && mapImage) {
             textFill = ctx.createPattern(mapImage, 'repeat');
@@ -236,6 +236,8 @@
         }
 
         const maxDateWidth = canvas.width - 100; // 50px padding on each side
+        // Temporarily set font for date to measure its width
+        ctx.font = `bold ${textSize}px Arial`; // Smaller font for date
         const dateTextWidth = ctx.measureText(eventDateFormatted).width;
 
         if (dateTextWidth > maxDateWidth && eventDateFormatted.includes(' & ')) {
@@ -243,11 +245,15 @@
             const firstLine = parts[0].trim();
             const secondLine = '& ' + parts[1].trim(); // Keep '&' on the second line
 
+            ctx.font = `bold ${textSize + 10}px Arial`; // Reset font for eventName
             ctx.fillText(eventName, canvas.width / 2, 40); // Move eventName up
+            ctx.font = `bold ${textSize}px Arial`; // Set font for date lines
             ctx.fillText(firstLine, canvas.width / 2, 40 + (textSize + 15));
             ctx.fillText(secondLine, canvas.width / 2, 40 + 2 * (textSize + 15));
         } else {
+            ctx.font = `bold ${textSize + 10}px Arial`; // Reset font for eventName
             ctx.fillText(eventName, canvas.width / 2, 50);
+            ctx.font = `bold ${textSize}px Arial`; // Set font for date
             ctx.fillText(eventDateFormatted, canvas.width / 2, 50 + (textSize + 15));
         }
 
