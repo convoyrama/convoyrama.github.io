@@ -42,7 +42,7 @@
         textSize: document.getElementById("text-size"),
         textAlign: document.getElementById("text-align"),
         textStyle: document.getElementById("text-style"),
-        textBackground: document.getElementById("text-background"),
+        textBackgroundOpacity: document.getElementById("text-background-opacity"),
         copyMessage: document.getElementById("copy-message"),
         zoomIn: document.getElementById("zoom-in"),
         zoomOut: document.getElementById("zoom-out"),
@@ -192,7 +192,7 @@
     function drawCanvas() {
         const canvas = dom.mapCanvas;
         const ctx = canvas.getContext("2d");
-        const textAlign = dom.textAlign.value, textSize = parseInt(dom.textSize.value), textStyle = dom.textStyle.value, textBackground = dom.textBackground.value;
+        const textAlign = dom.textAlign.value, textSize = parseInt(dom.textSize.value), textStyle = dom.textStyle.value, textBackgroundOpacity = dom.textBackgroundOpacity.value;
         const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || (currentLangData.canvas_default_event_name || "Evento Personalizado");
         const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
 
@@ -221,19 +221,19 @@
         let shadowColor = "rgba(0,0,0,0.8)";
 
         switch (textStyle) {
-            case "white-on-green":
+            case "convoy":
                 shadowColor = "rgb(90,165,25)";
                 break;
-            case "white-on-blue":
+            case "neon_blue":
                 shadowColor = "#00FFFF";
                 break;
-            case "white-on-pink":
+            case "neon_pink":
                 shadowColor = "#FF00FF";
                 break;
-            case "white-on-red":
+            case "neon_red":
                 shadowColor = "#FF0000";
                 break;
-            case "black-on-white":
+            case "inverse":
                 textFill = "rgb(0,0,0)";
                 shadowColor = "rgb(240,240,240)";
                 break;
@@ -292,26 +292,39 @@
                 textFill = loveGradient;
                 shadowColor = "rgba(0,0,0,0.8)";
                 break;
+            case "toxic":
+                textFill = "#7CFC00"; // LawnGreen
+                shadowColor = "#006400"; // DarkGreen
+                break;
+            case "cyberpunk":
+                textFill = "#FFFF00"; // Yellow
+                shadowColor = "#FF00FF"; // Magenta
+                break;
+            case "vaporwave":
+                textFill = "#FF69B4"; // HotPink
+                shadowColor = "#00FFFF"; // Cyan
+                break;
         }
 
-        const bgColor = "rgba(0,0,0,0.35)";
+        const bgColor = `rgba(20, 20, 20, ${textBackgroundOpacity})`;
         ctx.shadowColor = shadowColor;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         ctx.shadowBlur = 10;
         
-        // 4. Draw event name
+        // --- Draw Title ---
         ctx.font = `bold ${textSize + 10}px Arial`;
-        if (textBackground === "with-background" && mapImage) {
-            ctx.fillStyle = ctx.createPattern(mapImage, 'repeat');
-        } else {
-            ctx.fillStyle = textFill;
-        }
         ctx.textAlign = "center";
         const eventName = customEventNameValue;
+        const eventNameMetrics = ctx.measureText(eventName);
+        const eventNameWidth = eventNameMetrics.width;
+        const eventNameHeight = eventNameMetrics.actualBoundingBoxAscent + eventNameMetrics.actualBoundingBoxDescent;
+        ctx.fillStyle = bgColor;
+        ctx.fillRect((canvas.width - eventNameWidth) / 2 - 10, 60 - eventNameMetrics.actualBoundingBoxAscent - 10, eventNameWidth + 20, eventNameHeight + 20);
+        ctx.fillStyle = textFill;
         ctx.fillText(eventName, canvas.width / 2, 60);
 
-        // 5. Draw logo image
+        // --- Draw Logo ---
         let topOffset = 100;
         if (logoImage) {
             const logoHeight = 100;
@@ -322,7 +335,7 @@
             topOffset += logoHeight;
         }
 
-        // 6. Calculate textLines
+        // --- Draw Text Lines ---
         ctx.font = `bold ${textSize}px Arial`;
         ctx.textAlign = "left";
         const textLines = [
@@ -392,7 +405,6 @@
             textLines.push(`  N/A`);
         }
 
-        // 7. Calculate textY
         const textX = 20, lineHeight = textSize + 15;
         let textY;
         if (textAlign === "top-left") {
@@ -401,19 +413,12 @@
             textY = canvas.height - (textLines.length * lineHeight) - 20;
         }
 
-        // 8. Draw textLines
-        if (textBackground === "with-background") {
-            const textWidth = Math.max(...textLines.map(line => ctx.measureText(line).width)) + 20;
-            const textHeight = textLines.length * lineHeight + 10;
-            ctx.fillStyle = bgColor;
-            ctx.fillRect(textX - 10, textY - lineHeight + 5, textWidth, textHeight);
-        }
+        const textWidth = Math.max(...textLines.map(line => ctx.measureText(line).width)) + 20;
+        const textHeight = textLines.length * lineHeight + 10;
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(textX - 10, textY - lineHeight + 5, textWidth, textHeight);
         
-        if (textBackground === "with-background" && mapImage) {
-            ctx.fillStyle = ctx.createPattern(mapImage, 'repeat');
-        } else {
-            ctx.fillStyle = textFill;
-        }
+        ctx.fillStyle = textFill;
         const maxTextWidth = canvas.width - textX - 20;
 
         textLines.forEach((line, index) => {
@@ -431,7 +436,7 @@
             });
         });
 
-        // 9. Draw circle canvases
+        // --- Draw Circle Canvases ---
         const circleDiameter = 360;
         const circleX = canvas.width - circleDiameter - 10;
         const topY = 10;
@@ -464,7 +469,6 @@
         ctx.drawImage(circleCanvasTop, circleX, topY, circleDiameter, circleDiameter);
         ctx.drawImage(circleCanvasBottom, circleX, bottomY, circleDiameter, circleDiameter);
         
-        // 10. Draw circle borders and labels
         ctx.beginPath();
         ctx.arc(circleX + circleDiameter / 2, topY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
         ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.stroke();
@@ -472,26 +476,30 @@
         ctx.arc(circleX + circleDiameter / 2, bottomY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
         ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.stroke();
 
+        // --- Draw Circle Labels ---
         ctx.font = `bold ${textSize + 10}px Arial`;
         ctx.textAlign = "center";
-        if (textBackground === "with-background" && mapImage) {
-            ctx.fillStyle = ctx.createPattern(mapImage, 'repeat');
-        } else {
-            ctx.fillStyle = textFill;
-        }
-
         const departureText = currentLangData.canvas_label_departure || "Partida";
         const destinationText = currentLangData.canvas_label_destination || "Destino";
-
         const circleCenterX = circleX + circleDiameter / 2;
         
-        const departureTextY = topY + circleDiameter + 40;
-        ctx.fillText(departureText, circleCenterX, departureTextY);
+        const departureTextMetrics = ctx.measureText(departureText);
+        const departureTextWidth = departureTextMetrics.width;
+        const departureTextHeight = departureTextMetrics.actualBoundingBoxAscent + departureTextMetrics.actualBoundingBoxDescent;
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(circleCenterX - departureTextWidth / 2 - 10, topY + circleDiameter + 40 - departureTextMetrics.actualBoundingBoxAscent - 10, departureTextWidth + 20, departureTextHeight + 20);
+        ctx.fillStyle = textFill;
+        ctx.fillText(departureText, circleCenterX, topY + circleDiameter + 40);
 
-        const destinationTextY = bottomY - 20;
-        ctx.fillText(destinationText, circleCenterX, destinationTextY);
+        const destinationTextMetrics = ctx.measureText(destinationText);
+        const destinationTextWidth = destinationTextMetrics.width;
+        const destinationTextHeight = destinationTextMetrics.actualBoundingBoxAscent + destinationTextMetrics.actualBoundingBoxDescent;
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(circleCenterX - destinationTextWidth / 2 - 10, bottomY - 20 - destinationTextMetrics.actualBoundingBoxAscent - 10, destinationTextWidth + 20, destinationTextHeight + 20);
+        ctx.fillStyle = textFill;
+        ctx.fillText(destinationText, circleCenterX, bottomY - 20);
 
-        // 11. Draw detail image
+        // --- Draw Detail Image ---
         if (detailImage) {
             ctx.drawImage(detailImage, detailImageX, detailImageY, detailImage.width * detailImageScale, detailImage.height * detailImageScale);
         }
@@ -634,9 +642,13 @@
         dom.downloadCanvas.addEventListener("click", () => {
             const canvas = dom.mapCanvas;
             const link = document.createElement("a");
-            const today = new Date();
-            const day = String(today.getDate()).padStart(2, '0');
-            const month = String(today.getMonth() + 1).padStart(2, '0');
+            let date = new Date();
+            const customDateValue = dom.customDate.value;
+            if (customDateValue) {
+                date = new Date(customDateValue);
+            }
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
             link.download = `convoy-map-${day}-${month}.png`;
             link.href = canvas.toDataURL("image/png");
             link.click();
