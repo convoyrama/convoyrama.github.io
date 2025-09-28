@@ -293,11 +293,7 @@
         ctx.fillStyle = textColor;
         textLines.forEach((line, index) => ctx.fillText(line, textX, textY + (index * lineHeight)));
 
-        const circleCanvasTop = dom.circleCanvasTop, circleCanvasBottom = dom.circleCanvasBottom;
-        const circleCtxTop = circleCanvasTop.getContext("2d"), circleCtxBottom = circleCanvasBottom.getContext("2d");
-        const circleDiameter = 360;
-        circleCanvasTop.width = circleDiameter; circleCanvasTop.height = circleDiameter;
-        circleCanvasBottom.width = circleDiameter; circleCanvasBottom.height = circleDiameter;
+
 
         circleCtxTop.clearRect(0, 0, circleDiameter, circleDiameter);
         if (circleImageTop) {
