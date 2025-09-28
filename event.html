@@ -46,6 +46,13 @@
                 <input type="date" id="custom-date">
                 <label for="custom-time" data-i18n="label_meeting_time">Hora de reunión:</label>
                 <input type="time" id="custom-time">
+                <label for="departure-time-offset" data-i18n="label_departure_time_offset">Hora de salida:</label>
+                <select id="departure-time-offset">
+                    <option value="10">10 min</option>
+                    <option value="15" selected>15 min</option>
+                    <option value="30">30 min</option>
+                    <option value="45">45 min</option>
+                </select>
             </div>
             <div id="custom-date-display"></div>
             <div class="input-row">
@@ -125,6 +132,10 @@
                     <select id="text-style">
                         <option value="white-on-black" selected data-i18n="style_white_black">Blanco con sombra negra</option>
                         <option value="white-on-green" data-i18n="style_white_green">Blanco con sombra verde</option>
+                        <option value="white-on-blue" data-i18n="style_white_blue">Blanco con sombra azul</option>
+                        <option value="white-on-pink" data-i18n="style_white_pink">Blanco con sombra rosa</option>
+                        <option value="white-on-red" data-i18n="style_white_red">Blanco con sombra roja</option>
+                        <option value="black-on-white" data-i18n="style_black_white">Negro con sombra blanca</option>
                     </select>
                 </div>
                 <div>

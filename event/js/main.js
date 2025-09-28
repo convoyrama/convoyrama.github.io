@@ -19,6 +19,7 @@
         gameTimeEmoji: document.getElementById('game-time-emoji'),
         customDate: document.getElementById("custom-date"),
         customTime: document.getElementById("custom-time"),
+        departureTimeOffset: document.getElementById("departure-time-offset"),
         customDateDisplay: document.getElementById("custom-date-display"),
         customEventName: document.getElementById("custom-event-name"),
         customEventLink: document.getElementById("custom-event-link"),
@@ -211,7 +212,29 @@
             ctx.globalAlpha = 1.0;
         }
 
-        const textColor = "rgb(240,240,240)", shadowColor = textStyle === "white-on-black" ? "rgba(0,0,0,0.8)" : "rgb(90,165,25)", bgColor = "rgba(0,0,0,0.35)";
+        let textColor = "rgb(240,240,240)";
+        let shadowColor = "rgba(0,0,0,0.8)";
+
+        switch (textStyle) {
+            case "white-on-green":
+                shadowColor = "rgb(90,165,25)";
+                break;
+            case "white-on-blue":
+                shadowColor = "#00FFFF";
+                break;
+            case "white-on-pink":
+                shadowColor = "#FF00FF";
+                break;
+            case "white-on-red":
+                shadowColor = "#FF0000";
+                break;
+            case "black-on-white":
+                textColor = "rgb(0,0,0)";
+                shadowColor = "rgb(240,240,240)";
+                break;
+        }
+
+        const bgColor = "rgba(0,0,0,0.35)";
         ctx.shadowColor = shadowColor;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
@@ -259,7 +282,8 @@
 
                 const tzLabel = currentLangData[tz.key] || (timezoneCountryCodes[tz.key] || [tz.key.replace('tz_', '').toUpperCase()]).join(', ');
                 const reunionTime = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
-                const partidaTime = new Date(reunionTime.getTime() + 15 * 60000);
+                const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60000;
+                const partidaTime = new Date(reunionTime.getTime() + departureOffset);
                 dayEntry.times.push({ tzLabel, reunionTime: formatTime(reunionTime), partidaTime: formatTime(partidaTime) });
             });
 
@@ -445,7 +469,8 @@
             const meetingGameTime = getGameTime(customDateObj);
             const meetingEmoji = getDetailedDayNightIcon(meetingGameTime.hours);
 
-            const departureDate = new Date(customDateObj.getTime() + 15 * 60 * 1000);
+            const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60 * 1000;
+            const departureDate = new Date(customDateObj.getTime() + departureOffset);
             const departureTimestamp = Math.floor(departureDate.getTime() / 1000);
             const departureGameTime = getGameTime(departureDate);
             const departureEmoji = getDetailedDayNightIcon(departureGameTime.hours);
@@ -502,6 +527,7 @@
         dom.customDestination.addEventListener("input", drawCanvas);
         dom.customServer.addEventListener("input", drawCanvas);
         dom.customTime.addEventListener("input", drawCanvas);
+        dom.departureTimeOffset.addEventListener("change", drawCanvas);
 
         drawCanvas();
     }
