@@ -169,6 +169,16 @@
         ctx.fillStyle = "#333";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+        const circleDiameter = 360;
+        const circleX = canvas.width - circleDiameter - 10;
+        const topY = 10;
+        const bottomY = canvas.height - circleDiameter - 10;
+
+        const circleCanvasTop = dom.circleCanvasTop, circleCanvasBottom = dom.circleCanvasBottom;
+        const circleCtxTop = circleCanvasTop.getContext("2d"), circleCtxBottom = circleCanvasBottom.getContext("2d");
+        circleCanvasTop.width = circleDiameter; circleCanvasTop.height = circleDiameter;
+        circleCanvasBottom.width = circleDiameter; circleCanvasBottom.height = circleDiameter;
+
         if (mapImage) ctx.drawImage(mapImage, imageX, imageY, mapImage.width * imageScale, mapImage.height * imageScale);
         if (watermarkImage.complete && watermarkImage.naturalWidth !== 0) {
             ctx.globalAlpha = 0.1;
