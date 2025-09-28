@@ -130,7 +130,9 @@
     function init() {
         twemoji.parse(document.body);
 
-        // --- Language Emoji Selector Logic ---
+        // --- Event Listeners ---
+
+        // Controls Bar
         dom.langSelector.addEventListener("click", (e) => {
             if (e.target.classList.contains("flag-emoji")) {
                 const lang = e.target.dataset.lang;
@@ -140,14 +142,6 @@
             }
         });
 
-        // --- Region Select Dropdown Logic ---
-        for (const regionKey in timezoneRegions) {
-            const option = document.createElement('option');
-            option.value = regionKey;
-            option.setAttribute('data-i18n', timezoneRegions[regionKey].name);
-            option.textContent = regionKey; // Fallback text
-            dom.regionSelect.appendChild(option);
-        }
         dom.regionSelect.addEventListener('change', (e) => {
             selectedRegion = e.target.value;
             drawCanvas();
@@ -164,11 +158,42 @@
             input.addEventListener('input', drawCanvas);
         });
 
+        // Image Uploads
+        dom.mapUpload.addEventListener("change", (e) => { handleImageUpload(e, 'map'); });
+        dom.circleUploadTop.addEventListener("change", (e) => { handleImageUpload(e, 'circleTop'); });
+        dom.circleUploadBottom.addEventListener("change", (e) => { handleImageUpload(e, 'circleBottom'); });
+        dom.logoUpload.addEventListener("change", (e) => { handleImageUpload(e, 'logo'); });
+        dom.backgroundUpload.addEventListener("change", (e) => { handleImageUpload(e, 'background'); });
+        dom.detailUpload.addEventListener("change", (e) => { handleImageUpload(e, 'detail'); });
+
+        // Zoom Buttons
+        document.getElementById("zoom-in-map").addEventListener("click", () => { if (mapImage) { imageScale *= 1.2; drawCanvas(); } });
+        document.getElementById("zoom-out-map").addEventListener("click", () => { if (mapImage) { imageScale /= 1.2; drawCanvas(); } });
+        document.getElementById("zoom-in-top").addEventListener("click", () => { if (circleImageTop) { circleImageScaleTop *= 1.2; drawCanvas(); } });
+        document.getElementById("zoom-out-top").addEventListener("click", () => { if (circleImageTop) { circleImageScaleTop /= 1.2; drawCanvas(); } });
+        document.getElementById("zoom-in-bottom").addEventListener("click", () => { if (circleImageBottom) { circleImageScaleBottom *= 1.2; drawCanvas(); } });
+        document.getElementById("zoom-out-bottom").addEventListener("click", () => { if (circleImageBottom) { circleImageScaleBottom /= 1.2; drawCanvas(); } });
+        document.getElementById("zoom-in-detail").addEventListener("click", () => { if (detailImage) { detailImageScale *= 1.2; drawCanvas(); } });
+        document.getElementById("zoom-out-detail").addEventListener("click", () => { if (detailImage) { detailImageScale /= 1.2; drawCanvas(); } });
+
+        // Canvas Controls
+        dom.downloadCanvas.addEventListener("click", downloadCanvas);
+        dom.copyCustomInfo.addEventListener("click", copyCustomInfo);
+        dom.resetCanvas.addEventListener("click", resetCanvas);
+
+        // Modal
+        dom.helpLink.addEventListener('click', (e) => { e.preventDefault(); dom.diceModal.style.display = 'flex'; });
+        dom.closeButton.addEventListener('click', () => { dom.diceModal.style.display = 'none'; });
+        dom.diceModal.addEventListener('click', (e) => { if (e.target === dom.diceModal) dom.diceModal.style.display = 'none'; });
+
+        // Initial Load
+        loadLanguage('es');
         updateLiveClocks();
         setInterval(updateLiveClocks, 1000);
-
-        loadLanguage('es'); // Initial load
+        drawCanvas(); // Initial draw
     }
+
+    window.onload = init;
 
     async function fetchLanguage(lang) {
         const response = await fetch(`./event/locales/${lang}.json`);
