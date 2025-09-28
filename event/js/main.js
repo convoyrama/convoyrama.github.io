@@ -206,100 +206,57 @@
             const customDateObj = new Date(customDateValue);
             customDateObj.setHours(hh, mm, 0, 0);
 
-            // Assuming user's local offset is -3 for UTC conversion as per example
             const userOffsetHours = -3;
             const utcBaseTime = new Date(customDateObj.getTime() - userOffsetHours * 3600000);
 
             const activeTimezoneGroup = timezoneRegions[selectedRegion].zones;
-            const datesByDay = new Map(); // Map<dayString, countryCodes[]>
+            const datesByDay = new Map(); // Map<dayString, {codes: string[], times: {tzLabel: string, reunionTime: string, partidaTime: string}[]}>
 
             activeTimezoneGroup.forEach(tz => {
                 const localTimeForTz = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
                 const dayString = formatDateForDisplay(localTimeForTz);
-                const countryCodes = timezoneCountryCodes[tz.key] || [tz.key.replace('tz_', '').toUpperCase()]; // Fallback if not in map
+                const countryCodes = timezoneCountryCodes[tz.key] || [tz.key.replace('tz_', '').toUpperCase()];
 
                 if (!datesByDay.has(dayString)) {
-                    datesByDay.set(dayString, []);
+                    datesByDay.set(dayString, { codes: [], times: [] });
                 }
-                datesByDay.get(dayString).push(...countryCodes);
+                const dayEntry = datesByDay.get(dayString);
+                dayEntry.codes.push(...countryCodes);
+
+                const tzLabel = currentLangData[tz.key] || `UTC${tz.offset}`;
+                const reunionTime = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
+                const partidaTime = new Date(reunionTime.getTime() + 15 * 60000);
+                dayEntry.times.push({ tzLabel, reunionTime: formatTime(reunionTime), partidaTime: formatTime(partidaTime) });
             });
 
-            if (datesByDay.size > 1) {
-                const parts = [];
-                datesByDay.forEach((codes, day) => {
-                    parts.push(`${day} (${[...new Set(codes)].join(', ')})`);
+            // Sort days to ensure consistent order (e.g., earlier day first)
+            const sortedDays = Array.from(datesByDay.keys()).sort((a, b) => {
+                const dateA = new Date(a.replace(/de /g, '')); // Simple parsing, might need refinement
+                const dateB = new Date(b.replace(/de /g, ''));
+                return dateA.getTime() - dateB.getTime();
+            });
+
+            // Build the new textLines array for the time section
+            const newTextLines = [];
+            newTextLines.push(`${currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'}`); // Header
+
+            sortedDays.forEach(dayString => {
+                const dayEntry = datesByDay.get(dayString);
+                const uniqueCodes = [...new Set(dayEntry.codes)].join(', ');
+                newTextLines.push(`  ${dayString} (${uniqueCodes})`); // Date header for this day
+                dayEntry.times.forEach(timeEntry => {
+                    newTextLines.push(`    ${timeEntry.tzLabel}: ${timeEntry.reunionTime} / ${timeEntry.partidaTime}`);
                 });
-                eventDateFormatted = parts.join(' & ');
-            } else {
-                eventDateFormatted = formatDateForDisplay(new Date(customDateValue));
-            }
-        }
+            });
 
-        const maxDateWidth = canvas.width - 100; // 50px padding on each side
-        // Temporarily set font for date to measure its width
-        ctx.font = `bold ${textSize}px Arial`; // Smaller font for date
-        const dateTextWidth = ctx.measureText(eventDateFormatted).width;
-
-        // Always split if it's a multi-day format (contains ' & ')
-        if (eventDateFormatted.includes(' & ')) {
-            const parts = eventDateFormatted.split(' & ');
-            const firstLine = parts[0].trim();
-            const secondLine = '& ' + parts[1].trim(); // Keep '&' on the second line
-
-            ctx.font = `bold ${textSize + 10}px Arial`; // Reset font for eventName
-            ctx.fillText(eventName, canvas.width / 2, 40); // Move eventName up
-            ctx.font = `bold ${textSize}px Arial`; // Set font for date lines
-            ctx.fillText(firstLine, canvas.width / 2, 40 + (textSize + 15));
-            ctx.fillText(secondLine, canvas.width / 2, 40 + 2 * (textSize + 15));
+            // Replace the original textLines with the new structured ones
+            textLines.splice(4, textLines.length - 4, ...newTextLines); // Assuming original textLines has 4 fixed lines before times
         } else {
-            ctx.font = `bold ${textSize + 10}px Arial`; // Reset font for eventName
-            ctx.fillText(eventName, canvas.width / 2, 50);
-            ctx.font = `bold ${textSize}px Arial`; // Set font for date
-            ctx.fillText(eventDateFormatted, canvas.width / 2, 50 + (textSize + 15));
+            // If no date/time selected, clear dynamic time lines
+            textLines.splice(4, textLines.length - 4);
+            textLines.push(`${currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'}`);
+            textLines.push(`  N/A`);
         }
-
-        // Apply textFill for 'Partida' and 'Destino' as well
-        ctx.font = `bold ${textSize}px Arial`; // Use textSize for Partida/Destino
-        ctx.fillStyle = textFill;
-        ctx.shadowColor = shadowColor;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-        ctx.shadowBlur = 10;
-        ctx.fillText(currentLangData.canvas_label_departure || "Partida", circleX + circleDiameter / 2, topY + circleDiameter + 50);
-        ctx.fillText(currentLangData.canvas_label_destination || "Destino", circleX + circleDiameter / 2, bottomY - 20);
-        ctx.shadowBlur = 10;
-
-        ctx.font = `bold ${textSize}px Arial`;
-        ctx.textAlign = "left";
-        const textLines = [
-            `${currentLangData.canvas_server || 'Servidor:'} ${customServerValue}`,
-            `${currentLangData.canvas_departure || 'Partida:'} ${customStartPlaceValue}`,
-            `${currentLangData.canvas_destination || 'Destino:'} ${customDestinationValue}`,
-            "",
-            currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'
-        ];
-        let localStart = null;
-        if (customDateValue && customTimeValue) {
-            const [hh, mm] = customTimeValue.split(":").map(Number);
-            const customDateObj = new Date(customDateValue);
-            customDateObj.setHours(hh, mm, 0, 0);
-            const userOffset = -3;
-            const utcBase = new Date(customDateObj.getTime() - userOffset * 3600000);
-            localStart = new Date(utcBase.getTime() + userOffset * 3600000);
-        }
-
-        const activeTimezoneGroup = timezoneRegions[selectedRegion].zones;
-        activeTimezoneGroup.forEach(tz => {
-            const tzLabel = currentLangData[tz.key] || `UTC${tz.offset}`;
-            if (localStart) {
-                const userOffset = -3;
-                const reunionTime = new Date(localStart.getTime() - (userOffset - tz.offset) * 3600000);
-                const partidaTime = new Date(reunionTime.getTime() + 15 * 60000);
-                textLines.push(`${tzLabel}: ${formatTime(reunionTime)} / ${formatTime(partidaTime)}`);
-            } else {
-                textLines.push(`${tzLabel}: N/A`);
-            }
-        });
 
 
 
@@ -312,7 +269,13 @@
             ctx.fillRect(textX - 10, textY - lineHeight + 5, textWidth, textHeight);
         }
         ctx.fillStyle = textColor;
-        textLines.forEach((line, index) => ctx.fillText(line, textX, textY + (index * lineHeight)));
+        textLines.forEach((line, index) => {
+            let currentTextX = textX;
+            if (line.startsWith('  ')) { // Check for indentation
+                currentTextX += 15; // Indent by 15px
+            }
+            ctx.fillText(line, currentTextX, textY + (index * lineHeight));
+        });
 
 
 
