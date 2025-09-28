@@ -73,127 +73,34 @@
         navigator.clipboard.writeText(convoyInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyCustomInfo] Error al copiar: ${err.message}`));
     }
 
-    // --- I18n & Region State ---
-    let currentLangData = {};
-    let selectedRegion = 'hispano'; // Default region
+    function resetCanvas() {
+        mapImage = null;
+        circleImageTop = null;
+        circleImageBottom = null;
+        logoImage = null;
+        backgroundImage = null;
+        detailImage = null;
 
-    const dom = {
-        localTimeDisplay: document.getElementById('local-time-display'),
-        gameTimeDisplay: document.getElementById('game-time-display'),
-        gameTimeEmoji: document.getElementById('game-time-emoji'),
-        customDate: document.getElementById("custom-date"),
-        customTime: document.getElementById("custom-time"),
-        departureTimeOffset: document.getElementById("departure-time-offset"),
-        customEventName: document.getElementById("custom-event-name"),
-        customEventLink: document.getElementById("custom-event-link"),
-        customStartPlace: document.getElementById("custom-start-place"),
-        customDestination: document.getElementById("custom-destination"),
-        customServer: document.getElementById("custom-server"),
-        customEventDescription: document.getElementById("custom-event-description"),
-        mapUpload: document.getElementById("map-upload"),
-        circleUploadTop: document.getElementById("circle-upload-top"),
-        circleUploadBottom: document.getElementById("circle-upload-bottom"),
-        logoUpload: document.getElementById("logo-upload"),
-        backgroundUpload: document.getElementById("background-upload"),
-        detailUpload: document.getElementById("detail-upload"),
-        mapCanvas: document.getElementById("map-canvas"),
-        downloadCanvas: document.getElementById("download-canvas"),
-        copyCustomInfo: document.getElementById("copy-custom-info"),
-        resetCanvas: document.getElementById("reset-canvas"),
-        textSize: document.getElementById("text-size"),
-        textAlign: document.getElementById("text-align"),
-        textStyle: document.getElementById("text-style"),
-        langSelector: document.getElementById("lang-selector"),
-        regionSelect: document.getElementById("region-select"),
-        helpLink: document.getElementById("helpLink"),
-        diceModal: document.getElementById("diceModal"),
-        closeButton: document.querySelector(".close-button"),
-        cube: document.getElementById("cube"),
-    };
+        dom.mapUpload.value = "";
+        dom.circleUploadTop.value = "";
+        dom.circleUploadBottom.value = "";
+        dom.logoUpload.value = "";
+        dom.backgroundUpload.value = "";
+        dom.detailUpload.value = "";
 
-    const timezoneRegions = {
-        hispano: {
-            name: 'region_hispano',
-            zones: [
-                { offset: -6, key: 'tz_mx_gt_hn_cr' },
-                { offset: -5, key: 'tz_pe_ec_co' },
-                { offset: -4.5, key: 'tz_ve' },
-                { offset: -4, key: 'tz_bo_cl_py' },
-                { offset: -3, key: 'tz_uy_ar_br' },
-                { offset: 1, key: 'tz_es' }
-            ]
-        },
-        lusofono: {
-            name: 'region_lusofono',
-            zones: [
-                { offset: -4, key: 'tz_br_manaus' },
-                { offset: -3, key: 'tz_br_brasilia' },
-                { offset: 0, key: 'tz_pt_gw' },
-                { offset: 1, key: 'tz_es_ma_ao' },
-                { offset: 2, key: 'tz_mz' }
-            ]
-        },
-        north_america: {
-            name: 'region_north_america',
-            zones: [
-                { offset: -8, key: 'tz_us_pst' },
-                { offset: -7, key: 'tz_us_mst' },
-                { offset: -6, key: 'tz_us_cst' },
-                { offset: -5, key: 'tz_us_est' },
-                { offset: 0, key: 'tz_gb' }
-            ]
-        },
-        europe: {
-            name: 'region_europe',
-            zones: [
-                { offset: 0, key: 'tz_pt_gb_ie' },
-                { offset: 1, key: 'tz_es_fr_it_de_pl' },
-                { offset: 2, key: 'tz_gr_fi' },
-                { offset: 3, key: 'tz_ru_tr' }
-            ]
-        }
-    };
-
-    function getGameTime(utcDate) {
-        const GAME_TIME_ANCHOR_UTC_MINUTES = 20 * 60 + 40;
-        const TIME_SCALE = 6;
-        const totalMinutesUTC = utcDate.getUTCHours() * 60 + utcDate.getUTCMinutes();
-        let realMinutesSinceAnchor = totalMinutesUTC - GAME_TIME_ANCHOR_UTC_MINUTES;
-        if (realMinutesSinceAnchor < 0) { realMinutesSinceAnchor += 24 * 60; }
-        let gameMinutes = realMinutesSinceAnchor * TIME_SCALE;
-        gameMinutes = gameMinutes % 1440;
-        const gameHours = Math.floor(gameMinutes / 60);
-        const remainingMinutes = Math.floor(gameMinutes % 60);
-        return { hours: gameHours, minutes: remainingMinutes };
+        drawCanvas();
     }
-
-    function updateLiveClocks() {
-        const now = new Date();
-        dom.localTimeDisplay.textContent = now.toLocaleTimeString();
-        const gameTime = getGameTime(now);
-        const gameHours = pad(gameTime.hours);
-        const gameMinutes = pad(gameTime.minutes);
-        dom.gameTimeDisplay.textContent = `${gameHours}:${gameMinutes}`;
-        dom.gameTimeEmoji.textContent = getDetailedDayNightIcon(gameTime.hours);
-    }
-
-    function getDetailedDayNightIcon(hours) {
-        if (hours >= 6 && hours < 8) return '🌅';
-        if (hours >= 8 && hours < 19) return '☀️';
-        if (hours >= 19 && hours < 21) return '🌇';
-        return '🌙';
-    }
-
-    function pad(n) { return n < 10 ? "0" + n : n; }
 
     function drawCanvas() {
         const canvas = dom.mapCanvas;
         const ctx = canvas.getContext("2d");
+        const textAlign = dom.textAlign.value, textSize = parseInt(dom.textSize.value), textStyle = dom.textStyle.value, textBackgroundOpacity = dom.textBackgroundOpacity.value;
+        const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || (currentLangData.canvas_default_event_name || "Evento Personalizado");
+        const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
 
+        // 1. Draw background color or image
         canvas.width = 1920;
         canvas.height = 1080;
-
-                // 1. Draw background color or image
         if (backgroundImage) {
             ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
         } else {
@@ -322,7 +229,7 @@
         ctx.fillStyle = textFill;
         ctx.fillText(eventName, canvas.width / 2, 60);
 
-        // 5. Draw logo image
+        // --- Draw Logo ---
         let topOffset = 100;
         if (logoImage) {
             const logoHeight = 100;
@@ -500,18 +407,13 @@
         // --- Draw Detail Image ---
         if (detailImage) {
             ctx.drawImage(detailImage, detailImageX, detailImageY, detailImage.width * detailImageScale, detailImage.height * detailImageScale);
-        } else {
-            ctx.fillStyle = "#333";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
     }
 
     function init() {
         twemoji.parse(document.body);
 
-        // --- Event Listeners ---
-
-        // Controls Bar
+        // --- Language Emoji Selector Logic ---
         dom.langSelector.addEventListener("click", (e) => {
             if (e.target.classList.contains("flag-emoji")) {
                 const lang = e.target.dataset.lang;
@@ -521,6 +423,14 @@
             }
         });
 
+        // --- Region Select Dropdown Logic ---
+        for (const regionKey in timezoneRegions) {
+            const option = document.createElement('option');
+            option.value = regionKey;
+            option.setAttribute('data-i18n', timezoneRegions[regionKey].name);
+            option.textContent = regionKey; // Fallback text
+            dom.regionSelect.appendChild(option);
+        }
         dom.regionSelect.addEventListener('change', (e) => {
             selectedRegion = e.target.value;
             drawCanvas();
@@ -555,24 +465,53 @@
         document.getElementById("zoom-in-detail").addEventListener("click", () => { if (detailImage) { detailImageScale *= 1.2; drawCanvas(); } });
         document.getElementById("zoom-out-detail").addEventListener("click", () => { if (detailImage) { detailImageScale /= 1.2; drawCanvas(); } });
 
-        // Canvas Controls
-        dom.downloadCanvas.addEventListener("click", downloadCanvas);
-        dom.copyCustomInfo.addEventListener("click", copyCustomInfo);
-        dom.resetCanvas.addEventListener("click", resetCanvas);
+        dom.textAlign.addEventListener("change", drawCanvas);
+        dom.textSize.addEventListener("change", drawCanvas);
+        dom.textStyle.addEventListener("change", drawCanvas);
+        dom.textBackgroundOpacity.addEventListener("change", drawCanvas);
 
-        // Modal
-        dom.helpLink.addEventListener('click', (e) => { e.preventDefault(); dom.diceModal.style.display = 'flex'; });
-        dom.closeButton.addEventListener('click', () => { dom.diceModal.style.display = 'none'; });
-        dom.diceModal.addEventListener('click', (e) => { if (e.target === dom.diceModal) dom.diceModal.style.display = 'none'; });
+        dom.downloadCanvas.addEventListener("click", () => {
+            const canvas = dom.mapCanvas;
+            const link = document.createElement("a");
+            let date = new Date();
+            const customDateValue = dom.customDate.value;
+            if (customDateValue) {
+                date = new Date(customDateValue);
+            }
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            link.download = `convoy-map-${day}-${month}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
 
-        // Initial Load
-        loadLanguage('es');
-        updateLiveClocks();
-        setInterval(updateLiveClocks, 1000);
-        drawCanvas(); // Initial draw
+        dom.customEventName.addEventListener("input", drawCanvas);
+        dom.customStartPlace.addEventListener("input", drawCanvas);
+        dom.customDestination.addEventListener("input", drawCanvas);
+        dom.customServer.addEventListener("input", drawCanvas);
+        dom.customTime.addEventListener("input", drawCanvas);
+        dom.departureTimeOffset.addEventListener("change", drawCanvas);
+
+        dom.resetCanvas.addEventListener("click", () => {
+            mapImage = null;
+            circleImageTop = null;
+            circleImageBottom = null;
+            logoImage = null;
+            backgroundImage = null;
+            detailImage = null;
+
+            dom.mapUpload.value = "";
+            dom.circleUploadTop.value = "";
+            dom.circleUploadBottom.value = "";
+            dom.logoUpload.value = "";
+            dom.backgroundUpload.value = "";
+            dom.detailUpload.value = "";
+
+            drawCanvas();
+        });
+
+        drawCanvas();
     }
-
-    window.onload = init;
 
     async function fetchLanguage(lang) {
         const response = await fetch(`./event/locales/${lang}.json`);
@@ -593,9 +532,9 @@
     }
 
     async function loadLanguage(lang) {
-        const langData = await fetchLanguage(lang);
-        applyTranslations(langData);
-        // drawCanvas(); // Will be called after drawCanvas is implemented
+        currentLangData = await fetchLanguage(lang);
+        applyTranslations(currentLangData);
+        drawCanvas(); // Redraw canvas with new language
     }
 
     window.onload = init;
