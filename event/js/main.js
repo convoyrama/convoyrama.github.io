@@ -257,7 +257,7 @@
                 }
                 const dayEntry = datesByDay.get(dayString);
 
-                const tzLabel = currentLangData[tz.key] || `UTC${tz.offset}`;
+                const tzLabel = currentLangData[tz.key] || (timezoneCountryCodes[tz.key] || [tz.key.replace('tz_', '').toUpperCase()]).join(', ');
                 const reunionTime = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
                 const partidaTime = new Date(reunionTime.getTime() + 15 * 60000);
                 dayEntry.times.push({ tzLabel, reunionTime: formatTime(reunionTime), partidaTime: formatTime(partidaTime) });
@@ -355,6 +355,21 @@
         ctx.beginPath();
         ctx.arc(circleX + circleDiameter / 2, bottomY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
         ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.stroke();
+
+        ctx.font = `bold ${textSize + 10}px Arial`;
+        ctx.textAlign = "center";
+        ctx.fillStyle = textColor;
+
+        const departureText = currentLangData.canvas_label_departure || "Partida";
+        const destinationText = currentLangData.canvas_label_destination || "Destino";
+
+        const circleCenterX = circleX + circleDiameter / 2;
+        
+        const departureTextY = topY + 40;
+        ctx.fillText(departureText, circleCenterX, departureTextY);
+
+        const destinationTextY = bottomY + 40;
+        ctx.fillText(destinationText, circleCenterX, destinationTextY);
 
 
         if (logoImage) {
