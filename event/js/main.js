@@ -314,7 +314,7 @@
             circleCtxBottom.restore();
         }
 
-        const circleX = canvas.width - circleDiameter - 10, topY = 10, bottomY = canvas.height - circleDiameter - 10;
+
         ctx.drawImage(circleCanvasTop, circleX, topY, circleDiameter, circleDiameter);
         ctx.drawImage(circleCanvasBottom, circleX, bottomY, circleDiameter, circleDiameter);
         ctx.beginPath();
