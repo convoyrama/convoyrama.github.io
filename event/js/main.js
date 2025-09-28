@@ -127,6 +127,12 @@
         const months = currentLangData.months || ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
         return `${d.getDate()} de ${months[d.getMonth()]} de ${d.getFullYear()}`;
     }
+    function formatDateForDisplayShort(d) {
+        const day = pad(d.getDate());
+        const month = pad(d.getMonth() + 1);
+        const year = d.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
     function getUnixTimestamp(date) { return Math.floor(date.getTime() / 1000); }
     function showCopyMessage(message = "¡Información copiada al portapapeles!") {
         dom.copyMessage.textContent = message;
@@ -240,11 +246,11 @@
             const utcBaseTime = new Date(customDateObj.getTime() - userOffsetHours * 3600000);
 
             const activeTimezoneGroup = timezoneRegions[selectedRegion].zones;
-            const datesByDay = new Map(); // Map<dayString, {codes: string[], times: {tzLabel: string, reunionTime: string, partidaTime: string}[]}>
+            const datesByDay = new Map();
 
             activeTimezoneGroup.forEach(tz => {
                 const localTimeForTz = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
-                const dayString = formatDateForDisplay(localTimeForTz);
+                const dayString = formatDateForDisplayShort(localTimeForTz);
                 const countryCodes = timezoneCountryCodes[tz.key] || [tz.key.replace('tz_', '').toUpperCase()];
 
                 if (!datesByDay.has(dayString)) {
@@ -259,30 +265,27 @@
                 dayEntry.times.push({ tzLabel, reunionTime: formatTime(reunionTime), partidaTime: formatTime(partidaTime) });
             });
 
-            // Sort days to ensure consistent order (e.g., earlier day first)
             const sortedDays = Array.from(datesByDay.keys()).sort((a, b) => {
-                const dateA = new Date(a.replace(/de /g, '')); // Simple parsing, might need refinement
-                const dateB = new Date(b.replace(/de /g, ''));
-                return dateA.getTime() - dateB.getTime();
+                const [dayA, monthA, yearA] = a.split('/');
+                const [dayB, monthB, yearB] = b.split('/');
+                return new Date(`${yearA}-${monthA}-${dayA}`) - new Date(`${yearB}-${monthB}-${dayB}`);
             });
 
-            // Build the new textLines array for the time section
             const newTextLines = [];
-            newTextLines.push(`${currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'}`); // Header
+            newTextLines.push(`${currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'}`);
 
             sortedDays.forEach(dayString => {
                 const dayEntry = datesByDay.get(dayString);
                 const uniqueCodes = [...new Set(dayEntry.codes)].join(', ');
-                const dateHeaderPrefix = `${dayString} (${uniqueCodes})`;
+                
+                const timeStrings = dayEntry.times.map(timeEntry => 
+                    `${timeEntry.tzLabel}: ${timeEntry.reunionTime} / ${timeEntry.partidaTime}`
+                ).join(', ');
 
-                dayEntry.times.forEach(timeEntry => {
-                    // Combine date header and time entry on the same line
-                    newTextLines.push(`  ${dateHeaderPrefix} ${timeEntry.tzLabel}: ${timeEntry.reunionTime} / ${timeEntry.partidaTime}`);
-                });
+                newTextLines.push(`  ${dayString} (${uniqueCodes}): ${timeStrings}`);
             });
 
-            // Replace the original textLines with the new structured ones
-            textLines.splice(4, textLines.length - 4, ...newTextLines); // Assuming original textLines has 4 fixed lines before times
+            textLines.splice(4, textLines.length - 4, ...newTextLines);
         } else {
             // If no date/time selected, clear dynamic time lines
             textLines.splice(4, textLines.length - 4);
