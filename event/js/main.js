@@ -1,12 +1,13 @@
 (function() {
     // --- Canvas State Variables ---
-    let mapImage = null, circleImageTop = null, circleImageBottom = null, logoImage = null;
+    let mapImage = null, circleImageTop = null, circleImageBottom = null, logoImage = null, backgroundImage = null, detailImage = null;
     let watermarkImage = new Image();
     watermarkImage.src = './assets/images/cr.png';
     let imageX = 0, imageY = 0, imageScale = 1;
     let circleImageXTop = 0, circleImageYTop = 0, circleImageScaleTop = 1;
     let circleImageXBottom = 0, circleImageYBottom = 0, circleImageScaleBottom = 1;
-    let isDragging = false, isDraggingTop = false, isDraggingBottom = false;
+    let detailImageX = 0, detailImageY = 0, detailImageScale = 1;
+    let isDragging = false, isDraggingTop = false, isDraggingBottom = false, isDraggingDetail = false;
     let startX, startY;
 
     // --- I18n & Region State ---
@@ -31,6 +32,7 @@
         circleUploadTop: document.getElementById("circle-upload-top"),
         circleUploadBottom: document.getElementById("circle-upload-bottom"),
         logoUpload: document.getElementById("logo-upload"),
+        backgroundUpload: document.getElementById("background-upload"),
         mapCanvas: document.getElementById("map-canvas"),
         circleCanvasTop: document.getElementById("circle-canvas-top"),
         circleCanvasBottom: document.getElementById("circle-canvas-bottom"),
@@ -47,6 +49,9 @@
         zoomOutTop: document.getElementById("zoom-out-top"),
         zoomInBottom: document.getElementById("zoom-in-bottom"),
         zoomOutBottom: document.getElementById("zoom-out-bottom"),
+        detailUpload: document.getElementById("detail-upload"),
+        zoomInDetail: document.getElementById("zoom-in-detail"),
+        zoomOutDetail: document.getElementById("zoom-out-detail"),
     };
 
     const timezoneRegions = {
@@ -192,8 +197,12 @@
 
         canvas.width = 1920;
         canvas.height = 1080;
-        ctx.fillStyle = "#333";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (backgroundImage) {
+            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+        } else {
+            ctx.fillStyle = "#333";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
 
         const circleDiameter = 360;
         const circleX = canvas.width - circleDiameter - 10;
@@ -212,7 +221,7 @@
             ctx.globalAlpha = 1.0;
         }
 
-        let textColor = "rgb(240,240,240)";
+        let textFill = "rgb(240,240,240)";
         let shadowColor = "rgba(0,0,0,0.8)";
 
         switch (textStyle) {
@@ -229,8 +238,33 @@
                 shadowColor = "#FF0000";
                 break;
             case "black-on-white":
-                textColor = "rgb(0,0,0)";
+                textFill = "rgb(0,0,0)";
                 shadowColor = "rgb(240,240,240)";
+                break;
+            case "fire":
+                const fireGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+                fireGradient.addColorStop(0, "yellow");
+                fireGradient.addColorStop(1, "red");
+                textFill = fireGradient;
+                shadowColor = "rgba(0,0,0,0.8)";
+                break;
+            case "ice":
+                const iceGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+                iceGradient.addColorStop(0, "#B0E0E6");
+                iceGradient.addColorStop(1, "#4682B4");
+                textFill = iceGradient;
+                shadowColor = "rgba(0,0,0,0.8)";
+                break;
+            case "retro":
+                textFill = "#FF69B4"; // Hot Pink
+                shadowColor = "#00FFFF"; // Cyan
+                break;
+            case "womens_day":
+                const womensDayGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+                womensDayGradient.addColorStop(0, "#FFC0CB");
+                womensDayGradient.addColorStop(1, "#800080");
+                textFill = womensDayGradient;
+                shadowColor = "rgba(0,0,0,0.8)";
                 break;
         }
 
@@ -240,11 +274,12 @@
         ctx.shadowOffsetY = 0;
         ctx.shadowBlur = 10;
         ctx.font = `bold ${textSize + 10}px Arial`; // Font for eventName
-        let textFill = textColor;
+        
         if (textBackground === "with-background" && mapImage) {
-            textFill = ctx.createPattern(mapImage, 'repeat');
+            ctx.fillStyle = ctx.createPattern(mapImage, 'repeat');
+        } else {
+            ctx.fillStyle = textFill;
         }
-        ctx.fillStyle = textFill;
         ctx.textAlign = "center";
         const eventName = customEventNameValue;
         ctx.fillText(eventName, canvas.width / 2, 60);
@@ -330,7 +365,12 @@
             ctx.fillStyle = bgColor;
             ctx.fillRect(textX - 10, textY - lineHeight + 5, textWidth, textHeight);
         }
-        ctx.fillStyle = textColor;
+        
+        if (textBackground === "with-background" && mapImage) {
+            ctx.fillStyle = ctx.createPattern(mapImage, 'repeat');
+        } else {
+            ctx.fillStyle = textFill;
+        }
         const maxTextWidth = canvas.width - textX - 20; // Max width for text lines
 
         textLines.forEach((line, index) => {
@@ -382,7 +422,11 @@
 
         ctx.font = `bold ${textSize + 10}px Arial`;
         ctx.textAlign = "center";
-        ctx.fillStyle = textColor;
+        if (textBackground === "with-background" && mapImage) {
+            ctx.fillStyle = ctx.createPattern(mapImage, 'repeat');
+        } else {
+            ctx.fillStyle = textFill;
+        }
 
         const departureText = currentLangData.canvas_label_departure || "Partida";
         const destinationText = currentLangData.canvas_label_destination || "Destino";
@@ -408,6 +452,10 @@
             const rightX = centerX + (nameWidth / 2) + 20;
             ctx.drawImage(logoImage, leftX, logoY, logoWidth, logoHeight);
             ctx.drawImage(logoImage, rightX, logoY, logoWidth, logoHeight);
+        }
+
+        if (detailImage) {
+            ctx.drawImage(detailImage, detailImageX, detailImageY, detailImage.width * detailImageScale, detailImage.height * detailImageScale);
         }
     }
 
@@ -480,10 +528,36 @@
         };
 
         const canvas = dom.mapCanvas;
-        canvas.addEventListener("mousedown", (e) => { if (mapImage) { isDragging = true; startX = e.offsetX - imageX; startY = e.offsetY - imageY; } });
-        canvas.addEventListener("mousemove", (e) => { if (isDragging && mapImage) { imageX = e.offsetX - startX; imageY = e.offsetY - startY; drawCanvas(); } });
-        canvas.addEventListener("mouseup", () => { isDragging = false; });
-        canvas.addEventListener("mouseleave", () => { isDragging = false; });
+        canvas.addEventListener("mousedown", (e) => { 
+            if (detailImage && e.offsetX >= detailImageX && e.offsetX <= detailImageX + detailImage.width * detailImageScale && e.offsetY >= detailImageY && e.offsetY <= detailImageY + detailImage.height * detailImageScale) {
+                isDraggingDetail = true;
+                startX = e.offsetX - detailImageX;
+                startY = e.offsetY - detailImageY;
+            } else if (mapImage) { 
+                isDragging = true; 
+                startX = e.offsetX - imageX; 
+                startY = e.offsetY - imageY; 
+            } 
+        });
+        canvas.addEventListener("mousemove", (e) => { 
+            if (isDraggingDetail && detailImage) {
+                detailImageX = e.offsetX - startX;
+                detailImageY = e.offsetY - startY;
+                drawCanvas();
+            } else if (isDragging && mapImage) { 
+                imageX = e.offsetX - startX; 
+                imageY = e.offsetY - startY; 
+                drawCanvas(); 
+            } 
+        });
+        canvas.addEventListener("mouseup", () => { 
+            isDragging = false; 
+            isDraggingDetail = false;
+        });
+        canvas.addEventListener("mouseleave", () => { 
+            isDragging = false; 
+            isDraggingDetail = false;
+        });
 
         const circleCanvasTop = dom.circleCanvasTop;
         circleCanvasTop.addEventListener("mousedown", (e) => { if (circleImageTop) { isDraggingTop = true; startX = e.offsetX - circleImageXTop; startY = e.offsetY - circleImageYTop; } });
@@ -501,6 +575,8 @@
         dom.circleUploadTop.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { circleImageTop = new Image(); circleImageTop.onload = () => { circleImageXTop = 0; circleImageYTop = 0; circleImageScaleTop = 1; drawCanvas(); }; circleImageTop.src = URL.createObjectURL(file); } else { circleImageTop = null; drawCanvas(); } });
         dom.circleUploadBottom.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { circleImageBottom = new Image(); circleImageBottom.onload = () => { circleImageXBottom = 0; circleImageYBottom = 0; circleImageScaleBottom = 1; drawCanvas(); }; circleImageBottom.src = URL.createObjectURL(file); } else { circleImageBottom = null; drawCanvas(); } });
         dom.logoUpload.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { logoImage = new Image(); logoImage.onload = () => { drawCanvas(); }; logoImage.src = URL.createObjectURL(file); } else { logoImage = null; drawCanvas(); } });
+        dom.backgroundUpload.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { backgroundImage = new Image(); backgroundImage.onload = () => { drawCanvas(); }; backgroundImage.src = URL.createObjectURL(file); } else { backgroundImage = null; drawCanvas(); } });
+        dom.detailUpload.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { detailImage = new Image(); detailImage.onload = () => { detailImageX = 0; detailImageY = 0; detailImageScale = 1; drawCanvas(); }; detailImage.src = URL.createObjectURL(file); } else { detailImage = null; drawCanvas(); } });
 
         dom.zoomIn.addEventListener("click", () => { if (mapImage) { imageScale *= 1.2; drawCanvas(); } });
         dom.zoomOut.addEventListener("click", () => { if (mapImage) { imageScale /= 1.2; drawCanvas(); } });
@@ -508,6 +584,8 @@
         dom.zoomOutTop.addEventListener("click", () => { if (circleImageTop) { circleImageScaleTop /= 1.2; drawCanvas(); } });
         dom.zoomInBottom.addEventListener("click", () => { if (circleImageBottom) { circleImageScaleBottom *= 1.2; drawCanvas(); } });
         dom.zoomOutBottom.addEventListener("click", () => { if (circleImageBottom) { circleImageScaleBottom /= 1.2; drawCanvas(); } });
+        dom.zoomInDetail.addEventListener("click", () => { if (detailImage) { detailImageScale *= 1.2; drawCanvas(); } });
+        dom.zoomOutDetail.addEventListener("click", () => { if (detailImage) { detailImageScale /= 1.2; drawCanvas(); } });
 
         dom.textAlign.addEventListener("change", drawCanvas);
         dom.textSize.addEventListener("change", drawCanvas);
@@ -517,7 +595,10 @@
         dom.downloadCanvas.addEventListener("click", () => {
             const canvas = dom.mapCanvas;
             const link = document.createElement("a");
-            link.download = "convoy-map.png";
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            link.download = `convoy-map-${day}-${month}.png`;
             link.href = canvas.toDataURL("image/png");
             link.click();
         });

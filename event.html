@@ -101,6 +101,18 @@
                         <button>-</button>
                     </div>
                 </div>
+                <div class="input-group">
+                    <label for="background-upload" data-i18n="label_background">Fondo:</label>
+                    <input type="file" id="background-upload" accept="image/*">
+                </div>
+                <div class="input-group">
+                    <label for="detail-upload" data-i18n="label_detail">Detalle:</label>
+                    <input type="file" id="detail-upload" accept="image/*">
+                    <div class="zoom-buttons">
+                        <button id="zoom-in-detail">+</button>
+                        <button id="zoom-out-detail">-</button>
+                    </div>
+                </div>
             </div>
             <div class="canvas-container">
                 <canvas id="map-canvas"></canvas>
@@ -136,6 +148,10 @@
                         <option value="white-on-pink" data-i18n="style_white_pink">Blanco con sombra rosa</option>
                         <option value="white-on-red" data-i18n="style_white_red">Blanco con sombra roja</option>
                         <option value="black-on-white" data-i18n="style_black_white">Negro con sombra blanca</option>
+                        <option value="fire" data-i18n="style_fire">Fuego</option>
+                        <option value="ice" data-i18n="style_ice">Hielo</option>
+                        <option value="retro" data-i18n="style_retro">Retro</option>
+                        <option value="womens_day" data-i18n="style_womens_day">Día de la mujer</option>
                     </select>
                 </div>
                 <div>
