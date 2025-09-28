@@ -77,5 +77,7 @@
   "canvas_label_departure": "Partida",
   "canvas_label_destination": "Destino",
   "canvas_default_event_name": "Evento Personalizado",
+  "canvas_meeting_ingame": "Encontro (No Jogo):",
+  "canvas_arrival_ingame": "Chegada Aprox. (No Jogo):",
   "error_no_date": "Por favor, selecione uma data e hora."
 }
