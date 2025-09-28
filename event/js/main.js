@@ -325,6 +325,12 @@
         ctx.fillStyle = bgColor;
         ctx.fillRect((canvas.width - eventNameWidth) / 2 - 10, 60 - eventNameMetrics.actualBoundingBoxAscent - 10, eventNameWidth + 20, eventNameHeight + 20);
         ctx.fillStyle = textFill;
+        const eventNameMetrics = ctx.measureText(eventName);
+        const eventNameWidth = eventNameMetrics.width;
+        const eventNameHeight = eventNameMetrics.actualBoundingBoxAscent + eventNameMetrics.actualBoundingBoxDescent;
+        ctx.fillStyle = bgColor;
+        ctx.fillRect((canvas.width - eventNameWidth) / 2 - 10, 60 - eventNameMetrics.actualBoundingBoxAscent - 10, eventNameWidth + 20, eventNameHeight + 20);
+        ctx.fillStyle = textFill;
         ctx.fillText(eventName, canvas.width / 2, 60);
 
         // --- Draw Logo ---
