@@ -134,6 +134,29 @@
         setTimeout(() => { dom.copyMessage.style.display = "none"; }, 2000);
     }
 
+    const timezoneCountryCodes = {
+        'tz_mx_gt_hn_cr': ['MX', 'GT', 'HN', 'CR'],
+        'tz_pe_ec_co': ['PE', 'EC', 'CO'],
+        'tz_ve': ['VE'],
+        'tz_bo_cl_py': ['BO', 'CL', 'PY'],
+        'tz_uy_ar_br': ['UY', 'AR', 'BR'],
+        'tz_es': ['ES'],
+        'tz_br_manaus': ['BR'],
+        'tz_br_brasilia': ['BR'],
+        'tz_pt_gw': ['PT', 'GW'],
+        'tz_es_ma_ao': ['ES', 'MA', 'AO'],
+        'tz_mz': ['MZ'],
+        'tz_us_pst': ['US'],
+        'tz_us_mst': ['US'],
+        'tz_us_cst': ['US'],
+        'tz_us_est': ['US'],
+        'tz_gb': ['GB'],
+        'tz_pt_gb_ie': ['PT', 'GB', 'IE'],
+        'tz_es_fr_it_de_pl': ['ES', 'FR', 'IT', 'DE', 'PL'],
+        'tz_gr_fi': ['GR', 'FI'],
+        'tz_ru_tr': ['RU', 'TR']
+    };
+
     function drawCanvas() {
         const canvas = dom.mapCanvas;
         const ctx = canvas.getContext("2d");
@@ -159,11 +182,61 @@
         ctx.shadowOffsetY = 0;
         ctx.shadowBlur = 10;
         ctx.font = `bold ${textSize + 10}px Arial`;
-        ctx.fillStyle = textColor;
+        let textFill = textColor;
+        if (textBackground === "with-background" && mapImage) {
+            textFill = ctx.createPattern(mapImage, 'repeat');
+        }
+        ctx.fillStyle = textFill;
         ctx.textAlign = "center";
-        const eventName = customEventNameValue, eventDate = customDateValue ? formatDateForDisplay(new Date(customDateValue)) : "Fecha no seleccionada";
+        const eventName = customEventNameValue;
+        let eventDateFormatted = "Fecha no seleccionada";
+
+        if (customDateValue && customTimeValue) {
+            const [hh, mm] = customTimeValue.split(":").map(Number);
+            const customDateObj = new Date(customDateValue);
+            customDateObj.setHours(hh, mm, 0, 0);
+
+            // Assuming user's local offset is -3 for UTC conversion as per example
+            const userOffsetHours = -3;
+            const utcBaseTime = new Date(customDateObj.getTime() - userOffsetHours * 3600000);
+
+            const activeTimezoneGroup = timezoneRegions[selectedRegion].zones;
+            const datesByDay = new Map(); // Map<dayString, countryCodes[]>
+
+            activeTimezoneGroup.forEach(tz => {
+                const localTimeForTz = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
+                const dayString = formatDateForDisplay(localTimeForTz);
+                const countryCodes = timezoneCountryCodes[tz.key] || [tz.key.replace('tz_', '').toUpperCase()]; // Fallback if not in map
+
+                if (!datesByDay.has(dayString)) {
+                    datesByDay.set(dayString, []);
+                }
+                datesByDay.get(dayString).push(...countryCodes);
+            });
+
+            if (datesByDay.size > 1) {
+                const parts = [];
+                datesByDay.forEach((codes, day) => {
+                    parts.push(`${day} (${[...new Set(codes)].join(', ')})`);
+                });
+                eventDateFormatted = parts.join(' & ');
+            } else {
+                eventDateFormatted = formatDateForDisplay(new Date(customDateValue));
+            }
+        }
+
         ctx.fillText(eventName, canvas.width / 2, 50);
-        ctx.fillText(eventDate, canvas.width / 2, 50 + (textSize + 15));
+        ctx.fillText(eventDateFormatted, canvas.width / 2, 50 + (textSize + 15));
+
+        // Apply textFill for 'Partida' and 'Destino' as well
+        ctx.fillStyle = textFill;
+        ctx.shadowColor = shadowColor;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 10;
+        ctx.fillText(currentLangData.canvas_label_departure || "Partida", circleX + circleDiameter / 2, topY + circleDiameter + 50);
+        ctx.fillText(currentLangData.canvas_label_destination || "Destino", circleX + circleDiameter / 2, bottomY - 20);
+        ctx.shadowBlur = 10;
 
         ctx.font = `bold ${textSize}px Arial`;
         ctx.textAlign = "left";
@@ -240,14 +313,17 @@
         ctx.drawImage(circleCanvasBottom, circleX, bottomY, circleDiameter, circleDiameter);
         ctx.beginPath();
         ctx.arc(circleX + circleDiameter / 2, topY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgb(90,165,25)"; ctx.lineWidth = 6; ctx.stroke();
+        ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.stroke();
         ctx.beginPath();
         ctx.arc(circleX + circleDiameter / 2, bottomY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgb(90,165,25)"; ctx.lineWidth = 6; ctx.stroke();
+        ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.stroke();
         ctx.font = `bold 40px Arial`;
-        ctx.fillStyle = "rgb(90,165,25)";
+        ctx.fillStyle = textColor;
         ctx.textAlign = "center";
-        ctx.shadowBlur = 0;
+        ctx.shadowColor = shadowColor;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.shadowBlur = 10;
         ctx.fillText(currentLangData.canvas_label_departure || "Partida", circleX + circleDiameter / 2, topY + circleDiameter + 50);
         ctx.fillText(currentLangData.canvas_label_destination || "Destino", circleX + circleDiameter / 2, bottomY - 20);
         ctx.shadowBlur = 10;
