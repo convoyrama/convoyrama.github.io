@@ -221,6 +221,9 @@
         let shadowColor = "rgba(0,0,0,0.8)";
 
         switch (textStyle) {
+            case "classic":
+                // default is classic
+                break;
             case "convoy":
                 shadowColor = "rgb(90,165,25)";
                 break;
@@ -637,7 +640,7 @@
         dom.textAlign.addEventListener("change", drawCanvas);
         dom.textSize.addEventListener("change", drawCanvas);
         dom.textStyle.addEventListener("change", drawCanvas);
-        dom.textBackground.addEventListener("change", drawCanvas);
+        dom.textBackgroundOpacity.addEventListener("change", drawCanvas);
 
         dom.downloadCanvas.addEventListener("click", () => {
             const canvas = dom.mapCanvas;
