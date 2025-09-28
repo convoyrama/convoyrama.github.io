@@ -136,6 +136,30 @@
             }
         });
 
+        // --- Region Select Dropdown Logic ---
+        for (const regionKey in timezoneRegions) {
+            const option = document.createElement('option');
+            option.value = regionKey;
+            option.setAttribute('data-i18n', timezoneRegions[regionKey].name);
+            option.textContent = regionKey; // Fallback text
+            dom.regionSelect.appendChild(option);
+        }
+        dom.regionSelect.addEventListener('change', (e) => {
+            selectedRegion = e.target.value;
+            drawCanvas();
+        });
+
+        // Form Inputs
+        const formInputs = [
+            dom.customDate, dom.customTime, dom.departureTimeOffset, dom.customEventName, 
+            dom.customEventLink, dom.customStartPlace, dom.customDestination, dom.customServer, 
+            dom.customEventDescription, dom.textSize, dom.textAlign, dom.textStyle
+        ];
+        formInputs.forEach(input => {
+            input.addEventListener('change', drawCanvas);
+            input.addEventListener('input', drawCanvas);
+        });
+
         updateLiveClocks();
         setInterval(updateLiveClocks, 1000);
 
