@@ -195,6 +195,7 @@
         const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || (currentLangData.canvas_default_event_name || "Evento Personalizado");
         const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
 
+        // 1. Draw background color or image
         canvas.width = 1920;
         canvas.height = 1080;
         if (backgroundImage) {
@@ -204,23 +205,17 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
-        const circleDiameter = 360;
-        const circleX = canvas.width - circleDiameter - 10;
-        const topY = 10;
-        const bottomY = canvas.height - circleDiameter - 10;
-
-        const circleCanvasTop = dom.circleCanvasTop, circleCanvasBottom = dom.circleCanvasBottom;
-        const circleCtxTop = circleCanvasTop.getContext("2d"), circleCtxBottom = circleCanvasBottom.getContext("2d");
-        circleCanvasTop.width = circleDiameter; circleCanvasTop.height = circleDiameter;
-        circleCanvasBottom.width = circleDiameter; circleCanvasBottom.height = circleDiameter;
-
+        // 2. Draw map image
         if (mapImage) ctx.drawImage(mapImage, imageX, imageY, mapImage.width * imageScale, mapImage.height * imageScale);
+        
+        // 3. Draw watermark
         if (watermarkImage.complete && watermarkImage.naturalWidth !== 0) {
             ctx.globalAlpha = 0.1;
             ctx.drawImage(watermarkImage, (canvas.width - watermarkImage.width * 0.5) / 2, canvas.height - watermarkImage.height * 0.5 - 20, watermarkImage.width * 0.5, watermarkImage.height * 0.5);
             ctx.globalAlpha = 1.0;
         }
 
+        // --- Text Styles ---
         let textFill = "rgb(240,240,240)";
         let shadowColor = "rgba(0,0,0,0.8)";
 
@@ -273,8 +268,9 @@
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         ctx.shadowBlur = 10;
-        ctx.font = `bold ${textSize + 10}px Arial`; // Font for eventName
         
+        // 4. Draw event name
+        ctx.font = `bold ${textSize + 10}px Arial`;
         if (textBackground === "with-background" && mapImage) {
             ctx.fillStyle = ctx.createPattern(mapImage, 'repeat');
         } else {
@@ -283,9 +279,20 @@
         ctx.textAlign = "center";
         const eventName = customEventNameValue;
         ctx.fillText(eventName, canvas.width / 2, 60);
-        let eventDateFormatted = "Fecha no seleccionada"; // Keep this for internal logic, but don't draw here
 
-        ctx.font = `bold ${textSize}px Arial`; // Set font for textLines
+        // 5. Draw logo image
+        let topOffset = 100;
+        if (logoImage) {
+            const logoHeight = 100;
+            const logoWidth = logoImage.width * (logoHeight / logoImage.height);
+            const logoX = (canvas.width - logoWidth) / 2;
+            const logoY = 80;
+            ctx.drawImage(logoImage, logoX, logoY, logoWidth, logoHeight);
+            topOffset += logoHeight;
+        }
+
+        // 6. Calculate textLines
+        ctx.font = `bold ${textSize}px Arial`;
         ctx.textAlign = "left";
         const textLines = [
             `${currentLangData.canvas_server || 'Servidor:'} ${customServerValue}`,
@@ -349,16 +356,21 @@
 
             textLines.splice(4, textLines.length - 4, ...newTextLines);
         } else {
-            // If no date/time selected, clear dynamic time lines
             textLines.splice(4, textLines.length - 4);
             textLines.push(`${currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'}`);
             textLines.push(`  N/A`);
         }
 
-
-
+        // 7. Calculate textY
         const textX = 20, lineHeight = textSize + 15;
-        let textY = textAlign === "top-left" ? 100 + (textSize + 15) : canvas.height - (textLines.length * lineHeight) - 20;
+        let textY;
+        if (textAlign === "top-left") {
+            textY = topOffset + (textSize + 15);
+        } else {
+            textY = canvas.height - (textLines.length * lineHeight) - 20;
+        }
+
+        // 8. Draw textLines
         if (textBackground === "with-background") {
             const textWidth = Math.max(...textLines.map(line => ctx.measureText(line).width)) + 20;
             const textHeight = textLines.length * lineHeight + 10;
@@ -371,25 +383,33 @@
         } else {
             ctx.fillStyle = textFill;
         }
-        const maxTextWidth = canvas.width - textX - 20; // Max width for text lines
+        const maxTextWidth = canvas.width - textX - 20;
 
         textLines.forEach((line, index) => {
             let currentTextX = textX;
             let currentLineHeight = lineHeight;
 
-            // Apply indentation for lines that start with '  '
             if (line.startsWith('  ')) {
-                currentTextX += 15; // Indent by 15px
+                currentTextX += 15;
             }
 
-            const wrappedLines = wrapText(ctx, line, maxTextWidth - (currentTextX - textX)); // Adjust max width for indentation
+            const wrappedLines = wrapText(ctx, line, maxTextWidth - (currentTextX - textX));
 
             wrappedLines.forEach((wrappedLine, wrappedIndex) => {
                 ctx.fillText(wrappedLine, currentTextX, textY + (index * lineHeight) + (wrappedIndex * currentLineHeight));
             });
         });
 
+        // 9. Draw circle canvases
+        const circleDiameter = 360;
+        const circleX = canvas.width - circleDiameter - 10;
+        const topY = 10;
+        const bottomY = canvas.height - circleDiameter - 10;
 
+        const circleCanvasTop = dom.circleCanvasTop, circleCanvasBottom = dom.circleCanvasBottom;
+        const circleCtxTop = circleCanvasTop.getContext("2d"), circleCtxBottom = circleCanvasBottom.getContext("2d");
+        circleCanvasTop.width = circleDiameter; circleCanvasTop.height = circleDiameter;
+        circleCanvasBottom.width = circleDiameter; circleCanvasBottom.height = circleDiameter;
 
         circleCtxTop.clearRect(0, 0, circleDiameter, circleDiameter);
         if (circleImageTop) {
@@ -410,9 +430,10 @@
             circleCtxBottom.restore();
         }
 
-
         ctx.drawImage(circleCanvasTop, circleX, topY, circleDiameter, circleDiameter);
         ctx.drawImage(circleCanvasBottom, circleX, bottomY, circleDiameter, circleDiameter);
+        
+        // 10. Draw circle borders and labels
         ctx.beginPath();
         ctx.arc(circleX + circleDiameter / 2, topY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
         ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.stroke();
@@ -439,21 +460,7 @@
         const destinationTextY = bottomY - 20;
         ctx.fillText(destinationText, circleCenterX, destinationTextY);
 
-
-        if (logoImage) {
-            const logoHeight = 100;
-            const logoWidth = logoImage.width * (logoHeight / logoImage.height);
-            ctx.font = `bold ${textSize + 10}px Arial`;
-            const nameWidth = ctx.measureText(eventName).width;
-            const titleY = 60;
-            const logoY = titleY - (logoHeight / 2) - 10;
-            const centerX = canvas.width / 2;
-            const leftX = centerX - (nameWidth / 2) - logoWidth - 20;
-            const rightX = centerX + (nameWidth / 2) + 20;
-            ctx.drawImage(logoImage, leftX, logoY, logoWidth, logoHeight);
-            ctx.drawImage(logoImage, rightX, logoY, logoWidth, logoHeight);
-        }
-
+        // 11. Draw detail image
         if (detailImage) {
             ctx.drawImage(detailImage, detailImageX, detailImageY, detailImage.width * detailImageScale, detailImage.height * detailImageScale);
         }
