@@ -240,7 +240,8 @@
         ctx.font = `bold ${textSize}px Arial`; // Smaller font for date
         const dateTextWidth = ctx.measureText(eventDateFormatted).width;
 
-        if (dateTextWidth > maxDateWidth && eventDateFormatted.includes(' & ')) {
+        // Always split if it's a multi-day format (contains ' & ')
+        if (eventDateFormatted.includes(' & ')) {
             const parts = eventDateFormatted.split(' & ');
             const firstLine = parts[0].trim();
             const secondLine = '& ' + parts[1].trim(); // Keep '&' on the second line
