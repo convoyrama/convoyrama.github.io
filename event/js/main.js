@@ -235,8 +235,21 @@
             }
         }
 
-        ctx.fillText(eventName, canvas.width / 2, 50);
-        ctx.fillText(eventDateFormatted, canvas.width / 2, 50 + (textSize + 15));
+        const maxDateWidth = canvas.width - 100; // 50px padding on each side
+        const dateTextWidth = ctx.measureText(eventDateFormatted).width;
+
+        if (dateTextWidth > maxDateWidth && eventDateFormatted.includes(' & ')) {
+            const parts = eventDateFormatted.split(' & ');
+            const firstLine = parts[0].trim();
+            const secondLine = '& ' + parts[1].trim(); // Keep '&' on the second line
+
+            ctx.fillText(eventName, canvas.width / 2, 40); // Move eventName up
+            ctx.fillText(firstLine, canvas.width / 2, 40 + (textSize + 15));
+            ctx.fillText(secondLine, canvas.width / 2, 40 + 2 * (textSize + 15));
+        } else {
+            ctx.fillText(eventName, canvas.width / 2, 50);
+            ctx.fillText(eventDateFormatted, canvas.width / 2, 50 + (textSize + 15));
+        }
 
         // Apply textFill for 'Partida' and 'Destino' as well
         ctx.fillStyle = textFill;
