@@ -197,21 +197,7 @@
             }
         });
 
-        // Add In-Game Times to canvas text
-        if (localStart) {
-            const partidaTime = new Date(localStart.getTime() + 15 * 60000);
-            const arrivalTime = new Date(partidaTime.getTime() + 45 * 60000);
 
-            const meetingInGame = getGameTime(localStart);
-            const arrivalInGame = getGameTime(arrivalTime);
-
-            const meetingInGameString = `${pad(meetingInGame.hours)}:${pad(meetingInGame.minutes)}`;
-            const arrivalInGameString = `${pad(arrivalInGame.hours)}:${pad(arrivalInGame.minutes)}`;
-
-            textLines.push(""); // Spacer
-            textLines.push(`${currentLangData.canvas_meeting_ingame || 'Reunión (In-Game):'} ${meetingInGameString}`);
-            textLines.push(`${currentLangData.canvas_arrival_ingame || 'Llegada Aprox. (In-Game):'} ${arrivalInGameString}`);
-        }
 
         const textX = 20, lineHeight = textSize + 15;
         let textY = textAlign === "top-left" ? 100 + (textSize + 15) : canvas.height - (textLines.length * lineHeight) - 20;
