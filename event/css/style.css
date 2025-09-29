@@ -34,7 +34,7 @@ input[type="file"] { color: transparent; }
 
 #controls-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #2a2a2a; border-radius: 8px; margin-bottom: 20px; }
 #lang-selector { display: flex; gap: 10px; }
-.flag-emoji { font-size: 0.45em; cursor: pointer; opacity: 0.6; transition: all 0.2s ease-in-out; }
+.flag-emoji { font-size: 0.8rem; cursor: pointer; opacity: 0.6; transition: all 0.2s ease-in-out; }
 .flag-emoji:hover { opacity: 1; transform: scale(1.1); }
 .flag-emoji.selected { opacity: 1; text-shadow: 0 0 5px rgb(90,165,25); }
 #region-selector-container { display: flex; align-items: center; gap: 10px; }
