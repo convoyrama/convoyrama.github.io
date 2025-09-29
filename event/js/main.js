@@ -14,46 +14,7 @@
     let currentLangData = {};
     let selectedRegion = 'hispano'; // Default region
 
-    const dom = {
-        localTimeDisplay: document.getElementById('local-time-display'),
-        gameTimeDisplay: document.getElementById('game-time-display'),
-        gameTimeEmoji: document.getElementById('game-time-emoji'),
-        customDate: document.getElementById("custom-date"),
-        customTime: document.getElementById("custom-time"),
-        departureTimeOffset: document.getElementById("departure-time-offset"),
-        customDateDisplay: document.getElementById("custom-date-display"),
-        customEventName: document.getElementById("custom-event-name"),
-        customEventLink: document.getElementById("custom-event-link"),
-        customStartPlace: document.getElementById("custom-start-place"),
-        customDestination: document.getElementById("custom-destination"),
-        customServer: document.getElementById("custom-server"),
-        customEventDescription: document.getElementById("custom-event-description"),
-        mapUpload: document.getElementById("map-upload"),
-        circleUploadTop: document.getElementById("circle-upload-top"),
-        circleUploadBottom: document.getElementById("circle-upload-bottom"),
-        logoUpload: document.getElementById("logo-upload"),
-        backgroundUpload: document.getElementById("background-upload"),
-        mapCanvas: document.getElementById("map-canvas"),
-        circleCanvasTop: document.getElementById("circle-canvas-top"),
-        circleCanvasBottom: document.getElementById("circle-canvas-bottom"),
-        downloadCanvas: document.getElementById("download-canvas"),
-        copyCustomInfo: document.getElementById("copy-custom-info"),
-        resetCanvas: document.getElementById("reset-canvas"),
-        textSize: document.getElementById("text-size"),
-        textAlign: document.getElementById("text-align"),
-        textStyle: document.getElementById("text-style"),
-        textBackgroundOpacity: document.getElementById("text-background-opacity"),
-        copyMessage: document.getElementById("copy-message"),
-        zoomIn: document.getElementById("zoom-in"),
-        zoomOut: document.getElementById("zoom-out"),
-        zoomInTop: document.getElementById("zoom-in-top"),
-        zoomOutTop: document.getElementById("zoom-out-top"),
-        zoomInBottom: document.getElementById("zoom-in-bottom"),
-        zoomOutBottom: document.getElementById("zoom-out-bottom"),
-        detailUpload: document.getElementById("detail-upload"),
-        zoomInDetail: document.getElementById("zoom-in-detail"),
-        zoomOutDetail: document.getElementById("zoom-out-detail"),
-    };
+
 
     const timezoneRegions = {
         hispano: {
