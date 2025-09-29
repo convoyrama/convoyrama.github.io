@@ -33,7 +33,11 @@ function init() {
         const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
         if (!customDateValue || !customTimeValue) { showCopyMessage(state.currentLangData.error_no_date || "Por favor, selecciona una fecha y hora."); return; }
         const [hh, mm] = customTimeValue.split(":").map(Number);
-        const customDateObj = new Date(customDateValue);
+        const dateParts = customDateValue.split('-');
+        const year = parseInt(dateParts[0], 10);
+        const month = parseInt(dateParts[1], 10) - 1;
+        const day = parseInt(dateParts[2], 10);
+        const customDateObj = new Date(year, month, day);
         customDateObj.setHours(hh, mm, 0, 0);
         const meetingTimestamp = getUnixTimestamp(customDateObj);
         const meetingGameTime = getGameTime(customDateObj);

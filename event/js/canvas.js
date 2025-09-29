@@ -165,7 +165,11 @@ export function drawCanvas() {
 
     if (customDateValue && customTimeValue) {
         const [hh, mm] = customTimeValue.split(":").map(Number);
-        const customDateObj = new Date(customDateValue);
+        const dateParts = customDateValue.split('-');
+        const year = parseInt(dateParts[0], 10);
+        const month = parseInt(dateParts[1], 10) - 1;
+        const day = parseInt(dateParts[2], 10);
+        const customDateObj = new Date(year, month, day);
         customDateObj.setHours(hh, mm, 0, 0);
 
         const browserOffsetHours = new Date().getTimezoneOffset() / 60;
