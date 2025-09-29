@@ -37,4 +37,5 @@ export const dom = {
     detailUpload: document.getElementById("detail-upload"),
     zoomInDetail: document.getElementById("zoom-in-detail"),
     zoomOutDetail: document.getElementById("zoom-out-detail"),
+    manualOffsetSelect: document.getElementById("manual-offset-select"),
 };

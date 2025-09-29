@@ -20,6 +20,7 @@ function init() {
     const regionSelect = document.getElementById('region-select');
     for (const regionKey in timezoneRegions) { const option = document.createElement('option'); option.value = regionKey; option.setAttribute('data-i18n', timezoneRegions[regionKey].name); option.textContent = regionKey; regionSelect.appendChild(option); }
     regionSelect.addEventListener('change', (e) => { state.setSelectedRegion(e.target.value); drawCanvas(); });
+    dom.manualOffsetSelect.addEventListener('change', drawCanvas);
     loadLanguage('es'); document.querySelector('.flag-emoji[data-lang="es"]').classList.add('selected');
     updateLiveClocks(); setInterval(updateLiveClocks, 1000);
     const userNow = new Date();

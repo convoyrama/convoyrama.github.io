@@ -35,9 +35,44 @@
                 <span class="flag-emoji" data-lang="en">🇺🇸</span>
                 <span class="flag-emoji" data-lang="pt">🇧🇷</span>
             </div>
-            <div id="region-selector-container">
-                <label for="region-select" data-i18n="region_selector_title">Regiones Horarias</label>
-                <select id="region-select"></select>
+            <div class="time-controls-container">
+                <div id="region-selector-container">
+                    <label for="region-select" data-i18n="region_selector_title">Regiones Horarias</label>
+                    <select id="region-select"></select>
+                </div>
+                <div id="manual-offset-container">
+                    <label for="manual-offset-select" data-i18n="manual_offset_title">Ajuste Manual UTC:</label>
+                    <select id="manual-offset-select">
+                        <option value="auto" selected>Auto</option>
+                        <option value="-12">UTC-12</option>
+                        <option value="-11">UTC-11</option>
+                        <option value="-10">UTC-10</option>
+                        <option value="-9">UTC-9</option>
+                        <option value="-8">UTC-8</option>
+                        <option value="-7">UTC-7</option>
+                        <option value="-6">UTC-6</option>
+                        <option value="-5">UTC-5</option>
+                        <option value="-4">UTC-4</option>
+                        <option value="-3">UTC-3</option>
+                        <option value="-2">UTC-2</option>
+                        <option value="-1">UTC-1</option>
+                        <option value="0">UTC+0</option>
+                        <option value="1">UTC+1</option>
+                        <option value="2">UTC+2</option>
+                        <option value="3">UTC+3</option>
+                        <option value="4">UTC+4</option>
+                        <option value="5">UTC+5</option>
+                        <option value="6">UTC+6</option>
+                        <option value="7">UTC+7</option>
+                        <option value="8">UTC+8</option>
+                        <option value="9">UTC+9</option>
+                        <option value="10">UTC+10</option>
+                        <option value="11">UTC+11</option>
+                        <option value="12">UTC+12</option>
+                        <option value="13">UTC+13</option>
+                        <option value="14">UTC+14</option>
+                    </select>
+                </div>
             </div>
         </div>
 

@@ -76,7 +76,18 @@ export function drawCanvas() {
         const [hh, mm] = customTimeValue.split(":").map(Number);
         const customDateObj = new Date(customDateValue);
         customDateObj.setHours(hh, mm, 0, 0);
-        const utcBaseTime = new Date(customDateObj.getTime());
+
+        const browserOffsetHours = new Date().getTimezoneOffset() / 60;
+        let finalOffsetHours = browserOffsetHours;
+
+        const manualOffset = dom.manualOffsetSelect.value;
+        if (manualOffset !== 'auto') {
+            finalOffsetHours = -parseInt(manualOffset, 10);
+        }
+
+        const offsetCorrection = (browserOffsetHours - finalOffsetHours) * 3600000;
+        const correctTimestamp = customDateObj.getTime() - offsetCorrection;
+        const utcBaseTime = new Date(correctTimestamp);
         const activeTimezoneGroup = timezoneRegions[state.selectedRegion].zones;
         const datesByDay = new Map();
         activeTimezoneGroup.forEach(tz => {
