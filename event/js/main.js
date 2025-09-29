@@ -338,14 +338,14 @@
             const customDateObj = new Date(customDateValue);
             customDateObj.setHours(hh, mm, 0, 0);
 
-            const userOffsetHours = -3;
-            const utcBaseTime = new Date(customDateObj.getTime() - userOffsetHours * 3600000);
+            const userOffsetHours = new Date().getTimezoneOffset() / 60;
+            const utcBaseTime = new Date(customDateObj.getTime() - (userOffsetHours * 3600000));
 
             const activeTimezoneGroup = timezoneRegions[selectedRegion].zones;
             const datesByDay = new Map();
 
             activeTimezoneGroup.forEach(tz => {
-                const localTimeForTz = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
+                const localTimeForTz = new Date(utcBaseTime.getUTCFullYear(), utcBaseTime.getUTCMonth(), utcBaseTime.getUTCDate(), utcBaseTime.getUTCHours() + tz.offset, utcBaseTime.getUTCMinutes());
                 const dayString = formatDateForDisplayShort(localTimeForTz);
                 
                 if (!datesByDay.has(dayString)) {
@@ -354,7 +354,7 @@
                 const dayEntry = datesByDay.get(dayString);
 
                 const tzLabel = currentLangData[tz.key] || (timezoneCountryCodes[tz.key] || [tz.key.replace('tz_', '').toUpperCase()]).join(', ');
-                const reunionTime = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
+                const reunionTime = new Date(utcBaseTime.getUTCFullYear(), utcBaseTime.getUTCMonth(), utcBaseTime.getUTCDate(), utcBaseTime.getUTCHours() + tz.offset, utcBaseTime.getUTCMinutes());
                 const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60000;
                 const partidaTime = new Date(reunionTime.getTime() + departureOffset);
                 dayEntry.times.push({ tzLabel, reunionTime: formatTime(reunionTime), partidaTime: formatTime(partidaTime) });
