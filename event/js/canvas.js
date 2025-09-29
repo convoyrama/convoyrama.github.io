@@ -6,8 +6,9 @@ import { pad, formatTime, formatDateForDisplay, formatDateForDisplayShort, getUn
 export function drawCanvas() {
     const canvas = dom.mapCanvas;
     const ctx = canvas.getContext("2d");
-
-        // Drawing logic will go here
+    const textAlign = dom.textAlign.value, textSize = parseInt(dom.textSize.value), textStyle = dom.textStyle.value, textBackgroundOpacity = dom.textBackgroundOpacity.value;
+    const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || (currentLangData.canvas_default_event_name || "Evento Personalizado");
+    const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
 
     // 1. Draw background color or image
     canvas.width = 1920;
