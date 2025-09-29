@@ -54,6 +54,19 @@ import { drawCanvas } from './canvas.js';
         updateLiveClocks();
         setInterval(updateLiveClocks, 1000);
         loadLanguage('es'); // Initial load
+                        // Text Controls
+        dom.textAlign.addEventListener("change", drawCanvas);
+        dom.textSize.addEventListener("change", drawCanvas);
+        dom.textStyle.addEventListener("change", drawCanvas);
+        dom.textBackgroundOpacity.addEventListener("change", drawCanvas);
+        dom.textAlign.addEventListener("change", drawCanvas);
+        dom.textSize.addEventListener("change", drawCanvas);
+        dom.textStyle.addEventListener("change", drawCanvas);
+        dom.textBackgroundOpacity.addEventListener("change", drawCanvas);
+        dom.textAlign.addEventListener("change", drawCanvas);
+        dom.textSize.addEventListener("change", drawCanvas);
+        dom.textStyle.addEventListener("change", drawCanvas);
+        dom.textBackgroundOpacity.addEventListener("change", drawCanvas);
         drawCanvas(); // Initial draw
     }
 

@@ -266,6 +266,21 @@ footer {
     flex-grow: 1;
 }
 
+.text-controls .input-group {
+    flex-direction: row;
+    align-items: center;
+}
+
+.text-controls label {
+    flex-basis: 100px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.text-controls select {
+    flex-grow: 1;
+}
+
 .canvas-controls button {
     padding: 8px 15px;
     background-color: #007bff;
