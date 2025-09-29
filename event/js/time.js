@@ -32,7 +32,7 @@ export function getDetailedDayNightIcon(hours) {
     return '🌙';
 }
 
-export function formatTime(d) { return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
+export function formatTime(d) { return pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes()); }
 
 export function formatDateForDisplay(d) {
     const months = currentLangData.months || ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
@@ -40,7 +40,7 @@ export function formatDateForDisplay(d) {
 }
 
 export function formatDateForDisplayShort(d) {
-    const day = d.getDate();
+    const day = d.getUTCDate();
     const months = currentLangData.months_short || ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-    return `${day} ${months[d.getMonth()]}`;
+    return `${day} ${months[d.getUTCMonth()]}`;
 }
