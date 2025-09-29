@@ -413,7 +413,9 @@
     function init() {
         twemoji.parse(document.body);
 
-        // --- Language Emoji Selector Logic ---
+        // --- Event Listeners ---
+
+        // Controls Bar
         dom.langSelector.addEventListener("click", (e) => {
             if (e.target.classList.contains("flag-emoji")) {
                 const lang = e.target.dataset.lang;
@@ -423,14 +425,6 @@
             }
         });
 
-        // --- Region Select Dropdown Logic ---
-        for (const regionKey in timezoneRegions) {
-            const option = document.createElement('option');
-            option.value = regionKey;
-            option.setAttribute('data-i18n', timezoneRegions[regionKey].name);
-            option.textContent = regionKey; // Fallback text
-            dom.regionSelect.appendChild(option);
-        }
         dom.regionSelect.addEventListener('change', (e) => {
             selectedRegion = e.target.value;
             drawCanvas();
@@ -512,6 +506,8 @@
 
         drawCanvas();
     }
+
+    window.onload = init;
 
     async function fetchLanguage(lang) {
         const response = await fetch(`./event/locales/${lang}.json`);
