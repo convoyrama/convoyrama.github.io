@@ -24,6 +24,32 @@ export function drawCanvas() {
         case "white-on-pink": shadowColor = "#FF00FF"; break;
         case "white-on-red": shadowColor = "#FF0000"; break;
         case "black-on-white": textFill = "rgb(0,0,0)"; shadowColor = "rgb(240,240,240)"; break;
+        case "love":
+            const loveGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            loveGradient.addColorStop(0, "#FFC0CB");
+            loveGradient.addColorStop(1, "#FF0000");
+            textFill = loveGradient;
+            shadowColor = "rgba(0,0,0,0.8)";
+            break;
+        case "galaxy":
+            const galaxyGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            galaxyGradient.addColorStop(0, "#8A2BE2");
+            galaxyGradient.addColorStop(1, "#4169E1");
+            textFill = "white";
+            shadowColor = galaxyGradient;
+            break;
+        case "sunset":
+            const sunsetGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            sunsetGradient.addColorStop(0, "yellow");
+            sunsetGradient.addColorStop(1, "orange");
+            textFill = sunsetGradient;
+            shadowColor = "darkred";
+            break;
+        case "neon":
+            textFill = "#39FF14";
+            shadowColor = "#39FF14";
+            ctx.shadowBlur = 20;
+            break;
     }
 
     ctx.shadowColor = shadowColor; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0; ctx.shadowBlur = 10;
