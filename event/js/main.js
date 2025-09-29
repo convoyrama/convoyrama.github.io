@@ -43,7 +43,13 @@ function init() {
         const departureTimestamp = getUnixTimestamp(departureDate);
         const departureGameTime = getGameTime(departureDate);
         const departureEmoji = getDetailedDayNightIcon(departureGameTime.hours);
-        let convoyInfo = `[**${formatDateForDisplay(customDateObj)} - ${customEventNameValue}**](${customEventLinkValue})\nServidor: ${customServerValue}\nPartida: ${customStartPlaceValue}\nDestino: ${customDestinationValue}\n\n**Reunión:** <t:${meetingTimestamp}:F> (<t:${meetingTimestamp}:R>) ${meetingEmoji}\n**Salida:** <t:${departureTimestamp}:t> (<t:${departureTimestamp}:R>) ${departureEmoji}\n\nDescripción: ${customEventDescriptionValue}`;
+
+        const arrivalDate = new Date(departureDate.getTime() + 50 * 60000);
+        const arrivalTimestamp = getUnixTimestamp(arrivalDate);
+        const arrivalGameTime = getGameTime(arrivalDate);
+        const arrivalEmoji = getDetailedDayNightIcon(arrivalGameTime.hours);
+
+        let convoyInfo = `[**${formatDateForDisplay(customDateObj)} - ${customEventNameValue}**](${customEventLinkValue})\nServidor: ${customServerValue}\nPartida: ${customStartPlaceValue}\nDestino: ${customDestinationValue}\n\n**Reunión:** <t:${meetingTimestamp}:F> (<t:${meetingTimestamp}:R>) ${meetingEmoji}\n**Salida:** <t:${departureTimestamp}:t> (<t:${departureTimestamp}:R>) ${departureEmoji}\n**${state.currentLangData.discord_arrival_time || 'Llegada Aprox.:'}** <t:${arrivalTimestamp}:t> (<t:${arrivalTimestamp}:R>) ${arrivalEmoji}\n\nDescripción: ${customEventDescriptionValue}`;
         navigator.clipboard.writeText(convoyInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyCustomInfo] Error al copiar: ${err.message}`));
     };
     initCanvasEventListeners();
@@ -51,7 +57,24 @@ function init() {
     dom.textSize.addEventListener("change", drawCanvas);
     dom.textStyle.addEventListener("change", drawCanvas);
     dom.textBackgroundOpacity.addEventListener("change", drawCanvas);
-    dom.downloadCanvas.addEventListener("click", () => { const canvas = dom.mapCanvas; const link = document.createElement("a"); const today = new Date(); const day = String(today.getDate()).padStart(2, '0'); const month = String(today.getMonth() + 1).padStart(2, '0'); link.download = `convoy-map-${day}-${month}.png`; link.href = canvas.toDataURL("image/png"); link.click(); });
+    dom.downloadCanvas.addEventListener("click", () => {
+        const canvas = dom.mapCanvas;
+        const link = document.createElement("a");
+        const eventDate = dom.customDate.value;
+        let dateString;
+        if (eventDate) {
+            dateString = eventDate;
+        } else {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            dateString = `${year}-${month}-${day}`;
+        }
+        link.download = `convoy-map-${dateString}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    });
     dom.customEventName.addEventListener("input", drawCanvas);
     dom.customStartPlace.addEventListener("input", drawCanvas);
     dom.customDestination.addEventListener("input", drawCanvas);

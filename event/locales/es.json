@@ -53,6 +53,9 @@
   "style_galaxy": "Galaxia",
   "style_sunset": "Atardecer",
   "style_neon": "Neón",
+  "style_jungle": "Selva",
+  "style_volcano": "Volcán",
+  "style_electric": "Eléctrico",
   "label_text_background": "Fondo:",
   "bg_none": "Sin fondo",
   "bg_with": "Con fondo",
@@ -99,5 +102,6 @@
   "canvas_default_event_name": "Evento Personalizado",
   "canvas_meeting_ingame": "Reunión (In-Game):",
   "canvas_arrival_ingame": "Llegada Aprox. (In-Game):",
-  "error_no_date": "Por favor, selecciona una fecha y hora."
+  "error_no_date": "Por favor, selecciona una fecha y hora.",
+  "discord_arrival_time": "Llegada Aprox.:"
 }

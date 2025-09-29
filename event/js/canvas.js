@@ -18,25 +18,31 @@ export function drawCanvas() {
 
     let textFill = "rgb(240,240,240)";
     let shadowColor = "rgba(0,0,0,0.8)";
+    let borderColor = "white";
     ctx.shadowBlur = 10;
 
     switch (textStyle) {
         case "classic":
             break;
         case "mint":
+            borderColor = "rgb(90,165,25)";
             shadowColor = "rgb(90,165,25)";
             break;
         case "sky":
+            borderColor = "#00FFFF";
             shadowColor = "#00FFFF";
             break;
         case "bubblegum":
+            borderColor = "#FF00FF";
             shadowColor = "#FF00FF";
             break;
         case "alert":
+            borderColor = "#FF0000";
             shadowColor = "#FF0000";
             break;
         case "inverse":
             textFill = "rgb(0,0,0)";
+            borderColor = "rgb(240,240,240)";
             shadowColor = "rgb(240,240,240)";
             break;
         case "fire":
@@ -44,15 +50,18 @@ export function drawCanvas() {
             fireGradient.addColorStop(0, "yellow");
             fireGradient.addColorStop(1, "red");
             textFill = fireGradient;
+            borderColor = "yellow";
             break;
         case "ice":
             const iceGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
             iceGradient.addColorStop(0, "#B0E0E6");
             iceGradient.addColorStop(1, "#4682B4");
             textFill = iceGradient;
+            borderColor = "#B0E0E6";
             break;
         case "retro":
             textFill = "#FF69B4";
+            borderColor = "#FF69B4";
             shadowColor = "#00FFFF";
             break;
         case "womens_day":
@@ -60,12 +69,14 @@ export function drawCanvas() {
             womensDayGradient.addColorStop(0, "#FFC0CB");
             womensDayGradient.addColorStop(1, "#800080");
             textFill = womensDayGradient;
+            borderColor = "#FFC0CB";
             break;
         case "gold":
             const goldGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
             goldGradient.addColorStop(0, "#FFD700");
             goldGradient.addColorStop(1, "#B8860B");
             textFill = goldGradient;
+            borderColor = "#FFD700";
             break;
         case "rainbow":
             const rainbowGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
@@ -77,9 +88,11 @@ export function drawCanvas() {
             rainbowGradient.addColorStop(0.75, "indigo");
             rainbowGradient.addColorStop(0.9, "violet");
             textFill = rainbowGradient;
+            borderColor = rainbowGradient;
             break;
         case "hacker":
             textFill = "#00FF00";
+            borderColor = "#00FF00";
             shadowColor = "rgba(0,0,0,0)";
             break;
         case "love":
@@ -87,6 +100,7 @@ export function drawCanvas() {
             loveGradient.addColorStop(0, "#FFC0CB");
             loveGradient.addColorStop(1, "#FF0000");
             textFill = loveGradient;
+            borderColor = "#FFC0CB";
             break;
         case "galaxy":
             const galaxyGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
@@ -94,6 +108,7 @@ export function drawCanvas() {
             galaxyGradient.addColorStop(1, "#4169E1");
             textFill = "white";
             shadowColor = galaxyGradient;
+            borderColor = "#8A2BE2";
             break;
         case "sunset":
             const sunsetGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
@@ -101,15 +116,34 @@ export function drawCanvas() {
             sunsetGradient.addColorStop(1, "orange");
             textFill = sunsetGradient;
             shadowColor = "darkred";
+            borderColor = "orange";
             break;
         case "neon":
             textFill = "#39FF14";
             shadowColor = "#39FF14";
+            borderColor = "#39FF14";
             ctx.shadowBlur = 20;
+            break;
+        case "jungle":
+            textFill = "lightgreen";
+            shadowColor = "darkgreen";
+            borderColor = "darkgreen";
+            break;
+        case "volcano":
+            textFill = "orange";
+            shadowColor = "red";
+            borderColor = "red";
+            break;
+        case "electric":
+            textFill = "white";
+            shadowColor = "yellow";
+            borderColor = "yellow";
             break;
     }
 
-    ctx.shadowColor = shadowColor; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0; ctx.shadowBlur = 10;
+    ctx.shadowColor = shadowColor;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
     
     ctx.font = `bold ${textSize + 10}px Arial`;
     ctx.textAlign = "center";
@@ -190,19 +224,27 @@ export function drawCanvas() {
     ctx.drawImage(circleCanvasTop, circleX, topY, circleDiameter, circleDiameter);
     ctx.drawImage(circleCanvasBottom, circleX, bottomY, circleDiameter, circleDiameter);
     
-    ctx.beginPath(); ctx.arc(circleX + circleDiameter / 2, topY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2); ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.stroke();
-    ctx.beginPath(); ctx.arc(circleX + circleDiameter / 2, bottomY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2); ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(circleX + circleDiameter / 2, topY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+    ctx.strokeStyle = borderColor; ctx.lineWidth = 10; ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(circleX + circleDiameter / 2, bottomY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+    ctx.strokeStyle = borderColor; ctx.lineWidth = 10; ctx.stroke();
 
     ctx.font = `bold ${textSize + 10}px Arial`;
     ctx.textAlign = "center";
+    
     const departureText = state.currentLangData.canvas_label_departure || "Partida";
     const destinationText = state.currentLangData.canvas_label_destination || "Destino";
+
     const circleCenterX = circleX + circleDiameter / 2;
+    
     const departureTextMetrics = ctx.measureText(departureText); const departureTextWidth = departureTextMetrics.width + 40; const departureTextHeight = textSize + 20; const departureTextY = topY + circleDiameter + 40;
     ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
     ctx.fillRect(circleCenterX - departureTextWidth / 2, departureTextY - departureTextHeight + 15, departureTextWidth, departureTextHeight);
     ctx.fillStyle = textFill;
     ctx.fillText(departureText, circleCenterX, departureTextY);
+
     const destinationTextMetrics = ctx.measureText(destinationText); const destinationTextWidth = destinationTextMetrics.width + 40; const destinationTextHeight = textSize + 20; const destinationTextY = bottomY - 20;
     ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
     ctx.fillRect(circleCenterX - destinationTextWidth / 2, destinationTextY - destinationTextHeight + 15, destinationTextWidth, destinationTextHeight);

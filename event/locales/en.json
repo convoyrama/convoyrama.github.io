@@ -53,6 +53,9 @@
   "style_galaxy": "Galaxy",
   "style_sunset": "Sunset",
   "style_neon": "Neon",
+  "style_jungle": "Jungle",
+  "style_volcano": "Volcano",
+  "style_electric": "Electric",
   "label_text_background": "Background:",
   "bg_none": "Without background",
   "bg_with": "With background",
@@ -99,5 +102,6 @@
   "canvas_default_event_name": "Custom Event",
   "canvas_meeting_ingame": "Meeting (In-Game):",
   "canvas_arrival_ingame": "Approx. Arrival (In-Game):",
-  "error_no_date": "Please select a date and time."
+  "error_no_date": "Please select a date and time.",
+  "discord_arrival_time": "Approx. Arrival:"
 }
