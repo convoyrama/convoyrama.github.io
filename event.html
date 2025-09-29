@@ -79,17 +79,23 @@
         <div class="custom-event">
             <h3 data-i18n="event_section_title">Crear Evento Personalizado</h3>
             <div class="input-row">
-                <label for="custom-date" data-i18n="label_date">Fecha:</label>
-                <input type="date" id="custom-date">
-                <label for="custom-time" data-i18n="label_meeting_time">Hora de reunión:</label>
-                <input type="time" id="custom-time">
-                <label for="departure-time-offset" data-i18n="label_departure_time_offset">Hora de salida:</label>
-                <select id="departure-time-offset">
-                    <option value="10">10 min</option>
-                    <option value="15" selected>15 min</option>
-                    <option value="30">30 min</option>
-                    <option value="45">45 min</option>
-                </select>
+                <div class="input-col">
+                    <label for="custom-date" data-i18n="label_date">Fecha:</label>
+                    <input type="date" id="custom-date">
+                </div>
+                <div class="input-col">
+                    <label for="custom-time" data-i18n="label_meeting_time">Hora de reunión:</label>
+                    <input type="time" id="custom-time">
+                </div>
+                <div class="input-col">
+                    <label for="departure-time-offset" data-i18n="label_departure_time_offset">Hora de salida:</label>
+                    <select id="departure-time-offset">
+                        <option value="10">10 min</option>
+                        <option value="15" selected>15 min</option>
+                        <option value="30">30 min</option>
+                        <option value="45">45 min</option>
+                    </select>
+                </div>
             </div>
             <div id="custom-date-display"></div>
             <div class="input-row">
@@ -180,12 +186,12 @@
                 <div>
                     <label for="text-style" data-i18n="label_text_style">Estilo:</label>
                     <select id="text-style">
-                        <option value="white-on-black" selected data-i18n="style_classic">Clásico</option>
-                        <option value="white-on-green" data-i18n="style_mint">Menta</option>
-                        <option value="white-on-blue" data-i18n="style_sky">Cielo</option>
-                        <option value="white-on-pink" data-i18n="style_bubblegum">Chicle</option>
-                        <option value="white-on-red" data-i18n="style_alert">Alerta</option>
-                        <option value="black-on-white" data-i18n="style_inverse">Inverso</option>
+                        <option value="classic" selected data-i18n="style_classic">Clásico</option>
+                        <option value="mint" data-i18n="style_mint">Menta</option>
+                        <option value="sky" data-i18n="style_sky">Cielo</option>
+                        <option value="bubblegum" data-i18n="style_bubblegum">Chicle</option>
+                        <option value="alert" data-i18n="style_alert">Alerta</option>
+                        <option value="inverse" data-i18n="style_inverse">Inverso</option>
                         <option value="fire" data-i18n="style_fire">Fuego</option>
                         <option value="ice" data-i18n="style_ice">Hielo</option>
                         <option value="retro" data-i18n="style_retro">Retro</option>
@@ -202,9 +208,9 @@
                 <div>
                     <label for="text-background-opacity" data-i18n="label_text_background_opacity">Opacidad Fondo:</label>
                     <select id="text-background-opacity">
-                        <option value="0.15">15%</option>
+                        <option value="0.15" selected>15%</option>
                         <option value="0.3">30%</option>
-                        <option value="0.5" selected>50%</option>
+                        <option value="0.5">50%</option>
                         <option value="0.7">70%</option>
                     </select>
                 </div>

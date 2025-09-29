@@ -18,18 +18,75 @@ export function drawCanvas() {
 
     let textFill = "rgb(240,240,240)";
     let shadowColor = "rgba(0,0,0,0.8)";
+    ctx.shadowBlur = 10;
+
     switch (textStyle) {
-        case "white-on-green": shadowColor = "rgb(90,165,25)"; break;
-        case "white-on-blue": shadowColor = "#00FFFF"; break;
-        case "white-on-pink": shadowColor = "#FF00FF"; break;
-        case "white-on-red": shadowColor = "#FF0000"; break;
-        case "black-on-white": textFill = "rgb(0,0,0)"; shadowColor = "rgb(240,240,240)"; break;
+        case "classic":
+            break;
+        case "mint":
+            shadowColor = "rgb(90,165,25)";
+            break;
+        case "sky":
+            shadowColor = "#00FFFF";
+            break;
+        case "bubblegum":
+            shadowColor = "#FF00FF";
+            break;
+        case "alert":
+            shadowColor = "#FF0000";
+            break;
+        case "inverse":
+            textFill = "rgb(0,0,0)";
+            shadowColor = "rgb(240,240,240)";
+            break;
+        case "fire":
+            const fireGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            fireGradient.addColorStop(0, "yellow");
+            fireGradient.addColorStop(1, "red");
+            textFill = fireGradient;
+            break;
+        case "ice":
+            const iceGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            iceGradient.addColorStop(0, "#B0E0E6");
+            iceGradient.addColorStop(1, "#4682B4");
+            textFill = iceGradient;
+            break;
+        case "retro":
+            textFill = "#FF69B4";
+            shadowColor = "#00FFFF";
+            break;
+        case "womens_day":
+            const womensDayGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            womensDayGradient.addColorStop(0, "#FFC0CB");
+            womensDayGradient.addColorStop(1, "#800080");
+            textFill = womensDayGradient;
+            break;
+        case "gold":
+            const goldGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            goldGradient.addColorStop(0, "#FFD700");
+            goldGradient.addColorStop(1, "#B8860B");
+            textFill = goldGradient;
+            break;
+        case "rainbow":
+            const rainbowGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            rainbowGradient.addColorStop(0, "red");
+            rainbowGradient.addColorStop(0.15, "orange");
+            rainbowGradient.addColorStop(0.3, "yellow");
+            rainbowGradient.addColorStop(0.45, "green");
+            rainbowGradient.addColorStop(0.6, "blue");
+            rainbowGradient.addColorStop(0.75, "indigo");
+            rainbowGradient.addColorStop(0.9, "violet");
+            textFill = rainbowGradient;
+            break;
+        case "hacker":
+            textFill = "#00FF00";
+            shadowColor = "rgba(0,0,0,0)";
+            break;
         case "love":
             const loveGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
             loveGradient.addColorStop(0, "#FFC0CB");
             loveGradient.addColorStop(1, "#FF0000");
             textFill = loveGradient;
-            shadowColor = "rgba(0,0,0,0.8)";
             break;
         case "galaxy":
             const galaxyGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
