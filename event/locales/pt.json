@@ -56,6 +56,8 @@
   "style_jungle": "Selva",
   "style_volcano": "Vulcão",
   "style_electric": "Elétrico",
+  "style_oceanic": "Oceânico",
+  "style_sunrise": "Nascer do sol",
   "label_text_background": "Fundo:",
   "bg_none": "Sem fundo",
   "bg_with": "Com fundo",

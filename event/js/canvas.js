@@ -139,6 +139,20 @@ export function drawCanvas() {
             shadowColor = "yellow";
             borderColor = "yellow";
             break;
+        case "oceanic":
+            const oceanicGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            oceanicGradient.addColorStop(0, "#00BFFF");
+            oceanicGradient.addColorStop(1, "#1E90FF");
+            textFill = oceanicGradient;
+            borderColor = "#1E90FF";
+            break;
+        case "sunrise":
+            const sunriseGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            sunriseGradient.addColorStop(0, "#FFD700");
+            sunriseGradient.addColorStop(1, "#FFA500");
+            textFill = sunriseGradient;
+            borderColor = "#FFA500";
+            break;
     }
 
     ctx.shadowColor = shadowColor;

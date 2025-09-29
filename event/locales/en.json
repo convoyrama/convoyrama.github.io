@@ -56,6 +56,8 @@
   "style_jungle": "Jungle",
   "style_volcano": "Volcano",
   "style_electric": "Electric",
+  "style_oceanic": "Oceanic",
+  "style_sunrise": "Sunrise",
   "label_text_background": "Background:",
   "bg_none": "Without background",
   "bg_with": "With background",
