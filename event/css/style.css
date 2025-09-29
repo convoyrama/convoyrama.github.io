@@ -243,12 +243,27 @@ footer {
     border: 1px solid #666;
 }
 
-/* Canvas Controls */
-.canvas-controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+/* Text Controls */
+.text-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.text-controls .input-group {
+    flex-direction: row;
+    align-items: center;
+}
+
+.text-controls label {
+    flex-basis: 100px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.text-controls select {
+    flex-grow: 1;
 }
 
 .canvas-controls button {
