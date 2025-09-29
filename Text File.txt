@@ -5,6 +5,14 @@
   │ 12:00                   │ 10:00                    │
   │ 18:00                   │ 22:00
 
+  La nueva estructura es:
+   - `config.js`: Datos de configuración estática.
+   - `dom.js`: Objeto dom.
+   - `state.js`: Estado de la aplicación.
+   - `utils.js`, `time.js`, `i18n.js`: Utilidades puras.
+   - `canvas.js`: Renderizado y eventos del lienzo.
+   - `main.js`: Orquestador central.
+   - `event.html`: Carga solo main.js como módulo.
 
 
  Guía de Funcionalidades para `event.html`

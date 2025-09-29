@@ -1,4 +1,4 @@
-const dom = {
+export const dom = {
     localTimeDisplay: document.getElementById('local-time-display'),
     gameTimeDisplay: document.getElementById('game-time-display'),
     gameTimeEmoji: document.getElementById('game-time-emoji'),

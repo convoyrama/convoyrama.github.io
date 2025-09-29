@@ -1,10 +1,12 @@
-function showCopyMessage(message = "¡Información copiada al portapapeles!") {
+import { dom } from './dom.js';
+
+export function showCopyMessage(message = "¡Información copiada al portapapeles!") {
     dom.copyMessage.textContent = message;
     dom.copyMessage.style.display = "block";
     setTimeout(() => { dom.copyMessage.style.display = "none"; }, 2000);
 }
 
-function wrapText(ctx, text, maxWidth) {
+export function wrapText(ctx, text, maxWidth) {
     const words = text.split(' ');
     let line = '';
     const lines = [];
@@ -23,3 +25,7 @@ function wrapText(ctx, text, maxWidth) {
     lines.push(line.trim());
     return lines;
 }
+
+export function pad(n) { return n < 10 ? "0" + n : n; }
+
+export function getUnixTimestamp(date) { return Math.floor(date.getTime() / 1000); }
