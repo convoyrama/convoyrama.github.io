@@ -12,7 +12,7 @@ let startX, startY;
 function drawCanvas() {
     const canvas = dom.mapCanvas;
     const ctx = canvas.getContext("2d");
-    const textAlign = dom.textAlign.value, textSize = parseInt(dom.textSize.value), textStyle = dom.textStyle.value, textBackground = dom.textBackground.value;
+    const textAlign = dom.textAlign.value, textSize = parseInt(dom.textSize.value), textStyle = dom.textStyle.value, textBackgroundOpacity = parseFloat(dom.textBackgroundOpacity.value);
     const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || (currentLangData.canvas_default_event_name || "Evento Personalizado");
     const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
 
@@ -114,7 +114,6 @@ function drawCanvas() {
             break;
     }
 
-    const bgColor = "rgba(0,0,0,0.35)";
     ctx.shadowColor = shadowColor;
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
@@ -122,13 +121,14 @@ function drawCanvas() {
     
     // 4. Draw event name
     ctx.font = `bold ${textSize + 10}px Arial`;
-    if (textBackground === "with-background" && mapImage) {
-        ctx.fillStyle = ctx.createPattern(mapImage, 'repeat');
-    } else {
-        ctx.fillStyle = textFill;
-    }
     ctx.textAlign = "center";
     const eventName = customEventNameValue;
+    const eventNameMetrics = ctx.measureText(eventName);
+    const eventNameWidth = eventNameMetrics.width + 40;
+    const eventNameHeight = textSize + 20;
+    ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
+    ctx.fillRect((canvas.width - eventNameWidth) / 2, 30, eventNameWidth, eventNameHeight);
+    ctx.fillStyle = textFill;
     ctx.fillText(eventName, canvas.width / 2, 60);
 
     // 5. Draw logo image
@@ -222,18 +222,12 @@ function drawCanvas() {
     }
 
     // 8. Draw textLines
-    if (textBackground === "with-background") {
-        const textWidth = Math.max(...textLines.map(line => ctx.measureText(line).width)) + 20;
-        const textHeight = textLines.length * lineHeight + 10;
-        ctx.fillStyle = bgColor;
-        ctx.fillRect(textX - 10, textY - lineHeight + 5, textWidth, textHeight);
-    }
+    const textWidth = Math.max(...textLines.map(line => ctx.measureText(line).width)) + 40;
+    const textHeight = textLines.length * lineHeight + 20;
+    ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
+    ctx.fillRect(textX - 10, textY - lineHeight, textWidth, textHeight);
     
-    if (textBackground === "with-background" && mapImage) {
-        ctx.fillStyle = ctx.createPattern(mapImage, 'repeat');
-    } else {
-        ctx.fillStyle = textFill;
-    }
+    ctx.fillStyle = textFill;
     const maxTextWidth = canvas.width - textX - 20;
 
     textLines.forEach((line, index) => {
@@ -294,21 +288,28 @@ function drawCanvas() {
 
     ctx.font = `bold ${textSize + 10}px Arial`;
     ctx.textAlign = "center";
-    if (textBackground === "with-background" && mapImage) {
-        ctx.fillStyle = ctx.createPattern(mapImage, 'repeat');
-    } else {
-        ctx.fillStyle = textFill;
-    }
-
+    
     const departureText = currentLangData.canvas_label_departure || "Partida";
     const destinationText = currentLangData.canvas_label_destination || "Destino";
 
     const circleCenterX = circleX + circleDiameter / 2;
     
+    const departureTextMetrics = ctx.measureText(departureText);
+    const departureTextWidth = departureTextMetrics.width + 40;
+    const departureTextHeight = textSize + 20;
     const departureTextY = topY + circleDiameter + 40;
+    ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
+    ctx.fillRect(circleCenterX - departureTextWidth / 2, departureTextY - departureTextHeight + 15, departureTextWidth, departureTextHeight);
+    ctx.fillStyle = textFill;
     ctx.fillText(departureText, circleCenterX, departureTextY);
 
+    const destinationTextMetrics = ctx.measureText(destinationText);
+    const destinationTextWidth = destinationTextMetrics.width + 40;
+    const destinationTextHeight = textSize + 20;
     const destinationTextY = bottomY - 20;
+    ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
+    ctx.fillRect(circleCenterX - destinationTextWidth / 2, destinationTextY - destinationTextHeight + 15, destinationTextWidth, destinationTextHeight);
+    ctx.fillStyle = textFill;
     ctx.fillText(destinationText, circleCenterX, destinationTextY);
 
     // 11. Draw detail image

@@ -42,7 +42,7 @@
         textSize: document.getElementById("text-size"),
         textAlign: document.getElementById("text-align"),
         textStyle: document.getElementById("text-style"),
-        textBackground: document.getElementById("text-background"),
+        textBackgroundOpacity: document.getElementById("text-background-opacity"),
         copyMessage: document.getElementById("copy-message"),
         zoomIn: document.getElementById("zoom-in"),
         zoomOut: document.getElementById("zoom-out"),
@@ -629,7 +629,7 @@
         dom.textAlign.addEventListener("change", drawCanvas);
         dom.textSize.addEventListener("change", drawCanvas);
         dom.textStyle.addEventListener("change", drawCanvas);
-        dom.textBackground.addEventListener("change", drawCanvas);
+        dom.textBackgroundOpacity.addEventListener("change", drawCanvas);
 
         dom.downloadCanvas.addEventListener("click", () => {
             const canvas = dom.mapCanvas;
