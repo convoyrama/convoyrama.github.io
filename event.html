@@ -136,7 +136,7 @@
                         <button id="zoom-out-bottom">-</button>
                     </div>
                 </div>
-                <div class="input-group" id="waypoint-group" style="display: none;">
+                <div class="input-group" id="waypoint-group">
                     <label for="waypoint-upload" data-i18n="label_waypoint">Waypoint:</label>
                     <input type="file" id="waypoint-upload" accept="image/*">
                     <div class="zoom-buttons">
@@ -144,6 +144,8 @@
                         <button id="zoom-out-waypoint">-</button>
                     </div>
                 </div>
+            </div>
+            <div class="input-row">
                 <div class="input-group">
                     <label for="logo-upload" data-i18n="label_vtc_logo">Logo VTC:</label>
                     <input type="file" id="logo-upload" accept="image/*">
@@ -184,13 +186,6 @@
                         <option value="30" selected data-i18n="size_medium">Mediano (30px)</option>
                         <option value="40" data-i18n="size_large">Grande (40px)</option>
                     </select>
-                </div>
-                <div>
-                    <label for="waypoint-toggle" data-i18n="label_waypoint_toggle">Activar Waypoint:</label>
-                    <label class="switch">
-                        <input type="checkbox" id="waypoint-toggle">
-                        <span class="slider round"></span>
-                    </label>
                 </div>
                 <div>
                     <label for="text-style" data-i18n="label_text_style">Estilo:</label>

@@ -89,7 +89,7 @@ input[type="file"] { color: transparent; }
     font-size: 12px;
     font-weight: bold;
 }
-#circle-canvas-waypoint { bottom: 10px; left: 10px; display: none; }
+#circle-canvas-waypoint { bottom: 10px; left: 10px; }
 
 /* The switch - the box around the slider */
 .switch {

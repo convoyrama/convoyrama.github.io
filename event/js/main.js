@@ -57,13 +57,7 @@ function init() {
         navigator.clipboard.writeText(convoyInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyCustomInfo] Error al copiar: ${err.message}`));
     };
     initCanvasEventListeners();
-    dom.waypointToggle.addEventListener('change', (e) => {
-        const isVisible = e.target.checked;
-        state.setIsWaypointVisible(isVisible);
-        dom.waypointGroup.style.display = isVisible ? 'flex' : 'none';
-        dom.circleCanvasWaypoint.style.display = isVisible ? 'block' : 'none';
-        drawCanvas();
-    });
+
 
     dom.textSize.addEventListener("change", drawCanvas);
     dom.textStyle.addEventListener("change", drawCanvas);

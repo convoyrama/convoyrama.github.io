@@ -241,7 +241,7 @@ export function drawCanvas() {
     ctx.drawImage(circleCanvasTop, circleX, topY, circleDiameter, circleDiameter);
     ctx.drawImage(circleCanvasBottom, circleX, bottomY, circleDiameter, circleDiameter);
 
-    if (state.isWaypointVisible) {
+
         const circleCanvasWaypoint = dom.circleCanvasWaypoint, circleCtxWaypoint = circleCanvasWaypoint.getContext("2d");
         circleCanvasWaypoint.width = circleDiameter; circleCanvasWaypoint.height = circleDiameter;
         circleCtxWaypoint.clearRect(0, 0, circleDiameter, circleDiameter);
@@ -268,9 +268,9 @@ export function drawCanvas() {
         const waypointCircleCenterX = waypointX + circleDiameter / 2;
         ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
         ctx.fillRect(waypointCircleCenterX - waypointTextWidth / 2, waypointTextY - waypointTextHeight + 15, waypointTextWidth, waypointTextHeight);
+        ctx.textAlign = "center";
         ctx.fillStyle = textFill;
         ctx.fillText(waypointText, waypointCircleCenterX, waypointTextY);
-    }
     
     
     ctx.beginPath();
