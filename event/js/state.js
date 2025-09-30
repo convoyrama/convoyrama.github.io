@@ -7,6 +7,7 @@ export let circleImageXBottom = 0, circleImageYBottom = 0, circleImageScaleBotto
 export let circleImageXWaypoint = 0, circleImageYWaypoint = 0, circleImageScaleWaypoint = 1;
 export let detailImageX = 0, detailImageY = 0, detailImageScale = 1;
 export let isDragging = false, isDraggingTop = false, isDraggingBottom = false, isDraggingDetail = false, isDraggingWaypoint = false;
+export let isWaypointVisible = false;
 export let startX, startY;
 
 export let currentLangData = {};
@@ -51,4 +52,5 @@ export function setStartY(val) { startY = val; }
 
 export function setCurrentLangData(data) { currentLangData = data; }
 export function setSelectedRegion(region) { selectedRegion = region; }
+export function setIsWaypointVisible(val) { isWaypointVisible = val; }
 

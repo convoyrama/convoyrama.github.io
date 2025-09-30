@@ -57,6 +57,10 @@ function init() {
         navigator.clipboard.writeText(convoyInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyCustomInfo] Error al copiar: ${err.message}`));
     };
     initCanvasEventListeners();
+    dom.waypointToggle.addEventListener('change', (e) => {
+        state.setIsWaypointVisible(e.target.checked);
+        drawCanvas();
+    });
 
 
     dom.textSize.addEventListener("change", drawCanvas);

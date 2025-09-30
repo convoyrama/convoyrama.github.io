@@ -79,6 +79,13 @@ input[type="file"] { color: transparent; }
     border-radius: 8px;
 }
 
+.label-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
 .warning-message {
     background-color: rgb(90, 165, 25);
     color: rgb(240, 240, 240);

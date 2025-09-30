@@ -137,7 +137,13 @@
                     </div>
                 </div>
                 <div class="input-group" id="waypoint-group">
-                    <label for="waypoint-upload" data-i18n="label_waypoint">Waypoint:</label>
+                    <div class="label-container">
+                        <label for="waypoint-upload" data-i18n="label_waypoint">Waypoint:</label>
+                        <label class="switch">
+                            <input type="checkbox" id="waypoint-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
                     <input type="file" id="waypoint-upload" accept="image/*">
                     <div class="zoom-buttons">
                         <button id="zoom-in-waypoint">+</button>

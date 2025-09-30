@@ -39,6 +39,7 @@ export const dom = {
     zoomOutDetail: document.getElementById("zoom-out-detail"),
     manualOffsetSelect: document.getElementById("manual-offset-select"),
     waypointToggle: document.getElementById("waypoint-toggle"),
+    waypointToggle: document.getElementById("waypoint-toggle"),
     waypointGroup: document.getElementById("waypoint-group"),
     waypointUpload: document.getElementById("waypoint-upload"),
     zoomInWaypoint: document.getElementById("zoom-in-waypoint"),

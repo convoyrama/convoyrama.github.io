@@ -241,6 +241,8 @@ export function drawCanvas() {
     ctx.drawImage(circleCanvasTop, circleX, topY, circleDiameter, circleDiameter);
     ctx.drawImage(circleCanvasBottom, circleX, bottomY, circleDiameter, circleDiameter);
 
+    if (state.isWaypointVisible) {
+
 
         const circleCanvasWaypoint = dom.circleCanvasWaypoint, circleCtxWaypoint = circleCanvasWaypoint.getContext("2d");
         circleCanvasWaypoint.width = circleDiameter; circleCanvasWaypoint.height = circleDiameter;
@@ -271,6 +273,7 @@ export function drawCanvas() {
         ctx.textAlign = "center";
         ctx.fillStyle = textFill;
         ctx.fillText(waypointText, waypointCircleCenterX, waypointTextY);
+    }
     
     
     ctx.beginPath();
