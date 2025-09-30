@@ -153,6 +153,44 @@ export function drawCanvas() {
             textFill = sunriseGradient;
             borderColor = "#FFA500";
             break;
+        case "shadow":
+            textFill = "white";
+            shadowColor = "black";
+            ctx.shadowBlur = 15;
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
+            break;
+        case "metallic":
+            const metallicGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            metallicGradient.addColorStop(0, "#E5E4E2");
+            metallicGradient.addColorStop(0.5, "#C0C0C0");
+            metallicGradient.addColorStop(1, "#8C8C8C");
+            textFill = metallicGradient;
+            shadowColor = "black";
+            borderColor = "#C0C0C0";
+            break;
+        case "toxic":
+            textFill = "#7CFC00";
+            shadowColor = "#ADFF2F";
+            borderColor = "#7CFC00";
+            ctx.shadowBlur = 20;
+            break;
+        case "cosmic":
+            const cosmicGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            cosmicGradient.addColorStop(0, "#483D8B");
+            cosmicGradient.addColorStop(1, "#191970");
+            textFill = "white";
+            shadowColor = cosmicGradient;
+            borderColor = "#483D8B";
+            break;
+        case "sunburst":
+            const sunburstGradient = ctx.createLinearGradient(0, 0, 0, textSize + 10);
+            sunburstGradient.addColorStop(0, "#FFD700");
+            sunburstGradient.addColorStop(1, "#FF4500");
+            textFill = sunburstGradient;
+            shadowColor = "darkred";
+            borderColor = "#FFD700";
+            break;
     }
 
     ctx.shadowColor = shadowColor;
