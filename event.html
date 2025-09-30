@@ -136,6 +136,14 @@
                         <button id="zoom-out-bottom">-</button>
                     </div>
                 </div>
+                <div class="input-group" id="waypoint-group" style="display: none;">
+                    <label for="waypoint-upload" data-i18n="label_waypoint">Waypoint:</label>
+                    <input type="file" id="waypoint-upload" accept="image/*">
+                    <div class="zoom-buttons">
+                        <button id="zoom-in-waypoint">+</button>
+                        <button id="zoom-out-waypoint">-</button>
+                    </div>
+                </div>
                 <div class="input-group">
                     <label for="logo-upload" data-i18n="label_vtc_logo">Logo VTC:</label>
                     <input type="file" id="logo-upload" accept="image/*">
@@ -161,6 +169,7 @@
                 <canvas id="map-canvas"></canvas>
                 <canvas id="circle-canvas-top" class="circle-canvas"></canvas>
                 <canvas id="circle-canvas-bottom" class="circle-canvas"></canvas>
+                <canvas id="circle-canvas-waypoint" class="circle-canvas"></canvas>
             </div>
             <div class="canvas-controls">
                 <button id="download-canvas" data-i18n="btn_download_image">Descargar Imagen</button>
@@ -177,11 +186,11 @@
                     </select>
                 </div>
                 <div>
-                    <label for="text-align" data-i18n="label_text_align">Alineación:</label>
-                    <select id="text-align">
-                        <option value="top-left" data-i18n="align_top_left">Arriba a la Izquierda</option>
-                        <option value="bottom-left" data-i18n="align_bottom_left">Abajo a la Izquierda</option>
-                    </select>
+                    <label for="waypoint-toggle" data-i18n="label_waypoint_toggle">Activar Waypoint:</label>
+                    <label class="switch">
+                        <input type="checkbox" id="waypoint-toggle">
+                        <span class="slider round"></span>
+                    </label>
                 </div>
                 <div>
                     <label for="text-style" data-i18n="label_text_style">Estilo:</label>

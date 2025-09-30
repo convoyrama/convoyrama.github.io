@@ -7,7 +7,7 @@ import { wrapText } from './utils.js';
 export function drawCanvas() {
     const canvas = dom.mapCanvas;
     const ctx = canvas.getContext("2d");
-    const textAlign = dom.textAlign.value, textSize = parseInt(dom.textSize.value), textStyle = dom.textStyle.value, textBackgroundOpacity = parseFloat(dom.textBackgroundOpacity.value);
+    const textSize = parseInt(dom.textSize.value), textStyle = dom.textStyle.value, textBackgroundOpacity = parseFloat(dom.textBackgroundOpacity.value);
     const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || (state.currentLangData.canvas_default_event_name || "Evento Personalizado");
     const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
 
@@ -219,8 +219,7 @@ export function drawCanvas() {
     } else { textLines.splice(4, textLines.length - 4); textLines.push(`${state.currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'}`); textLines.push(`  N/A`); }
 
     const textX = 20, lineHeight = textSize + 15;
-    let textY;
-    if (textAlign === "top-left") { textY = topOffset + (textSize + 15); } else { textY = canvas.height - (textLines.length * lineHeight) - 20; }
+    let textY = topOffset + (textSize + 15);
 
     const textWidth = Math.max(...textLines.map(line => ctx.measureText(line).width)) + 40;
     const textHeight = textLines.length * lineHeight + 20;
@@ -241,6 +240,38 @@ export function drawCanvas() {
     if (state.circleImageBottom) { circleCtxBottom.save(); circleCtxBottom.beginPath(); circleCtxBottom.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2); circleCtxBottom.clip(); circleCtxBottom.drawImage(state.circleImageBottom, state.circleImageXBottom, state.circleImageYBottom, state.circleImageBottom.width * state.circleImageScaleBottom, state.circleImageBottom.height * state.circleImageScaleBottom); circleCtxBottom.restore(); }
     ctx.drawImage(circleCanvasTop, circleX, topY, circleDiameter, circleDiameter);
     ctx.drawImage(circleCanvasBottom, circleX, bottomY, circleDiameter, circleDiameter);
+
+    if (state.isWaypointVisible) {
+        const circleCanvasWaypoint = dom.circleCanvasWaypoint, circleCtxWaypoint = circleCanvasWaypoint.getContext("2d");
+        circleCanvasWaypoint.width = circleDiameter; circleCanvasWaypoint.height = circleDiameter;
+        circleCtxWaypoint.clearRect(0, 0, circleDiameter, circleDiameter);
+        if (state.circleImageWaypoint) { 
+            circleCtxWaypoint.save(); 
+            circleCtxWaypoint.beginPath(); 
+            circleCtxWaypoint.arc(circleDiameter / 2, circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2); 
+            circleCtxWaypoint.clip(); 
+            circleCtxWaypoint.drawImage(state.circleImageWaypoint, state.circleImageXWaypoint, state.circleImageYWaypoint, state.circleImageWaypoint.width * state.circleImageScaleWaypoint, state.circleImageWaypoint.height * state.circleImageScaleWaypoint); 
+            circleCtxWaypoint.restore(); 
+        }
+        const waypointX = 10;
+        ctx.drawImage(circleCanvasWaypoint, waypointX, bottomY, circleDiameter, circleDiameter);
+
+        ctx.beginPath();
+        ctx.arc(waypointX + circleDiameter / 2, bottomY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
+        ctx.strokeStyle = borderColor; ctx.lineWidth = 10; ctx.stroke();
+
+        const waypointText = state.currentLangData.canvas_label_waypoint || "Waypoint";
+        const waypointTextMetrics = ctx.measureText(waypointText); 
+        const waypointTextWidth = waypointTextMetrics.width + 40; 
+        const waypointTextHeight = textSize + 20; 
+        const waypointTextY = bottomY - 20;
+        const waypointCircleCenterX = waypointX + circleDiameter / 2;
+        ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
+        ctx.fillRect(waypointCircleCenterX - waypointTextWidth / 2, waypointTextY - waypointTextHeight + 15, waypointTextWidth, waypointTextHeight);
+        ctx.fillStyle = textFill;
+        ctx.fillText(waypointText, waypointCircleCenterX, waypointTextY);
+    }
+    
     
     ctx.beginPath();
     ctx.arc(circleX + circleDiameter / 2, topY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
@@ -311,12 +342,19 @@ export function initCanvasEventListeners() {
     circleCanvasBottom.addEventListener("mouseup", () => { state.setIsDraggingBottom(false); });
     circleCanvasBottom.addEventListener("mouseleave", () => { state.setIsDraggingBottom(false); });
 
+    const circleCanvasWaypoint = dom.circleCanvasWaypoint;
+    circleCanvasWaypoint.addEventListener("mousedown", (e) => { if (state.circleImageWaypoint) { state.setIsDraggingWaypoint(true); state.setStartX(e.offsetX - state.circleImageXWaypoint); state.setStartY(e.offsetY - state.circleImageYWaypoint); } });
+    circleCanvasWaypoint.addEventListener("mousemove", (e) => { if (state.isDraggingWaypoint && state.circleImageWaypoint) { state.setCircleImageXWaypoint(e.offsetX - state.startX); state.setCircleImageYWaypoint(e.offsetY - state.startY); drawCanvas(); } });
+    circleCanvasWaypoint.addEventListener("mouseup", () => { state.setIsDraggingWaypoint(false); });
+    circleCanvasWaypoint.addEventListener("mouseleave", () => { state.setIsDraggingWaypoint(false); });
+
     dom.mapUpload.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { const img = new Image(); img.onload = () => { state.setMapImage(img); state.setImageX(0); state.setImageY(0); state.setImageScale(1); drawCanvas(); }; img.src = URL.createObjectURL(file); } else { state.setMapImage(null); drawCanvas(); } });
     dom.circleUploadTop.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { const img = new Image(); img.onload = () => { state.setCircleImageTop(img); state.setCircleImageXTop(0); state.setCircleImageYTop(0); state.setCircleImageScaleTop(1); drawCanvas(); }; img.src = URL.createObjectURL(file); } else { state.setCircleImageTop(null); drawCanvas(); } });
     dom.circleUploadBottom.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { const img = new Image(); img.onload = () => { state.setCircleImageBottom(img); state.setCircleImageXBottom(0); state.setCircleImageYBottom(0); state.setCircleImageScaleBottom(1); drawCanvas(); }; img.src = URL.createObjectURL(file); } else { state.setCircleImageBottom(null); drawCanvas(); } });
     dom.logoUpload.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { const img = new Image(); img.onload = () => { state.setLogoImage(img); drawCanvas(); }; img.src = URL.createObjectURL(file); } else { state.setLogoImage(null); drawCanvas(); } });
     dom.backgroundUpload.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { const img = new Image(); img.onload = () => { state.setBackgroundImage(img); drawCanvas(); }; img.src = URL.createObjectURL(file); } else { state.setBackgroundImage(null); drawCanvas(); } });
     dom.detailUpload.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { const img = new Image(); img.onload = () => { state.setDetailImage(img); state.setDetailImageX(0); state.setDetailImageY(0); state.setDetailImageScale(1); drawCanvas(); }; img.src = URL.createObjectURL(file); } else { state.setDetailImage(null); drawCanvas(); } });
+    dom.waypointUpload.addEventListener("change", (e) => { const file = e.target.files[0]; if (file) { const img = new Image(); img.onload = () => { state.setCircleImageWaypoint(img); state.setCircleImageXWaypoint(0); state.setCircleImageYWaypoint(0); state.setCircleImageScaleWaypoint(1); drawCanvas(); }; img.src = URL.createObjectURL(file); } else { state.setCircleImageWaypoint(null); drawCanvas(); } });
 
     dom.zoomIn.addEventListener("click", () => { if (state.mapImage) { state.setImageScale(state.imageScale * 1.2); drawCanvas(); } });
     dom.zoomOut.addEventListener("click", () => { if (state.mapImage) { state.setImageScale(state.imageScale / 1.2); drawCanvas(); } });
@@ -326,4 +364,7 @@ export function initCanvasEventListeners() {
     dom.zoomOutBottom.addEventListener("click", () => { if (state.circleImageBottom) { state.setCircleImageScaleBottom(state.circleImageScaleBottom / 1.2); drawCanvas(); } });
     dom.zoomInDetail.addEventListener("click", () => { if (state.detailImage) { state.setDetailImageScale(state.detailImageScale * 1.2); drawCanvas(); } });
     dom.zoomOutDetail.addEventListener("click", () => { if (state.detailImage) { state.setDetailImageScale(state.detailImageScale / 1.2); drawCanvas(); } });
+
+    dom.zoomInWaypoint.addEventListener("click", () => { if (state.circleImageWaypoint) { state.setCircleImageScaleWaypoint(state.circleImageScaleWaypoint * 1.2); drawCanvas(); } });
+    dom.zoomOutWaypoint.addEventListener("click", () => { if (state.circleImageWaypoint) { state.setCircleImageScaleWaypoint(state.circleImageScaleWaypoint / 1.2); drawCanvas(); } });
 }

@@ -57,7 +57,14 @@ function init() {
         navigator.clipboard.writeText(convoyInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyCustomInfo] Error al copiar: ${err.message}`));
     };
     initCanvasEventListeners();
-    dom.textAlign.addEventListener("change", drawCanvas);
+    dom.waypointToggle.addEventListener('change', (e) => {
+        const isVisible = e.target.checked;
+        state.setIsWaypointVisible(isVisible);
+        dom.waypointGroup.style.display = isVisible ? 'flex' : 'none';
+        dom.circleCanvasWaypoint.style.display = isVisible ? 'block' : 'none';
+        drawCanvas();
+    });
+
     dom.textSize.addEventListener("change", drawCanvas);
     dom.textStyle.addEventListener("change", drawCanvas);
     dom.textBackgroundOpacity.addEventListener("change", drawCanvas);
@@ -85,7 +92,7 @@ function init() {
     dom.customServer.addEventListener("input", drawCanvas);
     dom.customTime.addEventListener("input", drawCanvas);
     dom.departureTimeOffset.addEventListener("change", drawCanvas);
-    dom.resetCanvas.addEventListener("click", () => { state.setMapImage(null); state.setCircleImageTop(null); state.setCircleImageBottom(null); state.setLogoImage(null); state.setBackgroundImage(null); state.setDetailImage(null); dom.mapUpload.value = ""; dom.circleUploadTop.value = ""; dom.circleUploadBottom.value = ""; dom.logoUpload.value = ""; dom.backgroundUpload.value = ""; dom.detailUpload.value = ""; drawCanvas(); });
+    dom.resetCanvas.addEventListener("click", () => { state.setMapImage(null); state.setCircleImageTop(null); state.setCircleImageBottom(null); state.setLogoImage(null); state.setBackgroundImage(null); state.setDetailImage(null); state.setCircleImageWaypoint(null); dom.mapUpload.value = ""; dom.circleUploadTop.value = ""; dom.circleUploadBottom.value = ""; dom.logoUpload.value = ""; dom.backgroundUpload.value = ""; dom.detailUpload.value = ""; dom.waypointUpload.value = ""; drawCanvas(); });
     drawCanvas();
 }
 
