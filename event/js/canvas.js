@@ -170,8 +170,8 @@ export function drawCanvas() {
     ctx.fillStyle = textFill;
     ctx.fillText(eventName, canvas.width / 2, 60);
 
-    let topOffset = 100;
-    if (state.logoImage) { const logoHeight = 100; const logoWidth = state.logoImage.width * (logoHeight / state.logoImage.height); const logoX = (canvas.width - logoWidth) / 2; const logoY = 80; ctx.drawImage(state.logoImage, logoX, logoY, logoWidth, logoHeight); topOffset += logoHeight; }
+    let topOffset = 30;
+    if (state.logoImage) { const logoHeight = 100; const logoWidth = state.logoImage.width * (logoHeight / state.logoImage.height); const logoX = (canvas.width - logoWidth) / 2; const logoY = 80; ctx.drawImage(state.logoImage, logoX, logoY, logoWidth, logoHeight); topOffset = logoY + logoHeight; }
 
     ctx.font = `bold ${textSize}px Arial`;
     ctx.textAlign = "left";
