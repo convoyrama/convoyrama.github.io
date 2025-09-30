@@ -101,7 +101,7 @@
   "tz_ru_tr": "RU, TR",
   "canvas_label_departure": "Departure",
   "canvas_label_destination": "Destination",
-  "label_waypoint": "Waypoint",
+  "label_waypoint": "Waypoint:",
   "label_waypoint_toggle": "Enable Waypoint:",
   "canvas_label_waypoint": "Waypoint",
   "canvas_default_event_name": "Custom Event",
