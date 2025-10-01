@@ -1,7 +1,7 @@
 import { dom } from './dom.js';
 import * as state from './state.js';
 import { timezoneRegions } from './config.js';
-import { updateLiveClocks, formatDateForDisplay, getGameTime, getDetailedDayNightIcon } from './time.js';
+import { updateLiveClocks, formatDateForDisplay, getGameTime, getDetailedDayNightIcon, formatDateForDisplayShort } from './time.js';
 import { fetchLanguage, applyTranslations } from './i18n.js';
 import { drawCanvas, initCanvasEventListeners } from './canvas.js';
 import { showCopyMessage, getUnixTimestamp } from './utils.js';
@@ -60,8 +60,6 @@ function init() {
     dom.copyTmpBtn.onclick = () => {
         const customDateValue = dom.customDate.value;
         const customTimeValue = dom.customTime.value;
-        const customEventNameValue = dom.customEventName.value || "Evento Personalizado";
-        const customEventLinkValue = dom.customEventLink.value || "https://convoyrama.github.io/events.html";
         const customEventDescriptionValue = dom.customEventDescription.value || "Sin descripción";
         const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar";
         const customDestinationValue = dom.customDestination.value || "Sin especificar";
@@ -72,38 +70,77 @@ function init() {
             return;
         }
 
+        // Correctly create the date object from user's local input
         const [hh, mm] = customTimeValue.split(":").map(Number);
         const dateParts = customDateValue.split('-');
         const year = parseInt(dateParts[0], 10);
         const month = parseInt(dateParts[1], 10) - 1;
         const day = parseInt(dateParts[2], 10);
-        const customDateObj = new Date(Date.UTC(year, month, day, hh, mm));
+        const customDateObj = new Date(year, month, day);
+        customDateObj.setHours(hh, mm, 0, 0);
+
+        // Correctly calculate the true UTC time, replicating canvas logic
+        const browserOffsetHours = new Date().getTimezoneOffset() / 60;
+        let finalOffsetHours = browserOffsetHours;
+        const manualOffset = dom.manualOffsetSelect.value;
+        if (manualOffset !== 'auto') {
+            finalOffsetHours = -parseInt(manualOffset, 10);
+        }
+        const offsetCorrection = (browserOffsetHours - finalOffsetHours) * 3600000;
+        const correctTimestamp = customDateObj.getTime() - offsetCorrection;
+        const utcBaseTime = new Date(correctTimestamp);
 
         const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60 * 1000;
-        const departureDate = new Date(customDateObj.getTime() + departureOffset);
+        const departureDate = new Date(utcBaseTime.getTime() + departureOffset);
 
-        const meetingTimeUTC = customDateObj.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
+        const meetingTimeUTC = utcBaseTime.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
         const departureTimeUTC = departureDate.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
 
         let tmpInfo = `** ${state.currentLangData.tmp_description_title || 'DESCRIPCIÓN'} **\n`;
         tmpInfo += `> ${customEventDescriptionValue}\n\n`;
         tmpInfo += `** ${state.currentLangData.tmp_event_info_title || 'INFORMACION DEL EVENTO'} **\n`;
-        tmpInfo += `* 🗓️ ${state.currentLangData.tmp_date_label || 'Fecha (UTC)'}: ${customDateObj.toLocaleDateString('en-GB', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' })}\n`;
+        tmpInfo += `* 🗓️ ${state.currentLangData.tmp_date_label || 'Fecha (UTC)'}: ${utcBaseTime.toLocaleDateString('en-GB', { timeZone: 'UTC'})}\n`;
         tmpInfo += `* ⏰ ${state.currentLangData.tmp_meeting_time_label || 'Reunión (UTC)'}: ${meetingTimeUTC}\n`;
         tmpInfo += `* 🚚 ${state.currentLangData.tmp_departure_time_label || 'Salida (UTC)'}: ${departureTimeUTC}\n`;
         tmpInfo += `* 🖥️ ${state.currentLangData.tmp_server_label || 'Servidor'}: ${customServerValue}\n`;
         tmpInfo += `* ➡️ ${state.currentLangData.tmp_start_place_label || 'Ciudad de Inicio'}: ${customStartPlaceValue}\n`;
         tmpInfo += `* ⬅️ ${state.currentLangData.tmp_destination_label || 'Ciudad de Destino'}: ${customDestinationValue}\n\n`;
 
-        // Generar tabla de zonas horarias
+        // Generate timezone table, replicating canvas logic
         const selectedRegionKey = document.getElementById('region-select').value;
         const selectedRegion = timezoneRegions[selectedRegionKey];
         if (selectedRegion) {
-            tmpInfo += `| | |\n|:--|:--|\n`; // Encabezado de la tabla para TMP
-            selectedRegion.zones.forEach(zone => {
-                const zoneTime = new Date(customDateObj.getTime() + zone.offset * 3600 * 1000).toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
-                const tzName = state.currentLangData[zone.key] || zone.key;
-                tmpInfo += `| ${tzName} | ${zoneTime} |\n`;
+            const datesByDay = new Map();
+            selectedRegion.zones.forEach(tz => {
+                const localTimeForTz = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
+                const dayString = formatDateForDisplayShort(localTimeForTz);
+                if (!datesByDay.has(dayString)) {
+                    datesByDay.set(dayString, []);
+                }
+                const tzLabel = state.currentLangData[tz.key] || tz.key;
+                const meetingTime = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
+                const departureTime = new Date(meetingTime.getTime() + departureOffset);
+                const timeString = `${meetingTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} / ${departureTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
+                datesByDay.get(dayString).push({ tzLabel, timeString });
+            });
+
+            const monthMap = (state.currentLangData.months_short || ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]).reduce((acc, month, index) => { acc[month] = index; return acc; }, {});
+            const sortedDays = Array.from(datesByDay.keys()).sort((a, b) => {
+                const [dayA, monthAbbrA] = a.split(' ');
+                const [dayB, monthAbbrB] = b.split(' ');
+                const dateA = new Date(new Date().getFullYear(), monthMap[monthAbbrA], dayA);
+                const dateB = new Date(new Date().getFullYear(), monthMap[monthAbbrB], dayB);
+                return dateA - dateB;
+            });
+
+            sortedDays.forEach(dayString => {
+                tmpInfo += `** ${dayString} **\n`;
+                tmpInfo += `| | |\n|:--|:--|\n`;
+                const dayEntries = datesByDay.get(dayString);
+                dayEntries.forEach(entry => {
+                    tmpInfo += `| ${entry.tzLabel} | ${entry.timeString} |\n`;
+                });
+                tmpInfo += '\n';
             });
         }
 
