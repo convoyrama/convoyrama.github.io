@@ -11,6 +11,40 @@ async function loadLanguage(lang) {
     state.setCurrentLangData(langData);
     applyTranslations(langData);
     drawCanvas();
+    updateInGameTimeEmojis(); // Actualizar emojis al cambiar idioma
+}
+
+function updateInGameTimeEmojis() {
+    const customDateValue = dom.customDate.value;
+    const customTimeValue = dom.customTime.value;
+
+    if (!customDateValue || !customTimeValue) {
+        dom.ingameEmojiDisplay.innerHTML = '';
+        return;
+    }
+
+    const [hh, mm] = customTimeValue.split(":").map(Number);
+    const dateParts = customDateValue.split('-');
+    const year = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10) - 1;
+    const day = parseInt(dateParts[2], 10);
+    const customDateObj = new Date(year, month, day);
+    customDateObj.setHours(hh, mm, 0, 0);
+
+    const meetingGameTime = getGameTime(customDateObj);
+    const meetingEmoji = getDetailedDayNightIcon(meetingGameTime.hours);
+
+    const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60 * 1000;
+    const departureDate = new Date(customDateObj.getTime() + departureOffset);
+    const departureGameTime = getGameTime(departureDate);
+    const departureEmoji = getDetailedDayNightIcon(departureGameTime.hours);
+
+    const arrivalDate = new Date(departureDate.getTime() + 50 * 60000);
+    const arrivalGameTime = getGameTime(arrivalDate);
+    const arrivalEmoji = getDetailedDayNightIcon(arrivalGameTime.hours);
+
+    dom.ingameEmojiDisplay.innerHTML = `${meetingEmoji} ${departureEmoji} ${arrivalEmoji}`;
+    twemoji.parse(dom.ingameEmojiDisplay); // Asegurarse de que los emojis se rendericen correctamente
 }
 
 function init() {
@@ -18,16 +52,22 @@ function init() {
     const flags = document.querySelectorAll(".flag-emoji");
     flags.forEach(flag => { flag.addEventListener("click", () => { const lang = flag.getAttribute("data-lang"); loadLanguage(lang); flags.forEach(f => f.classList.remove('selected')); flag.classList.add('selected'); }); });
     const regionSelect = document.getElementById('region-select');
-    for (const regionKey in timezoneRegions) { const option = document.createElement('option'); option.value = regionKey; option.setAttribute('data-i18n', timezoneRegions[regionKey].name); option.textContent = regionKey; regionSelect.appendChild(option); }
+    for (const regionKey in timezoneRegions) { const option = document.createElement('option'); option.value = regionKey; option.setAttribute('data-i18n', timezoneRegions[regionKey].name); option.textContent = regionKey; regionSelect.appendChild(option); } 
     regionSelect.addEventListener('change', (e) => { state.setSelectedRegion(e.target.value); drawCanvas(); });
-    dom.manualOffsetSelect.addEventListener('change', drawCanvas);
+    dom.manualOffsetSelect.addEventListener('change', () => { drawCanvas(); updateInGameTimeEmojis(); });
     loadLanguage('es'); document.querySelector('.flag-emoji[data-lang="es"]').classList.add('selected');
     updateLiveClocks(); setInterval(updateLiveClocks, 1000);
     const userNow = new Date();
     dom.customDate.value = userNow.toISOString().split('T')[0];
     dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(userNow)}`;
-    dom.customDate.onchange = () => { const customDateObj = new Date(dom.customDate.value); dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`; drawCanvas(); };
     
+    dom.customDate.onchange = () => { 
+        const customDateObj = new Date(dom.customDate.value); 
+        dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`; 
+        drawCanvas(); 
+        updateInGameTimeEmojis(); 
+    };
+
     dom.copyCustomInfo.onclick = () => {
         const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || state.currentLangData.canvas_default_event_name || "Evento Personalizado";
         const customEventLinkValue = dom.customEventLink.value || "https://convoyrama.github.io/events.html", customEventDescriptionValue = dom.customEventDescription.value || "Sin descripción";
@@ -200,10 +240,13 @@ function init() {
     dom.customStartPlace.addEventListener("input", drawCanvas);
     dom.customDestination.addEventListener("input", drawCanvas);
     dom.customServer.addEventListener("input", drawCanvas);
-    dom.customTime.addEventListener("input", drawCanvas);
-    dom.departureTimeOffset.addEventListener("change", drawCanvas);
+    
+    dom.customTime.addEventListener("input", () => { drawCanvas(); updateInGameTimeEmojis(); });
+    dom.departureTimeOffset.addEventListener("change", () => { drawCanvas(); updateInGameTimeEmojis(); });
+
     dom.resetCanvas.addEventListener("click", () => { state.setMapImage(null); state.setCircleImageTop(null); state.setCircleImageBottom(null); state.setLogoImage(null); state.setBackgroundImage(null); state.setDetailImage(null); state.setCircleImageWaypoint(null); dom.mapUpload.value = ""; dom.circleUploadTop.value = ""; dom.circleUploadBottom.value = ""; dom.logoUpload.value = ""; dom.backgroundUpload.value = ""; dom.detailUpload.value = ""; dom.waypointUpload.value = ""; drawCanvas(); });
     drawCanvas();
+    updateInGameTimeEmojis(); // Llamada inicial para mostrar emojis si hay datos precargados
 }
 
 window.onload = init;

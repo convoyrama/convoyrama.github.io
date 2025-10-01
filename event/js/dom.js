@@ -46,4 +46,5 @@ export const dom = {
     waypointUpload: document.getElementById("waypoint-upload"),
     zoomInWaypoint: document.getElementById("zoom-in-waypoint"),
     zoomOutWaypoint: document.getElementById("zoom-out-waypoint"),
+    ingameEmojiDisplay: document.getElementById("ingame-emoji-display"),
 };

@@ -10,7 +10,7 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 .input-col { display: flex; flex-direction: column; }
 #custom-date, #custom-time, #departure-time-offset { width: 150px; }
 .input-row { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 10px; }
-#custom-date, #custom-time, #custom-event-name, #custom-event-link, #custom-start-place, #custom-destination, #custom-server { padding: 6px; margin: 5px; font-size: .85em; border: 2px solid rgb(90,165,25); border-radius: 6px; }
+#custom-date, #custom-time, #departure-time-offset, #custom-event-name, #custom-event-link, #custom-start-place, #custom-destination, #custom-server { padding: 6px; margin: 5px; font-size: .85em; border: 2px solid rgb(90,165,25); border-radius: 6px; }
 #custom-date, #custom-time { width: 150px; }
 #custom-event-name, #custom-event-link, #custom-start-place, #custom-destination, #custom-server { width: 45%; }
 #custom-event-description { width: 100%; max-height: 50px; resize: vertical; rows: 2; padding: 6px; margin: 5px; font-size: .85em; border: 2px solid rgb(90,165,25); border-radius: 6px; }
