@@ -11,7 +11,7 @@ async function loadLanguage(lang) {
     state.setCurrentLangData(langData);
     applyTranslations(langData);
     drawCanvas();
-    updateInGameTimeEmojis(); // Actualizar emojis al cambiar idioma
+    updateInGameTimeEmojis();
 }
 
 function updateInGameTimeEmojis() {
@@ -31,11 +31,21 @@ function updateInGameTimeEmojis() {
     const customDateObj = new Date(year, month, day);
     customDateObj.setHours(hh, mm, 0, 0);
 
-    const meetingGameTime = getGameTime(customDateObj);
+    const browserOffsetHours = new Date().getTimezoneOffset() / 60;
+    let finalOffsetHours = browserOffsetHours;
+    const manualOffset = dom.manualOffsetSelect.value;
+    if (manualOffset !== 'auto') {
+        finalOffsetHours = -parseInt(manualOffset, 10);
+    }
+    const offsetCorrection = (browserOffsetHours - finalOffsetHours) * 3600000;
+    const correctTimestamp = customDateObj.getTime() - offsetCorrection;
+    const utcBaseTime = new Date(correctTimestamp);
+
+    const meetingGameTime = getGameTime(utcBaseTime);
     const meetingEmoji = getDetailedDayNightIcon(meetingGameTime.hours);
 
     const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60 * 1000;
-    const departureDate = new Date(customDateObj.getTime() + departureOffset);
+    const departureDate = new Date(utcBaseTime.getTime() + departureOffset);
     const departureGameTime = getGameTime(departureDate);
     const departureEmoji = getDetailedDayNightIcon(departureGameTime.hours);
 
@@ -44,7 +54,7 @@ function updateInGameTimeEmojis() {
     const arrivalEmoji = getDetailedDayNightIcon(arrivalGameTime.hours);
 
     dom.ingameEmojiDisplay.innerHTML = `${meetingEmoji} ${departureEmoji} ${arrivalEmoji}`;
-    twemoji.parse(dom.ingameEmojiDisplay); // Asegurarse de que los emojis se rendericen correctamente
+    twemoji.parse(dom.ingameEmojiDisplay);
 }
 
 function init() {
@@ -52,8 +62,8 @@ function init() {
     const flags = document.querySelectorAll(".flag-emoji");
     flags.forEach(flag => { flag.addEventListener("click", () => { const lang = flag.getAttribute("data-lang"); loadLanguage(lang); flags.forEach(f => f.classList.remove('selected')); flag.classList.add('selected'); }); });
     const regionSelect = document.getElementById('region-select');
-    for (const regionKey in timezoneRegions) { const option = document.createElement('option'); option.value = regionKey; option.setAttribute('data-i18n', timezoneRegions[regionKey].name); option.textContent = regionKey; regionSelect.appendChild(option); } 
-    regionSelect.addEventListener('change', (e) => { state.setSelectedRegion(e.target.value); drawCanvas(); });
+    for (const regionKey in timezoneRegions) { const option = document.createElement('option'); option.value = regionKey; option.setAttribute('data-i18n', timezoneRegions[regionKey].name); option.textContent = regionKey; regionSelect.appendChild(option); }
+    regionSelect.addEventListener('change', (e) => { state.setSelectedRegion(e.target.value); drawCanvas(); updateInGameTimeEmojis(); });
     dom.manualOffsetSelect.addEventListener('change', () => { drawCanvas(); updateInGameTimeEmojis(); });
     loadLanguage('es'); document.querySelector('.flag-emoji[data-lang="es"]').classList.add('selected');
     updateLiveClocks(); setInterval(updateLiveClocks, 1000);
@@ -246,7 +256,7 @@ function init() {
 
     dom.resetCanvas.addEventListener("click", () => { state.setMapImage(null); state.setCircleImageTop(null); state.setCircleImageBottom(null); state.setLogoImage(null); state.setBackgroundImage(null); state.setDetailImage(null); state.setCircleImageWaypoint(null); dom.mapUpload.value = ""; dom.circleUploadTop.value = ""; dom.circleUploadBottom.value = ""; dom.logoUpload.value = ""; dom.backgroundUpload.value = ""; dom.detailUpload.value = ""; dom.waypointUpload.value = ""; drawCanvas(); });
     drawCanvas();
-    updateInGameTimeEmojis(); // Llamada inicial para mostrar emojis si hay datos precargados
+    updateInGameTimeEmojis();
 }
 
 window.onload = init;
