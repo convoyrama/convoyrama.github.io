@@ -163,6 +163,11 @@ input:checked + .slider:before {
 
 #ingame-emoji-display {
     align-self: center;
-    font-size: 0.9em;
     margin-left: 15px;
+}
+
+#ingame-emoji-display img.emoji {
+    height: 1.2em;
+    width: 1.2em;
+    vertical-align: middle;
 }
