@@ -95,9 +95,13 @@ function init() {
         const meetingTimeUTC = utcBaseTime.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
         const departureTimeUTC = departureDate.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
 
+        const includeImages = dom.tmpImagesToggle.checked;
+
         let tmpInfo = `# ${customEventNameValue}\n\n`;
+        if (includeImages) tmpInfo += `![](https://convoyrama.github.io/event/images/default/green.png)\n\n`;
         tmpInfo += `## ${state.currentLangData.tmp_description_title || 'DESCRIPCIÓN'}\n`;
         tmpInfo += `> ${customEventDescriptionValue}\n\n`;
+        if (includeImages) tmpInfo += `![](https://convoyrama.github.io/event/images/default/purple.png)\n\n`;
         tmpInfo += `## ${state.currentLangData.tmp_event_info_title || 'INFORMACION DEL EVENTO'}\n`;
         tmpInfo += `* 🗓️ ${state.currentLangData.tmp_date_label || 'Fecha (UTC)'}: ${utcBaseTime.toLocaleDateString('en-GB', { timeZone: 'UTC'})}\n`;
         tmpInfo += `* ⏰ ${state.currentLangData.tmp_meeting_time_label || 'Reunión (UTC)'}: ${meetingTimeUTC}\n`;
@@ -142,7 +146,9 @@ function init() {
             });
         }
 
-        tmpInfo += `\n[${state.currentLangData.tmp_rules_reminder || 'Recuerden seguir las normas de TruckersMP'}](https://truckersmp.com/rules)`;
+        if (includeImages) tmpInfo += `![](https://convoyrama.github.io/event/images/default/orange.png)\n\n`;
+
+        tmpInfo += `[${state.currentLangData.tmp_rules_reminder || 'Recuerden seguir las normas de TruckersMP'}](https://truckersmp.com/rules)`;
 
         navigator.clipboard.writeText(tmpInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyTmpBtn] Error al copiar: ${err.message}`));
     };

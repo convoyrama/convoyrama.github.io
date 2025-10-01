@@ -119,5 +119,6 @@
   "tmp_server_label": "Servidor",
   "tmp_start_place_label": "Ciudad de Inicio",
   "tmp_destination_label": "Ciudad de Destino",
-  "tmp_rules_reminder": "Recuerden seguir las normas de TruckersMP"
+  "tmp_rules_reminder": "Recuerden seguir las normas de TruckersMP",
+  "tmp_images_tooltip": "Incluir imágenes separadoras en el código copiado"
 }

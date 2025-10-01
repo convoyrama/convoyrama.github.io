@@ -24,6 +24,7 @@ export const dom = {
     downloadCanvas: document.getElementById("download-canvas"),
     copyCustomInfo: document.getElementById("copy-custom-info"),
     copyTmpBtn: document.getElementById("copy-tmp-btn"),
+    tmpImagesToggle: document.getElementById("tmp-images-toggle"),
     resetCanvas: document.getElementById("reset-canvas"),
     textSize: document.getElementById("text-size"),
     textStyle: document.getElementById("text-style"),
