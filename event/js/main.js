@@ -60,6 +60,7 @@ function init() {
     dom.copyTmpBtn.onclick = () => {
         const customDateValue = dom.customDate.value;
         const customTimeValue = dom.customTime.value;
+        const customEventNameValue = dom.customEventName.value || state.currentLangData.canvas_default_event_name || "Evento Personalizado";
         const customEventDescriptionValue = dom.customEventDescription.value || "Sin descripción";
         const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar";
         const customDestinationValue = dom.customDestination.value || "Sin especificar";
