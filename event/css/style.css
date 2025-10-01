@@ -160,3 +160,9 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+#ingame-emoji-display {
+    align-self: center;
+    font-size: 1.2em;
+    margin-left: 15px;
+}
