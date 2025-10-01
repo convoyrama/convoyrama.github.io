@@ -28,7 +28,7 @@ function init() {
     dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(userNow)}`;
     dom.customDate.onchange = () => { const customDateObj = new Date(dom.customDate.value); dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`; drawCanvas(); };
     dom.copyCustomInfo.onclick = () => {
-        const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || "Evento Personalizado";
+        const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || state.currentLangData.canvas_default_event_name || "Evento Personalizado";
         const customEventLinkValue = dom.customEventLink.value || "https://convoyrama.github.io/events.html", customEventDescriptionValue = dom.customEventDescription.value || "Sin descripción";
         const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
         if (!customDateValue || !customTimeValue) { showCopyMessage(state.currentLangData.error_no_date || "Por favor, selecciona una fecha y hora."); return; }
@@ -94,7 +94,8 @@ function init() {
         const meetingTimeUTC = utcBaseTime.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
         const departureTimeUTC = departureDate.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
 
-        let tmpInfo = `## ${state.currentLangData.tmp_description_title || 'DESCRIPCIÓN'}\n`;
+        let tmpInfo = `# ${customEventNameValue}\n\n`;
+        tmpInfo += `## ${state.currentLangData.tmp_description_title || 'DESCRIPCIÓN'}\n`;
         tmpInfo += `> ${customEventDescriptionValue}\n\n`;
         tmpInfo += `## ${state.currentLangData.tmp_event_info_title || 'INFORMACION DEL EVENTO'}\n`;
         tmpInfo += `* 🗓️ ${state.currentLangData.tmp_date_label || 'Fecha (UTC)'}: ${utcBaseTime.toLocaleDateString('en-GB', { timeZone: 'UTC'})}\n`;
@@ -139,6 +140,8 @@ function init() {
                 tmpInfo += '\n';
             });
         }
+
+        tmpInfo += `\n[${state.currentLangData.tmp_rules_reminder || 'Recuerden seguir las normas de TruckersMP'}](https://truckersmp.com/rules)`;
 
         navigator.clipboard.writeText(tmpInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyTmpBtn] Error al copiar: ${err.message}`));
     };

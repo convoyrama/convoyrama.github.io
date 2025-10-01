@@ -118,5 +118,6 @@
   "tmp_departure_time_label": "Partida (UTC)",
   "tmp_server_label": "Servidor",
   "tmp_start_place_label": "Cidade de Partida",
-  "tmp_destination_label": "Cidade de Destino"
+  "tmp_destination_label": "Cidade de Destino",
+  "tmp_rules_reminder": "Lembre-se de seguir as regras do TruckersMP"
 }
