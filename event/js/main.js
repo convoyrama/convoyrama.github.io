@@ -27,6 +27,7 @@ function init() {
     dom.customDate.value = userNow.toISOString().split('T')[0];
     dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(userNow)}`;
     dom.customDate.onchange = () => { const customDateObj = new Date(dom.customDate.value); dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`; drawCanvas(); };
+    
     dom.copyCustomInfo.onclick = () => {
         const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || state.currentLangData.canvas_default_event_name || "Evento Personalizado";
         const customEventLinkValue = dom.customEventLink.value || "https://convoyrama.github.io/events.html", customEventDescriptionValue = dom.customEventDescription.value || "Sin descripción";
@@ -53,7 +54,9 @@ function init() {
         const arrivalGameTime = getGameTime(arrivalDate);
         const arrivalEmoji = getDetailedDayNightIcon(arrivalGameTime.hours);
 
-        let convoyInfo = `[**${customEventNameValue}**](${customEventLinkValue})\nServidor: ${customServerValue}\nPartida: ${customStartPlaceValue}\nDestino: ${customDestinationValue}\n\n**Reunión:** <t:${meetingTimestamp}:F> (<t:${meetingTimestamp}:R>) ${meetingEmoji}\n**Salida:** <t:${departureTimestamp}:t> (<t:${departureTimestamp}:R>) ${departureEmoji}\n**${state.currentLangData.discord_arrival_time || 'Llegada Aprox.:'}** <t:${arrivalTimestamp}:t> (<t:${arrivalTimestamp}:R>) ${arrivalEmoji}\n\nDescripción: ${customEventDescriptionValue}`;
+        const ingameTimeLine = `**${state.currentLangData.ingame_time_title || 'Hora ingame'}:** ${state.currentLangData.meeting_label || 'Reunión'}: ${meetingEmoji} ${state.currentLangData.departure_label || 'Salida'}: ${departureEmoji} ${state.currentLangData.arrival_label || 'Llegada aprox'}: ${arrivalEmoji}`;
+
+        let convoyInfo = `[**${customEventNameValue}**](${customEventLinkValue})\nServidor: ${customServerValue}\nPartida: ${customStartPlaceValue}\nDestino: ${customDestinationValue}\n\n**Reunión:** <t:${meetingTimestamp}:F> (<t:${meetingTimestamp}:R>)\n**Salida:** <t:${departureTimestamp}:t> (<t:${departureTimestamp}:R>)\n**${state.currentLangData.discord_arrival_time || 'Llegada Aprox.:'}** <t:${arrivalTimestamp}:t> (<t:${arrivalTimestamp}:R>)\n${ingameTimeLine}\n\nDescripción: ${customEventDescriptionValue}`;
         navigator.clipboard.writeText(convoyInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyCustomInfo] Error al copiar: ${err.message}`));
     };
 
@@ -91,6 +94,14 @@ function init() {
 
         const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60 * 1000;
         const departureDate = new Date(utcBaseTime.getTime() + departureOffset);
+        const arrivalDate = new Date(departureDate.getTime() + 50 * 60000);
+
+        const meetingGameTime = getGameTime(utcBaseTime);
+        const meetingEmoji = getDetailedDayNightIcon(meetingGameTime.hours);
+        const departureGameTime = getGameTime(departureDate);
+        const departureEmoji = getDetailedDayNightIcon(departureGameTime.hours);
+        const arrivalGameTime = getGameTime(arrivalDate);
+        const arrivalEmoji = getDetailedDayNightIcon(arrivalGameTime.hours);
 
         const meetingTimeUTC = utcBaseTime.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
         const departureTimeUTC = departureDate.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
@@ -145,6 +156,9 @@ function init() {
                 tmpInfo += '\n';
             });
         }
+
+        const ingameTimeLine = `* ${state.currentLangData.ingame_time_title || 'Hora ingame'}: ${state.currentLangData.meeting_label || 'Reunión'}: ${meetingEmoji} ${state.currentLangData.departure_label || 'Salida'}: ${departureEmoji} ${state.currentLangData.arrival_label || 'Llegada aprox'}: ${arrivalEmoji}`;
+        tmpInfo += `${ingameTimeLine}\n\n`;
 
         if (includeImages) tmpInfo += `![](https://convoyrama.github.io/event/images/default/orange.png)\n\n`;
 

@@ -120,5 +120,9 @@
   "tmp_start_place_label": "Start City",
   "tmp_destination_label": "Destination City",
   "tmp_rules_reminder": "Remember to follow TruckersMP rules",
-  "tmp_images_tooltip": "Include separator images in the copied code"
+  "tmp_images_tooltip": "Include separator images in the copied code",
+  "ingame_time_title": "In-game time",
+  "meeting_label": "Meeting",
+  "departure_label": "Departure",
+  "arrival_label": "Arrival approx"
 }
