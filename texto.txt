@@ -1,0 +1,58 @@
+---
+### **INICIO DE LA PRUEBA DEFINITIVA**
+
+---
+**ENCABEZADOS**
+# Encabezado Nivel 1
+## Encabezado Nivel 2
+### Encabezado Nivel 3
+
+---
+**FORMATO DE TEXTO**
+
+Negrita sin espacios: **texto**
+Cursiva sin espacios: *texto*
+
+Negrita con espacios: ** texto **
+Cursiva con espacios: * texto *
+
+---
+**LÍNEAS Y CITAS**
+
+Línea con dos espacios al final.  
+Esta debería ser una nueva línea.
+
+> Esto es una cita.
+
+---
+**LISTAS**
+* Elemento 1
+* Elemento 2
+
+1. Elemento A
+2. Elemento B
+
+---
+**ENLACES**
+
+Enlace estándar: [Enlace de texto](https://truckersmp.com)
+Enlace con sintaxis rara: texto[](https://truckersmp.com)
+URL simple: https://truckersmp.com
+
+---
+**IMÁGENES**
+
+Imagen con descripción: ![Logo](https://truckersmp.com/assets/img/truckersmp-logo-sm.png)
+Imagen sin descripción: ![](https://truckersmp.com/assets/img/truckersmp-logo-sm.png)
+
+---
+**CÓDIGO**
+
+Código en línea: `variable`
+
+Bloque de código:
+```
+SUBTÍTULO (TAMBIÉN CON NEGRITA)
+```
+---
+### **FIN DE LA PRUEBA DEFINITIVA**

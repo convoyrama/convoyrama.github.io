@@ -83,12 +83,7 @@
    * Escala de Tiempo: 1:6 (1 minuto real = 6 minutos de juego).
    * Lógica: Se calcula el tiempo transcurrido desde el ancla, se escala y se ajusta a un ciclo de 24 horas.
 
-  Advertencia sobre Horario de Verano:
 
-   * El sistema actual no maneja automáticamente los cambios de horario de verano.
 
   ---
-
-  Ahora sí, la guía está completa. ¿Me das luz verde para empezar a reescribir los archivos desde cero siguiendo este plan?
-
 

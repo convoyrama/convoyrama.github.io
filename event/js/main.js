@@ -56,6 +56,61 @@ function init() {
         let convoyInfo = `[**${customEventNameValue}**](${customEventLinkValue})\nServidor: ${customServerValue}\nPartida: ${customStartPlaceValue}\nDestino: ${customDestinationValue}\n\n**Reunión:** <t:${meetingTimestamp}:F> (<t:${meetingTimestamp}:R>) ${meetingEmoji}\n**Salida:** <t:${departureTimestamp}:t> (<t:${departureTimestamp}:R>) ${departureEmoji}\n**${state.currentLangData.discord_arrival_time || 'Llegada Aprox.:'}** <t:${arrivalTimestamp}:t> (<t:${arrivalTimestamp}:R>) ${arrivalEmoji}\n\nDescripción: ${customEventDescriptionValue}`;
         navigator.clipboard.writeText(convoyInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyCustomInfo] Error al copiar: ${err.message}`));
     };
+
+    dom.copyTmpBtn.onclick = () => {
+        const customDateValue = dom.customDate.value;
+        const customTimeValue = dom.customTime.value;
+        const customEventNameValue = dom.customEventName.value || "Evento Personalizado";
+        const customEventLinkValue = dom.customEventLink.value || "https://convoyrama.github.io/events.html";
+        const customEventDescriptionValue = dom.customEventDescription.value || "Sin descripción";
+        const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar";
+        const customDestinationValue = dom.customDestination.value || "Sin especificar";
+        const customServerValue = dom.customServer.value || "Sin especificar";
+
+        if (!customDateValue || !customTimeValue) {
+            showCopyMessage(state.currentLangData.error_no_date || "Por favor, selecciona una fecha y hora.");
+            return;
+        }
+
+        const [hh, mm] = customTimeValue.split(":").map(Number);
+        const dateParts = customDateValue.split('-');
+        const year = parseInt(dateParts[0], 10);
+        const month = parseInt(dateParts[1], 10) - 1;
+        const day = parseInt(dateParts[2], 10);
+        const customDateObj = new Date(Date.UTC(year, month, day, hh, mm));
+
+        const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60 * 1000;
+        const departureDate = new Date(customDateObj.getTime() + departureOffset);
+
+        const meetingTimeUTC = customDateObj.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
+        const departureTimeUTC = departureDate.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
+
+        let tmpInfo = `** ${state.currentLangData.tmp_description_title || 'DESCRIPCIÓN'} **\n`;
+        tmpInfo += `> ${customEventDescriptionValue}\n\n`;
+        tmpInfo += `** ${state.currentLangData.tmp_event_info_title || 'INFORMACION DEL EVENTO'} **\n`;
+        tmpInfo += `* 🗓️ ${state.currentLangData.tmp_date_label || 'Fecha (UTC)'}: ${customDateObj.toLocaleDateString('en-GB', { timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric' })}\n`;
+        tmpInfo += `* ⏰ ${state.currentLangData.tmp_meeting_time_label || 'Reunión (UTC)'}: ${meetingTimeUTC}\n`;
+        tmpInfo += `*  departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure time departure- ${state.currentLangData.tmp_departure_time_label || 'Salida (UTC)'}: ${departureTimeUTC}\n`;
+        tmpInfo += `* 🖥️ ${state.currentLangData.tmp_server_label || 'Servidor'}: ${customServerValue}\n`;
+        tmpInfo += `* ➡️ ${state.currentLang-data.tmp_start_place_label || 'Ciudad de Inicio'}: ${customStartPlaceValue}\n`;
+        tmpInfo += `* ⬅️ ${state.currentLangData.tmp_destination_label || 'Ciudad de Destino'}: ${customDestinationValue}\n\n`;
+
+        // Generar tabla de zonas horarias
+        const selectedRegionKey = document.getElementById('region-select').value;
+        const selectedRegion = timezoneRegions[selectedRegionKey];
+        if (selectedRegion) {
+            tmpInfo += `| | |\n|:--|:--|\n`; // Encabezado de la tabla para TMP
+            selectedRegion.zones.forEach(zone => {
+                const zoneTime = new Date(customDateObj.getTime() + zone.offset * 3600 * 1000).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                const tzName = state.currentLangData[zone.key] || zone.key;
+                tmpInfo += `| ${tzName} | ${zoneTime} |\n`;
+            });
+        }
+
+        navigator.clipboard.writeText(tmpInfo).then(() => showCopyMessage()).catch(err => console.error(`[copyTmpBtn] Error al copiar: ${err.message}`));
+    };
+
+
     initCanvasEventListeners();
     dom.waypointToggle.addEventListener('change', (e) => {
         state.setIsWaypointVisible(e.target.checked);

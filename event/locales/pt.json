@@ -109,5 +109,14 @@
   "canvas_meeting_ingame": "Encontro (No Jogo):",
   "canvas_arrival_ingame": "Chegada Aprox. (No Jogo):",
   "error_no_date": "Por favor, selecione uma data e hora.",
-  "discord_arrival_time": "Chegada Aprox.:"
+  "discord_arrival_time": "Chegada Aprox.:",
+  "btn_copy_tmp": "Código para TMP",
+  "tmp_description_title": "DESCRIÇÃO",
+  "tmp_event_info_title": "INFORMAÇÕES DO EVENTO",
+  "tmp_date_label": "Data (UTC)",
+  "tmp_meeting_time_label": "Encontro (UTC)",
+  "tmp_departure_time_label": "Partida (UTC)",
+  "tmp_server_label": "Servidor",
+  "tmp_start_place_label": "Cidade de Partida",
+  "tmp_destination_label": "Cidade de Destino"
 }
