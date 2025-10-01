@@ -41,7 +41,7 @@ input[type="file"] { color: transparent; }
 .flag-emoji.selected { opacity: 1; text-shadow: 0 0 5px rgb(90,165,25); }
 #region-selector-container { display: flex; align-items: center; gap: 10px; }
 #region-selector-container label { color: #fff; }
-#region-select { padding: 6px; font-size: .85em; background: #333; color: #fff; border: 2px solid rgb(90,165,25); border-radius: 6px; }
+#region-select, #manual-offset-select { padding: 6px; font-size: .85em; background: #333; color: #fff; border: 2px solid rgb(90,165,25); border-radius: 6px; }
 
 .time-controls-container {
     display: flex;
