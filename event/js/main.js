@@ -70,7 +70,6 @@ function init() {
             return;
         }
 
-        // Correctly create the date object from user's local input
         const [hh, mm] = customTimeValue.split(":").map(Number);
         const dateParts = customDateValue.split('-');
         const year = parseInt(dateParts[0], 10);
@@ -79,7 +78,6 @@ function init() {
         const customDateObj = new Date(year, month, day);
         customDateObj.setHours(hh, mm, 0, 0);
 
-        // Correctly calculate the true UTC time, replicating canvas logic
         const browserOffsetHours = new Date().getTimezoneOffset() / 60;
         let finalOffsetHours = browserOffsetHours;
         const manualOffset = dom.manualOffsetSelect.value;
@@ -96,9 +94,9 @@ function init() {
         const meetingTimeUTC = utcBaseTime.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
         const departureTimeUTC = departureDate.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
 
-        let tmpInfo = `** ${state.currentLangData.tmp_description_title || 'DESCRIPCIÓN'} **\n`;
+        let tmpInfo = `## ${state.currentLangData.tmp_description_title || 'DESCRIPCIÓN'}\n`;
         tmpInfo += `> ${customEventDescriptionValue}\n\n`;
-        tmpInfo += `** ${state.currentLangData.tmp_event_info_title || 'INFORMACION DEL EVENTO'} **\n`;
+        tmpInfo += `## ${state.currentLangData.tmp_event_info_title || 'INFORMACION DEL EVENTO'}\n`;
         tmpInfo += `* 🗓️ ${state.currentLangData.tmp_date_label || 'Fecha (UTC)'}: ${utcBaseTime.toLocaleDateString('en-GB', { timeZone: 'UTC'})}\n`;
         tmpInfo += `* ⏰ ${state.currentLangData.tmp_meeting_time_label || 'Reunión (UTC)'}: ${meetingTimeUTC}\n`;
         tmpInfo += `* 🚚 ${state.currentLangData.tmp_departure_time_label || 'Salida (UTC)'}: ${departureTimeUTC}\n`;
@@ -106,7 +104,6 @@ function init() {
         tmpInfo += `* ➡️ ${state.currentLangData.tmp_start_place_label || 'Ciudad de Inicio'}: ${customStartPlaceValue}\n`;
         tmpInfo += `* ⬅️ ${state.currentLangData.tmp_destination_label || 'Ciudad de Destino'}: ${customDestinationValue}\n\n`;
 
-        // Generate timezone table, replicating canvas logic
         const selectedRegionKey = document.getElementById('region-select').value;
         const selectedRegion = timezoneRegions[selectedRegionKey];
         if (selectedRegion) {
@@ -120,7 +117,7 @@ function init() {
                 const tzLabel = state.currentLangData[tz.key] || tz.key;
                 const meetingTime = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
                 const departureTime = new Date(meetingTime.getTime() + departureOffset);
-                const timeString = `${meetingTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} / ${departureTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
+                const timeString = `${meetingTime.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' })} / ${departureTime.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' })}`;
                 datesByDay.get(dayString).push({ tzLabel, timeString });
             });
 
@@ -134,11 +131,10 @@ function init() {
             });
 
             sortedDays.forEach(dayString => {
-                tmpInfo += `** ${dayString} **\n`;
-                tmpInfo += `| | |\n|:--|:--|\n`;
+                tmpInfo += `### ${dayString}\n`;
                 const dayEntries = datesByDay.get(dayString);
                 dayEntries.forEach(entry => {
-                    tmpInfo += `| ${entry.tzLabel} | ${entry.timeString} |\n`;
+                    tmpInfo += `* ${entry.tzLabel}: ${entry.timeString}\n`;
                 });
                 tmpInfo += '\n';
             });
