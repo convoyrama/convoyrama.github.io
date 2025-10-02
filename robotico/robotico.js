@@ -30,6 +30,8 @@ const LATAM_TIMEZONES = [
     { name: 'Colombia (Bogotá)', zone: 'America/Bogota' },
     { name: 'Perú (Lima)', zone: 'America/Lima' },
     { name: 'Venezuela (Caracas)', zone: 'America/Caracas' },
+    { name: 'Uruguay (Montevideo)', zone: 'America/Montevideo' }, // Añadido
+    { name: 'Brasil (Brasilia)', zone: 'America/Sao_Paulo' },     // Añadido
     { name: 'España (Madrid)', zone: 'Europe/Madrid' }, // Incluido por relevancia
 ];
 
@@ -41,12 +43,17 @@ const SPAM_TEXTS = [
     "¡Pisa a fondo y que no te pare nadie!",
     "Un buen café y un buen convoy, ¿hay algo mejor?",
 ];
+
+// Mensaje de despedida para el comando !despedida
+const FAREWELL_MESSAGE = "LAG'S SPEED les agradece sinceramente su participación. Ha sido una ruta excelente y un placer compartir este gran momento con todos ustedes. ¡Esperamos seguir contando con su compañía en futuras aventuras! Saludos y muy buena ruta a todos.";
+
 // --- FIN CONFIGURACIÓN PERSONALIZABLE ---
 
 
 // Evento que se dispara cuando el bot está listo y conectado a Discord
-client.on('ready', () => {
-    console.log(`¡Bot Robotico conectado como ${client.user.tag}!`);
+// Usamos client.once('clientReady') para evitar la DeprecationWarning y prepararnos para v15
+client.once('clientReady', () => {
+    console.log(`¡Bot Robotito conectado como ${client.user.tag}!`);
     client.user.setActivity('Convoyrama', { type: 3 }); // Establece el estado del bot (jugando a Convoyrama)
 });
 
@@ -141,14 +148,14 @@ client.on('messageCreate', async message => {
                 { name: `\`${PREFIX}link\``, value: 'Muestra enlaces útiles de Convoyrama y el Discord.' },
                 { name: `\`${PREFIX}hora ingame [HH:MM o Ham/pm]\``, value: 'Muestra la hora actual in-game, o calcula la hora in-game para un tiempo específico en tu zona local, incluyendo un emoji de día/noche. Ej: `!hora ingame 22:00` o `!hora ingame 5pm`.' },
                 { name: `\`${PREFIX}hora latam [HH:MM o Ham/pm]\``, value: 'Muestra la hora actual en varias zonas horarias de Latinoamérica y España, o calcula esas horas para un tiempo específico en tu zona local. Ej: `!hora latam 20:00`.' },
-                { name: `\`${PREFIX}horario\``, value: 'Muestra un horario predefinido de eventos.' },
-                { name: `\`${PREFIX}mensaje\``, value: 'Muestra un mensaje predefinido.' },
+                { name: `\`${PREFIX}despedida\``, value: 'Envía un mensaje de despedida de convoy.' },
                 { name: `\`${PREFIX}spam\``, value: 'Envía un mensaje aleatorio de la lista de textos predefinidos.' },
                 { name: `\`${PREFIX}proximo evento\``, value: 'Muestra el próximo evento programado en este servidor de Discord.' }
             )
             .setFooter({ text: '¡Usa los comandos con el prefijo !' });
 
         await message.channel.send({ embeds: [embed] });
+        return; // Importante: salir después de manejar el comando
     }
 
     // Comando: !link
@@ -161,11 +168,16 @@ client.on('messageCreate', async message => {
                 { name: 'Generador de Eventos', value: '[Convoyrama Eventos](https://convoyrama.github.io/event.html)' },
                 { name: 'Creador de ID', value: '[Convoyrama ID](https://convoyrama.github.io/id.html)' },
                 { name: 'Generador de Imagen de Perfil', value: '[Convoyrama Perfil](https://convoyrama.github.io/pc.html)' },
-                { name: 'Invitación a nuestro Discord', value: '[Únete a la Comunidad](https://discord.gg/hjJcyREthH)' }
+                { name: 'Invitación a nuestro Discord', value: '[Únete a la Comunidad](https://discord.gg/hjJcyREthH)' },
+                { name: 'TruckersMP', value: '[Sitio Oficial](https://truckersmp.com/)' },
+                { name: 'LAG\'S SPEED en TruckersMP', value: '[Perfil VTC](https://truckersmp.com/vtc/78865)' },
+                { name: 'LAG\'S SPEED en TrucksBook', value: '[Perfil de Empresa](https://trucksbook.eu/company/212761)' },
+                { name: 'LAG\'S SPEED en PickupVTM', value: '[Perfil de Empresa](https://pickupvtm.com/company/8203)' }
             )
             .setFooter({ text: '¡Explora y únete a la diversión!' });
 
         await message.channel.send({ embeds: [embed] });
+        return; // Importante: salir después de manejar el comando
     }
 
     // Comando: !hora ingame [tiempo]
@@ -181,7 +193,7 @@ client.on('messageCreate', async message => {
             inputTime = parseInputTime(timeString, userLocalTime);
 
             if (!inputTime) {
-                await message.channel.send(`Formato de tiempo inválido. Intenta \`${PREFIX}hora HH:MM ingame\` o \`${PREFIX}hora Ham/pm ingame\`.`);
+                await message.channel.send('Formato de tiempo inválido. Intenta ' + '`' + PREFIX + 'hora HH:MM ingame`' + ' o ' + '`' + PREFIX + 'hora Ham/pm ingame`' + '.');
                 return;
             }
             responseDescription = `Si en tu zona son las **${inputTime.toFormat('HH:mm')}**`;
@@ -198,10 +210,11 @@ client.on('messageCreate', async message => {
         const embed = new EmbedBuilder()
             .setColor(0x0099FF) // Azul
             .setTitle('⏰ Hora In-Game')
-            .setDescription(`${responseDescription}, la hora in-game sería: **${ingameTime.toFormat('HH:mm:ss')} ${ingameEmoji}**`)
-            .setFooter({ text: `Cálculo basado en anclaje UTC ${GAME_TIME_ANCHOR_UTC_MINUTES / 60}:${GAME_TIME_ANCHOR_UTC_MINUTES % 60} y escala ${TIME_SCALE}x.` });
+            .setDescription(`${responseDescription}, la hora in-game sería: **${ingameTime.toFormat('HH:mm:ss')} ${ingameEmoji}**`);
+            // Pie de página eliminado según tu solicitud
 
         await message.channel.send({ embeds: [embed] });
+        return; // Importante: salir después de manejar el comando
     }
     // Comando: !hora latam [tiempo]
     else if (command === 'hora' && args[0] === 'latam') {
@@ -213,14 +226,14 @@ client.on('messageCreate', async message => {
             inputTime = parseInputTime(timeString, userLocalTime);
 
             if (!inputTime) {
-                await message.channel.send(`Formato de tiempo inválido. Intenta \`${PREFIX}hora latam HH:MM\` o \`${PREFIX}hora latam Ham/pm\`.`);
+                await message.channel.send('Formato de tiempo inválido. Intenta ' + '`' + PREFIX + 'hora latam HH:MM`' + ' o ' + '`' + PREFIX + 'hora latam Ham/pm`' + '.');
                 return;
             }
         } else {
             inputTime = userLocalTime;
         }
 
-        let description = `**Si en tu zona son las ${inputTime.toFormat('HH:mm')}, entonces:**\n`;
+        let description = `**Horas en Zonas Latinas:**\n`; // Texto modificado
 
         LATAM_TIMEZONES.forEach(tz => {
             const timeInZone = inputTime.setZone(tz.zone);
@@ -234,27 +247,18 @@ client.on('messageCreate', async message => {
             .setFooter({ text: 'Horas basadas en la zona horaria del bot.' });
 
         await message.channel.send({ embeds: [embed] });
+        return; // Importante: salir después de manejar el comando
     }
-    // Comando: !horario (mantiene la funcionalidad anterior)
-    else if (command === 'horario') {
-        const SCHEDULE_MESSAGE = `\n**Horario del Evento:**\n- **Hora Argentina (GMT-3):** 20:00\n- **Hora España (GMT+2):** 01:00 (del día siguiente)\n- **Hora México (GMT-6):** 17:00\n- **Hora UTC (GMT+0):** 23:00\n`;
+    // Comando: !despedida (NUEVO)
+    else if (command === 'despedida') {
         const embed = new EmbedBuilder()
-            .setColor(0x00FF00) // Verde
-            .setTitle('🗓️ Horario de Eventos')
-            .setDescription(SCHEDULE_MESSAGE)
-            .setFooter({ text: 'Horarios sujetos a cambios. ¡Mantente atento!' });
+            .setColor(0x800080) // Púrpura
+            .setTitle('👋 ¡Hasta la Próxima Ruta!')
+            .setDescription(FAREWELL_MESSAGE)
+            .setFooter({ text: '¡Nos vemos en el camino!' });
 
         await message.channel.send({ embeds: [embed] });
-    }
-    // Comando: !mensaje (mantiene la funcionalidad anterior)
-    else if (command === 'mensaje') {
-        const PREDEFINED_MESSAGE = '¡Hola a todos! Este es un mensaje automático del bot de ConvoyRama. ¡Que tengan un excelente día!';
-        const embed = new EmbedBuilder()
-            .setColor(0xFFCC00) // Amarillo
-            .setTitle('📢 Mensaje de ConvoyRama')
-            .setDescription(PREDEFINED_MESSAGE);
-
-        await message.channel.send({ embeds: [embed] });
+        return; // Importante: salir después de manejar el comando
     }
     // Comando: !spam
     else if (command === 'spam') {
@@ -272,6 +276,7 @@ client.on('messageCreate', async message => {
             .setFooter({ text: '¡Copia y pega con responsabilidad!' });
 
         await message.channel.send({ embeds: [embed] });
+        return; // Importante: salir después de manejar el comando
     }
     // Comando: !proximo evento
     else if (command === 'proximo' && args[0] === 'evento') {
@@ -315,13 +320,16 @@ client.on('messageCreate', async message => {
         }
 
         await message.channel.send({ embeds: [embed] });
+        return; // Importante: salir después de manejar el comando
     }
-    // Manejo de comandos desconocidos o mal formados
-    else if (command === 'hora' || command === 'horario' || command === 'mensaje' || command === 'spam' || command === 'proximo' || command === 'link' || command === 'ayuda' || command === 'help') { // Incluir todos los comandos conocidos
+    // Si el comando no fue reconocido por ninguno de los bloques anteriores
+    else {
         await message.channel.send(
-            `Uso incorrecto del comando. Intenta:\n` +
-            `\`${PREFIX}ayuda\` para ver todos los comandos.\n`
+            `Comando desconocido o uso incorrecto. Intenta:\n` +
+            `\`${PREFIX}ayuda\` para ver todos los comandos.
+`
         );
+        return; // Importante: salir después de manejar el comando
     }
 });
 

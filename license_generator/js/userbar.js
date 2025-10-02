@@ -1,5 +1,10 @@
 import { normalizeLink, generateLicenseNumber, getUserLevel } from './utils.js';
 
+// Configurar la ruta base de Twemoji para usar los assets locales
+if (typeof twemoji !== 'undefined') {
+    twemoji.base = './twemoji-14.0.2/assets/';
+}
+
 async function loadImage(src) {
     return new Promise((resolve, reject) => {
         const img = new Image();
