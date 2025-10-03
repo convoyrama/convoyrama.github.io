@@ -62,5 +62,6 @@
     "verification_success": "✓ Verified",
     "verification_invalid": "Invalid code",
     "verification_tampered": "Invalid or tampered code",
-    "verification_error": "Verification error"
+    "verification_error": "Verification error",
+    "verification_mismatch": "Valid code, but it does not match the entered user profile."
 }

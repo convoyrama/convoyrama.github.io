@@ -62,5 +62,6 @@
     "verification_success": "✓ Verificado",
     "verification_invalid": "Código inválido",
     "verification_tampered": "Código inválido ou alterado",
-    "verification_error": "Erro de verificação"
+    "verification_error": "Erro de verificação",
+    "verification_mismatch": "Código válido, mas não corresponde ao perfil de usuário inserido."
 }

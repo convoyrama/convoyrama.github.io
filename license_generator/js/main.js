@@ -514,10 +514,18 @@ async function handleVerification(code, callback) {
         );
 
         if (isValid) {
-            const [userId, joinDate] = payload.split('|');
-            state.verifiedJoinDate = joinDate;
-            dom.verificationStatus.textContent = t.verification_success;
-            dom.verificationStatus.style.color = 'green';
+            const [verifiedUserId, joinDate] = payload.split('|');
+            const profileInputUserId = (state.truckersmpLink.match(/\/user\/(\d+)/) || [])[1];
+
+            if (verifiedUserId === profileInputUserId) {
+                state.verifiedJoinDate = joinDate;
+                dom.verificationStatus.textContent = t.verification_success;
+                dom.verificationStatus.style.color = 'green';
+            } else {
+                state.verifiedJoinDate = null;
+                dom.verificationStatus.textContent = t.verification_mismatch;
+                dom.verificationStatus.style.color = 'red';
+            }
         } else {
             state.verifiedJoinDate = null;
             dom.verificationStatus.textContent = t.verification_tampered;
