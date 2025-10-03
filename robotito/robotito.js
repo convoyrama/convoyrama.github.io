@@ -42,11 +42,12 @@ const LATAM_TIMEZONES = [
 
 // Lista de textos para el comando !spam. ¡AJUSTA ESTA LISTA!
 const SPAM_TEXTS = [
-    '¡Atención, atención! Mensaje importante para todos los convoyeros. ¡A rodar!',
-    '¿Listo para la carretera? ¡El asfalto nos espera!',
-    'No olvides revisar tus espejos y disfrutar del viaje. ¡Convoyrama al poder!',
-    '¡Pisa a fondo y que no te pare nadie!',
-    'Un buen café y un buen convoy, ¿hay algo mejor?',
+    'LAG\'S SPEED en la zona. Si vamos despacio no es por la carga, es que el ping no nos deja correr.',
+    'LAG\'S SPEED recomienda 500 metros de distancia de seguridad. No por el freno, por el ping. ¿O por los dos? ¡Buena ruta!',
+    'Ojo con el lag que andamos cerca... ¡Es broma! O no... ¡Un saludo de LAG\'S SPEED y buena ruta!',
+    '¿Tu ping subió de repente? No, no fuimos nosotros... ¿O sí? ¡Saludos de LAG\'S SPEED!',
+    'Prometemos no usar el lag como arma táctica... a menos que sea estrictamente necesario. ¡Saludos de LAG\'S SPEED!',
+    'Nuestra especialidad no es carga pesada, es el ping pesado. Buena Ruta!',
 ];
 
 // Mensajes de despedida
@@ -109,7 +110,7 @@ const VTCS_DATA = [
             },
             {
                 "name": "Titanes",
-                "discord": null
+                "discord": "https://discord.gg/XBg4V4kmnF"
             }
         ]
     },
@@ -315,15 +316,17 @@ client.on('messageCreate', async message => {
             .setDescription('Aquí tienes una lista de lo que puedo hacer:')
             .addFields(
                 { name: `\`${PREFIX}ayuda\` o \`${PREFIX}help\``, value: 'Muestra esta lista de comandos.' },
+                { name: `\`${PREFIX}tito\``, value: 'Tito te cuenta un dato inútil y absurdo.' },
                 { name: `\`${PREFIX}link\` o \`${PREFIX}links\``, value: 'Muestra enlaces útiles de Convoyrama y el Discord.' },
-                { name: `\`${PREFIX}ingame [HH:MM o Ham/pm]\``, value: 'Muestra la hora actual in-game, o calcula la hora in-game para un tiempo específico en tu zona local, incluyendo un emoji de día/noche. Ej: `!ingame 22:00` o `!ingame 5pm`.' },
-                { name: `\`${PREFIX}hora [HH:MM o Ham/pm] [Ciudad]\``, value: 'Muestra la hora actual en varias zonas horarias de Latinoamérica y España, o calcula esas horas si en la [Ciudad] indicada son las [HH:MM]. Ej: `!hora 20:00 Montevideo` o `!hora`.' },
-                { name: `\`${PREFIX}despedida [propia/ajena]\``, value: 'Envía un mensaje de despedida de convoy (propio o ajeno). Por defecto es propio.' },
+                { name: `\`${PREFIX}ingame [HH:MM o Ham/pm]\``, value: 'Muestra la hora actual in-game, o calcula la hora in-game para un tiempo específico en tu zona local. Ej: `!ingame 22:00`.' },
+                { name: `\`${PREFIX}hora [HH:MM o Ham/pm] [Ciudad]\``, value: 'Muestra la hora actual en varias zonas horarias o calcula esas horas si en la [Ciudad] indicada son las [HH:MM]. Ej: `!hora 20:00 Montevideo`.' },
+                { name: `\`${PREFIX}despedida [propia/ajena]\``, value: 'Envía un mensaje de despedida de convoy (propio o ajeno).' },
                 { name: `\`${PREFIX}spam\``, value: 'Envía un mensaje aleatorio de la lista de textos predefinidos.' },
-                { name: `\`${PREFIX}evento\` o \`${PREFIX}convoy\``, value: 'Muestra el próximo evento programado en este servidor de Discord.' },
-                { name: `\`${PREFIX}vtc\` o \`${PREFIX}comunidad\``, value: 'Muestra la lista de VTCs amigas y de la comunidad.' },
+                { name: `\`${PREFIX}evento\` o \`${PREFIX}convoy\``, value: 'Muestra el próximo evento programado en este servidor.' },
+                { name: `\`${PREFIX}evento7\` o \`${PREFIX}convoy7\``, value: 'Muestra los eventos programados para los próximos 7 días.' },
+                { name: `\`${PREFIX}vtc\` o \`${PREFIX}comunidad\``, value: 'Muestra la lista de VTCs de la comunidad.' },
                 { name: `\`${PREFIX}servers\` o \`${PREFIX}estado\``, value: 'Muestra el estado de los servidores de TruckersMP.' },
-                { name: `\`${PREFIX}info\` o \`${PREFIX}ver\` [URL de perfil de usuario o VTC, o alias de VTC]`, value: 'Muestra información de un usuario o VTC de TruckersMP.' },
+                { name: `\`${PREFIX}info\` o \`${PREFIX}ver\` [URL o alias]`, value: 'Muestra información de un usuario o VTC de TruckersMP.' },
                 { name: `\`${PREFIX}infou\` [ID de usuario]`, value: 'Muestra información de un usuario de TruckersMP por ID.' },
                 { name: `\`${PREFIX}infov\` [ID de VTC]`, value: 'Muestra información de una VTC de TruckersMP por ID.' }
             )
@@ -331,6 +334,27 @@ client.on('messageCreate', async message => {
 
         await message.channel.send({ embeds: [embed] });
         return; // Importante: salir después de manejar el comando
+    }
+
+    // Comando: !tito
+    if (command === 'tito') {
+        try {
+            const response = await axios.get('https://uselessfacts.jsph.pl/random.json?language=es');
+            const fact = response.data.text;
+
+            const embed = new EmbedBuilder()
+                .setColor(0x9B59B6) // Púrpura
+                .setTitle('🤯 Dato Inútil del Día')
+                .setDescription(fact)
+                .setFooter({ text: 'Hechos inútiles para gente útil.' });
+
+            await message.channel.send({ embeds: [embed] });
+
+        } catch (error) {
+            console.error('Error al obtener dato inútil:', error);
+            await message.channel.send('Lo siento, Tito no está inspirado ahora mismo. Inténtalo de nuevo más tarde.');
+        }
+        return;
     }
 
     // Comando: !link o !links
@@ -497,8 +521,6 @@ client.on('messageCreate', async message => {
 
         const nextEvent = upcomingEvents.first(); // Obtener el evento más próximo
 
-        const eventStartTime = DateTime.fromMillis(nextEvent.scheduledStartTimestamp, { zone: 'utc' }).toLocal();
-
         const embed = new EmbedBuilder()
             .setColor(0x8A2BE2) // Azul violeta
             .setTitle(`📅 Próximo Evento: ${nextEvent.name}`)
@@ -519,12 +541,48 @@ client.on('messageCreate', async message => {
         await message.channel.send({ embeds: [embed] });
         return; // Importante: salir después de manejar el comando
     }
+    
+    // Comando: !evento7 o !convoy7
+    else if (command === 'evento7' || command === 'convoy7') {
+        if (!message.guild) {
+            await message.channel.send('Este comando solo funciona en un servidor.');
+            return;
+        }
+
+        const scheduledEvents = await message.guild.scheduledEvents.fetch();
+        const now = Date.now();
+        const sevenDaysFromNow = now + 7 * 24 * 60 * 60 * 1000;
+
+        // Filtrar eventos de los próximos 7 días y ordenar por fecha
+        const upcomingWeekEvents = scheduledEvents
+            .filter(event => event.scheduledStartTimestamp > now && event.scheduledStartTimestamp < sevenDaysFromNow)
+            .sort((a, b) => a.scheduledStartTimestamp - b.scheduledStartTimestamp);
+
+        if (upcomingWeekEvents.size === 0) {
+            await message.channel.send('No hay eventos programados para esta semana.');
+            return;
+        }
+
+        const embed = new EmbedBuilder()
+            .setColor(0x8A2BE2) // Azul violeta
+            .setTitle('📅 Próximos Eventos de la Semana');
+
+        let description = '';
+        upcomingWeekEvents.forEach(event => {
+            description += `**[${event.name}](${event.url})**\n` +
+                           `Inicia: <t:${Math.floor(event.scheduledStartTimestamp / 1000)}:F> (<t:${Math.floor(event.scheduledStartTimestamp / 1000)}:R>)\n\n`;
+        });
+
+        embed.setDescription(description);
+        await message.channel.send({ embeds: [embed] });
+        return;
+    }
 
     // Comando para mostrar la lista de VTCs
     else if (command === 'vtc' || command === 'vtcs' || command === 'vtcamigas' || command === 'comunidad') {
         const embed = new EmbedBuilder()
             .setColor(0x008000) // Verde oscuro
-            .setTitle('🚚 VTCs Amigas y de la Comunidad');
+            .setTitle('🚚 Comunidad');
 
         VTCS_DATA.forEach(countryData => {
             const vtcList = countryData.vtcs.map(vtc => {
