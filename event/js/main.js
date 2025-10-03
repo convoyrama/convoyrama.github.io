@@ -1,3 +1,7 @@
+if (typeof twemoji !== 'undefined') {
+    twemoji.base = '../twemoji-14.0.2/assets/';
+}
+
 import { dom } from './dom.js';
 import * as state from './state.js';
 import { timezoneRegions } from './config.js';
