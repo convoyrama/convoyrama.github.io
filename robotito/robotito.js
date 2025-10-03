@@ -50,7 +50,7 @@ const BASE_IMAGE_URL = 'https://convoyrama.github.io/robotito/img/';
 const POSITIVE_STATES = ['admirando.png', 'alegre.png', 'enlaluna.png', 'fiesta.png', 'sorprendido.png', 'volando.png'];
 const NEGATIVE_STATES = ['desesperado.png', 'durmiendo.png', 'enojado.png', 'impaciente.png', 'pensando.png'];
 
-const FAREWELL_MESSAGE_OWN = "LAG'S SPEED les agradece sinceramente su participación. Ha sido una ruta excelente y un placer compartir este gran momento con todos ustedes. ¡Esperamos seguir contando con su compañía en futuras aventuras! Saludos y muy buena ruta a todos.";
+const FAREWELL_MESSAGE_OWN = "LAG'S SPEED les agradece sinceramente su participación. Ha sido una ruta excelente gracias a la compañía de cada uno de ustedes, y un placer compartir este gran momento. ¡Esperamos seguir contando con su presencia en futuras aventuras! Saludos y muy buena ruta a todos.";
 const FAREWELL_MESSAGE_EXTERNAL = "LAG'S SPEED agradece la invitación a este convoy. Ha sido un placer compartir la ruta con todos. ¡Esperamos coincidir de nuevo en el camino! Saludos y muy buena ruta.";
 
 const TRUCKERSMP_API_BASE_URL = 'https://api.truckersmp.com/v2';
