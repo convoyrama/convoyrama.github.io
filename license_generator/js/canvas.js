@@ -258,7 +258,12 @@ export async function generateImage(state) {
             // Draw verified registration year if available
             if (state.verifiedJoinDate) {
                 const year = new Date(state.verifiedJoinDate).getFullYear();
-                const yearY = truckersmpLogo_y + logoHeight + (itemSpacing / 2); // Position it below the logo
+                
+                // Calculate the vertical distance between the bottom of the QRs and the top of the TMP logo
+                const verticalDistance = truckersmpLogo_y - (itemY + itemSize);
+                // Apply that same distance below the logo for the year
+                const yearY = truckersmpLogo_y + logoHeight + verticalDistance;
+
                 const yearX = truckersmpLogo_x + (logoWidth / 2); // Center it with the logo
 
                 ctx.font = `bold ${config.textFontSize * 1.5 * scaleFactor}px 'VerdanaCustom-Bold'`;

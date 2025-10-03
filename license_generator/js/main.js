@@ -192,11 +192,7 @@ function renderRankLegend() {
 
     const inputGroup = document.createElement('div');
     inputGroup.className = 'input-group';
-
-    const verificationLabel = document.createElement('label');
-    verificationLabel.htmlFor = 'verificationCodeInput';
-    verificationLabel.textContent = t.verification_label;
-    inputGroup.appendChild(verificationLabel);
+    inputGroup.style.textAlign = 'center';
 
     const verificationInput = document.createElement('input');
     verificationInput.type = 'text';
