@@ -5,6 +5,8 @@ import { getCurrentDate, loadVtcData, loadCountries, loadStarMap, loadTitles, lo
 import { generateImage, updateDownloadLink } from './canvas.js';
 import { generateUserbar } from './userbar.js';
 
+const HMAC_SECRET_KEY = 'TPPrZX8QA4DH3ekn4JKk';
+
 const state = {
     name: '',
     country: '',
@@ -34,6 +36,8 @@ const state = {
     titles: [],
     levelRanges: {},
     userLevel: null,
+    verificationCode: '',
+    verifiedJoinDate: null,
 };
 
 function updateUI() {
@@ -121,6 +125,13 @@ function updateLanguage(lang) {
     dom.textColorToggleLabel.textContent = t.textColorToggleLabel;
     dom.downloadUserbarButton.textContent = t.downloadUserbarButton;
     dom.warningMessage.textContent = t.warning_refresh_page;
+
+    // Translations for the new verification section
+    const verificationIntro = document.querySelector('#verification-section .rank-legend-intro');
+    if (verificationIntro) verificationIntro.innerHTML = t.verification_intro; // Use innerHTML for the <code> tag
+    const verificationLabel = document.querySelector('label[for="verificationCodeInput"]');
+    if (verificationLabel) verificationLabel.textContent = t.verification_label;
+    if (dom.verificationCodeInput) dom.verificationCodeInput.placeholder = t.verification_placeholder;
     
     populateCountries(lang);
     populateTitles(lang);
@@ -245,6 +256,9 @@ async function initialize() {
         mainBgNext: document.getElementById("main-bg-next"),
         mainBgName: document.getElementById("main-bg-name"),
         warningMessage: document.getElementById("warningMessage"), // Added warningMessage
+        verificationSection: document.getElementById('verification-section'),
+        verificationCodeInput: document.getElementById('verificationCodeInput'),
+        verificationStatus: document.getElementById('verificationStatus'),
     });
 
     populateCountries(state.language);
@@ -421,10 +435,72 @@ function addEventListeners(debouncedGenerate) {
 
     dom.rankToggleInput.addEventListener('change', (e) => {
         state.rankToggle = e.target.checked;
+        dom.verificationSection.style.display = e.target.checked ? 'block' : 'none';
         debouncedGenerate();
         renderRankLegend(); // Update legend on toggle change
     });
 
+    dom.verificationCodeInput.addEventListener('input', (e) => {
+        handleVerification(e.target.value, debouncedGenerate);
+    });
+}
+
+async function handleVerification(code, callback) {
+    const t = translations[state.language] || translations.es;
+    if (!code) {
+        state.verifiedJoinDate = null;
+        dom.verificationStatus.textContent = '';
+        callback();
+        return;
+    }
+
+    const parts = code.split('.');
+    if (parts.length !== 2) {
+        state.verifiedJoinDate = null;
+        dom.verificationStatus.textContent = t.verification_invalid;
+        dom.verificationStatus.style.color = 'red';
+        callback();
+        return;
+    }
+
+    const [encodedPayload, signature] = parts;
+
+    try {
+        const payload = atob(encodedPayload);
+        const key = await window.crypto.subtle.importKey(
+            'raw',
+            new TextEncoder().encode(HMAC_SECRET_KEY),
+            { name: 'HMAC', hash: 'SHA-256' },
+            false,
+            ['verify']
+        );
+
+        const signatureBytes = new Uint8Array(signature.match(/../g).map(h => parseInt(h, 16)));
+
+        const isValid = await window.crypto.subtle.verify(
+            'HMAC',
+            key,
+            signatureBytes,
+            new TextEncoder().encode(payload)
+        );
+
+        if (isValid) {
+            const [userId, joinDate] = payload.split('|');
+            state.verifiedJoinDate = joinDate;
+            dom.verificationStatus.textContent = t.verification_success;
+            dom.verificationStatus.style.color = 'green';
+        } else {
+            state.verifiedJoinDate = null;
+            dom.verificationStatus.textContent = t.verification_tampered;
+            dom.verificationStatus.style.color = 'red';
+        }
+    } catch (error) {
+        console.error('Error during verification:', error);
+        state.verifiedJoinDate = null;
+        dom.verificationStatus.textContent = t.verification_error;
+        dom.verificationStatus.style.color = 'red';
+    }
+    callback();
 }
 
 document.addEventListener('DOMContentLoaded', initialize);

@@ -254,6 +254,20 @@ export async function generateImage(state) {
             const truckersmpLogo_y = flag_y;
             ctx.globalAlpha = 0.15; // 15% opacity
             ctx.drawImage(truckersmpImage, truckersmpLogo_x, truckersmpLogo_y, logoWidth, logoHeight);
+
+            // Draw verified registration year if available
+            if (state.verifiedJoinDate) {
+                const year = new Date(state.verifiedJoinDate).getFullYear();
+                const yearY = truckersmpLogo_y + logoHeight + (itemSpacing / 2); // Position it below the logo
+                const yearX = truckersmpLogo_x + (logoWidth / 2); // Center it with the logo
+
+                ctx.font = `bold ${config.textFontSize * 1.5 * scaleFactor}px 'VerdanaCustom-Bold'`;
+                ctx.fillStyle = 'rgb(240, 240, 240)';
+                ctx.textAlign = 'center';
+                // Opacity is already set by ctx.globalAlpha = 0.15;
+                ctx.fillText(year, yearX, yearY);
+            }
+
             ctx.globalAlpha = 1.0; // Reset opacity
         } catch (error) {
             console.error('Failed to load truckersmp-logo-sm image', error);

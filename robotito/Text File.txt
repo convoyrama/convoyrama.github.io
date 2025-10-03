@@ -1,0 +1,8 @@
+id tiene una funcionalidad que al ingresar el link de perfil de truckersmp, en base al numero de usuario se hace una aproximación para saber que tan antigua es la        │
+│    cuenta, pero es una aproximacion, busca numeros aproximados en una tabla, cierto? puedes analizarlo si quieres. Eso lo hicimos porque en github pages no se podía usar la │
+│     api de truckersmp, pero ahora con robotito si podemos hacerlo. Mi pregunta es, podemos usar a robotito para obtener la fecha de registro del usuario, derla al usuario   │
+│    un codigo que tenga la fecha, el numero de usuario, y algo mas para que esté escondido o "encriptado" eso, de forma de ponerlo en id.html, y que el html de id pueda      │
+│    "desencriptar" eso, leerlo y en vbase a eso estar seguro de la edad y así podemos agregar esa info, trabajar con ella. Obviamente, el codigo que te da robotito no puede  │
+│    ser algo que una persona pueda "falsificar" como no puede dar "numero de usuario-fecha de ingreso", sinó cualquier puede falcificar eso y agregarlo a id. No hagas nada,  │
+│    solo dime si se peude y que piensas                                                                                                                                       │
+╰─────────────────────────────────────────
