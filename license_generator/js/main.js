@@ -140,8 +140,6 @@ function updateLanguage(lang) {
 }
 
 function renderRankLegend() {
-    console.log('Translations object in renderRankLegend:', translations);
-    console.log('State language in renderRankLegend:', state.language);
     const t = translations[state.language] || translations.es;
     const container = document.getElementById('rank-legend');
     if (!container) return;
@@ -182,6 +180,49 @@ function renderRankLegend() {
         item.setAttribute('data-tooltip', t.rank_names[i-1]);
         itemsContainer.appendChild(item);
     }
+
+    // Dynamically create and append the verification section
+    const verificationWrapper = document.createElement('div');
+    verificationWrapper.style.marginTop = '20px';
+
+    const verificationIntro = document.createElement('p');
+    verificationIntro.className = 'rank-legend-intro';
+    verificationIntro.innerHTML = t.verification_intro; // Use innerHTML for the link
+    verificationWrapper.appendChild(verificationIntro);
+
+    const inputGroup = document.createElement('div');
+    inputGroup.className = 'input-group';
+
+    const verificationLabel = document.createElement('label');
+    verificationLabel.htmlFor = 'verificationCodeInput';
+    verificationLabel.textContent = t.verification_label;
+    inputGroup.appendChild(verificationLabel);
+
+    const verificationInput = document.createElement('input');
+    verificationInput.type = 'text';
+    verificationInput.id = 'verificationCodeInput';
+    verificationInput.placeholder = t.verification_placeholder;
+    inputGroup.appendChild(verificationInput);
+
+    const verificationStatus = document.createElement('div');
+    verificationStatus.id = 'verificationStatus';
+    inputGroup.appendChild(verificationStatus);
+
+    verificationWrapper.appendChild(inputGroup);
+    container.appendChild(verificationWrapper);
+
+    // Re-assign verification DOM elements and attach listener
+    dom.verificationCodeInput = verificationInput;
+    dom.verificationStatus = verificationStatus;
+    const debouncedGenerate = debounce(() => {
+        generateImage(state).then(() => {
+            updateDownloadLink(state.name);
+        });
+        generateUserbar(state, dom);
+    }, 100);
+    dom.verificationCodeInput.addEventListener('input', (e) => {
+        handleVerification(e.target.value, debouncedGenerate);
+    });
 }
 
 async function initialize() {
@@ -256,9 +297,6 @@ async function initialize() {
         mainBgNext: document.getElementById("main-bg-next"),
         mainBgName: document.getElementById("main-bg-name"),
         warningMessage: document.getElementById("warningMessage"),
-        verificationContent: document.getElementById('verification-content'),
-        verificationCodeInput: document.getElementById('verificationCodeInput'),
-        verificationStatus: document.getElementById('verificationStatus'),
     });
 
     populateCountries(state.language);
@@ -277,11 +315,6 @@ async function initialize() {
     
     debouncedGenerate();
     renderRankLegend(); // Initial render
-
-    // Set initial visibility based on checkbox state
-    const initialRankToggleState = dom.rankToggleInput.checked;
-    document.getElementById('rank-legend').style.display = initialRankToggleState ? 'block' : 'none';
-    dom.verificationContent.style.display = initialRankToggleState ? 'block' : 'none';
 }
 
 function addEventListeners(debouncedGenerate) {
@@ -439,17 +472,10 @@ function addEventListeners(debouncedGenerate) {
     });
 
     dom.rankToggleInput.addEventListener('change', (e) => {
-        const isChecked = e.target.checked;
-        state.rankToggle = isChecked;
-        document.getElementById('rank-legend').style.display = isChecked ? 'block' : 'none';
-        dom.verificationContent.style.display = isChecked ? 'block' : 'none';
-        debouncedGenerate();
+        state.rankToggle = e.target.checked;
         renderRankLegend(); // Update legend on toggle change
     });
 
-    dom.verificationCodeInput.addEventListener('input', (e) => {
-        handleVerification(e.target.value, debouncedGenerate);
-    });
 }
 
 async function handleVerification(code, callback) {
