@@ -255,8 +255,8 @@ async function initialize() {
         mainBgPrev: document.getElementById("main-bg-prev"),
         mainBgNext: document.getElementById("main-bg-next"),
         mainBgName: document.getElementById("main-bg-name"),
-        warningMessage: document.getElementById("warningMessage"), // Added warningMessage
-        verificationSection: document.getElementById('verification-section'),
+        warningMessage: document.getElementById("warningMessage"),
+        verificationContent: document.getElementById('verification-content'),
         verificationCodeInput: document.getElementById('verificationCodeInput'),
         verificationStatus: document.getElementById('verificationStatus'),
     });
@@ -277,6 +277,11 @@ async function initialize() {
     
     debouncedGenerate();
     renderRankLegend(); // Initial render
+
+    // Set initial visibility based on checkbox state
+    const initialRankToggleState = dom.rankToggleInput.checked;
+    document.getElementById('rank-legend').style.display = initialRankToggleState ? 'block' : 'none';
+    dom.verificationContent.style.display = initialRankToggleState ? 'block' : 'none';
 }
 
 function addEventListeners(debouncedGenerate) {
@@ -434,8 +439,10 @@ function addEventListeners(debouncedGenerate) {
     });
 
     dom.rankToggleInput.addEventListener('change', (e) => {
-        state.rankToggle = e.target.checked;
-        dom.verificationSection.style.display = e.target.checked ? 'block' : 'none';
+        const isChecked = e.target.checked;
+        state.rankToggle = isChecked;
+        document.getElementById('rank-legend').style.display = isChecked ? 'block' : 'none';
+        dom.verificationContent.style.display = isChecked ? 'block' : 'none';
         debouncedGenerate();
         renderRankLegend(); // Update legend on toggle change
     });
