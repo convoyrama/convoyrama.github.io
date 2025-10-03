@@ -137,14 +137,13 @@ export async function generateImage(state) {
     const isOwner = state.vtcData.vtcOwners.some(owner => normalizeLink(owner.profileLink) === normalizedTruckersmpLink && normalizeLink(owner.companyLink) === normalizedCompanyLink);
     const countryName = selectedCountry ? (selectedCountry[`name_${state.language}`] || selectedCountry.name_en) : '';
     const dateStr = state.currentDate ? `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}` : '';
-    const dateSymbol = state.currentDate ? (state.currentDate.fromInternet ? ' ✓' : ' ✗') : '';
 
     // Define text lines in order
     const lines = [
         { label: t.canvasName, value: state.name, isName: true },
         { label: t.canvasCountry, value: countryName.toUpperCase() },
         { label: t.canvasLicenseNo, value: licenseNumber },
-        { label: t.canvasDate, value: dateStr + dateSymbol },
+        { label: t.canvasDate, value: dateStr }, // Date string only
     ];
     if (state.nickname) {
         lines.push({ label: t.canvasTag, value: state.nickname });
@@ -169,6 +168,22 @@ export async function generateImage(state) {
         } else {
             ctx.fillText(line.value, config.textX * scaleFactor, yPos);
         }
+
+        // Special handling for date symbol
+        if (line.label === t.canvasDate && state.currentDate) {
+            const dateSymbol = state.currentDate.fromInternet ? '✓' : '✗';
+            const dateWidth = ctx.measureText(line.value).width;
+            const symbolX = (config.textX * scaleFactor) + dateWidth + (5 * scaleFactor);
+
+            // Check for golden checkmark conditions
+            if (state.currentDate.fromInternet && state.verifiedJoinDate) {
+                ctx.fillStyle = '#FFD700'; // Gold color
+            }
+            
+            ctx.fillText(dateSymbol, symbolX, yPos);
+            ctx.fillStyle = textColor; // Reset to default color
+        }
+
         yPos += config.lineHeight * scaleFactor;
     });
 
@@ -261,8 +276,8 @@ export async function generateImage(state) {
                 
                 // Calculate the vertical distance between the bottom of the QRs and the top of the TMP logo
                 const verticalDistance = truckersmpLogo_y - (itemY + itemSize);
-                // Apply that same distance below the logo for the year
-                const yearY = truckersmpLogo_y + logoHeight + verticalDistance;
+                // Apply that same distance below the logo for the year, plus an additional 10px offset requested by the user
+                const yearY = truckersmpLogo_y + logoHeight + verticalDistance + (10 * scaleFactor);
 
                 const yearX = truckersmpLogo_x + (logoWidth / 2); // Center it with the logo
 
