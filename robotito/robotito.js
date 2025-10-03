@@ -864,8 +864,8 @@ client.on('interactionCreate', async interaction => {
                         return;
                     }
 
-                    // Crear el payload con ID y fecha de registro
-                    const payload = `${userId}|${playerData.joinDate}`;
+                    // Crear el payload con ID, fecha de registro y nombre
+                    const payload = `${userId}|${playerData.joinDate}|${playerData.name}`;
 
                     // Generar la firma HMAC
                     const signature = crypto.createHmac('sha256', HMAC_SECRET_KEY)

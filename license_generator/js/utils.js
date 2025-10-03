@@ -93,6 +93,20 @@ export function getUserLevel(userId, userLevelRanges, currentYear) {
     return accountAge;
 }
 
+export function getVerifiedUserLevel(joinDate, currentYear) {
+    if (!joinDate || !currentYear) return null;
+    
+    const registrationYear = new Date(joinDate.replace(' ', 'T')).getFullYear();
+    if (isNaN(registrationYear)) return null;
+
+    const accountAge = currentYear - registrationYear;
+
+    if (accountAge < 1) return 1; // Return 1 for accounts less than a year old
+    if (accountAge > 12) return 12;
+
+    return accountAge;
+}
+
 
 
 

@@ -1,6 +1,6 @@
 import { dom } from './dom-elements.js';
 import { config, translations, loadTranslations } from './config.js';
-import { debounce, validateTruckersmpLink, validateCompanyLink, generateLicenseNumber, getUserLevel } from './utils.js';
+import { debounce, validateTruckersmpLink, validateCompanyLink, generateLicenseNumber, getUserLevel, getVerifiedUserLevel } from './utils.js';
 import { getCurrentDate, loadVtcData, loadCountries, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
 import { generateImage, updateDownloadLink } from './canvas.js';
 import { generateUserbar } from './userbar.js';
@@ -60,8 +60,17 @@ function populateNicknames(lang, userLevel) {
 }
 
 function updateUserRank() {
-    const { userId } = generateLicenseNumber(state.truckersmpLink, state.companyLink, state.country);
-    state.userLevel = getUserLevel(userId, state.levelRanges.user, state.currentDate ? state.currentDate.year : null);
+    const currentYear = state.currentDate ? state.currentDate.year : new Date().getFullYear();
+
+    if (state.verifiedJoinDate) {
+        // Use the accurate, verified join date if available
+        state.userLevel = getVerifiedUserLevel(state.verifiedJoinDate, currentYear);
+    } else {
+        // Fallback to the old approximation method
+        const { userId } = generateLicenseNumber(state.truckersmpLink, state.companyLink, state.country);
+        state.userLevel = getUserLevel(userId, state.levelRanges.user, currentYear);
+    }
+    
     populateNicknames(state.language, state.userLevel);
 }
 
@@ -339,6 +348,7 @@ function addEventListeners(debouncedGenerate) {
         state.truckersmpLink = e.target.value;
         validateTruckersmpLink(state.truckersmpLink, translations, state.language);
         updateUserRank();
+        dom.nameInput.disabled = false; // Unlock name on link change
         debouncedGenerate();
     });
 
@@ -479,6 +489,7 @@ async function handleVerification(code, callback) {
     if (!code) {
         state.verifiedJoinDate = null;
         dom.verificationStatus.textContent = '';
+        dom.nameInput.disabled = false; // Unlock name input
         callback();
         return;
     }
@@ -488,6 +499,7 @@ async function handleVerification(code, callback) {
         state.verifiedJoinDate = null;
         dom.verificationStatus.textContent = t.verification_invalid;
         dom.verificationStatus.style.color = 'red';
+        dom.nameInput.disabled = false; // Unlock name input
         callback();
         return;
     }
@@ -514,28 +526,38 @@ async function handleVerification(code, callback) {
         );
 
         if (isValid) {
-            const [verifiedUserId, joinDate] = payload.split('|');
+            const [verifiedUserId, joinDate, verifiedName] = payload.split('|');
             const profileInputUserId = (state.truckersmpLink.match(/\/user\/(\d+)/) || [])[1];
 
             if (verifiedUserId === profileInputUserId) {
                 state.verifiedJoinDate = joinDate;
                 dom.verificationStatus.textContent = t.verification_success;
                 dom.verificationStatus.style.color = 'green';
+                
+                // Auto-fill and lock the name field
+                dom.nameInput.value = verifiedName;
+                state.name = verifiedName;
+                dom.nameInput.disabled = true;
+
+                updateUserRank(); // Recalculate rank with verified data
             } else {
                 state.verifiedJoinDate = null;
                 dom.verificationStatus.textContent = t.verification_mismatch;
                 dom.verificationStatus.style.color = 'red';
+                dom.nameInput.disabled = false; // Unlock name input
             }
         } else {
             state.verifiedJoinDate = null;
             dom.verificationStatus.textContent = t.verification_tampered;
             dom.verificationStatus.style.color = 'red';
+            dom.nameInput.disabled = false; // Unlock name input
         }
     } catch (error) {
         console.error('Error during verification:', error);
         state.verifiedJoinDate = null;
         dom.verificationStatus.textContent = t.verification_error;
         dom.verificationStatus.style.color = 'red';
+        dom.nameInput.disabled = false; // Unlock name input
     }
     callback();
 }
