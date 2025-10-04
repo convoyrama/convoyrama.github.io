@@ -130,13 +130,19 @@ const commands = [
     },
     {
         name: 'verificar',
-        description: 'Genera un código de verificación con tu fecha de registro de TruckersMP.',
+        description: 'Genera un código para verificar tu cuenta, y opcionalmente, tu VTC.',
         options: [
             {
                 name: 'url',
                 description: 'La URL completa de tu perfil de TruckersMP.',
                 type: 3, // STRING
                 required: true,
+            },
+            {
+                name: 'url_vtc',
+                description: 'Opcional: La URL de tu VTC para verificar propiedad y logo.',
+                type: 3, // STRING
+                required: false,
             },
         ],
     },
