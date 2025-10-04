@@ -1,7 +1,7 @@
 import { dom } from './dom-elements.js';
 import { config, translations, loadTranslations } from './config.js';
 import { debounce, validateTruckersmpLink, validateCompanyLink, generateLicenseNumber, getUserLevel, getVerifiedUserLevel } from './utils.js';
-import { getCurrentDate, loadVtcData, loadCountries, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
+import { getCurrentDate, loadCountries, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
 import { generateImage, updateDownloadLink } from './canvas.js';
 import { generateUserbar } from './userbar.js';
 
@@ -30,7 +30,6 @@ const state = {
     currentDate: null,
     lastDateFetch: 0,
     isDateFromInternet: false,
-    vtcData: { vtcOwners: [] },
     starMap: {},
     countries: [],
     titles: [],
