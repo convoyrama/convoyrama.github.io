@@ -112,7 +112,7 @@ export async function generateUserbar(state, dom) {
     }
 
     // Draw Name and Star
-    const isOwner = state.vtcData.vtcOwners.some(owner => normalizeLink(owner.profileLink) === normalizedTruckersmpLink && normalizeLink(owner.companyLink) === normalizedCompanyLink);
+    const isOwner = state.isVtcOwner;
     const name = state.name || 'Anonymous';
     ctx.fillText(name, leftX, canvas.height / 2);
     leftX += ctx.measureText(name).width;
