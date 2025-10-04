@@ -239,9 +239,7 @@ function getDetailedDayNightIcon(hours) {
     return '🌙';
 }
 
-async function handlePlayerInfo(interaction, userId, profileUrl) {
-    try {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: 64 });
         const response = await axios.get(`${TRUCKERSMP_API_BASE_URL}/player/${userId}`);
         const playerData = response.data.response;
 
@@ -314,7 +312,7 @@ client.on('interactionCreate', async interaction => {
                     )
                     .setFooter({ text: '¡Usa los comandos con el prefijo /' });
 
-                await interaction.reply({ embeds: [embed], ephemeral: true });
+                await interaction.reply({ embeds: [embed], flags: 64 });
                 break;
             }
         case 'tito':
@@ -689,7 +687,7 @@ client.on('interactionCreate', async interaction => {
             { // Bloque para evitar redeclaración de variables
                 const userId = interaction.options.getString('id_usuario');
                 if (!userId) {
-                    await interaction.reply({ content: 'Por favor, proporciona un ID de usuario de TruckersMP.', ephemeral: true });
+                    await interaction.reply({ content: 'Por favor, proporciona un ID de usuario de TruckersMP.', flags: 64 });
                     return;
                 }
                 const profileUrl = `https://truckersmp.com/user/${userId}`;
@@ -698,7 +696,7 @@ client.on('interactionCreate', async interaction => {
             }
         case 'infov':
             { // Bloque para evitar redeclaración de variables
-                await interaction.deferReply({ ephemeral: true });
+                await interaction.deferReply({ flags: 64 });
                 const vtcId = interaction.options.getString('id_vtc');
                 if (!vtcId) {
                     await interaction.editReply('Por favor, proporciona un ID de VTC de TruckersMP.');
@@ -764,10 +762,10 @@ client.on('interactionCreate', async interaction => {
             }
         case 'info':
             { // Bloque para evitar redeclaración de variables
-                await interaction.deferReply({ ephemeral: true });
+                await interaction.deferReply({ flags: 64 });
                 const input = interaction.options.getString('enlace_o_alias');
                 if (!input) {
-                    await interaction.editReply({ content: 'Por favor, proporciona un enlace de perfil de TruckersMP (usuario o VTC) o un alias de VTC.', ephemeral: true });
+                    await interaction.editReply({ content: 'Por favor, proporciona un enlace de perfil de TruckersMP (usuario o VTC) o un alias de VTC.', flags: 64 });
                     return;
                 }
 
@@ -837,20 +835,20 @@ client.on('interactionCreate', async interaction => {
                         }
                     }
                 } else {
-                    await interaction.editReply({ content: 'El formato del enlace o alias no es válido. Por favor, usa un enlace de perfil de usuario, de VTC o un alias de VTC válido.', ephemeral: true });
+                    await interaction.editReply({ content: 'El formato del enlace o alias no es válido. Por favor, usa un enlace de perfil de usuario, de VTC o un alias de VTC válido.', flags: 64 });
                 }
                 break;
             }
         case 'verificar':
             { // Bloque para el nuevo comando de verificación
-                await interaction.deferReply({ ephemeral: true });
+                await interaction.deferReply({ flags: 64 });
                 const userUrl = interaction.options.getString('url');
                 const vtcUrl = interaction.options.getString('url_vtc'); // Nuevo parámetro opcional
 
                 const userUrlMatch = userUrl.match(/truckersmp\.com\/(?:user|profile)\/(\d+)/);
 
                 if (!userUrlMatch || !userUrlMatch[1]) {
-                    await interaction.editReply({ content: 'La URL de perfil de usuario proporcionada no es válida. Asegúrate de que sea la URL completa.', ephemeral: true });
+                    await interaction.editReply({ content: 'La URL de perfil de usuario proporcionada no es válida. Asegúrate de que sea la URL completa.', flags: 64 });
                     return;
                 }
 
@@ -880,8 +878,7 @@ client.on('interactionCreate', async interaction => {
                                 const vtcData = vtcResponse.data.response;
                                 if (vtcData) {
                                     const logoUrl = vtcData.logo || '';
-                                    const encodedLogoUrl = Buffer.from(logoUrl).toString('base64');
-                                    payload += `|${vtcData.id}|${vtcData.owner_id}|${encodedLogoUrl}`;
+                                    payload += `|${vtcData.id}|${vtcData.owner_id}|${logoUrl}`;
                                     vtcDataForEmbed = vtcData; // Guardar para el embed
                                 }
                             } catch (vtcError) {
@@ -917,7 +914,7 @@ client.on('interactionCreate', async interaction => {
                     embed.addFields({ name: 'Tu Código de Verificación', value: `\`\`\`${verificationCode}\`\`\`` });
 
 
-                    await interaction.editReply({ embeds: [embed], ephemeral: true });
+                    await interaction.editReply({ embeds: [embed], flags: 64 });
 
                 } catch (error) {
                     console.error('Error durante la verificación:', error);

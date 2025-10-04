@@ -568,17 +568,15 @@ async function handleVerification(code, callback) {
             }
 
             // Auto-load VTC logo
-            if (encodedLogoUrl) {
-                const logoUrl = atob(encodedLogoUrl);
-                if (logoUrl) {
-                    const img = new Image();
-                    img.crossOrigin = "anonymous";
-                    img.src = logoUrl;
-                    img.onload = () => {
-                        state.vtcLogoImage = img;
-                        callback(); // Redraw canvas with the new logo
-                    };
-                }
+            const logoUrl = payloadParts.length > 5 ? payloadParts[5] : null;
+            if (logoUrl) {
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.src = logoUrl;
+                img.onload = () => {
+                    state.vtcLogoImage = img;
+                    callback(); // Redraw canvas with the new logo
+                };
             }
 
             updateUserRank(); // Recalculate rank with verified data
