@@ -518,7 +518,7 @@ async function handleVerification(code, callback) {
             bytes[i] = binaryString.charCodeAt(i);
         }
         const payload = new TextDecoder().decode(bytes);
-        console.log('PAGE PAYLOAD:', payload);
+
         const key = await window.crypto.subtle.importKey(
             'raw',
             new TextEncoder().encode(HMAC_SECRET_KEY),

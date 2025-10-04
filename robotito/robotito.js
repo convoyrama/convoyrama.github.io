@@ -218,7 +218,7 @@ client.on('interactionCreate', async interaction => {
                             }
                         }
                     }
-                    console.log('BOT PAYLOAD:', payload);
+
                     const signature = crypto.createHmac('sha256', HMAC_SECRET_KEY).update(payload).digest('hex');
                     const verificationCode = `${Buffer.from(payload).toString('base64')}.${signature}`;
                     const embed = new EmbedBuilder()
