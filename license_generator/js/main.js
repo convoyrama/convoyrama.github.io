@@ -513,6 +513,7 @@ async function handleVerification(code, callback) {
 
     try {
         const payload = atob(encodedPayload);
+        console.log('PAGE PAYLOAD:', payload);
         const key = await window.crypto.subtle.importKey(
             'raw',
             new TextEncoder().encode(HMAC_SECRET_KEY),

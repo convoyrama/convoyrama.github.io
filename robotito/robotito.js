@@ -218,6 +218,7 @@ client.on('interactionCreate', async interaction => {
                             }
                         }
                     }
+                    console.log('BOT PAYLOAD:', payload);
                     const signature = crypto.createHmac('sha256', HMAC_SECRET_KEY).update(payload).digest('hex');
                     const verificationCode = `${Buffer.from(payload).toString('base64')}.${signature}`;
                     const embed = new EmbedBuilder()
@@ -232,9 +233,9 @@ client.on('interactionCreate', async interaction => {
                     if (vtcDataForEmbed) {
                         embed.addFields({ name: 'VTC Procesada', value: `${vtcDataForEmbed.name}`, inline: true });
                     }
-                    embed.addFields({ name: 'Tu Código de Verificación', value: `
+                    embed.addFields({ name: 'Tu Código de Verificación', value: ````
 ${verificationCode}
-` });
+```` });
                     await interaction.editReply({ embeds: [embed] });
                 } catch (error) {
                     console.error('Error durante la verificación:', error);
