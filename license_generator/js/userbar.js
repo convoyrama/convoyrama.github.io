@@ -1,4 +1,4 @@
-import { normalizeLink, generateLicenseNumber, getUserLevel } from './utils.js';
+import { normalizeLink, generateLicenseNumber, getUserLevel, getVerifiedUserLevel } from './utils.js';
 
 // Configurar la ruta base de Twemoji para usar los assets locales
 if (typeof twemoji !== 'undefined') {
@@ -86,7 +86,13 @@ export async function generateUserbar(state, dom) {
     let leftX = 10;
 
     // Draw Rank Image
-    const userLevel = getUserLevel(userId, state.levelRanges.user, state.currentDate ? state.currentDate.year : null);
+    let userLevel;
+    const currentYear = state.currentDate ? state.currentDate.year : new Date().getFullYear();
+    if (state.verifiedJoinDate) {
+        userLevel = getVerifiedUserLevel(state.verifiedJoinDate, currentYear);
+    } else {
+        userLevel = getUserLevel(userId, state.levelRanges.user, currentYear);
+    }
     if (state.rankToggle && userLevel) {
         try {
             const rankImage = await loadImage(`./license_generator/rank/${userLevel}.png`);
