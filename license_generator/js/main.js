@@ -535,7 +535,6 @@ async function handleVerification(code, callback) {
             const [verifiedUserId, joinDate, verifiedName] = payloadParts;
             const vtcId = payloadParts.length > 3 ? payloadParts[3] : null;
             const ownerId = payloadParts.length > 4 ? payloadParts[4] : null;
-            const encodedLogoUrl = payloadParts.length > 5 ? payloadParts[5] : null;
 
             // Always update state with verified data first
             state.verifiedJoinDate = joinDate;
@@ -565,18 +564,6 @@ async function handleVerification(code, callback) {
             } else {
                 state.isVtcOwner = false;
                 console.log('VTC Ownership NOT verified or data not present');
-            }
-
-            // Auto-load VTC logo
-            const logoUrl = payloadParts.length > 5 ? payloadParts[5] : null;
-            if (logoUrl) {
-                const img = new Image();
-                img.crossOrigin = "anonymous";
-                img.src = logoUrl;
-                img.onload = () => {
-                    state.vtcLogoImage = img;
-                    callback(); // Redraw canvas with the new logo
-                };
             }
 
             updateUserRank(); // Recalculate rank with verified data

@@ -210,8 +210,7 @@ client.on('interactionCreate', async interaction => {
                                 const vtcResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/vtc/${vtcId}`);
                                 const vtcData = vtcResponse.data.response;
                                 if (vtcData) {
-                                    const logoUrl = vtcData.logo || '';
-                                    payload += `|${vtcData.id}|${vtcData.owner_id}|${logoUrl}`;
+                                    payload += `|${vtcData.id}|${vtcData.owner_id}`;
                                     vtcDataForEmbed = vtcData;
                                 }
                             } catch (vtcError) {
