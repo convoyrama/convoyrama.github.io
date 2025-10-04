@@ -46,16 +46,6 @@ export async function getCurrentDate() {
     return window.currentDate;
 }
 
-export async function loadVtcData() {
-    try {
-        const response = await fetch('./license_generator/data/vtcData.json');
-        if (!response.ok) throw new Error('Failed to load vtcData.json');
-        return await response.json();
-    } catch (error) {
-        console.error('Error loading vtcData.json:', error);
-        return { vtcOwners: [], starMap: {} };
-    }
-}
 
 export async function loadCountries() {
     try {

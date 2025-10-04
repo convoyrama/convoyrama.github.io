@@ -233,9 +233,8 @@ function renderRankLegend() {
 async function initialize() {
     await loadTranslations(); // Call and await translation loading
 
-    [state.countries, state.vtcData, state.currentDate, state.starMap, state.titles, state.levelRanges] = await Promise.all([
+    [state.countries, state.currentDate, state.starMap, state.titles, state.levelRanges] = await Promise.all([
         loadCountries(),
-        loadVtcData(),
         getCurrentDate(),
         loadStarMap(),
         loadTitles(),
@@ -486,10 +485,15 @@ function addEventListeners(debouncedGenerate) {
 
 async function handleVerification(code, callback) {
     const t = translations[state.language] || translations.es;
+    // Reset VTC owner status at the beginning of every verification attempt
+    state.isVtcOwner = false;
+
     if (!code) {
         state.verifiedJoinDate = null;
         dom.verificationStatus.textContent = '';
-        dom.nameInput.disabled = false; // Unlock name input
+        dom.nameInput.disabled = false;
+        dom.truckersmpLinkInput.disabled = false;
+        dom.companyLinkInput.disabled = false;
         callback();
         return;
     }
@@ -499,7 +503,9 @@ async function handleVerification(code, callback) {
         state.verifiedJoinDate = null;
         dom.verificationStatus.textContent = t.verification_invalid;
         dom.verificationStatus.style.color = 'red';
-        dom.nameInput.disabled = false; // Unlock name input
+        dom.nameInput.disabled = false;
+        dom.truckersmpLinkInput.disabled = false;
+        dom.companyLinkInput.disabled = false;
         callback();
         return;
     }
@@ -526,38 +532,76 @@ async function handleVerification(code, callback) {
         );
 
         if (isValid) {
-            const [verifiedUserId, joinDate, verifiedName] = payload.split('|');
-            const profileInputUserId = (state.truckersmpLink.match(/\/user\/(\d+)/) || [])[1];
+            const payloadParts = payload.split('|');
+            const [verifiedUserId, joinDate, verifiedName] = payloadParts;
+            const vtcId = payloadParts.length > 3 ? payloadParts[3] : null;
+            const ownerId = payloadParts.length > 4 ? payloadParts[4] : null;
+            const encodedLogoUrl = payloadParts.length > 5 ? payloadParts[5] : null;
 
-            if (verifiedUserId === profileInputUserId) {
-                state.verifiedJoinDate = joinDate;
-                dom.verificationStatus.textContent = t.verification_success;
-                dom.verificationStatus.style.color = 'green';
-                
-                // Auto-fill and lock the name field
-                dom.nameInput.value = verifiedName;
-                state.name = verifiedName;
-                dom.nameInput.disabled = true;
-
-                updateUserRank(); // Recalculate rank with verified data
-            } else {
-                state.verifiedJoinDate = null;
-                dom.verificationStatus.textContent = t.verification_mismatch;
-                dom.verificationStatus.style.color = 'red';
-                dom.nameInput.disabled = false; // Unlock name input
+            // Always update state with verified data first
+            state.verifiedJoinDate = joinDate;
+            state.name = verifiedName;
+            state.truckersmpLink = `https://truckersmp.com/user/${verifiedUserId}`;
+            if (vtcId) {
+                state.companyLink = `https://truckersmp.com/vtc/${vtcId}`;
             }
+
+            // Update UI and lock fields
+            dom.verificationStatus.textContent = t.verification_success;
+            dom.verificationStatus.style.color = 'green';
+            dom.nameInput.value = verifiedName;
+            dom.truckersmpLinkInput.value = state.truckersmpLink;
+            dom.nameInput.disabled = true;
+            dom.truckersmpLinkInput.disabled = true;
+
+            if (vtcId) {
+                dom.companyLinkInput.value = state.companyLink;
+                dom.companyLinkInput.disabled = true;
+            }
+
+            // Check for VTC ownership
+            if (vtcId && ownerId && verifiedUserId === ownerId) {
+                state.isVtcOwner = true;
+                console.log('VTC Ownership VERIFIED');
+            } else {
+                state.isVtcOwner = false;
+                console.log('VTC Ownership NOT verified or data not present');
+            }
+
+            // Auto-load VTC logo
+            if (encodedLogoUrl) {
+                const logoUrl = atob(encodedLogoUrl);
+                if (logoUrl) {
+                    const img = new Image();
+                    img.crossOrigin = "anonymous";
+                    img.src = logoUrl;
+                    img.onload = () => {
+                        state.vtcLogoImage = img;
+                        callback(); // Redraw canvas with the new logo
+                    };
+                }
+            }
+
+            updateUserRank(); // Recalculate rank with verified data
+            
         } else {
             state.verifiedJoinDate = null;
+            state.isVtcOwner = false;
             dom.verificationStatus.textContent = t.verification_tampered;
             dom.verificationStatus.style.color = 'red';
-            dom.nameInput.disabled = false; // Unlock name input
+            dom.nameInput.disabled = false;
+            dom.truckersmpLinkInput.disabled = false;
+            dom.companyLinkInput.disabled = false;
         }
     } catch (error) {
         console.error('Error during verification:', error);
         state.verifiedJoinDate = null;
+        state.isVtcOwner = false;
         dom.verificationStatus.textContent = t.verification_error;
         dom.verificationStatus.style.color = 'red';
-        dom.nameInput.disabled = false; // Unlock name input
+        dom.nameInput.disabled = false;
+        dom.truckersmpLinkInput.disabled = false;
+        dom.companyLinkInput.disabled = false;
     }
     callback();
 }
