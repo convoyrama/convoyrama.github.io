@@ -16,7 +16,6 @@ const client = new Client({
 
 // --- CONFIGURACIÓN PERSONALIZABLE ---
 const HMAC_SECRET_KEY = 'TPPrZX8QA4DH3ekn4JKk';
-// const PREFIX = '!'; // Ya no se usa con comandos de barra diagonal
 
 const GAME_TIME_ANCHOR_UTC_MINUTES = 20 * 60 + 40;
 const TIME_SCALE = 6;
@@ -55,111 +54,6 @@ const FAREWELL_MESSAGE_EXTERNAL = "LAG'S SPEED agradece la invitación a este co
 
 const TRUCKERSMP_API_BASE_URL = 'https://api.truckersmp.com/v2';
 
-const VTCS_DATA = [
-    {
-        "country": "## :flag_ar: Argentina ##",
-        "vtcs": [
-            {
-                "name": "Logística Norte",
-                "discord": "https://discord.gg/9NCXZEez8F"
-            },
-            {
-                "name": "Nova Era Transportes",
-                "discord": "https://discord.gg/tQRBR6FFQe"
-            },
-            {
-                "name": "Los Andes Unidos",
-                "discord": "https://discord.gg/YWmkYYpdtF"
-            },
-            {
-                "name": "Rutiando",
-                "discord": "https://discord.gg/mYgeuBxgrR"
-            },
-            {
-                "name": "EXPRESO AMERICANO",
-                "discord": "https://discord.gg/ZHbK5gSkRd"
-            },
-            {
-                "name": "Aires del Sur",
-                "discord": "https://discord.gg/2zshSNgzrT"
-            },
-            {
-                "name": "Convoy Nocturno - La Noche",
-                "discord": "https://discord.gg/yS4PQuCkwy"
-            }
-        ]
-    },
-    {
-        "country": "## :flag_cl: Chile ##",
-        "vtcs": [
-            {
-                "name": "Logística Coordillera VTC",
-                "discord": "https://discord.gg/yNn7vTcjc4"
-            },
-            {
-                "name": "Lunar",
-                "discord": "https://discord.gg/bN8ys3ywQw"
-            },
-            {
-                "name": "Forestal El Conquistador",
-                "discord": "https://discord.gg/bN8ys3ywQw"
-            },
-            {
-                "name": "Titanes",
-                "discord": "https://discord.gg/XBg4V4kmnF"
-            }
-        ]
-    },
-    {
-        "country": "## :flag_co: Colombia ##",
-        "vtcs": [
-            {
-                "name": "Sin Fronteras Cargo",
-                "discord": "https://discord.gg/FdgK9eBMEA"
-            }
-        ]
-    },
-    {
-        "country": "## :flag_cr: Costa Rica ##",
-        "vtcs": [
-            {
-                "name": "Transportes Costa Sudamericana",
-                "discord": "https://discord.gg/PrHd3pA6Ev"
-            },
-            {
-                "name": "ChatoCR / Correcaminos",
-                "discord": "https://discord.com/invite/nWHrdUEqFr"
-            }
-        ]
-    },
-    {
-        "country": "## :flag_ec: Ecuador ##",
-        "vtcs": [
-            {
-                "name": "Traileros Latinos",
-                "discord": "https://discord.gg/WawQC8zc5x"
-            }
-        ]
-    },
-    {
-        "country": "## :flag_mx: México ##",
-        "vtcs": [
-            {
-                "name": "POLAR EXPRESS",
-                "discord": "https://discord.gg/7C59DQ65pT"
-            },
-            {
-                "name": "Castores Trucking",
-                "discord": "https://discord.gg/cTtV44CE9J"
-            },
-            {
-                "name": "Chapulines VTC ·REAL·",
-                "discord": "https://discord.gg/UY42pmqvnw"
-            }
-        ]
-    }
-];
-
 const vtcAliases = {
     'ls': 78865,
     'tcs': 76978,
@@ -174,7 +68,6 @@ const vtcAliases = {
 
 // --- FIN CONFIGURACIÓN PERSONALIZABLE ---
 
-
 client.once('clientReady', () => {
     console.log(`¡Bot Robotito conectado como ${client.user.tag}!`);
     client.user.setActivity('Convoyrama', { type: 3 });
@@ -182,54 +75,32 @@ client.once('clientReady', () => {
 
 function parseInputTime(timeString, referenceDate) {
     let parsedTime = null;
-
     const timeMatch24 = timeString.match(/^(\d{1,2}):(\d{2})$/);
     if (timeMatch24) {
-        parsedTime = referenceDate.set({
-            hour: parseInt(timeMatch24[1]),
-            minute: parseInt(timeMatch24[2]),
-            second: 0,
-            millisecond: 0
-        });
+        parsedTime = referenceDate.set({ hour: parseInt(timeMatch24[1]), minute: parseInt(timeMatch24[2]), second: 0, millisecond: 0 });
     }
-
     const timeMatchAMPM = timeString.match(/^(\d{1,2})(am|pm)$/i);
     if (timeMatchAMPM) {
         let hour = parseInt(timeMatchAMPM[1]);
         const ampm = timeMatchAMPM[2].toLowerCase();
         if (ampm === 'pm' && hour < 12) hour += 12;
         if (ampm === 'am' && hour === 12) hour = 0;
-        parsedTime = referenceDate.set({
-            hour: hour,
-            minute: 0,
-            second: 0,
-            millisecond: 0
-        });
+        parsedTime = referenceDate.set({ hour: hour, minute: 0, second: 0, millisecond: 0 });
     }
     return parsedTime && parsedTime.isValid ? parsedTime : null;
 }
 
 function getGameTime(realDateTime) {
     const utcDateTime = realDateTime.toUTC();
-
     const totalMinutesUTC = utcDateTime.hour * 60 + utcDateTime.minute;
-    
     let realMinutesSinceAnchor = totalMinutesUTC - GAME_TIME_ANCHOR_UTC_MINUTES;
     if (realMinutesSinceAnchor < 0) { realMinutesSinceAnchor += 24 * 60; }
-
     let gameMinutes = realMinutesSinceAnchor * TIME_SCALE;
     gameMinutes = gameMinutes % 1440;
-
     const gameHours = Math.floor(gameMinutes / 60);
     const remainingMinutes = Math.floor(gameMinutes % 60);
     const gameSeconds = Math.floor((utcDateTime.second * TIME_SCALE) % 60);
-
-    return utcDateTime.set({
-        hour: gameHours,
-        minute: remainingMinutes,
-        second: gameSeconds,
-        millisecond: 0
-    });
+    return utcDateTime.set({ hour: gameHours, minute: remainingMinutes, second: gameSeconds, millisecond: 0 });
 }
 
 function getDetailedDayNightIcon(hours) {
@@ -239,15 +110,15 @@ function getDetailedDayNightIcon(hours) {
     return '🌙';
 }
 
+async function handlePlayerInfo(interaction, userId, profileUrl) {
+    try {
         await interaction.deferReply({ flags: 64 });
         const response = await axios.get(`${TRUCKERSMP_API_BASE_URL}/player/${userId}`);
         const playerData = response.data.response;
-
         if (!playerData) {
             await interaction.editReply('No se encontró información para ese usuario de TruckersMP.');
             return;
         }
-
         const embed = new EmbedBuilder()
             .setColor(0x0077B6)
             .setTitle(`👤 Perfil de TruckersMP: ${playerData.name}`)
@@ -267,9 +138,7 @@ function getDetailedDayNightIcon(hours) {
                 { name: 'Management', value: playerData.permissions.isManagement ? 'Sí' : 'No', inline: true }
             )
             .setFooter({ text: 'Datos obtenidos de la API de TruckersMP.' });
-
         await interaction.editReply({ embeds: [embed] });
-
     } catch (error) {
         console.error('Error al obtener datos de TruckersMP API:', error);
         if (error.response) {
@@ -281,13 +150,11 @@ function getDetailedDayNightIcon(hours) {
 }
 
 client.on('interactionCreate', async interaction => {
-    if (!interaction.isChatInputCommand()) return; // Solo procesar comandos de barra
-
+    if (!interaction.isChatInputCommand()) return;
     const { commandName } = interaction;
-
     switch (commandName) {
         case 'ayuda':
-            { // Bloque para evitar redeclaración de variables
+            {
                 const embed = new EmbedBuilder()
                     .setColor(0x3498DB)
                     .setTitle('🤖 Comandos de Robotito')
@@ -298,8 +165,8 @@ client.on('interactionCreate', async interaction => {
                         { name: '/estado', value: 'Muestra el estado de ánimo diario de Robotito.' },
                         { name: '/logo', value: 'Muestra el logo oficial de la comunidad.' },
                         { name: '/link', value: 'Muestra enlaces útiles de Convoyrama y el Discord.' },
-                        { name: '/ingame [tiempo]', value: 'Muestra la hora actual in-game, o calcula la hora in-game para un tiempo específico en tu zona local. Ej: /ingame tiempo:22:00.' },
-                        { name: '/hora [tiempo] [ciudad]', value: 'Muestra la hora actual en varias zonas horarias o calcula esas horas si en la [ciudad] indicada son las [tiempo]. Ej: /hora tiempo:20:00 ciudad:Montevideo.' },
+                        { name: '/ingame [tiempo]', value: 'Muestra la hora actual in-game, o calcula la hora in-game para un tiempo específico.' },
+                        { name: '/hora [tiempo] [ciudad]', value: 'Muestra la hora actual en varias zonas horarias o calcula esas horas.' },
                         { name: '/despedida [tipo]', value: 'Envía un mensaje de despedida de convoy (propio o ajeno).' },
                         { name: '/spam', value: 'Envía un mensaje aleatorio de la lista de textos predefinidos.' },
                         { name: '/evento', value: 'Muestra el próximo evento programado en este servidor.' },
@@ -308,34 +175,88 @@ client.on('interactionCreate', async interaction => {
                         { name: '/servers', value: 'Muestra el estado de los servidores de TruckersMP.' },
                         { name: '/infou [id_usuario]', value: 'Muestra información de un usuario de TruckersMP por ID.' },
                         { name: '/infov [id_vtc]', value: 'Muestra información de una VTC de TruckersMP por ID.' },
-                        { name: '/info [enlace_o_alias]', value: 'Muestra información de un usuario o VTC de TruckersMP.' }
+                        { name: '/info [enlace_o_alias]', value: 'Muestra información de un usuario o VTC de TruckersMP.' },
+                        { name: '/verificar', value: 'Genera un código para verificar tu cuenta y, opcionalmente, tu VTC.' }
                     )
                     .setFooter({ text: '¡Usa los comandos con el prefijo /' });
-
                 await interaction.reply({ embeds: [embed], flags: 64 });
                 break;
             }
+        case 'verificar':
+            {
+                await interaction.deferReply({ flags: 64 });
+                const userUrl = interaction.options.getString('url');
+                const vtcUrl = interaction.options.getString('url_vtc');
+                const userUrlMatch = userUrl.match(/truckersmp\.com\/(?:user|profile)\/(\d+)/);
+                if (!userUrlMatch || !userUrlMatch[1]) {
+                    await interaction.editReply({ content: 'La URL de perfil de usuario proporcionada no es válida. Asegúrate de que sea la URL completa.', flags: 64 });
+                    return;
+                }
+                const userId = userUrlMatch[1];
+                try {
+                    const playerResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/player/${userId}`);
+                    const playerData = playerResponse.data.response;
+                    if (!playerData || !playerData.joinDate) {
+                        await interaction.editReply('No se pudo encontrar la fecha de registro para este usuario. El perfil podría ser privado o el ID incorrecto.');
+                        return;
+                    }
+                    let payload = `${userId}|${playerData.joinDate}|${playerData.name}`;
+                    let vtcDataForEmbed = null;
+                    if (vtcUrl) {
+                        const vtcUrlMatch = vtcUrl.match(/truckersmp\.com\/vtc\/(\d+)/);
+                        if (vtcUrlMatch && vtcUrlMatch[1]) {
+                            const vtcId = vtcUrlMatch[1];
+                            try {
+                                const vtcResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/vtc/${vtcId}`);
+                                const vtcData = vtcResponse.data.response;
+                                if (vtcData) {
+                                    const logoUrl = vtcData.logo || '';
+                                    payload += `|${vtcData.id}|${vtcData.owner_id}|${logoUrl}`;
+                                    vtcDataForEmbed = vtcData;
+                                }
+                            } catch (vtcError) {
+                                console.error('Error fetching VTC data:', vtcError.message);
+                            }
+                        }
+                    }
+                    const signature = crypto.createHmac('sha256', HMAC_SECRET_KEY).update(payload).digest('hex');
+                    const verificationCode = `${Buffer.from(payload).toString('base64')}.${signature}`;
+                    const embed = new EmbedBuilder()
+                        .setColor(0x2ECC71)
+                        .setTitle('✅ Código de Verificación Generado')
+                        .setDescription('¡Tu código está listo! Cópialo y pégalo en el campo correspondiente del generador de licencias.')
+                        .addFields(
+                            { name: 'Usuario de TruckersMP', value: playerData.name, inline: true },
+                            { name: 'Fecha de Registro Verificada', value: DateTime.fromISO(playerData.joinDate.replace(' ', 'T')).toFormat('dd/MM/yyyy'), inline: true }
+                        )
+                        .setFooter({ text: 'Este código vincula tu licencia a tu fecha de registro real.' });
+                    if (vtcDataForEmbed) {
+                        embed.addFields({ name: 'VTC Procesada', value: `${vtcDataForEmbed.name}`, inline: true });
+                    }
+                    embed.addFields({ name: 'Tu Código de Verificación', value: `
+${verificationCode}
+` });
+                    await interaction.editReply({ embeds: [embed] });
+                } catch (error) {
+                    console.error('Error durante la verificación:', error);
+                    await interaction.editReply('Hubo un error al contactar la API de TruckersMP. Inténtalo de nuevo más tarde.');
+                }
+                break;
+            }
         case 'tito':
-            { // Bloque para evitar redeclaración de variables
+            {
                 try {
                     await interaction.deferReply();
                     const response = await axios.get('https://v2.jokeapi.dev/joke/Any?lang=es&blacklistFlags=nsfw,religious,political,racist,sexist,explicit');
                     const jokeData = response.data;
-
                     let jokeText;
                     if (jokeData.type === 'single') {
                         jokeText = jokeData.joke;
                     } else {
                         jokeText = `${jokeData.setup}\n*${jokeData.delivery}*`;
                     }
-
-                    const embed = new EmbedBuilder()
-                        .setColor(0x9B59B6)
-                        .setTitle('Tito cuenta un chiste...')
-                        .setDescription(jokeText);
-
+                    const embed = new EmbedBuilder().setColor(0x9B59B6).setTitle('Tito cuenta un chiste...').setDescription(jokeText);
                     await interaction.editReply({ embeds: [embed] });
-
                 } catch (error) {
                     console.error('Error al obtener chiste:', error);
                     await interaction.editReply('Lo siento, Tito no está inspirado ahora mismo. Inténtalo de nuevo más tarde.');
@@ -343,14 +264,10 @@ client.on('interactionCreate', async interaction => {
                 break;
             }
         case 'estado':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
                 const now = DateTime.local();
-                let imageUrl;
-                let embedTitle;
-                let embedDescription = null;
-                let embedColor = 0x2ECC71;
-
+                let imageUrl, embedTitle, embedDescription = null, embedColor = 0x2ECC71;
                 if (now.month === 2 && now.day === 14) {
                     imageUrl = `${BASE_IMAGE_URL}event/enamorado.png`;
                     embedTitle = '¡Feliz Día de San Valentín!';
@@ -369,7 +286,6 @@ client.on('interactionCreate', async interaction => {
                 } else {
                     const isPositiveDay = now.day % 2 === 0;
                     let stateImage;
-
                     if (isPositiveDay) {
                         const index = now.day % POSITIVE_STATES.length;
                         stateImage = POSITIVE_STATES[index];
@@ -383,33 +299,20 @@ client.on('interactionCreate', async interaction => {
                     }
                     imageUrl = `${BASE_IMAGE_URL}estado/${stateImage}`;
                 }
-
-                const embed = new EmbedBuilder()
-                    .setColor(embedColor)
-                    .setTitle(embedTitle)
-                    .setImage(imageUrl)
-                    .setFooter({ text: `Estado del día ${now.toFormat('dd/MM/yyyy')}` });
-                
-                if (embedDescription) {
-                    embed.setDescription(embedDescription);
-                }
-
+                const embed = new EmbedBuilder().setColor(embedColor).setTitle(embedTitle).setImage(imageUrl).setFooter({ text: `Estado del día ${now.toFormat('dd/MM/yyyy')}` });
+                if (embedDescription) embed.setDescription(embedDescription);
                 await interaction.editReply({ embeds: [embed] });
                 break;
             }
         case 'logo':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
-                const embed = new EmbedBuilder()
-                    .setColor(0xF1C40F)
-                    .setTitle('Logo Oficial de LAG\'S SPEED')
-                    .setImage(`${BASE_IMAGE_URL}LS/logotLS.png`);
-
+                const embed = new EmbedBuilder().setColor(0xF1C40F).setTitle('Logo Oficial de LAG\'S SPEED').setImage(`${BASE_IMAGE_URL}LS/logotLS.png`);
                 await interaction.editReply({ embeds: [embed] });
                 break;
             }
         case 'link':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
                 const embed = new EmbedBuilder()
                     .setColor(0x00FFFF)
@@ -426,21 +329,17 @@ client.on('interactionCreate', async interaction => {
                         { name: 'LAG\'S SPEED en PickupVTM', value: '[Perfil de Empresa](https://pickupvtm.com/company/8203)' }
                     )
                     .setFooter({ text: '¡Explora y únete a la diversión!' });
-
                 await interaction.editReply({ embeds: [embed] });
                 break;
             }
         case 'ingame':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
                 const timeString = interaction.options.getString('tiempo');
-                let inputTime = null;
-                let responseDescription = '';
+                let inputTime, responseDescription = '';
                 const userLocalTime = DateTime.local();
-
                 if (timeString) {
                     inputTime = parseInputTime(timeString, userLocalTime);
-
                     if (!inputTime) {
                         await interaction.editReply('Formato de tiempo inválido. Intenta `/ingame tiempo:HH:MM` o `/ingame tiempo:Ham/pm`.');
                         return;
@@ -450,46 +349,32 @@ client.on('interactionCreate', async interaction => {
                     inputTime = userLocalTime;
                     responseDescription = `Ahora mismo`;
                 }
-
                 const ingameTime = getGameTime(inputTime);
                 const ingameEmoji = getDetailedDayNightIcon(ingameTime.hour);
-
-                const embed = new EmbedBuilder()
-                    .setColor(0x0099FF)
-                    .setTitle('⏰ Hora In-Game')
-                    .setDescription(`${responseDescription}, la hora in-game sería: **${ingameTime.toFormat('HH:mm:ss')} ${ingameEmoji}**`);
-
+                const embed = new EmbedBuilder().setColor(0x0099FF).setTitle('⏰ Hora In-Game').setDescription(`${responseDescription}, la hora in-game sería: **${ingameTime.toFormat('HH:mm:ss')} ${ingameEmoji}**`);
                 await interaction.editReply({ embeds: [embed] });
                 break;
             }
         case 'hora':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
                 const timeString = interaction.options.getString('tiempo');
                 const cityName = interaction.options.getString('ciudad');
-
-                let referenceTime = null;
-                let referenceCity = null;
-                let description = '';
+                let referenceTime, referenceCity, description = '';
                 const userLocalTime = DateTime.local();
-
                 if (timeString && cityName) {
                     const foundCity = LATAM_TIMEZONES.find(tz => tz.name.toLowerCase().includes(cityName.toLowerCase()));
-
                     if (!foundCity) {
                         await interaction.editReply('Ciudad no encontrada en la lista de capitales latinas. Intenta con `/hora` para ver las horas actuales o `/hora tiempo:HH:MM ciudad:[Ciudad]` con una ciudad válida.');
                         return;
                     }
-
                     referenceTime = parseInputTime(timeString, userLocalTime.setZone(foundCity.zone));
-
                     if (!referenceTime) {
                         await interaction.editReply('Formato de tiempo inválido. Intenta `/hora tiempo:HH:MM ciudad:[Ciudad]` o `/hora tiempo:Ham/pm ciudad:[Ciudad]`');
                         return;
                     }
                     referenceCity = foundCity.name;
                     description = `**Si en ${referenceCity} son las ${referenceTime.toFormat('HH:mm')}, entonces:**\n`;
-
                 } else if (!timeString && !cityName) {
                     referenceTime = userLocalTime;
                     description = `**Horas actuales en Zonas Latinas:**\n`;
@@ -497,44 +382,30 @@ client.on('interactionCreate', async interaction => {
                     await interaction.editReply('Uso incorrecto. Intenta `/hora` para horas actuales, o `/hora tiempo:HH:MM ciudad:[Ciudad]`');
                     return;
                 }
-
                 LATAM_TIMEZONES.forEach(tz => {
                     const timeInZone = referenceTime.setZone(tz.zone);
                     description += `• **${tz.name}:** ${timeInZone.toFormat('HH:mm:ss')}\n`;
                 });
-
-                const embed = new EmbedBuilder()
-                    .setColor(0x00FF00)
-                    .setTitle('🌎 Horas en Zonas Latinas')
-                    .setDescription(description)
-                    .setFooter({ text: 'Horas basadas en la zona horaria del bot.' });
-
+                const embed = new EmbedBuilder().setColor(0x00FF00).setTitle('🌎 Horas en Zonas Latinas').setDescription(description).setFooter({ text: 'Horas basadas en la zona horaria del bot.' });
                 await interaction.editReply({ embeds: [embed] });
                 break;
             }
         case 'despedida':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
                 const type = interaction.options.getString('tipo');
                 let farewellMessage = FAREWELL_MESSAGE_EXTERNAL;
                 let title = '👋 ¡Despedida de Convoy Externo!';
-
                 if (type && type.toLowerCase() === 'propia') {
                     farewellMessage = FAREWELL_MESSAGE_OWN;
                     title = '👋 ¡Hasta la Próxima Ruta!';
                 }
-
-                const embed = new EmbedBuilder()
-                    .setColor(0x800080)
-                    .setTitle(title)
-                    .setDescription(farewellMessage)
-                    .setFooter({ text: '¡Nos vemos en el camino!' });
-
+                const embed = new EmbedBuilder().setColor(0x800080).setTitle(title).setDescription(farewellMessage).setFooter({ text: '¡Nos vemos en el camino!' });
                 await interaction.editReply({ embeds: [embed] });
                 break;
             }
         case 'spam':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
                 if (SPAM_TEXTS.length === 0) {
                     await interaction.editReply('No hay textos de spam configurados.');
@@ -542,137 +413,88 @@ client.on('interactionCreate', async interaction => {
                 }
                 const randomIndex = Math.floor(Math.random() * SPAM_TEXTS.length);
                 const randomSpamText = SPAM_TEXTS[randomIndex];
-
-                const embed = new EmbedBuilder()
-                    .setColor(0xFF0000)
-                    .setTitle('🚨 Mensaje Aleatorio (SPAM)')
-                    .setDescription(randomSpamText)
-                    .setFooter({ text: '¡Copia y pega con responsabilidad!' });
-
+                const embed = new EmbedBuilder().setColor(0xFF0000).setTitle('🚨 Mensaje Aleatorio (SPAM)').setDescription(randomSpamText).setFooter({ text: '¡Copia y pega con responsabilidad!' });
                 await interaction.editReply({ embeds: [embed] });
                 break;
             }
         case 'evento':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
                 if (!interaction.guild) {
                     await interaction.editReply('Este comando solo funciona en un servidor.');
                     return;
                 }
-
                 const scheduledEvents = await interaction.guild.scheduledEvents.fetch();
                 const now = Date.now();
-
-                const upcomingEvents = scheduledEvents
-                    .filter(event => event.scheduledStartTimestamp > now)
-                    .sort((a, b) => a.scheduledStartTimestamp - b.scheduledStartTimestamp);
-
+                const upcomingEvents = scheduledEvents.filter(event => event.scheduledStartTimestamp > now).sort((a, b) => a.scheduledStartTimestamp - b.scheduledStartTimestamp);
                 if (upcomingEvents.size === 0) {
                     await interaction.editReply('Lo siento, no hay eventos programados próximos en este servidor.');
                     return;
                 }
-
                 const nextEvent = upcomingEvents.first();
-
                 const embed = new EmbedBuilder()
                     .setColor(0x8A2BE2)
                     .setTitle(`📅 Próximo Evento: ${nextEvent.name}`)
                     .setURL(nextEvent.url)
                     .setDescription(
-                        `**Descripción:** ${nextEvent.description || 'Sin descripción.'}\n` +
-                        `**Inicio:** <t:${Math.floor(nextEvent.scheduledStartTimestamp / 1000)}:F> (<t:${Math.floor(nextEvent.scheduledStartTimestamp / 1000)}:R>)\n` +
-                        `**Ubicación:** ${nextEvent.entityMetadata?.location || nextEvent.channel?.name || 'N/A'}\n` +
+                        `**Descripción:** ${nextEvent.description || 'Sin descripción.'}\n` + 
+                        `**Inicio:** <t:${Math.floor(nextEvent.scheduledStartTimestamp / 1000)}:F> (<t:${Math.floor(nextEvent.scheduledStartTimestamp / 1000)}:R>)\n` + 
+                        `**Ubicación:** ${nextEvent.entityMetadata?.location || nextEvent.channel?.name || 'N/A'}\n` + 
                         `**Creador:** ${nextEvent.creator?.tag || 'Desconocido'}`
                     )
                     .setFooter({ text: '¡No te lo pierdas!' });
-
                 const coverImage = nextEvent.coverImageURL();
-                if (coverImage) {
-                    embed.setThumbnail(coverImage);
-                }
-
+                if (coverImage) embed.setThumbnail(coverImage);
                 await interaction.editReply({ embeds: [embed] });
                 break;
             }
         case 'evento7':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
                 if (!interaction.guild) {
                     await interaction.editReply('Este comando solo funciona en un servidor.');
                     return;
                 }
-
                 const scheduledEvents = await interaction.guild.scheduledEvents.fetch();
                 const now = Date.now();
                 const sevenDaysFromNow = now + 7 * 24 * 60 * 60 * 1000;
-
-                const upcomingWeekEvents = scheduledEvents
-                    .filter(event => event.scheduledStartTimestamp > now && event.scheduledStartTimestamp < sevenDaysFromNow)
-                    .sort((a, b) => a.scheduledStartTimestamp - b.scheduledStartTimestamp);
-
+                const upcomingWeekEvents = scheduledEvents.filter(event => event.scheduledStartTimestamp > now && event.scheduledStartTimestamp < sevenDaysFromNow).sort((a, b) => a.scheduledStartTimestamp - b.scheduledStartTimestamp);
                 if (upcomingWeekEvents.size === 0) {
                     await interaction.editReply('No hay eventos programados para esta semana.');
                     return;
                 }
-
-                const embed = new EmbedBuilder()
-                    .setColor(0x8A2BE2)
-                    .setTitle('📅 Próximos Eventos de la Semana');
-
+                const embed = new EmbedBuilder().setColor(0x8A2BE2).setTitle('📅 Próximos Eventos de la Semana');
                 let description = '';
                 upcomingWeekEvents.forEach(event => {
-                    description += `**[${event.name}](${event.url})**\n` +
-                                   `Inicia: <t:${Math.floor(event.scheduledStartTimestamp / 1000)}:F> (<t:${Math.floor(event.scheduledStartTimestamp / 1000)}:R>)\n\n`;
+                    description += `**[${event.name}](${event.url})**\n` + `Inicia: <t:${Math.floor(event.scheduledStartTimestamp / 1000)}:F> (<t:${Math.floor(event.scheduledStartTimestamp / 1000)}:R>)\n\n`;
                 });
-
                 embed.setDescription(description);
                 await interaction.editReply({ embeds: [embed] });
                 break;
             }
         case 'vtc':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
-                const embed = new EmbedBuilder()
-                    .setColor(0x008000)
-                    .setTitle('🚚 Comunidad');
-
+                const embed = new EmbedBuilder().setColor(0x008000).setTitle('🚚 Comunidad');
+                const VTCS_DATA = []; 
                 VTCS_DATA.forEach(countryData => {
-                    const vtcList = countryData.vtcs.map(vtc => {
-                        if (vtc.discord) {
-                            return `[${vtc.name}](${vtc.discord})`;
-                        } else {
-                            return vtc.name;
-                        }
-                    }).join('\n');
-                    if (vtcList) {
-                        embed.addFields({ name: countryData.country, value: vtcList, inline: true });
-                    }
+                    const vtcList = countryData.vtcs.map(vtc => vtc.discord ? `[${vtc.name}](${vtc.discord})` : vtc.name).join('\n');
+                    if (vtcList) embed.addFields({ name: countryData.country, value: vtcList, inline: true });
                 });
-
                 await interaction.editReply({ embeds: [embed] });
                 break;
             }
         case 'servers':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply();
                 try {
                     const response = await axios.get(`${TRUCKERSMP_API_BASE_URL}/servers`);
                     const servers = response.data.response;
-
-                    const embed = new EmbedBuilder()
-                        .setColor(0x00FF00)
-                        .setTitle('Estado de los Servidores de TruckersMP');
-
+                    const embed = new EmbedBuilder().setColor(0x00FF00).setTitle('Estado de los Servidores de TruckersMP');
                     servers.forEach(server => {
-                        embed.addFields({
-                            name: `${server.name} (${server.shortname})`,
-                            value: `**Jugadores:** ${server.players} / ${server.maxplayers}\n**En cola:** ${server.queue}\n**Estado:** ${server.online ? 'Online' : 'Offline'}`,
-                            inline: true
-                        });
+                        embed.addFields({ name: `${server.name} (${server.shortname})`, value: `**Jugadores:** ${server.players} / ${server.maxplayers}\n**En cola:** ${server.queue}\n**Estado:** ${server.online ? 'Online' : 'Offline'}`, inline: true });
                     });
-
                     await interaction.editReply({ embeds: [embed] });
-
                 } catch (error) {
                     console.error('Error al obtener datos de los servidores de TruckersMP:', error);
                     if (error.response) {
@@ -684,7 +506,7 @@ client.on('interactionCreate', async interaction => {
                 break;
             }
         case 'infou':
-            { // Bloque para evitar redeclaración de variables
+            {
                 const userId = interaction.options.getString('id_usuario');
                 if (!userId) {
                     await interaction.reply({ content: 'Por favor, proporciona un ID de usuario de TruckersMP.', flags: 64 });
@@ -695,7 +517,7 @@ client.on('interactionCreate', async interaction => {
                 break;
             }
         case 'infov':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply({ flags: 64 });
                 const vtcId = interaction.options.getString('id_vtc');
                 if (!vtcId) {
@@ -706,26 +528,22 @@ client.on('interactionCreate', async interaction => {
                 try {
                     const vtcResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/vtc/${vtcId}`);
                     const vtcData = vtcResponse.data.response;
-
                     if (!vtcData) {
                         await interaction.editReply('No se encontró información para esa VTC de TruckersMP.');
                         return;
                     }
-
                     const membersResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/vtc/${vtcId}/members`);
                     const membersData = membersResponse.data.response.members;
                     const bannedMembers = membersData.filter(member => member.banned);
-
                     const newsResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/vtc/${vtcId}/news`);
                     const newsData = newsResponse.data.response;
-
                     const embed = new EmbedBuilder()
                         .setColor(0x0077B6)
                         .setTitle(`🚚 Perfil de VTC: ${vtcData.name}`)
                         .setURL(vtcUrl)
                         .setThumbnail(vtcData.avatar || null)
                         .addFields(
-                            { name: 'ID de VTC', value: vtcData.id ? `${vtcData.id}`: 'N/A', inline: true },
+                            { name: 'ID de VTC', value: vtcData.id ? `${vtcData.id}` : 'N/A', inline: true },
                             { name: 'Tag', value: vtcData.tag || 'N/A', inline: true },
                             { name: 'Miembros', value: vtcData.members_count ? `${vtcData.members_count}` : 'N/A', inline: true },
                             { name: 'Creada', value: vtcData.creation_date ? DateTime.fromISO(vtcData.creation_date.replace(' ', 'T')).toFormat('dd/MM/yyyy') : 'N/A', inline: true },
@@ -733,23 +551,16 @@ client.on('interactionCreate', async interaction => {
                             { name: 'Verificada', value: vtcData.verified ? 'Sí' : 'No', inline: true }
                         )
                         .setFooter({ text: 'Datos obtenidos de la API de TruckersMP.' });
-                    
-                    if(vtcData.slogan){
-                        embed.setDescription(vtcData.slogan);
-                    }
-
+                    if (vtcData.slogan) embed.setDescription(vtcData.slogan);
                     if (bannedMembers.length > 0) {
                         const bannedMembersList = bannedMembers.map(member => member.username).join(', ');
                         embed.addFields({ name: 'Miembros Baneados', value: bannedMembersList });
                     }
-
                     if (newsData.news && newsData.news.length > 0) {
                         const latestNews = newsData.news[0];
                         embed.addFields({ name: 'Última Noticia', value: `[${latestNews.title}](https://truckersmp.com/vtc/${vtcId}/news/${latestNews.id})` });
                     }
-
                     await interaction.editReply({ embeds: [embed] });
-
                 } catch (error) {
                     console.error('Error al obtener datos de TruckersMP API:', error);
                     if (error.response) {
@@ -761,18 +572,16 @@ client.on('interactionCreate', async interaction => {
                 break;
             }
         case 'info':
-            { // Bloque para evitar redeclaración de variables
+            {
                 await interaction.deferReply({ flags: 64 });
                 const input = interaction.options.getString('enlace_o_alias');
                 if (!input) {
                     await interaction.editReply({ content: 'Por favor, proporciona un enlace de perfil de TruckersMP (usuario o VTC) o un alias de VTC.', flags: 64 });
                     return;
                 }
-
                 const userUrlMatch = input.match(/truckersmp\.com\/(?:user|profile)\/(\d+)/);
                 const vtcUrlMatch = input.match(/truckersmp\.com\/vtc\/(\d+)/);
                 const vtcAlias = vtcAliases[input.toLowerCase()];
-
                 if (userUrlMatch) {
                     const userId = userUrlMatch[1];
                     await handlePlayerInfo(interaction, userId, input);
@@ -782,26 +591,22 @@ client.on('interactionCreate', async interaction => {
                     try {
                         const vtcResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/vtc/${vtcId}`);
                         const vtcData = vtcResponse.data.response;
-
                         if (!vtcData) {
                             await interaction.editReply('No se encontró información para esa VTC de TruckersMP.');
                             return;
                         }
-
                         const membersResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/vtc/${vtcId}/members`);
                         const membersData = membersResponse.data.response.members;
                         const bannedMembers = membersData.filter(member => member.banned);
-
                         const newsResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/vtc/${vtcId}/news`);
                         const newsData = newsResponse.data.response;
-
                         const embed = new EmbedBuilder()
                             .setColor(0x0077B6)
                             .setTitle(`🚚 Perfil de VTC: ${vtcData.name}`)
                             .setURL(vtcUrl)
                             .setThumbnail(vtcData.avatar || null)
                             .addFields(
-                                { name: 'ID de VTC', value: vtcData.id ? `${vtcData.id}`: 'N/A', inline: true },
+                                { name: 'ID de VTC', value: vtcData.id ? `${vtcData.id}` : 'N/A', inline: true },
                                 { name: 'Tag', value: vtcData.tag || 'N/A', inline: true },
                                 { name: 'Miembros', value: vtcData.members_count ? `${vtcData.members_count}` : 'N/A', inline: true },
                                 { name: 'Creada', value: vtcData.creation_date ? DateTime.fromISO(vtcData.creation_date.replace(' ', 'T')).toFormat('dd/MM/yyyy') : 'N/A', inline: true },
@@ -809,23 +614,16 @@ client.on('interactionCreate', async interaction => {
                                 { name: 'Verificada', value: vtcData.verified ? 'Sí' : 'No', inline: true }
                             )
                             .setFooter({ text: 'Datos obtenidos de la API de TruckersMP.' });
-                        
-                        if(vtcData.slogan){
-                            embed.setDescription(vtcData.slogan);
-                        }
-
+                        if (vtcData.slogan) embed.setDescription(vtcData.slogan);
                         if (bannedMembers.length > 0) {
                             const bannedMembersList = bannedMembers.map(member => member.username).join(', ');
                             embed.addFields({ name: 'Miembros Baneados', value: bannedMembersList });
                         }
-
                         if (newsData.news && newsData.news.length > 0) {
                             const latestNews = newsData.news[0];
                             embed.addFields({ name: 'Última Noticia', value: `[${latestNews.title}](https://truckersmp.com/vtc/${vtcId}/news/${latestNews.id})` });
                         }
-
                         await interaction.editReply({ embeds: [embed] });
-
                     } catch (error) {
                         console.error('Error al obtener datos de TruckersMP API:', error);
                         if (error.response) {
@@ -836,89 +634,6 @@ client.on('interactionCreate', async interaction => {
                     }
                 } else {
                     await interaction.editReply({ content: 'El formato del enlace o alias no es válido. Por favor, usa un enlace de perfil de usuario, de VTC o un alias de VTC válido.', flags: 64 });
-                }
-                break;
-            }
-        case 'verificar':
-            { // Bloque para el nuevo comando de verificación
-                await interaction.deferReply({ flags: 64 });
-                const userUrl = interaction.options.getString('url');
-                const vtcUrl = interaction.options.getString('url_vtc'); // Nuevo parámetro opcional
-
-                const userUrlMatch = userUrl.match(/truckersmp\.com\/(?:user|profile)\/(\d+)/);
-
-                if (!userUrlMatch || !userUrlMatch[1]) {
-                    await interaction.editReply({ content: 'La URL de perfil de usuario proporcionada no es válida. Asegúrate de que sea la URL completa.', flags: 64 });
-                    return;
-                }
-
-                const userId = userUrlMatch[1];
-
-                try {
-                    // Obtener datos del jugador
-                    const playerResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/player/${userId}`);
-                    const playerData = playerResponse.data.response;
-
-                    if (!playerData || !playerData.joinDate) {
-                        await interaction.editReply('No se pudo encontrar la fecha de registro para este usuario. El perfil podría ser privado o el ID incorrecto.');
-                        return;
-                    }
-
-                    // Iniciar el payload base
-                    let payload = `${userId}|${playerData.joinDate}|${playerData.name}`;
-                    let vtcDataForEmbed = null;
-
-                    // Si se proporciona la URL de la VTC, obtener datos y extender el payload
-                    if (vtcUrl) {
-                        const vtcUrlMatch = vtcUrl.match(/truckersmp\.com\/vtc\/(\d+)/);
-                        if (vtcUrlMatch && vtcUrlMatch[1]) {
-                            const vtcId = vtcUrlMatch[1];
-                            try {
-                                const vtcResponse = await axios.get(`${TRUCKERSMP_API_BASE_URL}/vtc/${vtcId}`);
-                                const vtcData = vtcResponse.data.response;
-                                if (vtcData) {
-                                    const logoUrl = vtcData.logo || '';
-                                    payload += `|${vtcData.id}|${vtcData.owner_id}|${logoUrl}`;
-                                    vtcDataForEmbed = vtcData; // Guardar para el embed
-                                }
-                            } catch (vtcError) {
-                                // No hacer nada si la VTC no se encuentra, simplemente no se añade al payload
-                                console.error('Error fetching VTC data:', vtcError.message);
-                            }
-                        }
-                    }
-
-                    // Generar la firma HMAC
-                    const signature = crypto.createHmac('sha256', HMAC_SECRET_KEY)
-                        .update(payload)
-                        .digest('hex');
-
-                    // Crear el código final combinando payload y firma
-                    const verificationCode = `${Buffer.from(payload).toString('base64')}.${signature}`;
-
-                    const embed = new EmbedBuilder()
-                        .setColor(0x2ECC71)
-                        .setTitle('✅ Código de Verificación Generado')
-                        .setDescription('¡Tu código está listo! Cópialo y pégalo en el campo correspondiente del generador de licencias.')
-                        .addFields(
-                            { name: 'Usuario de TruckersMP', value: playerData.name, inline: true },
-                            { name: 'Fecha de Registro Verificada', value: DateTime.fromISO(playerData.joinDate.replace(' ', 'T')).toFormat('dd/MM/yyyy'), inline: true }
-                        )
-                        .setFooter({ text: 'Este código vincula tu licencia a tu fecha de registro real.' });
-
-                    // Añadir información de la VTC al embed si se procesó correctamente
-                    if (vtcDataForEmbed) {
-                        embed.addFields({ name: 'VTC Procesada', value: `${vtcDataForEmbed.name}`, inline: true });
-                    }
-                    
-                    embed.addFields({ name: 'Tu Código de Verificación', value: `\`\`\`${verificationCode}\`\`\`` });
-
-
-                    await interaction.editReply({ embeds: [embed], flags: 64 });
-
-                } catch (error) {
-                    console.error('Error durante la verificación:', error);
-                    await interaction.editReply('Hubo un error al contactar la API de TruckersMP. Inténtalo de nuevo más tarde.');
                 }
                 break;
             }
