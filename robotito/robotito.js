@@ -233,9 +233,7 @@ client.on('interactionCreate', async interaction => {
                     if (vtcDataForEmbed) {
                         embed.addFields({ name: 'VTC Procesada', value: `${vtcDataForEmbed.name}`, inline: true });
                     }
-                    embed.addFields({ name: 'Tu Código de Verificación', value: ````
-${verificationCode}
-```` });
+                    embed.addFields({ name: 'Tu Código de Verificación', value: `\`\`\`\n${verificationCode}\n\`\`\`` });
                     await interaction.editReply({ embeds: [embed] });
                 } catch (error) {
                     console.error('Error durante la verificación:', error);

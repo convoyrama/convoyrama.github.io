@@ -512,7 +512,12 @@ async function handleVerification(code, callback) {
     const [encodedPayload, signature] = parts;
 
     try {
-        const payload = atob(encodedPayload);
+        const binaryString = atob(encodedPayload);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        const payload = new TextDecoder().decode(bytes);
         console.log('PAGE PAYLOAD:', payload);
         const key = await window.crypto.subtle.importKey(
             'raw',
