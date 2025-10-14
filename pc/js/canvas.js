@@ -44,35 +44,49 @@ const f2 = async () => {
         x.clip();
     }
 
-    if (v15_2 && v4.fondo) { // b4 checked, "Fondo"
-        const v16 = new Image();
-        v16.src = v4.fondo;
+    if (v15_2 && v4.fondo_inferior) { // b4 checked, "Fondo"
+        const v15_4 = new Image();
+        v15_4.src = v4.fondo_inferior;
         await new Promise(a => {
-            v16.onload = () => {
-                x.drawImage(v16, 0, 0, w.width, w.height);
+            v15_4.onload = () => {
+                x.drawImage(v15_4, 0, 0, w.width, w.height);
                 a();
             };
-            v16.onerror = () => {
-                console.error(`Failed to load ${v4.fondo}`);
+            v15_4.onerror = () => {
+                console.error(`Failed to load ${v4.fondo_inferior}`);
                 a();
             }
         });
     }
 
-    if (v13 && v4.backgroundLayer2) { // b1 checked, "Huellas"
-        const v15_3 = new Image();
-        v15_3.src = v4.backgroundLayer2;
+    if (v13 && v4.huellas) { // b1 checked, "Huellas"
+        const v15_5 = new Image();
+        v15_5.src = v4.huellas;
         await new Promise(a => {
-            v15_3.onload = () => {
-                x.drawImage(v15_3, 0, 0, w.width, w.height);
+            v15_5.onload = () => {
+                x.drawImage(v15_5, 0, 0, w.width, w.height);
                 a();
             };
-            v15_3.onerror = () => {
-                console.error("Failed to load ls_background_extra.png");
+            v15_5.onerror = () => {
+                console.error(`Failed to load ${v4.huellas}`);
                 a();
             }
         });
     }
+
+    const v16 = new Image();
+    v16.src = v4.fondo;
+    await new Promise(a => {
+        v16.onload = () => {
+            x.drawImage(v16, 0, 0, w.width, w.height);
+            a();
+        };
+        v16.onerror = () => {
+            console.error(`Failed to load ${v4.fondo}`);
+            x.fillStyle = "transparent";
+            a();
+        }
+    });
 
     x.textAlign = "center";
 

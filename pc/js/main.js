@@ -52,8 +52,8 @@ const f3 = () => {
     o5.textContent = v3.outSize;
     f1.textContent = v3.font.split(",")[0].replace(/'/g, "");
     b1.checked = a1.value === "LS" || a1.value === "TMP";
-    b2.checked = false;
-    b4.checked = false;
+    b2.checked = a1.value === "LS" || a1.value === "TMP";
+    b4.checked = a1.value === "LS" || a1.value === "TMP";
     document.querySelectorAll(".ls-only").forEach(a => a.style.display = (a1.value === "LS" || a1.value === "TMP") ? "block" : "none");
     f2();
 };
