@@ -138,26 +138,48 @@ const f2 = async () => {
         }
     }
 
-    if (a1.value === "CDS" && v4.sombra) {
-        x.shadowColor = v4.sombra;
-        x.shadowOffsetX = 2;
-        x.shadowOffsetY = 2;
-        x.shadowBlur = 0;
-    } else {
-        x.shadowColor = "transparent";
-        x.shadowOffsetX = 0;
-        x.shadowOffsetY = 0;
-        x.shadowBlur = 0;
+    let textColor = v4.color;
+    let shadowColor = "transparent";
+    let shadowOffsetX = 0;
+    let shadowOffsetY = 0;
+    let shadowBlur = 0;
+
+    if (a1.value === "TMP") {
+        if (window.tmpTextColorBlack) {
+            textColor = "black";
+            shadowColor = "white";
+            shadowOffsetX = 2;
+            shadowOffsetY = 2;
+        } else {
+            textColor = "white";
+            shadowColor = "black";
+            shadowOffsetX = 2;
+            shadowOffsetY = 2;
+        }
+    } else if (a1.value === "CDS") {
+        shadowColor = v4.sombra;
+        shadowOffsetX = 2;
+        shadowOffsetY = 2;
     }
 
+    x.shadowColor = shadowColor;
+    x.shadowOffsetX = shadowOffsetX;
+    x.shadowOffsetY = shadowOffsetY;
+    x.shadowBlur = shadowBlur;
+
     x.font = `bold ${v7}px ${v4.font}`;
-    x.fillStyle = v4.color;
+    x.fillStyle = textColor;
     x.fillText(v5, w.width / 2, v10);
 
     const yearValue = document.getElementById('year').value;
     x.font = `bold 40px ${v4.font}`;
-    x.fillStyle = v4.color;
+    x.fillStyle = textColor;
     x.fillText(yearValue, w.width / 2, v10 + 50);
+
+    x.shadowColor = "transparent";
+    x.shadowOffsetX = 0;
+    x.shadowOffsetY = 0;
+    x.shadowBlur = 0;
 
     if (document.getElementById('tmp-logo-toggle').checked && a1.value === "TMP") {
         const tmpLogo = new Image();

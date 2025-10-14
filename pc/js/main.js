@@ -129,6 +129,13 @@ customBg.addEventListener('change', () => {
     }
 });
 
+window.tmpTextColorBlack = false;
+const toggleTextColor = document.getElementById('toggle-text-color');
+toggleTextColor.addEventListener('click', () => {
+    window.tmpTextColorBlack = !window.tmpTextColorBlack;
+    f2();
+});
+
 
 loadCountries();
 f3();
