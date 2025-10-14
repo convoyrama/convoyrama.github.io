@@ -124,7 +124,7 @@ const f2 = async () => {
         await new Promise(a => {
             vtcLogoImg.onload = () => {
                 const logoSize = 100;
-                x.drawImage(vtcLogoImg, w.width / 2 - logoSize / 2, 10, logoSize, logoSize);
+                x.drawImage(vtcLogoImg, 10, 10, logoSize, logoSize);
                 a();
             };
             vtcLogoImg.onerror = () => a();
