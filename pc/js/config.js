@@ -1,12 +1,13 @@
 
 const v1 = {
     "TMP": {
-        backgroundLayer: "fondos/lsfondo.png",
-        backgroundLayer2: "fondos/ls_background_extra.png",
-        fondo: "fondos/ls.png",
-        foregroundLayer: "fondos/lsplumas.png",
-        fondo_inferior: "fondos/fondo.png",
-        huellas: "fondos/huellas.png",
+        backgrounds: [
+            "fondos/tmp1.png",
+            "fondos/tmp2.png",
+            "fondos/tmp3.png",
+            "fondos/tmp4.png",
+            "fondos/tmp5.png"
+        ],
         color: "rgb(240,240,240)",
         size: 60,
         flagSize: 120,

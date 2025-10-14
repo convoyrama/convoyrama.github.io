@@ -113,6 +113,43 @@ const f2 = async () => {
     x.fillStyle = v4.color;
     x.fillText(v5, w.width / 2, v10);
 
+    if (document.getElementById('tmp-logo-toggle').checked) {
+        const tmpLogo = new Image();
+        tmpLogo.src = 'fondos/truckersmp-logo-sm.png';
+        await new Promise(resolve => {
+            tmpLogo.onload = () => {
+                const yPos = v9 - v8 + (v10 - (v9-v8)) / 2 - tmpLogo.height / 2;
+                x.drawImage(tmpLogo, w.width / 2 - tmpLogo.width / 2, yPos);
+                resolve();
+            };
+            tmpLogo.onerror = () => resolve();
+        });
+    }
+
+    if (document.getElementById('promods-logo-toggle').checked) {
+        const promodsLogo = new Image();
+        promodsLogo.src = 'fondos/promods.png';
+        await new Promise(resolve => {
+            promodsLogo.onload = () => {
+                x.drawImage(promodsLogo, 10, w.height - promodsLogo.height / 2 - 10, promodsLogo.width / 2, promodsLogo.height / 2);
+                resolve();
+            };
+            promodsLogo.onerror = () => resolve();
+        });
+    }
+
+    if (document.getElementById('dbus-logo-toggle').checked) {
+        const dbusLogo = new Image();
+        dbusLogo.src = 'fondos/dbusworld.png';
+        await new Promise(resolve => {
+            dbusLogo.onload = () => {
+                x.drawImage(dbusLogo, w.width - dbusLogo.width / 2 - 10, w.height - dbusLogo.height / 2 - 10, dbusLogo.width / 2, dbusLogo.height / 2);
+                resolve();
+            };
+            dbusLogo.onerror = () => resolve();
+        });
+    }
+
     if (v14 && v4.foregroundLayer) {
         const v18 = new Image();
         v18.src = v4.foregroundLayer;
