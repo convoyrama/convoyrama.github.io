@@ -1,26 +1,5 @@
 <!-- test -->
-<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title id="t1">Convoyrama | Creador de Imágenes de Perfil</title><meta name="description" content="Convoyrama - Creador de Imágenes de Perfil"><link rel="stylesheet" href="./assets/style.css"><link rel="icon" href="./assets/images/favicon.png"><link rel="apple-touch-icon" href="./assets/images/favicon.png"><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Merriweather:wght@700&family=Roboto:wght@700&family=Lora:wght@700&display=swap" rel="stylesheet"><script src="./twemoji-14.0.2/twemoji.min.js"></script><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;padding:0;min-height:100vh}header{padding:15px;text-align:center;position:relative;z-index:10;background:var(--accent-bg);border-bottom:1px solid var(--border)}header p{font-size:1.2em;text-shadow:none;font-family:Arial,sans-serif;font-weight:normal;margin:10px 0;color:#fff}nav{padding:10px;text-align:center}nav a,nav a:visited{text-decoration:none;margin:0 15px;font-size:1em;text-shadow:none;color:#fff}nav a:hover{text-decoration:underline}.contenedor{display:flex;gap:20px;padding:20px;align-items:flex-start;position:relative;z-index:10}.panel{flex:1;max-width:300px;font-size:14px}.panel h3{margin:10px 0 5px;font-size:14px;text-shadow:none}.input-group{margin:6px 0}.input-group label{text-shadow:none}canvas{border:1px solid #000;display:block;max-width:100%;height:auto}#preview{flex:1;text-align:center}button{padding:6px 12px;font-size:14px;margin-top:10px;background:rgb(90,165,25);color:#fff;border:none;border-radius:6px;cursor:pointer;text-shadow:none}button:hover{opacity:0.8}.controls{margin-bottom:20px;padding:10px;background:none;display:flex;flex-direction:column;gap:10px}.controls label{display:flex;align-items:center;gap:8px;font-size:14px;text-shadow:none;width:100%}.controls input[type="checkbox"]{width:16px;height:16px;cursor:pointer;flex-shrink:0}footer{color:white;text-align:center;padding:10px;position:relative;z-index:10;margin-top:auto}footer small{text-shadow:none}.ls-only{display:none}</style></head><body><header><nav><a href="index.html">Home</a><a href="pc.html">Creador de Perfil</a><a href="id.html">Licencia</a><a href="event.html">Crear Evento</a></nav><p id="t2">Generador de Imágenes de Perfil</p></header><div class="contenedor"><div class="panel"><div class="input-group"><label for="a1">Empresa (Fuente: <span id="f1">Open Sans</span>):</label><br><select id="a1" style="width:100%"><option value="TMP" selected>TMP</option><option value="LS">LS</option><option value="CN">CN</option><option value="CDS">CDS</option><option value="TCS">TCS</option></select></div><div class="input-group"><label for="a2">Nombre:</label><br><input type="text" id="a2" placeholder="Nombre"></div><div class="input-group"><label for="a3">Tamaño nombre: <output id="o1">60</output>px</label><br><input type="range" id="a3" min="30" max="150" aria-valuenow="60"></div><div class="input-group"><label for="a4">País:</label><br><select id="a4" style="width:100%"></select></div><div class="input-group"><label for="a5">Tamaño bandera: <output id="o2">120</output>px</label><br><input type="range" id="a5" min="30" max="120" aria-valuenow="120"></div><h3>Posiciones Verticales</h3><div class="input-group"><label for="a6">Bandera Y: <output id="o3">235</output></label><br><input type="range" id="a6" min="30" max="480" aria-valuenow="235"></div><div class="input-group"><label for="a7">Nombre Y: <output id="o4">350</output></label><br><input type="range" id="a7" min="30" max="480" aria-valuenow="350"></div><h3>Opciones de salida</h3><div class="input-group"><label for="a8">Tamaño final: <output id="o5">500</output>px</label><br><input type="range" id="a8" min="256" max="1024" step="64" aria-valuenow="500"></div><div class="input-group"><label for="a9"><input type="checkbox" id="a9"> Circular</label></div></div><div id="preview"><canvas id="w" width="500" height="500"></canvas><div class="tmp-only" style="display: none;">
-    <div class="input-group">
-        <label for="vtc-logo">VTC Logo:</label><br>
-        <input type="file" id="vtc-logo" accept="image/*">
-    </div>
-    <div class="input-group">
-        <label for="year">Año:</label><br>
-        <input type="text" id="year" placeholder="2025">
-    </div>
-    <div class="input-group">
-        <label for="name-year-color">Color Nombre y Año:</label><br>
-        <input type="color" id="name-year-color" value="#ffffff">
-    </div>
-    
-    
-</div><div class="controls">
-<div style="display: flex; flex-direction: column; align-items: flex-start;">
-<label class="ls-only"><input type="checkbox" id="b4" checked>Fondo</label>
-<label class="ls-only"><input type="checkbox" id="b1" checked>Huellas</label>
-<label class="ls-only"><input type="checkbox" id="b2" checked>Plumas</label>
-</div>
-</div><div class="tmp-only" style="display: none; flex-direction: column; gap: 10px; margin-bottom: 20px; padding: 10px; background: none;">
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title id="t1">Convoyrama | Creador de Imágenes de Perfil</title><meta name="description" content="Convoyrama - Creador de Imágenes de Perfil"><link rel="stylesheet" href="./assets/style.css"><link rel="icon" href="./assets/images/favicon.png"><link rel="apple-touch-icon" href="./assets/images/favicon.png"><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Merriweather:wght@700&family=Roboto:wght@700&family=Lora:wght@700&display=swap" rel="stylesheet"><script src="./twemoji-14.0.2/twemoji.min.js"></script><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;padding:0;min-height:100vh}header{padding:15px;text-align:center;position:relative;z-index:10;background:var(--accent-bg);border-bottom:1px solid var(--border)}header p{font-size:1.2em;text-shadow:none;font-family:Arial,sans-serif;font-weight:normal;margin:10px 0;color:#fff}nav{padding:10px;text-align:center}nav a,nav a:visited{text-decoration:none;margin:0 15px;font-size:1em;text-shadow:none;color:#fff}nav a:hover{text-decoration:underline}.contenedor{display:flex;gap:20px;padding:20px;align-items:flex-start;position:relative;z-index:10}.panel{flex:1;max-width:300px;font-size:14px}.panel h3{margin:10px 0 5px;font-size:14px;text-shadow:none}.input-group{margin:6px 0}.input-group label{text-shadow:none}canvas{border:1px solid #000;display:block;max-width:100%;height:auto}#preview{flex:1;text-align:center}button{padding:6px 12px;font-size:14px;margin-top:10px;background:rgb(90,165,25);color:#fff;border:none;border-radius:6px;cursor:pointer;text-shadow:none}button:hover{opacity:0.8}.controls{margin-bottom:20px;padding:10px;background:none;display:flex;flex-direction:column;gap:10px}.controls label{display:flex;align-items:center;gap:8px;font-size:14px;text-shadow:none;width:100%}.controls input[type="checkbox"]{width:16px;height:16px;cursor:pointer;flex-shrink:0}footer{color:white;text-align:center;padding:10px;position:relative;z-index:10;margin-top:auto}footer small{text-shadow:none}.ls-only{display:none}</style></head><body><header><nav><a href="index.html">Home</a><a href="pc.html">Creador de Perfil</a><a href="id.html">Licencia</a><a href="event.html">Crear Evento</a></nav><p id="t2">Generador de Imágenes de Perfil</p></header><div class="contenedor"><div class="panel"><div class="input-group"><label for="a1">Empresa (Fuente: <span id="f1">Open Sans</span>):</label><br><select id="a1" style="width:100%"><option value="TMP" selected>TMP</option><option value="LS">LS</option><option value="CN">CN</option><option value="CDS">CDS</option><option value="TCS">TCS</option></select></div><div class="input-group"><label for="a2">Nombre:</label><br><input type="text" id="a2" placeholder="Nombre"></div><div class="input-group"><label for="a3">Tamaño nombre: <output id="o1">60</output>px</label><br><input type="range" id="a3" min="30" max="150" aria-valuenow="60"></div><div class="input-group"><label for="a4">País:</label><br><select id="a4" style="width:100%"></select></div><div class="input-group"><label for="a5">Tamaño bandera: <output id="o2">120</output>px</label><br><input type="range" id="a5" min="30" max="120" aria-valuenow="120"></div><h3>Posiciones Verticales</h3><div class="input-group"><label for="a6">Bandera Y: <output id="o3">235</output></label><br><input type="range" id="a6" min="30" max="480" aria-valuenow="235"></div><div class="input-group"><label for="a7">Nombre Y: <output id="o4">350</output></label><br><input type="range" id="a7" min="30" max="480" aria-valuenow="350"></div><h3>Opciones de salida</h3><div class="input-group"><label for="a8">Tamaño final: <output id="o5">500</output>px</label><br><input type="range" id="a8" min="256" max="1024" step="64" aria-valuenow="500"></div><div class="input-group"><label for="a9"><input type="checkbox" id="a9"> Circular</label></div></div><div id="preview"><canvas id="w" width="500" height="500"></canvas><div class="tmp-only" style="display: none; flex-direction: column; gap: 10px; margin-top: 20px;">
     <div class="input-group">
         <div style="display: flex; align-items: center; justify-content: center;">
             <button id="prev-bg">◀</button>
@@ -35,4 +14,45 @@
     <label><input type="checkbox" id="tmp-logo-toggle" checked>Mostrar logo de TMP</label>
     <label><input type="checkbox" id="promods-logo-toggle">Mostrar logo de ProMods</label>
     <label><input type="checkbox" id="dbus-logo-toggle">Mostrar logo de DBusWorld</label>
+</div><div class="tmp-only" style="display: none;">
+    <div class="input-group">
+        <label for="vtc-logo">VTC Logo:</label><br>
+        <input type="file" id="vtc-logo" accept="image/*">
+    </div>
+    <div class="input-group">
+        <select id="year" style="width: 100%;">
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025" selected>2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+        </select>
+    </div>
+    <div class="input-group">
+        <input type="color" id="name-year-color" value="#ffffff" style="width: 100%;">
+    </div>
+    
+    
+</div><div class="controls">
+<div style="display: flex; flex-direction: column; align-items: flex-start;">
+<label class="ls-only"><input type="checkbox" id="b4" checked>Fondo</label>
+<label class="ls-only"><input type="checkbox" id="b1" checked>Huellas</label>
+<label class="ls-only"><input type="checkbox" id="b2" checked>Plumas</label>
+</div>
 </div><br><a id="d1" download="perfil.png"><button id="b3">Descargar</button></a></div></div><footer><small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 0.3o</small></footer><script src="pc/js/config.js"></script><script src="pc/js/dom.js"></script><script src="pc/js/canvas.js"></script><script src="pc/js/main.js"></script></body></html>
