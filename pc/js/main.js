@@ -62,7 +62,7 @@ const f3 = () => {
         document.querySelectorAll(".tmp-only").forEach(a => a.style.display = "none");
     } else if (a1.value === "TMP") {
         document.querySelectorAll(".ls-only").forEach(a => a.style.display = "none");
-        document.querySelectorAll(".tmp-onlyorEach(a => a.style.display = "block");
+        document.querySelectorAll(".tmp-only").forEach(a => a.style.display = "block");
     } else {
         document.querySelectorAll(".ls-only").forEach(a => a.style.display = "none");
         document.querySelectorAll(".tmp-only").forEach(a => a.style.display = "none");
