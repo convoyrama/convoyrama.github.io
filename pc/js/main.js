@@ -1,3 +1,4 @@
+// test
 const loadCountries = async () => {
     try {
         const response = await fetch('../license_generator/data/countries.json');

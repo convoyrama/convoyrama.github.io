@@ -1,4 +1,5 @@
 
+// test
 const f0 = a => new Promise(b => {
     let c = new Image();
     c.onload = () => b(c);
