@@ -145,17 +145,12 @@ const f2 = async () => {
     let shadowBlur = 0;
 
     if (a1.value === "TMP") {
-        if (window.tmpTextColorBlack) {
-            textColor = "black";
-            shadowColor = "white";
-            shadowOffsetX = 2;
-            shadowOffsetY = 2;
-        } else {
-            textColor = "white";
-            shadowColor = "black";
-            shadowOffsetX = 2;
-            shadowOffsetY = 2;
-        }
+        const colorSelection = document.getElementById('text-color-selector').value;
+        const [fgColor, bgColor] = colorSelection.split('-');
+        textColor = fgColor;
+        shadowColor = bgColor;
+        shadowOffsetX = 2;
+        shadowOffsetY = 2;
     } else if (a1.value === "CDS") {
         shadowColor = v4.sombra;
         shadowOffsetX = 2;
