@@ -171,10 +171,12 @@ const f2 = async () => {
     x.fillStyle = textColor;
     x.fillText(v5, w.width / 2, v10);
 
-    const yearValue = document.getElementById('year').value;
-    x.font = `bold 40px ${v4.font}`;
-    x.fillStyle = textColor;
-    x.fillText(yearValue, w.width / 2, v10 + 50);
+    if (a1.value === "TMP") {
+        const yearValue = document.getElementById('year').value;
+        x.font = `bold 40px ${v4.font}`;
+        x.fillStyle = textColor;
+        x.fillText(yearValue, w.width / 2, v10 + 50);
+    }
 
     x.shadowColor = "transparent";
     x.shadowOffsetX = 0;
