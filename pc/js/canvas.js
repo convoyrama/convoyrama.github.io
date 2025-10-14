@@ -44,22 +44,22 @@ const f2 = async () => {
         x.clip();
     }
 
-    if (v13 && v4.backgroundLayer) {
-        const v15 = new Image();
-        v15.src = v4.backgroundLayer;
+    if (v15_2 && v4.fondo) { // b4 checked, "Fondo"
+        const v16 = new Image();
+        v16.src = v4.fondo;
         await new Promise(a => {
-            v15.onload = () => {
-                x.drawImage(v15, 0, 0, w.width, w.height);
+            v16.onload = () => {
+                x.drawImage(v16, 0, 0, w.width, w.height);
                 a();
             };
-            v15.onerror = () => {
-                console.error("Failed to load lsfondo.png");
+            v16.onerror = () => {
+                console.error(`Failed to load ${v4.fondo}`);
                 a();
             }
         });
     }
 
-    if (v15_2 && v4.backgroundLayer2) {
+    if (v13 && v4.backgroundLayer2) { // b1 checked, "Huellas"
         const v15_3 = new Image();
         v15_3.src = v4.backgroundLayer2;
         await new Promise(a => {
@@ -73,20 +73,6 @@ const f2 = async () => {
             }
         });
     }
-
-    const v16 = new Image();
-    v16.src = v4.fondo;
-    await new Promise(a => {
-        v16.onload = () => {
-            x.drawImage(v16, 0, 0, w.width, w.height);
-            a();
-        };
-        v16.onerror = () => {
-            console.error(`Failed to load ${v4.fondo}`);
-            x.fillStyle = "transparent";
-            a();
-        }
-    });
 
     x.textAlign = "center";
 

@@ -1,3 +1,19 @@
+const loadCountries = async () => {
+    try {
+        const response = await fetch('../license_generator/data/countries.json');
+        const countries = await response.json();
+        const countrySelect = document.getElementById('a4');
+        countries.forEach(country => {
+            const option = document.createElement('option');
+            option.value = country.emoji;
+            option.textContent = country.name_es;
+            countrySelect.appendChild(option);
+        });
+        f8(); // Set default country after loading
+    } catch (error) {
+        console.error('Error loading countries:', error);
+    }
+};
 
 const f6 = (a, b) => {
     let c;
@@ -48,5 +64,5 @@ const v20 = f6(f2, 100);
 a1.addEventListener("change", f3);
 a4.addEventListener("change", f7);
 
-f8();
+loadCountries();
 f3();
