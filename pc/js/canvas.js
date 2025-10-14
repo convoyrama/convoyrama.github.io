@@ -45,49 +45,69 @@ const f2 = async () => {
         x.clip();
     }
 
-    if (v15_2 && v4.fondo_inferior) { // b4 checked, "Fondo"
-        const v15_4 = new Image();
-        v15_4.src = v4.fondo_inferior;
+    const hueValue = document.getElementById('hue-slider').value;
+    x.filter = `hue-rotate(${hueValue}deg)`;
+
+    if (a1.value === "TMP") {
+        const bgImage = new Image();
+        bgImage.src = v1['TMP'].backgrounds[currentBgIndex];
         await new Promise(a => {
-            v15_4.onload = () => {
-                x.drawImage(v15_4, 0, 0, w.width, w.height);
+            bgImage.onload = () => {
+                x.drawImage(bgImage, 0, 0, w.width, w.height);
                 a();
             };
-            v15_4.onerror = () => {
-                console.error(`Failed to load ${v4.fondo_inferior}`);
+            bgImage.onerror = () => {
+                console.error(`Failed to load ${bgImage.src}`);
                 a();
             }
         });
-    }
-
-    if (v13 && v4.huellas) { // b1 checked, "Huellas"
-        const v15_5 = new Image();
-        v15_5.src = v4.huellas;
-        await new Promise(a => {
-            v15_5.onload = () => {
-                x.drawImage(v15_5, 0, 0, w.width, w.height);
-                a();
-            };
-            v15_5.onerror = () => {
-                console.error(`Failed to load ${v4.huellas}`);
-                a();
-            }
-        });
-    }
-
-    const v16 = new Image();
-    v16.src = v4.fondo;
-    await new Promise(a => {
-        v16.onload = () => {
-            x.drawImage(v16, 0, 0, w.width, w.height);
-            a();
-        };
-        v16.onerror = () => {
-            console.error(`Failed to load ${v4.fondo}`);
-            x.fillStyle = "transparent";
-            a();
+    } else {
+        if (v15_2 && v4.fondo_inferior) { // b4 checked, "Fondo"
+            const v15_4 = new Image();
+            v15_4.src = v4.fondo_inferior;
+            await new Promise(a => {
+                v15_4.onload = () => {
+                    x.drawImage(v15_4, 0, 0, w.width, w.height);
+                    a();
+                };
+                v15_4.onerror = () => {
+                    console.error(`Failed to load ${v4.fondo_inferior}`);
+                    a();
+                }
+            });
         }
-    });
+
+        if (v13 && v4.huellas) { // b1 checked, "Huellas"
+            const v15_5 = new Image();
+            v15_5.src = v4.huellas;
+            await new Promise(a => {
+                v15_5.onload = () => {
+                    x.drawImage(v15_5, 0, 0, w.width, w.height);
+                    a();
+                };
+                v15_5.onerror = () => {
+                    console.error(`Failed to load ${v4.huellas}`);
+                    a();
+                }
+            });
+        }
+
+        const v16 = new Image();
+        v16.src = v4.fondo;
+        await new Promise(a => {
+            v16.onload = () => {
+                x.drawImage(v16, 0, 0, w.width, w.height);
+                a();
+            };
+            v16.onerror = () => {
+                console.error(`Failed to load ${v4.fondo}`);
+                x.fillStyle = "transparent";
+                a();
+            }
+        });
+    }
+    
+    x.filter = "none";
 
     x.textAlign = "center";
 
