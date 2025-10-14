@@ -3,7 +3,6 @@
     <div class="input-group">
         <div style="display: flex; align-items: center; justify-content: center;">
             <button id="prev-bg">◀</button>
-            <span id="bg-name" style="margin: 0 10px;">tmp1.png</span>
             <button id="next-bg">▶</button>
         </div>
         <div>
@@ -11,12 +10,11 @@
             <input type="range" id="hue-slider" min="0" max="360" value="0" style="width: 100%;">
         </div>
     </div>
-    <label><input type="checkbox" id="tmp-logo-toggle" checked>Mostrar logo de TMP</label>
-    <label><input type="checkbox" id="promods-logo-toggle">Mostrar logo de ProMods</label>
-    <label><input type="checkbox" id="dbus-logo-toggle">Mostrar logo de DBusWorld</label>
+    <label><input type="checkbox" id="tmp-logo-toggle" checked>TMP</label>
+    <label><input type="checkbox" id="promods-logo-toggle">ProMods</label>
+    <label><input type="checkbox" id="dbus-logo-toggle">DBusWorld</label>
 </div><div class="tmp-only" style="display: none;">
     <div class="input-group">
-        <label for="vtc-logo">VTC Logo:</label><br>
         <input type="file" id="vtc-logo" accept="image/*">
     </div>
     <div class="input-group">
@@ -45,7 +43,8 @@
         </select>
     </div>
     <div class="input-group">
-        <input type="color" id="name-year-color" value="#ffffff" style="width: 100%;">
+        <label for="custom-bg">Fondo Personalizado:</label><br>
+        <input type="file" id="custom-bg" accept="image/*">
     </div>
     
     
@@ -55,4 +54,4 @@
 <label class="ls-only"><input type="checkbox" id="b1" checked>Huellas</label>
 <label class="ls-only"><input type="checkbox" id="b2" checked>Plumas</label>
 </div>
-</div><br><a id="d1" download="perfil.png"><button id="b3">Descargar</button></a></div></div><footer><small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 0.3o</small></footer><script src="pc/js/config.js"></script><script src="pc/js/dom.js"></script><script src="pc/js/canvas.js"></script><script src="pc/js/main.js"></script></body></html>
+</div><br><a id="d1" download="perfil.png"><button id="b3">Descargar</button></a></div></div><footer><small>© LAG'S SPEED - CONVOYRAMA 2025 - v 1.1</small></footer><script src="pc/js/config.js"></script><script src="pc/js/dom.js"></script><script src="pc/js/canvas.js"></script><script src="pc/js/main.js"></script></body></html>

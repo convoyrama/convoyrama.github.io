@@ -48,18 +48,26 @@ const f2 = async () => {
     if (a1.value === "TMP") {
         const hueValue = document.getElementById('hue-slider').value;
         x.filter = `hue-rotate(${hueValue}deg)`;
-        const bgImage = new Image();
-        bgImage.src = v1['TMP'].backgrounds[currentBgIndex];
-        await new Promise(a => {
-            bgImage.onload = () => {
-                x.drawImage(bgImage, 0, 0, w.width, w.height);
-                a();
-            };
-            bgImage.onerror = () => {
-                console.error(`Failed to load ${bgImage.src}`);
-                a();
-            }
-        });
+        
+        let bgSrc = v1['TMP'].backgrounds[currentBgIndex];
+        if (window.customBgUrl) {
+            bgSrc = window.customBgUrl;
+        }
+
+        if (bgSrc) {
+            const bgImage = new Image();
+            bgImage.src = bgSrc;
+            await new Promise(a => {
+                bgImage.onload = () => {
+                    x.drawImage(bgImage, 0, 0, w.width, w.height);
+                    a();
+                };
+                bgImage.onerror = () => {
+                    console.error(`Failed to load ${bgImage.src}`);
+                    a();
+                }
+            });
+        }
     } else {
         if (v15_2 && v4.fondo_inferior) { // b4 checked, "Fondo"
             const v15_4 = new Image();
@@ -133,7 +141,7 @@ const f2 = async () => {
     x.fillStyle = v4.color;
     x.fillText(v5, w.width / 2, v10);
 
-    if (document.getElementById('tmp-logo-toggle').checked) {
+    if (document.getElementById('tmp-logo-toggle').checked && a1.value === "TMP") {
         const tmpLogo = new Image();
         tmpLogo.src = 'fondos/truckersmp-logo-sm.png';
         await new Promise(resolve => {

@@ -3,6 +3,7 @@
 const v1 = {
     "TMP": {
         backgrounds: [
+            "",
             "fondos/tmp1.png",
             "fondos/tmp2.png",
             "fondos/tmp3.png",
@@ -12,8 +13,8 @@ const v1 = {
         color: "rgb(240,240,240)",
         size: 60,
         flagSize: 120,
-        by: 235,
-        ny: 350,
+        by: 140,
+        ny: 410,
         outSize: 500,
         font: "'Open Sans', sans-serif"
     },
@@ -28,7 +29,7 @@ const v1 = {
         size: 60,
         flagSize: 120,
         by: 235,
-        ny: 350,
+        ny: 410,
         outSize: 500,
         font: "'Open Sans', sans-serif"
     },
@@ -38,7 +39,7 @@ const v1 = {
         size: 100,
         flagSize: 50,
         by: 80,
-        ny: 290,
+        ny: 410,
         outSize: 500,
         font: "'Merriweather', serif"
     },
@@ -49,7 +50,7 @@ const v1 = {
         size: 90,
         flagSize: 90,
         by: 350,
-        ny: 260,
+        ny: 410,
         outSize: 500,
         font: "'Roboto', sans-serif"
     },
@@ -59,7 +60,7 @@ const v1 = {
         size: 90,
         flagSize: 64,
         by: 200,
-        ny: 435,
+        ny: 410,
         outSize: 500,
         font: "'Lora', serif"
     }

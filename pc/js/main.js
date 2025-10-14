@@ -81,23 +81,21 @@ a4.addEventListener("change", f7);
 // New event listeners for TMP
 const prevBg = document.getElementById('prev-bg');
 const nextBg = document.getElementById('next-bg');
-const bgName = document.getElementById('bg-name');
 const hueSlider = document.getElementById('hue-slider');
 const vtcLogo = document.getElementById('vtc-logo');
 const year = document.getElementById('year');
-const nameYearColor = document.getElementById('name-year-color');
 
 prevBg.addEventListener('click', () => {
+    window.customBgUrl = null;
     const backgrounds = v1['TMP'].backgrounds;
     currentBgIndex = (currentBgIndex - 1 + backgrounds.length) % backgrounds.length;
-    bgName.textContent = backgrounds[currentBgIndex].split('/').pop();
     f2();
 });
 
 nextBg.addEventListener('click', () => {
+    window.customBgUrl = null;
     const backgrounds = v1['TMP'].backgrounds;
     currentBgIndex = (currentBgIndex + 1) % backgrounds.length;
-    bgName.textContent = backgrounds[currentBgIndex].split('/').pop();
     f2();
 });
 
@@ -107,7 +105,19 @@ hueSlider.addEventListener('input', () => {
 });
 vtcLogo.addEventListener('change', f2);
 year.addEventListener('input', v20);
-nameYearColor.addEventListener('input', v20);
+
+const customBg = document.getElementById('custom-bg');
+customBg.addEventListener('change', () => {
+    const file = customBg.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            window.customBgUrl = e.target.result;
+            f2(); // redraw
+        };
+        reader.readAsDataURL(file);
+    }
+});
 
 
 loadCountries();
