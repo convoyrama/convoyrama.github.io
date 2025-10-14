@@ -20,10 +20,8 @@
 <label class="ls-only"><input type="checkbox" id="b1" checked>Huellas</label>
 <label class="ls-only"><input type="checkbox" id="b2" checked>Plumas</label>
 </div>
-<label><input type="checkbox" id="tmp-logo-toggle" checked>Mostrar logo de TMP</label>
-<label><input type="checkbox" id="promods-logo-toggle">Mostrar logo de ProMods</label>
-<label><input type="checkbox" id="dbus-logo-toggle">Mostrar logo de DBusWorld</label>
-</div><div class="input-group tmp-only" style="display: none;">
+</div><div class="tmp-only" style="display: none; flex-direction: column; gap: 10px; margin-bottom: 20px; padding: 10px; background: none;">
+    <div class="input-group">
         <div style="display: flex; align-items: center; justify-content: center;">
             <button id="prev-bg">◀</button>
             <span id="bg-name" style="margin: 0 10px;">tmp1.png</span>
@@ -33,4 +31,8 @@
             <label for="hue-slider">Tono: <span id="hue-value">0</span></label>
             <input type="range" id="hue-slider" min="0" max="360" value="0" style="width: 100%;">
         </div>
-    </div><br><a id="d1" download="perfil.png"><button id="b3">Descargar</button></a></div></div><footer><small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 0.3o</small></footer><script src="pc/js/config.js"></script><script src="pc/js/dom.js"></script><script src="pc/js/canvas.js"></script><script src="pc/js/main.js"></script></body></html>
+    </div>
+    <label><input type="checkbox" id="tmp-logo-toggle" checked>Mostrar logo de TMP</label>
+    <label><input type="checkbox" id="promods-logo-toggle">Mostrar logo de ProMods</label>
+    <label><input type="checkbox" id="dbus-logo-toggle">Mostrar logo de DBusWorld</label>
+</div><br><a id="d1" download="perfil.png"><button id="b3">Descargar</button></a></div></div><footer><small>© LAG'S SPEED - CONVOYRAMA 2025 - versión 0.3o</small></footer><script src="pc/js/config.js"></script><script src="pc/js/dom.js"></script><script src="pc/js/canvas.js"></script><script src="pc/js/main.js"></script></body></html>

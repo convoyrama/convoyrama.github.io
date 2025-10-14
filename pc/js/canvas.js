@@ -45,10 +45,9 @@ const f2 = async () => {
         x.clip();
     }
 
-    const hueValue = document.getElementById('hue-slider').value;
-    x.filter = `hue-rotate(${hueValue}deg)`;
-
     if (a1.value === "TMP") {
+        const hueValue = document.getElementById('hue-slider').value;
+        x.filter = `hue-rotate(${hueValue}deg)`;
         const bgImage = new Image();
         bgImage.src = v1['TMP'].backgrounds[currentBgIndex];
         await new Promise(a => {
