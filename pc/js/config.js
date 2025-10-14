@@ -29,7 +29,7 @@ const v1 = {
         size: 60,
         flagSize: 120,
         by: 235,
-        ny: 410,
+        ny: 350,
         outSize: 500,
         font: "'Open Sans', sans-serif"
     },
@@ -39,7 +39,7 @@ const v1 = {
         size: 100,
         flagSize: 50,
         by: 80,
-        ny: 410,
+        ny: 290,
         outSize: 500,
         font: "'Merriweather', serif"
     },
@@ -50,7 +50,7 @@ const v1 = {
         size: 90,
         flagSize: 90,
         by: 350,
-        ny: 410,
+        ny: 260,
         outSize: 500,
         font: "'Roboto', sans-serif"
     },
@@ -60,7 +60,7 @@ const v1 = {
         size: 90,
         flagSize: 64,
         by: 200,
-        ny: 410,
+        ny: 435,
         outSize: 500,
         font: "'Lora', serif"
     }
