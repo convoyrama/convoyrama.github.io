@@ -103,7 +103,17 @@ hueSlider.addEventListener('input', () => {
     document.getElementById('hue-value').textContent = hueSlider.value;
     f2();
 });
-vtcLogo.addEventListener('change', f2);
+vtcLogo.addEventListener('change', () => {
+    const file = vtcLogo.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            window.vtcLogoUrl = e.target.result;
+            f2(); // redraw
+        };
+        reader.readAsDataURL(file);
+    }
+});
 year.addEventListener('input', v20);
 
 const customBg = document.getElementById('custom-bg');

@@ -118,6 +118,19 @@ const f2 = async () => {
 
     x.textAlign = "center";
 
+    if (window.vtcLogoUrl) {
+        const vtcLogoImg = new Image();
+        vtcLogoImg.src = window.vtcLogoUrl;
+        await new Promise(a => {
+            vtcLogoImg.onload = () => {
+                const logoSize = 100;
+                x.drawImage(vtcLogoImg, w.width / 2 - logoSize / 2, 10, logoSize, logoSize);
+                a();
+            };
+            vtcLogoImg.onerror = () => a();
+        });
+    }
+
     if (v6) {
         const v17 = await f0(v6, v8);
         if (v17) {
@@ -140,6 +153,11 @@ const f2 = async () => {
     x.font = `bold ${v7}px ${v4.font}`;
     x.fillStyle = v4.color;
     x.fillText(v5, w.width / 2, v10);
+
+    const yearValue = document.getElementById('year').value;
+    x.font = `bold 40px ${v4.font}`;
+    x.fillStyle = v4.color;
+    x.fillText(yearValue, w.width / 2, v10 + 50);
 
     if (document.getElementById('tmp-logo-toggle').checked && a1.value === "TMP") {
         const tmpLogo = new Image();
