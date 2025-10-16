@@ -443,12 +443,7 @@ export function performDownload(state) {
 
             const jsonMetadata = JSON.stringify(metadata);
 
-            console.log("FINAL CHECK - JSON to be injected:", jsonMetadata);
-
             const newPngBuffer = injectMetadataIntoPNG(arrayBuffer, "convoyrama-data", jsonMetadata);
-
-            console.log("FINAL CHECK - Original PNG size:", arrayBuffer.byteLength);
-            console.log("FINAL CHECK - New PNG size:", newPngBuffer.byteLength);
             const newBlob = new Blob([newPngBuffer], { type: 'image/png' });
 
             // Create a temporary link to trigger the download
