@@ -431,19 +431,17 @@ export function updateDownloadLink(state) {
             const arrayBuffer = await blob.arrayBuffer();
 
             const metadata = {
-                name: state.name,
-                truckersmp_link: normalizeLink(state.truckersmpLink),
-                vtc_link: normalizeLink(state.companyLink),
-                country: state.country,
-                license_number: generateLicenseNumber(state.truckersmpLink, state.companyLink, state.country).licenseNumber,
+                name: state.name || '',
+                truckersmp_link: normalizeLink(state.truckersmpLink || ''),
+                vtc_link: normalizeLink(state.companyLink || ''),
+                country: state.country || '',
+                license_number: generateLicenseNumber(state.truckersmpLink || '', state.companyLink || '', state.country || '').licenseNumber,
                 generated_at: new Date().toISOString(),
                 is_verified: !!state.verifiedJoinDate,
                 tmp_join_date: state.verifiedJoinDate || null,
             };
 
             const jsonMetadata = JSON.stringify(metadata);
-            console.log("DEBUG: Metadata object to be saved:", metadata);
-            console.log("DEBUG: Metadata JSON string:", jsonMetadata);
             const newPngBuffer = injectMetadataIntoPNG(arrayBuffer, "convoyrama-data", jsonMetadata);
             
             const newBlob = new Blob([newPngBuffer], { type: 'image/png' });
