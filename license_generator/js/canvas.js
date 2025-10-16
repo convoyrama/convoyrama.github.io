@@ -442,6 +442,8 @@ export function updateDownloadLink(state) {
             };
 
             const jsonMetadata = JSON.stringify(metadata);
+            console.log("DEBUG: Metadata object to be saved:", metadata);
+            console.log("DEBUG: Metadata JSON string:", jsonMetadata);
             const newPngBuffer = injectMetadataIntoPNG(arrayBuffer, "convoyrama-data", jsonMetadata);
             
             const newBlob = new Blob([newPngBuffer], { type: 'image/png' });
