@@ -62,9 +62,9 @@ export function validateCompanyLink(link, translations, lang) {
 }
 
 export function generateLicenseNumber(truckersmpLink, companyLink, countryCode = 'XX') {
-    const userMatch = truckersmpLink.match(/truckersmp\.com\/user\/(\d+)/);
+    const userMatch = truckersmpLink ? truckersmpLink.match(/truckersmp\.com\/user\/(\d+)/) : null;
     const userId = userMatch ? userMatch[1] : "";
-    const vtcMatch = companyLink.match(/truckersmp\.com\/vtc\/(\d+)/);
+    const vtcMatch = companyLink ? companyLink.match(/truckersmp\.com\/vtc\/(\d+)/) : null;
     const vtcId = vtcMatch ? vtcMatch[1] : "";
     const licenseNumber = userId ? `${countryCode}${userId}` : "";
     return { licenseNumber, userId, vtcId };
