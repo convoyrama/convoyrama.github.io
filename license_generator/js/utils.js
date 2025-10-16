@@ -27,6 +27,9 @@ export function getFlagEmoji(countryCode) {
 }
 
 export function normalizeLink(link) {
+    if (!link) {
+        return '';
+    }
     return link.trim().replace(/\/+\s*$/, '').replace(/\?.*$/, '').replace(/(-[a-z0-9-]+)?$/i, '').toLowerCase();
 }
 
