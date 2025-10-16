@@ -424,8 +424,8 @@ function injectMetadataIntoPNG(pngBuffer, key, value) {
 }
 
 
-export function updateDownloadLink(state) {
-    const { canvas, downloadLink } = dom;
+export function performDownload(state) {
+    const { canvas } = dom;
     try {
         canvas.toBlob(async (blob) => {
             const arrayBuffer = await blob.arrayBuffer();
@@ -443,21 +443,20 @@ export function updateDownloadLink(state) {
 
             const jsonMetadata = JSON.stringify(metadata);
             const newPngBuffer = injectMetadataIntoPNG(arrayBuffer, "convoyrama-data", jsonMetadata);
-            
             const newBlob = new Blob([newPngBuffer], { type: 'image/png' });
 
-            // Revoke previous object URL to prevent memory leaks
-            if (downloadLink.href && downloadLink.href.startsWith('blob:')) {
-                URL.revokeObjectURL(downloadLink.href);
-            }
-
-            downloadLink.href = URL.createObjectURL(newBlob);
-            downloadLink.download = `driver_license_${state.name || 'unknown'}.png`;
+            // Create a temporary link to trigger the download
+            const tempLink = document.createElement('a');
+            tempLink.href = URL.createObjectURL(newBlob);
+            tempLink.download = `driver_license_${state.name || 'unknown'}.png`;
+            
+            document.body.appendChild(tempLink); // Required for Firefox
+            tempLink.click();
+            document.body.removeChild(tempLink);
+            
+            URL.revokeObjectURL(tempLink.href); // Clean up
         }, 'image/png');
-
     } catch (error) {
-        console.error("Error creating download link:", error);
-        downloadLink.href = "#";
-        downloadLink.download = "";
+        console.error("Error performing download:", error);
     }
 }

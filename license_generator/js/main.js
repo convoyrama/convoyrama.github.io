@@ -2,7 +2,7 @@ import { dom } from './dom-elements.js';
 import { config, translations, loadTranslations } from './config.js';
 import { debounce, validateTruckersmpLink, validateCompanyLink, generateLicenseNumber, getUserLevel, getVerifiedUserLevel } from './utils.js';
 import { getCurrentDate, loadCountries, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
-import { generateImage, updateDownloadLink } from './canvas.js';
+import { generateImage, performDownload } from './canvas.js';
 import { generateUserbar } from './userbar.js';
 
 const HMAC_SECRET_KEY = 'TPPrZX8QA4DH3ekn4JKk';
@@ -219,9 +219,7 @@ function renderRankLegend() {
     dom.verificationCodeInput = verificationInput;
     dom.verificationStatus = verificationStatus;
     const debouncedGenerate = debounce(() => {
-        generateImage(state).then(() => {
-            updateDownloadLink(state);
-        });
+        generateImage(state);
         generateUserbar(state, dom);
     }, 100);
     dom.verificationCodeInput.addEventListener('input', (e) => {
@@ -308,13 +306,32 @@ async function initialize() {
 
     updateUI();
     const debouncedGenerate = debounce(() => {
-        generateImage(state).then(() => {
-            updateDownloadLink(state.name);
-        });
+        generateImage(state);
         generateUserbar(state, dom);
     }, 100);
 
     addEventListeners(debouncedGenerate);
+
+    // Replace the download link's default behavior with on-demand generation
+    dom.downloadLink.addEventListener('click', (e) => {
+        e.preventDefault(); // Stop the link from navigating
+        
+        // Indicate to the user that something is happening
+        const originalText = dom.downloadButton.textContent;
+        dom.downloadButton.textContent = translations[state.language].generating_image || 'Generating...';
+        dom.downloadButton.disabled = true;
+
+        // Use a short timeout to allow the UI to update
+        setTimeout(() => {
+            generateImage(state).then(() => {
+                performDownload(state); // This is the new function in canvas.js
+                
+                // Restore the button
+                dom.downloadButton.textContent = originalText;
+                dom.downloadButton.disabled = false;
+            });
+        }, 50);
+    });
     
     debouncedGenerate();
     renderRankLegend(); // Initial render
