@@ -220,7 +220,7 @@ function renderRankLegend() {
     dom.verificationStatus = verificationStatus;
     const debouncedGenerate = debounce(() => {
         generateImage(state).then(() => {
-            updateDownloadLink(state.name);
+            updateDownloadLink(state);
         });
         generateUserbar(state, dom);
     }, 100);
