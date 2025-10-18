@@ -13,8 +13,6 @@ const state = {
     nickname: '',
     truckersmpLink: '',
     companyLink: '',
-    socialNetwork: '',
-    socialLink: '',
     promodsToggle: false,
     dbusworldToggle: false,
     watermarkToggle: true,
@@ -300,10 +298,6 @@ async function initialize() {
         mainBgNext: document.getElementById("main-bg-next"),
         mainBgName: document.getElementById("main-bg-name"),
         warningMessage: document.getElementById("warningMessage"),
-        socialSelect: document.getElementById("socialSelect"),
-        socialLinkGroup: document.getElementById("socialLinkGroup"),
-        socialLinkLabel: document.getElementById("socialLinkLabel"),
-        socialLinkInput: document.getElementById("socialLink"),
     });
 
     populateCountries(state.language);
@@ -501,27 +495,6 @@ function addEventListeners(debouncedGenerate) {
     dom.rankToggleInput.addEventListener('change', (e) => {
         state.rankToggle = e.target.checked;
         renderRankLegend(); // Update legend on toggle change
-    });
-
-    dom.socialSelect.addEventListener('change', (e) => {
-        const selectedNetwork = e.target.value;
-        state.socialNetwork = selectedNetwork;
-
-        if (selectedNetwork) {
-            dom.socialLinkGroup.style.display = 'block';
-            const networkName = e.target.options[e.target.selectedIndex].text;
-            dom.socialLinkLabel.textContent = `Enlace de ${networkName}:`;
-        } else {
-            dom.socialLinkGroup.style.display = 'none';
-            state.socialLink = '';
-            dom.socialLinkInput.value = '';
-        }
-        debouncedGenerate();
-    });
-
-    dom.socialLinkInput.addEventListener('input', (e) => {
-        state.socialLink = e.target.value;
-        debouncedGenerate();
     });
 
 }
