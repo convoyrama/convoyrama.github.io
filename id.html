@@ -97,9 +97,9 @@
                 </select>
             </div>
             <div class="input-group" id="socialSelectGroup">
-                <label for="socialSelect">Social:</label><br>
+                <label for="socialSelect" id="socialSelectLabel">Red Social (Opcional):</label><br>
                 <select id="socialSelect">
-                    <option value="">None</option>
+                    <option value="" data-translate="social_none" id="social_none_option">Ninguna</option>
                     <option value="discord">Discord</option>
                     <option value="facebook">Facebook</option>
                     <option value="instagram">Instagram</option>
@@ -111,8 +111,8 @@
                 </select>
             </div>
             <div class="input-group" id="socialLinkGroup" style="display: none;">
-                <label for="socialLink">Link:</label><br>
-                <input type="text" id="socialLink" placeholder="Profile URL">
+                <label for="socialLink" id="socialLinkLabel">Enlace de Perfil:</label><br>
+                <input type="text" id="socialLink" placeholder="URL del perfil social">
             </div>
         </div>
         <div id="preview">
@@ -210,6 +210,9 @@
         console.error('La fuente Verdana no se ha podido cargar.');
       }
     });
+    </script>
+    <script>
+        console.log('--- ID.HTML VERSION CHECK ---');
     </script>
 </body>
 </html>
