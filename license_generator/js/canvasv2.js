@@ -354,9 +354,9 @@ export async function generateImage(state) {
         const starY = newPhotoY + itemSize + itemSpacing;
 
         ctx.font = `bold ${starSize}px ${config.font}`;
-        ctx.fillStyle = "#C0C0C0"; // Silver color
-        ctx.textAlign = "left"; // Align stars from the left
-        ctx.textBaseline = "top"; // Align from the top
+        ctx.fillStyle = \"#C0C0C0\"; // Silver color
+        ctx.textAlign = \"left\"; // Align stars from the left
+        ctx.textBaseline = \"top\"; // Align from the top
 
         for (let i = 0; i < silverStarCount; i++) {
             ctx.fillText(\"★\", starX, starY);
@@ -371,16 +371,7 @@ export async function generateImage(state) {
         const titleY = config.baseHeight - 5;
         ctx.font = `bold ${config.footerFontSize * scaleFactor}px 'VerdanaCustom-Bold'`;
         ctx.fillStyle = 'rgb(240, 240, 240)';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.shadowColor = 'rgb(20, 20, 20)';
-        ctx.shadowOffsetX = 1 * scaleFactor;
-        ctx.shadowOffsetY = 1 * scaleFactor;
-        ctx.shadowBlur = 2 * scaleFactor;
-        ctx.fillText(titleText.toUpperCase(), canvas.width / 2, titleY * scaleFactor);
-        ctx.shadowColor = 'transparent'; // Reset shadow
-    }
-}
+        ctx.textAlign = 'center';\n        ctx.textBaseline = 'bottom';\n        ctx.shadowColor = 'rgb(20, 20, 20)';\n        ctx.shadowOffsetX = 1 * scaleFactor;\n        ctx.shadowOffsetY = 1 * scaleFactor;\n        ctx.shadowBlur = 2 * scaleFactor;\n        ctx.fillText(titleText.toUpperCase(), canvas.width / 2, titleY * scaleFactor);\n        ctx.shadowColor = 'transparent'; // Reset shadow\n    }\n}
 
     // Original positions (calculated as if right-aligned)
     const qrId_x_orig = canvas.width - rightMargin - itemSize;
