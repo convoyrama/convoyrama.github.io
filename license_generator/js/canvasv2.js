@@ -73,14 +73,14 @@ export async function generateImage(state) {
     const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
     const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
 
-    console.log("DEBUG: generateImage - itemSize:", itemSize, "qrColor:", qrColor);
-    console.log("DEBUG: generateImage - Social Network Active:", state.socialNetwork, state.socialLink);
-
     // --- Layout Constants ---
     const itemSize = config.vtcLogoSize * scaleFactor;
     const itemSpacing = config.qrSpacing * scaleFactor;
     const rightMargin = 20 * scaleFactor;
     const itemY = config.qrY * scaleFactor;
+
+    console.log("DEBUG: generateImage - itemSize:", itemSize, "qrColor:", qrColor);
+    console.log("DEBUG: generateImage - Social Network Active:", state.socialNetwork, state.socialLink);
 
     // Original positions (calculated as if right-aligned)
     const qrId_x_orig = canvas.width - rightMargin - itemSize;
