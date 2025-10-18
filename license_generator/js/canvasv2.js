@@ -23,30 +23,55 @@ async function renderTwemoji(emoji, size) {
     return await loadImage(src);
 }
 
-async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
+async function generateQR(ctx, value, x, y, size, color) {
+    return new Promise(resolve => {
+        try {
+            const qr = new QRCode({
+                content: value,
+                width: size,
+                height: size,
+                color: color,
+                background: "transparent",
+                ecl: "M",
+                padding: 0,
+            });
+            const svgString = qr.svg();
+            const img = new Image();
+            img.src = 'data:image/svg+xml;base64,' + btoa(svgString);
+            img.onload = () => {
+                ctx.drawImage(img, x, y, size, size);
+                resolve();
+            };
+            img.onerror = () => {
+                console.error(`Error loading QR SVG for ${value}`);
+                resolve();
+            };
+        } catch (error) {
+            console.error(`Error generating QR for ${value}:`, error);
+            resolve();
+        }
+    });
+}
+
+async function generateQRWithLogo(value, size, logoPath, qrColor) {
     return new Promise((resolve, reject) => {
-        const options = {
+        const qrCode = new QRCodeStyling({
             width: size,
             height: size,
             type: "svg",
             data: value,
+            image: logoPath,
             dotsOptions: {
                 color: qrColor,
             },
             backgroundOptions: {
                 color: "transparent",
             },
-        };
-
-        if (logoPath) {
-            options.image = logoPath;
-            options.imageOptions = {
+            imageOptions: {
                 crossOrigin: "anonymous",
                 margin: 4, // Reduced margin to make logo larger
-            };
-        }
-
-        const qrCode = new QRCodeStyling(options);
+            }
+        });
 
         qrCode.getRawData("svg").then((svgBlob) => {
             const reader = new FileReader();
@@ -260,8 +285,7 @@ export async function generateImage(state) {
     }
 
     // --- Column 1: Rightmost (Convoyrama QR, Flag, VTC Watermark) ---
-    const convoyramaQRImage = await generateQRWithLogo("https://convoyrama.github.io/id.html", itemSize, qrColor, "./license_generator/socials/crlogo.svg");
-    ctx.drawImage(convoyramaQRImage, qrId_x, newPhotoY, itemSize, itemSize);
+    await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, newPhotoY, itemSize, qrColor);
 
     if (selectedCountry) {
         try {
@@ -283,12 +307,10 @@ export async function generateImage(state) {
 
     // --- Column 2: Left (User/VTC QR, TMP Logo, Year) ---
     if (state.truckersmpLink) {
-        const userQRImage = await generateQRWithLogo(normalizedTruckersmpLink, itemSize, qrColor);
-        ctx.drawImage(userQRImage, qrUser_x, newPhotoY, itemSize, itemSize);
+        await generateQR(ctx, normalizedTruckersmpLink, qrUser_x, newPhotoY, itemSize, qrColor);
     }
     if (state.companyLink) {
-        const vtcQRImage = await generateQRWithLogo(normalizedCompanyLink, itemSize, qrColor);
-        ctx.drawImage(vtcQRImage, qrCompany_x, newPhotoY, itemSize, itemSize);
+        await generateQR(ctx, normalizedCompanyLink, qrCompany_x, newPhotoY, itemSize, qrColor);
     }
 
     if (state.watermarkToggle) { // Changed condition
