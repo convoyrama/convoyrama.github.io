@@ -48,9 +48,12 @@ async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
 
         const qrCode = new window.QRCodeStyling(options);
 
-        qrCode.getRawData("png").then((pngBlob) => {
+        // The library draws directly to a canvas element
+        // We need to get this canvas element and resolve the promise with it.
+        // The library's getCanvas() method returns the HTMLCanvasElement.
+        qrCode.getRawData("canvas").then((canvasBlob) => {
             const img = new Image();
-            img.src = URL.createObjectURL(pngBlob);
+            img.src = URL.createObjectURL(canvasBlob);
             img.onload = () => {
                 resolve(img);
                 URL.revokeObjectURL(img.src); // Clean up the object URL
