@@ -444,6 +444,18 @@ function addEventListeners(debouncedGenerate) {
         debouncedGenerate();
     });
 
+    dom.vtcLogoInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.src = ev.target.result;
+                img.onload = () => {
+                    state.vtcLogoImage = img;
+                    debouncedGenerate();
+                };
+            };
             reader.readAsDataURL(file);
         } else {
             state.vtcLogoImage = null;
