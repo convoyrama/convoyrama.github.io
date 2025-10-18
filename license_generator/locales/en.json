@@ -63,5 +63,9 @@
     "verification_invalid": "Invalid code",
     "verification_tampered": "Invalid or tampered code",
     "verification_error": "Verification error",
-    "verification_mismatch": "Valid code, but it does not match the entered user profile."
+    "verification_mismatch": "Valid code, but it does not match the entered user profile.",
+    "socialSelectLabel": "Social Network (Optional):",
+    "social_none": "None",
+    "social_link_prefix": "Link for",
+    "social_link_placeholder": "Social profile URL"
 }
