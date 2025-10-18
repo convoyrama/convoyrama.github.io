@@ -289,7 +289,7 @@ export async function generateImage(state) {
 
     if (selectedCountry) {
         try {
-            const flag_y = newPhotoY + itemSize + flagColumnSpacing;
+            const flag_y = newPhotoY + itemSize + itemSpacing;
             const flagEmoji = await renderTwemoji(selectedCountry.emoji, itemSize);
             if (flagEmoji) {
                 ctx.drawImage(flagEmoji, qrId_x, flag_y, itemSize, itemSize);
@@ -297,7 +297,7 @@ export async function generateImage(state) {
 
             // Draw VTC Logo as Watermark if enabled (now part of Column 1)
             if (state.watermarkToggle && state.vtcLogoImage) {
-                const watermark_y = flag_y + itemSize + flagColumnSpacing;
+                const watermark_y = flag_y + itemSize + itemSpacing;
                 ctx.globalAlpha = 0.1;
                 ctx.drawImage(state.vtcLogoImage, qrId_x, watermark_y, itemSize, itemSize);
                 ctx.globalAlpha = 1.0;
