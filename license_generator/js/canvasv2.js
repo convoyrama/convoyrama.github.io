@@ -28,7 +28,7 @@ async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
         const options = {
             width: size,
             height: size,
-            type: "canvas",
+            type: "canvas", // Changed to canvas
             data: value,
             dotsOptions: {
                 color: qrColor,
@@ -42,12 +42,9 @@ async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
             options.image = logoPath;
             options.imageOptions = {
                 crossOrigin: "anonymous",
-                margin: 4,
+                margin: 4, // Reduced margin to make logo larger
             };
         }
-
-        console.log("DEBUG: generateQRWithLogo - Input: ", { value, size, qrColor, logoPath });
-        console.log("DEBUG: generateQRWithLogo - QRCodeStyling options:", options);
 
         const qrCode = new window.QRCodeStyling(options);
 
@@ -55,7 +52,6 @@ async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
             const img = new Image();
             img.src = URL.createObjectURL(pngBlob);
             img.onload = () => {
-                console.log("DEBUG: generateQRWithLogo - Generated QR Image dimensions:", img.width, img.height);
                 resolve(img);
                 URL.revokeObjectURL(img.src); // Clean up the object URL
             };
@@ -72,9 +68,6 @@ export async function generateImage(state) {
     console.log('Config baseWidth:', config.baseWidth, 'Scale Factor:', scaleFactor);
     const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
     const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
-
-    console.log("DEBUG: generateImage - itemSize:", itemSize, "qrColor:", qrColor);
-    console.log("DEBUG: generateImage - Social Network Active:", state.socialNetwork, state.socialLink);
 
     // --- Layout Constants ---
     const itemSize = config.vtcLogoSize * scaleFactor;
