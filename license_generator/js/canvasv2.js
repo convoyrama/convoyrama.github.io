@@ -227,11 +227,12 @@ export async function generateImage(state) {
 
     // --- Column 1: Rightmost (Convoyrama QR, Flag, VTC Watermark) ---
     const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
+    const flagColumnSpacing = itemSpacing / 2; // Use a smaller spacing for this column
     await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, newPhotoY, itemSize, qrColor);
 
     if (selectedCountry) {
         try {
-            const flag_y = newPhotoY + itemSize + itemSpacing;
+            const flag_y = newPhotoY + itemSize + flagColumnSpacing;
             const flagEmoji = await renderTwemoji(selectedCountry.emoji, itemSize);
             if (flagEmoji) {
                 ctx.drawImage(flagEmoji, qrId_x, flag_y, itemSize, itemSize);
@@ -239,7 +240,7 @@ export async function generateImage(state) {
 
             // Draw VTC Logo as Watermark if enabled (now part of Column 1)
             if (state.watermarkToggle && state.vtcLogoImage) {
-                const watermark_y = flag_y + itemSize + itemSpacing;
+                const watermark_y = flag_y + itemSize + flagColumnSpacing;
                 ctx.globalAlpha = 0.1;
                 ctx.drawImage(state.vtcLogoImage, qrId_x, watermark_y, itemSize, itemSize);
                 ctx.globalAlpha = 1.0;
