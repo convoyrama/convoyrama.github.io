@@ -444,7 +444,12 @@ function addEventListeners(debouncedGenerate) {
         debouncedGenerate();
     });
 
-    dom.vtcLogoInput.addEventListener("change", (event) => {
+            reader.readAsDataURL(file);
+        } else {
+            state.vtcLogoImage = null;
+            debouncedGenerate();
+        }
+    });
 
     dom.watermarkToggleInput.addEventListener('change', (e) => {
         state.watermarkToggle = e.target.checked;
