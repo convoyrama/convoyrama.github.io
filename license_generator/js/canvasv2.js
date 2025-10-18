@@ -218,71 +218,62 @@ export async function generateImage(state) {
     });
 
     // --- Right-aligned items (VTC Logo, QRs, Flag) ---
-    const flag_x = qrId_x;
-    const flag_y = 10;
+    // This section is now structured into two distinct vertical columns.
 
-    // Draw VTC Logo (in its new position)
+    // Draw VTC Logo (in its new position in the top-left of the block)
     if (state.vtcLogoImage) {
         ctx.drawImage(state.vtcLogoImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
     }
 
-    // Draw QR Codes (in their new positions)
-    const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
+    // --- Column 1: Rightmost (Convoyrama QR, Flag, VTC Watermark) ---
+    await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, newPhotoY, itemSize, qrColor);
+
+    if (selectedCountry) {
+        try {
+            const flag_y = newPhotoY + itemSize + itemSpacing;
+            const flagEmoji = await renderTwemoji(selectedCountry.emoji, itemSize);
+            if (flagEmoji) {
+                ctx.drawImage(flagEmoji, qrId_x, flag_y, itemSize, itemSize);
+            }
+
+            // Draw VTC Logo as Watermark if enabled (now part of Column 1)
+            if (state.watermarkToggle && state.vtcLogoImage) {
+                const watermark_y = flag_y + itemSize + itemSpacing;
+                ctx.globalAlpha = 0.1;
+                ctx.drawImage(state.vtcLogoImage, qrId_x, watermark_y, itemSize, itemSize);
+                ctx.globalAlpha = 1.0;
+            }
+        } catch (e) { console.error('failed to render flag', e); }
+    }
+
+    // --- Column 2: Left (User/VTC QR, TMP Logo, Year) ---
     if (state.truckersmpLink) {
         await generateQR(ctx, normalizedTruckersmpLink, qrUser_x, newPhotoY, itemSize, qrColor);
     }
     if (state.companyLink) {
         await generateQR(ctx, normalizedCompanyLink, qrCompany_x, newPhotoY, itemSize, qrColor);
     }
-    await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, newPhotoY, itemSize, qrColor);
 
-    // Draw flag emoji (in its new position)
-    if (selectedCountry) {
-        try {
-            const flagEmoji = await renderTwemoji(selectedCountry.emoji, itemSize);
-            if (flagEmoji) {
-                ctx.drawImage(flagEmoji, flag_x, flag_y, itemSize, itemSize);
-            }
-        } catch (e) { console.error('failed to render flag', e); }
-    }
-    
-    // Draw VTC Logo as Watermark if enabled
-    if (state.watermarkToggle && state.vtcLogoImage) {
-        const watermarkSize = itemSize; // Set size equal to QR codes
-        const watermarkX = qrId_x;      // Align horizontally with the QR and flag
-        const watermarkY = 30; // Position below the flag with equal spacing
-
-        ctx.globalAlpha = 0.1;
-        ctx.drawImage(state.vtcLogoImage, watermarkX, watermarkY, watermarkSize, watermarkSize);
-        ctx.globalAlpha = 1.0;
-    }
-
-    // Draw TruckersMP Logo
     if (state.watermarkToggle) { // Changed condition
         try {
             const truckersmpImage = await loadImage('./license_generator/images/truckersmp-logo-sm.png');
-            const logoWidth = config.truckersmpLogoWidth * scaleFactor;
+            // Calculate width to span both QRs
+            const logoWidth = (qrUser_x + itemSize) - qrCompany_x;
             const logoHeight = (truckersmpImage.height / truckersmpImage.width) * logoWidth;
-            const truckersmpLogo_x = qrCompany_x;
-            const truckersmpLogo_y = flag_y;
+            const truckersmpLogo_y = newPhotoY + itemSize + itemSpacing;
+            
             ctx.globalAlpha = 0.15; // 15% opacity
-            ctx.drawImage(truckersmpImage, truckersmpLogo_x, truckersmpLogo_y, logoWidth, logoHeight);
+            ctx.drawImage(truckersmpImage, qrCompany_x, truckersmpLogo_y, logoWidth, logoHeight);
 
             // Draw verified registration year if available
             if (state.verifiedJoinDate) {
                 const year = new Date(state.verifiedJoinDate).getFullYear();
-                
-                // Calculate the vertical distance between the bottom of the QRs and the top of the TMP logo
-                const verticalDistance = truckersmpLogo_y - (itemY + itemSize);
-                // Apply that same distance below the logo for the year, plus an additional 10px offset requested by the user
-                const yearY = truckersmpLogo_y + logoHeight + verticalDistance + (10 * scaleFactor);
-
-                const yearX = truckersmpLogo_x + (logoWidth / 2); // Center it with the logo
+                const yearY = truckersmpLogo_y + logoHeight + itemSpacing;
+                const yearX = qrCompany_x + (logoWidth / 2); // Center it with the logo
 
                 ctx.font = `bold ${config.textFontSize * 1.5 * scaleFactor}px 'VerdanaCustom-Bold'`;
                 ctx.fillStyle = 'rgb(240, 240, 240)';
                 ctx.textAlign = 'center';
-                // Opacity is already set by ctx.globalAlpha = 0.15;
                 ctx.fillText(year, yearX, yearY);
             }
 
