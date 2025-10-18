@@ -2,8 +2,10 @@ import { dom } from './dom-elements.js';
 import { config, translations, loadTranslations } from './config.js';
 import { debounce, validateTruckersmpLink, validateCompanyLink, generateLicenseNumber, getUserLevel, getVerifiedUserLevel } from './utils.js';
 import { getCurrentDate, loadCountries, loadStarMap, loadTitles, loadLevelRanges } from './api.js';
-import { generateImage, performDownload } from './canvas.js';
 import { generateUserbar } from './userbar.js';
+
+// Dynamically imported module functions
+let generateImage, performDownload;
 
 const HMAC_SECRET_KEY = 'TPPrZX8QA4DH3ekn4JKk';
 
@@ -38,6 +40,24 @@ const state = {
     verificationCode: '',
     verifiedJoinDate: null,
 };
+
+async function loadCanvasModule() {
+    const modulePath = dom.canvasVersionSelect.value;
+    try {
+        const module = await import(modulePath);
+        generateImage = module.generateImage;
+        performDownload = module.performDownload;
+        console.log(`Canvas module loaded from: ${modulePath}`);
+    } catch (error) {
+        console.error(`Failed to load canvas module from ${modulePath}:`, error);
+        // Fallback to the default module if loading fails
+        const defaultModule = await import('./canvas.js');
+        generateImage = defaultModule.generateImage;
+        performDownload = defaultModule.performDownload;
+        console.log('Fell back to default canvas module.');
+    }
+}
+
 
 function updateUI() {
     // Update UI elements based on state
@@ -219,7 +239,7 @@ function renderRankLegend() {
     dom.verificationCodeInput = verificationInput;
     dom.verificationStatus = verificationStatus;
     const debouncedGenerate = debounce(() => {
-        generateImage(state);
+        if (generateImage) generateImage(state);
         generateUserbar(state, dom);
     }, 100);
     dom.verificationCodeInput.addEventListener('input', (e) => {
@@ -230,14 +250,6 @@ function renderRankLegend() {
 async function initialize() {
     await loadTranslations(); // Call and await translation loading
 
-    [state.countries, state.currentDate, state.starMap, state.titles, state.levelRanges] = await Promise.all([
-        loadCountries(),
-        getCurrentDate(),
-        loadStarMap(),
-        loadTitles(),
-        loadLevelRanges()
-    ]);
-    
     // Populate dom object after DOM is ready
     Object.assign(dom, {
         canvas: document.getElementById("canvas"),
@@ -298,6 +310,22 @@ async function initialize() {
         mainBgNext: document.getElementById("main-bg-next"),
         mainBgName: document.getElementById("main-bg-name"),
         warningMessage: document.getElementById("warningMessage"),
+        canvasVersionSelect: document.getElementById("canvasVersionSelect"),
+    });
+
+    await Promise.all([
+        loadCountries(),
+        getCurrentDate(),
+        loadStarMap(),
+        loadTitles(),
+        loadLevelRanges(),
+        loadCanvasModule() // Load the default canvas module
+    ]).then(([countries, currentDate, starMap, titles, levelRanges]) => {
+        state.countries = countries;
+        state.currentDate = currentDate;
+        state.starMap = starMap;
+        state.titles = titles;
+        state.levelRanges = levelRanges;
     });
 
     populateCountries(state.language);
@@ -306,7 +334,7 @@ async function initialize() {
 
     updateUI();
     const debouncedGenerate = debounce(() => {
-        generateImage(state);
+        if (generateImage) generateImage(state);
         generateUserbar(state, dom);
     }, 100);
 
@@ -316,6 +344,11 @@ async function initialize() {
     dom.downloadLink.addEventListener('click', (e) => {
         e.preventDefault(); // Stop the link from navigating
         
+        if (!performDownload) {
+            console.error("Download function not loaded yet.");
+            return;
+        }
+
         // Indicate to the user that something is happening
         const originalText = dom.downloadButton.textContent;
         dom.downloadButton.textContent = translations[state.language].generating_image || 'Generating...';
@@ -338,6 +371,11 @@ async function initialize() {
 }
 
 function addEventListeners(debouncedGenerate) {
+    dom.canvasVersionSelect.addEventListener('change', async () => {
+        await loadCanvasModule();
+        debouncedGenerate();
+    });
+
     dom.nameInput.addEventListener('input', (e) => {
         state.name = e.target.value;
         debouncedGenerate();
