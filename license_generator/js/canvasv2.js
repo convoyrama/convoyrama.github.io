@@ -64,7 +64,6 @@ export async function generateImage(state) {
     // --- Layout Constants ---
     const itemSize = config.vtcLogoSize * scaleFactor;
     const itemSpacing = config.qrSpacing * scaleFactor;
-    const verticalSpacing = itemSpacing / 4; // Reduced vertical spacing as per user feedback
     const rightMargin = 20 * scaleFactor;
     const itemY = config.qrY * scaleFactor;
 
@@ -181,29 +180,30 @@ export async function generateImage(state) {
 
     // Draw lines
     let yPos = (config.photoY + config.defaultPhotoSize + 40) * scaleFactor;
+    const textValueX = newPhotoX + ((config.textX - config.labelX) * scaleFactor);
     lines.forEach(line => {
         ctx.font = `bold ${config.textFontSize * scaleFactor}px 'VerdanaCustom-Bold'`;
-        ctx.fillText(line.label, config.labelX * scaleFactor, yPos);
+        ctx.fillText(line.label, newPhotoX, yPos);
 
         ctx.font = `bold ${config.textFontSize * scaleFactor}px 'VerdanaCustom-Bold'`;
         if (line.isName) {
             const nameWithoutStar = line.value;
-            ctx.fillText(nameWithoutStar, config.textX * scaleFactor, yPos);
+            ctx.fillText(nameWithoutStar, textValueX, yPos);
             if (isOwner) {
                 const nameWidth = ctx.measureText(nameWithoutStar).width;
                 ctx.fillStyle = '#FFD700';
-                ctx.fillText(' ✵', (config.textX * scaleFactor) + nameWidth, yPos);
+                ctx.fillText(' ✵', textValueX + nameWidth, yPos);
                 ctx.fillStyle = textColor; // Reset color
             }
         } else {
-            ctx.fillText(line.value, config.textX * scaleFactor, yPos);
+            ctx.fillText(line.value, textValueX, yPos);
         }
 
         // Special handling for date symbol
         if (line.label === t.canvasDate && state.currentDate) {
             const dateSymbol = state.currentDate.fromInternet ? '✓' : '✗';
             const dateWidth = ctx.measureText(line.value).width;
-            const symbolX = (config.textX * scaleFactor) + dateWidth + (5 * scaleFactor);
+            const symbolX = textValueX + dateWidth + (5 * scaleFactor);
 
             // Check for golden checkmark conditions
             if (state.currentDate.fromInternet && state.verifiedJoinDate) {
@@ -219,7 +219,7 @@ export async function generateImage(state) {
 
     // --- Right-aligned items (VTC Logo, QRs, Flag) ---
     const flag_x = qrId_x;
-    const flag_y = newPhotoY + itemSize + verticalSpacing;
+    const flag_y = newPhotoY + itemSize + itemSpacing;
 
     // Draw VTC Logo (in its new position)
     if (state.vtcLogoImage) {
@@ -250,32 +250,11 @@ export async function generateImage(state) {
     if (state.watermarkToggle && state.vtcLogoImage) {
         const watermarkSize = itemSize; // Set size equal to QR codes
         const watermarkX = qrId_x;      // Align horizontally with the QR and flag
-        const watermarkY = flag_y + itemSize + verticalSpacing; // Position below the flag with equal spacing
+        const watermarkY = flag_y + itemSize + itemSpacing; // Position below the flag with equal spacing
 
         ctx.globalAlpha = 0.1;
         ctx.drawImage(state.vtcLogoImage, watermarkX, watermarkY, watermarkSize, watermarkSize);
         ctx.globalAlpha = 1.0;
-    }
-
-    // Draw ProMods Logo
-    if (state.promodsToggle) {
-        try {
-            const promodsImage = await loadImage('./license_generator/images/promods.png');
-            ctx.drawImage(promodsImage, config.promodsX * scaleFactor, config.promodsY * scaleFactor, config.logoWidth * scaleFactor, config.logoHeight * scaleFactor);
-        } catch (error) {
-            console.error('Failed to load promods image', error);
-        }
-    }
-
-    // Draw DBUS Logo
-    if (state.dbusworldToggle) {
-        try {
-            const dbusImage = await loadImage('./license_generator/images/dbusworld.png');
-            const dbusworldY = state.promodsToggle ? config.dbusworldY : config.promodsY;
-            ctx.drawImage(dbusImage, config.dbusworldX * scaleFactor, dbusworldY * scaleFactor, config.logoWidth * scaleFactor, config.logoHeight * scaleFactor);
-        } catch (error) {
-            console.error('Failed to load dbusworld image', error);
-        }
     }
 
     // Draw TruckersMP Logo
@@ -319,11 +298,10 @@ export async function generateImage(state) {
     if (silverStarCount > 0) {
         const starSize = config.textFontSize * scaleFactor;
         const starSpacing = 4 * scaleFactor;
-        const totalStarWidth = (silverStarCount * starSize) + ((silverStarCount - 1) * starSpacing);
         
         // Position stars to the right of the photo and below the VTC logo
         let starX = newPhotoX + photoSize + itemSpacing;
-        const starY = newPhotoY + itemSize + verticalSpacing;
+        const starY = newPhotoY + itemSize + itemSpacing;
 
         ctx.font = `bold ${starSize}px ${config.font}`;
         ctx.fillStyle = "#C0C0C0"; // Silver color
