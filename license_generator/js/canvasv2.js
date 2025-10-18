@@ -28,7 +28,7 @@ async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
         const options = {
             width: size,
             height: size,
-            type: "canvas",
+            type: "canvas", // Changed to canvas
             data: value,
             qrOptions: {
                 errorCorrectionLevel: 'H' // High error correction for density
@@ -63,7 +63,10 @@ async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
             const img = new Image();
             img.src = URL.createObjectURL(pngBlob);
             img.onload = () => {
+<<<<<<< HEAD
                 console.log("DEBUG: generateQRWithLogo - Generated QR Image dimensions:", img.width, img.height, "natural:", img.naturalWidth, img.naturalHeight);
+=======
+>>>>>>> parent of fe02cff (update)
                 resolve(img);
                 URL.revokeObjectURL(img.src); // Clean up the object URL
             };
@@ -80,9 +83,6 @@ export async function generateImage(state) {
     console.log('Config baseWidth:', config.baseWidth, 'Scale Factor:', scaleFactor);
     const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
     const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
-
-    console.log("DEBUG: generateImage - itemSize:", itemSize, "qrColor:", qrColor);
-    console.log("DEBUG: generateImage - Social Network Active:", state.socialNetwork, state.socialLink);
 
     // --- Layout Constants ---
     const itemSize = config.vtcLogoSize * scaleFactor;
