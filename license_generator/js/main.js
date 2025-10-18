@@ -136,7 +136,7 @@ function updateLanguage(lang) {
     dom.downloadUserbarButton.textContent = t.downloadUserbarButton;
     dom.warningMessage.textContent = t.warning_refresh_page;
     dom.socialSelectLabel.textContent = t.socialSelectLabel;
-    dom.socialNoneOption.textContent = t.social_none;
+    dom.socialSelect.querySelector('option[value=""]').textContent = t.social_none;
     dom.socialLinkInput.placeholder = t.social_link_placeholder;
 
     // Translations for the new verification section
@@ -305,7 +305,6 @@ async function initialize() {
         socialLinkGroup: document.getElementById("socialLinkGroup"),
         socialLinkLabel: document.getElementById("socialLinkLabel"),
         socialLinkInput: document.getElementById("socialLink"),
-        socialNoneOption: document.getElementById("social_none_option"),
     });
 
     populateCountries(state.language);
