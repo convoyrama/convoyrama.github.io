@@ -1,4 +1,3 @@
-import { QRCodeStyling } from './lib/qr-code-styling.js';
 import { dom } from './dom-elements.js';
 import { config, translations } from './config.js';
 import { normalizeLink, generateLicenseNumber, getUserLevel } from './utils.js';
@@ -47,7 +46,7 @@ async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
             };
         }
 
-        const qrCode = new QRCodeStyling(options);
+        const qrCode = new window.QRCodeStyling(options);
 
         qrCode.getRawData("svg").then((svgBlob) => {
             const reader = new FileReader();
