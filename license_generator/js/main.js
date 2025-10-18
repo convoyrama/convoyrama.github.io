@@ -136,19 +136,6 @@ function updateLanguage(lang) {
     dom.downloadUserbarButton.textContent = t.downloadUserbarButton;
     dom.warningMessage.textContent = t.warning_refresh_page;
 
-    try {
-        if (dom.socialSelectLabel) dom.socialSelectLabel.textContent = t.socialSelectLabel;
-        else console.error('DOM element not found: socialSelectLabel');
-
-        if (dom.socialNoneOption) dom.socialNoneOption.textContent = t.social_none;
-        else console.error('DOM element not found: socialNoneOption');
-
-        if (dom.socialLinkInput) dom.socialLinkInput.placeholder = t.social_link_placeholder;
-        else console.error('DOM element not found: socialLinkInput');
-    } catch (e) {
-        console.error("Error applying social media translations:", e);
-    }
-
     // Translations for the new verification section
     const verificationIntro = document.querySelector('#verification-section .rank-legend-intro');
     if (verificationIntro) verificationIntro.innerHTML = t.verification_intro; // Use innerHTML for the <code> tag
@@ -313,9 +300,7 @@ async function initialize() {
         warningMessage: document.getElementById("warningMessage"),
         socialSelect: document.getElementById("socialSelect"),
         socialLinkGroup: document.getElementById("socialLinkGroup"),
-        socialLinkLabel: document.getElementById("socialLinkLabel"),
         socialLinkInput: document.getElementById("socialLink"),
-        socialNoneOption: document.getElementById("social_none_option"),
     });
 
     populateCountries(state.language);
@@ -508,12 +493,9 @@ function addEventListeners(debouncedGenerate) {
     dom.socialSelect.addEventListener('change', (e) => {
         const selectedNetwork = e.target.value;
         state.socialNetwork = selectedNetwork;
-        const t = translations[state.language] || translations.es;
 
         if (selectedNetwork) {
             dom.socialLinkGroup.style.display = 'block';
-            const networkName = e.target.options[e.target.selectedIndex].text;
-            dom.socialLinkLabel.textContent = `${t.social_link_prefix} ${networkName}:`;
         } else {
             dom.socialLinkGroup.style.display = 'none';
             state.socialLink = '';
