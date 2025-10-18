@@ -135,9 +135,6 @@ function updateLanguage(lang) {
     dom.textColorToggleLabel.textContent = t.textColorToggleLabel;
     dom.downloadUserbarButton.textContent = t.downloadUserbarButton;
     dom.warningMessage.textContent = t.warning_refresh_page;
-    dom.socialSelectLabel.textContent = t.socialSelectLabel;
-    dom.socialSelect.querySelector('option[value=""]').textContent = t.social_none;
-    dom.socialLinkInput.placeholder = t.social_link_placeholder;
 
     // Translations for the new verification section
     const verificationIntro = document.querySelector('#verification-section .rank-legend-intro');
@@ -497,12 +494,11 @@ function addEventListeners(debouncedGenerate) {
     dom.socialSelect.addEventListener('change', (e) => {
         const selectedNetwork = e.target.value;
         state.socialNetwork = selectedNetwork;
-        const t = translations[state.language] || translations.es;
 
         if (selectedNetwork) {
             dom.socialLinkGroup.style.display = 'block';
             const networkName = e.target.options[e.target.selectedIndex].text;
-            dom.socialLinkLabel.textContent = `${t.social_link_prefix} ${networkName}:`;
+            dom.socialLinkLabel.textContent = `Enlace de ${networkName}:`;
         } else {
             dom.socialLinkGroup.style.display = 'none';
             state.socialLink = '';
