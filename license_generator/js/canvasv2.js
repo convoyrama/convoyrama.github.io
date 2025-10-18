@@ -219,7 +219,7 @@ export async function generateImage(state) {
 
     // --- Right-aligned items (VTC Logo, QRs, Flag) ---
     const flag_x = qrId_x;
-    const flag_y = newPhotoY + itemSize + itemSpacing - (15 * scaleFactor);
+    const flag_y = 10;
 
     // Draw VTC Logo (in its new position)
     if (state.vtcLogoImage) {
@@ -250,7 +250,7 @@ export async function generateImage(state) {
     if (state.watermarkToggle && state.vtcLogoImage) {
         const watermarkSize = itemSize; // Set size equal to QR codes
         const watermarkX = qrId_x;      // Align horizontally with the QR and flag
-        const watermarkY = flag_y + itemSize + itemSpacing; // Position below the flag with equal spacing
+        const watermarkY = 30; // Position below the flag with equal spacing
 
         ctx.globalAlpha = 0.1;
         ctx.drawImage(state.vtcLogoImage, watermarkX, watermarkY, watermarkSize, watermarkSize);
