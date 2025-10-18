@@ -248,12 +248,14 @@ export async function generateImage(state) {
         if (logoName) {
             try {
                 const logoPath = `./license_generator/socials/${logoName}`;
-                const socialQRImage = await generateQRWithLogo(state.socialLink, itemSize, logoPath, qrColor);
+                const socialQRImage = await generateQRWithLogo(state.socialLink, itemSize, qrColor, logoPath);
+                console.log("DEBUG: Drawing Social QR at:", vtcLogo_x, newPhotoY, itemSize, itemSize);
                 ctx.drawImage(socialQRImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
             } catch (e) {
                 console.error("Failed to generate social QR code:", e);
                 // Fallback to drawing VTC logo if social QR fails
                 if (state.vtcLogoImage) {
+                    console.log("DEBUG: Drawing VTC Logo (fallback) at:", vtcLogo_x, newPhotoY, itemSize, itemSize);
                     ctx.drawImage(state.vtcLogoImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
                 }
             }
@@ -261,12 +263,14 @@ export async function generateImage(state) {
     } else {
         // Draw VTC Logo (in its new position in the top-left of the block)
         if (state.vtcLogoImage) {
+            console.log("DEBUG: Drawing VTC Logo at:", vtcLogo_x, newPhotoY, itemSize, itemSize);
             ctx.drawImage(state.vtcLogoImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
         }
     }
 
     // --- Column 1: Rightmost (Convoyrama QR, Flag, VTC Watermark) ---
     const convoyramaQRImage = await generateQRWithLogo("https://convoyrama.github.io/id.html", itemSize, qrColor, "./license_generator/socials/crlogo.svg");
+    console.log("DEBUG: Drawing Convoyrama QR at:", qrId_x, newPhotoY, itemSize, itemSize);
     ctx.drawImage(convoyramaQRImage, qrId_x, newPhotoY, itemSize, itemSize);
 
     if (selectedCountry) {
@@ -274,12 +278,14 @@ export async function generateImage(state) {
             const flag_y = newPhotoY + itemSize + itemSpacing;
             const flagEmoji = await renderTwemoji(selectedCountry.emoji, itemSize);
             if (flagEmoji) {
+                console.log("DEBUG: Drawing Flag at:", qrId_x, flag_y, itemSize, itemSize);
                 ctx.drawImage(flagEmoji, qrId_x, flag_y, itemSize, itemSize);
             }
 
             // Draw VTC Logo as Watermark if enabled (now part of Column 1)
             if (state.watermarkToggle && state.vtcLogoImage) {
                 const watermark_y = flag_y + itemSize + itemSpacing;
+                console.log("DEBUG: Drawing VTC Watermark at:", qrId_x, watermark_y, itemSize, itemSize);
                 ctx.globalAlpha = 0.1;
                 ctx.drawImage(state.vtcLogoImage, qrId_x, watermark_y, itemSize, itemSize);
                 ctx.globalAlpha = 1.0;
@@ -290,10 +296,12 @@ export async function generateImage(state) {
     // --- Column 2: Left (User/VTC QR, TMP Logo, Year) ---
     if (state.truckersmpLink) {
         const userQRImage = await generateQRWithLogo(normalizedTruckersmpLink, itemSize, qrColor);
+        console.log("DEBUG: Drawing User QR at:", qrUser_x, newPhotoY, itemSize, itemSize);
         ctx.drawImage(userQRImage, qrUser_x, newPhotoY, itemSize, itemSize);
     }
     if (state.companyLink) {
         const vtcQRImage = await generateQRWithLogo(normalizedCompanyLink, itemSize, qrColor);
+        console.log("DEBUG: Drawing VTC QR at:", qrCompany_x, newPhotoY, itemSize, itemSize);
         ctx.drawImage(vtcQRImage, qrCompany_x, newPhotoY, itemSize, itemSize);
     }
 
