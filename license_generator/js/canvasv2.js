@@ -64,6 +64,7 @@ export async function generateImage(state) {
     // --- Layout Constants ---
     const itemSize = config.vtcLogoSize * scaleFactor;
     const itemSpacing = config.qrSpacing * scaleFactor;
+    const verticalSpacing = itemSpacing / 2; // Reduced vertical spacing as per user feedback
     const rightMargin = 20 * scaleFactor;
     const itemY = config.qrY * scaleFactor;
 
@@ -218,7 +219,7 @@ export async function generateImage(state) {
 
     // --- Right-aligned items (VTC Logo, QRs, Flag) ---
     const flag_x = qrId_x;
-    const flag_y = itemY + itemSize + itemSpacing;
+    const flag_y = newPhotoY + itemSize + verticalSpacing;
 
     // Draw VTC Logo (in its new position)
     if (state.vtcLogoImage) {
@@ -249,7 +250,7 @@ export async function generateImage(state) {
     if (state.watermarkToggle && state.vtcLogoImage) {
         const watermarkSize = itemSize; // Set size equal to QR codes
         const watermarkX = qrId_x;      // Align horizontally with the QR and flag
-        const watermarkY = flag_y + itemSize + itemSpacing; // Position below the flag with equal spacing
+        const watermarkY = flag_y + itemSize + verticalSpacing; // Position below the flag with equal spacing
 
         ctx.globalAlpha = 0.1;
         ctx.drawImage(state.vtcLogoImage, watermarkX, watermarkY, watermarkSize, watermarkSize);
@@ -316,17 +317,23 @@ export async function generateImage(state) {
     const starConfig = state.starMap[normalizedTruckersmpLink] || { silver: 0 };
     const silverStarCount = starConfig.silver || 0;
     if (silverStarCount > 0) {
-        const totalStarHeight = silverStarCount * config.textFontSize * scaleFactor;
-        ctx.font = `bold ${config.textFontSize * scaleFactor}px ${config.font}`;
-        ctx.textAlign = "center";
-        const starX = (config.photoX / 2) * scaleFactor;
-        let currentY = (canvas.height / 2) - (totalStarHeight / 2) + (config.textFontSize * scaleFactor / 2);
+        const starSize = config.textFontSize * scaleFactor;
+        const starSpacing = 4 * scaleFactor;
+        const totalStarWidth = (silverStarCount * starSize) + ((silverStarCount - 1) * starSpacing);
+        
+        // Position stars to the right of the photo and below the VTC logo
+        let starX = newPhotoX + photoSize + itemSpacing;
+        const starY = newPhotoY + itemSize + verticalSpacing;
+
+        ctx.font = `bold ${starSize}px ${config.font}`;
         ctx.fillStyle = "#C0C0C0"; // Silver color
+        ctx.textAlign = "left"; // Align stars from the left
+        ctx.textBaseline = "top"; // Align from the top
+
         for (let i = 0; i < silverStarCount; i++) {
-            ctx.fillText("★", starX, currentY);
-            currentY += config.textFontSize * scaleFactor;
+            ctx.fillText("★", starX, starY);
+            starX += starSize + starSpacing;
         }
-        ctx.textAlign = "left";
     }
 
     // --- Draw Bottom Title ---
