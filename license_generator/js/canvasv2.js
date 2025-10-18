@@ -53,6 +53,39 @@ async function generateQR(ctx, value, x, y, size, color) {
     });
 }
 
+async function generateQRWithLogo(value, size, logoPath) {
+    return new Promise((resolve, reject) => {
+        const qrCode = new QRCodeStyling({
+            width: size,
+            height: size,
+            type: "svg",
+            data: value,
+            image: logoPath,
+            dotsOptions: {
+                color: "#000000", // Default to black, can be customized
+            },
+            backgroundOptions: {
+                color: "#ffffff", // Default to white
+            },
+            imageOptions: {
+                crossOrigin: "anonymous",
+                margin: size * 0.1, // 10% margin around the logo
+            }
+        });
+
+        qrCode.getRawData("svg").then((svgBlob) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => resolve(img);
+                img.onerror = (err) => reject(err);
+            };
+            reader.readAsDataURL(svgBlob);
+        }).catch(err => reject(err));
+    });
+}
+
 
 export async function generateImage(state) {
     const { ctx, canvas } = dom;
@@ -217,12 +250,37 @@ export async function generateImage(state) {
         yPos += config.lineHeight * scaleFactor;
     });
 
-    // --- Right-aligned items (VTC Logo, QRs, Flag) ---
-    // This section is now structured into two distinct vertical columns.
-
-    // Draw VTC Logo (in its new position in the top-left of the block)
-    if (state.vtcLogoImage) {
-        ctx.drawImage(state.vtcLogoImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
+    // Conditionally draw Social QR or VTC Logo
+    if (state.socialNetwork && state.socialLink) {
+        const socialLogoMap = {
+            discord: 'discord-icon-svgrepo-com.svg',
+            facebook: 'facebook-svgrepo-com.svg',
+            instagram: 'instagram-1-svgrepo-com.svg',
+            kick: 'kick-streaming-platform-logo-icon.svg',
+            tiktok: 'tiktok-svgrepo-com.svg',
+            twitch: 'twitch-svgrepo-com.svg',
+            wechat: 'wechat-communication-interaction-connection-internet-svgrepo-com.svg',
+            youtube: 'youtube-color-svgrepo-com.svg'
+        };
+        const logoName = socialLogoMap[state.socialNetwork];
+        if (logoName) {
+            try {
+                const logoPath = `./license_generator/socials/${logoName}`;
+                const socialQRImage = await generateQRWithLogo(state.socialLink, itemSize, logoPath);
+                ctx.drawImage(socialQRImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
+            } catch (e) {
+                console.error("Failed to generate social QR code:", e);
+                // Fallback to drawing VTC logo if social QR fails
+                if (state.vtcLogoImage) {
+                    ctx.drawImage(state.vtcLogoImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
+                }
+            }
+        }
+    } else {
+        // Draw VTC Logo (in its new position in the top-left of the block)
+        if (state.vtcLogoImage) {
+            ctx.drawImage(state.vtcLogoImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
+        }
     }
 
     // --- Column 1: Rightmost (Convoyrama QR, Flag, VTC Watermark) ---

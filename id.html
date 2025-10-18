@@ -12,6 +12,7 @@
     <link rel="icon" href="./assets/images/favicon.png">
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
     <script src="https://unpkg.com/qrcode-svg@1.1.0/dist/qrcode.min.js"></script>
+    <script src="https://unpkg.com/qr-code-styling@latest/lib/qr-code-styling.js"></script>
     <script src="./twemoji-14.0.2/twemoji.min.js"></script>
 <style>
 .userbar-background-selector {
@@ -93,6 +94,24 @@
                 <select id="titleSelect">
                     <option value="" data-translate="select_subtitle_placeholder" selected>Seleccione un Tipo de Licencia</option>
                 </select>
+            </div>
+            <div class="input-group" id="socialSelectGroup">
+                <label for="socialSelect" id="socialSelectLabel">Red Social (Opcional):</label><br>
+                <select id="socialSelect">
+                    <option value="">Ninguna</option>
+                    <option value="discord">Discord</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="kick">Kick</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="twitch">Twitch</option>
+                    <option value="wechat">WeChat</option>
+                    <option value="youtube">YouTube</option>
+                </select>
+            </div>
+            <div class="input-group" id="socialLinkGroup" style="display: none;">
+                <label for="socialLink" id="socialLinkLabel">Enlace de Perfil:</label><br>
+                <input type="text" id="socialLink" placeholder="URL del perfil social">
             </div>
         </div>
         <div id="preview">
