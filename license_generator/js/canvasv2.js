@@ -247,13 +247,12 @@ export async function generateImage(state) {
     
     // Draw VTC Logo as Watermark if enabled
     if (state.watermarkToggle && state.vtcLogoImage) {
-        const watermarkWidth = config.watermarkWidth * scaleFactor;
-        const watermarkHeight = config.watermarkHeight * scaleFactor;
-        const watermarkX = (flag_x + itemSize) - watermarkWidth;
-        const watermarkY = flag_y + itemSize + itemSpacing;
+        const watermarkSize = itemSize; // Set size equal to QR codes
+        const watermarkX = qrId_x;      // Align horizontally with the QR and flag
+        const watermarkY = flag_y + itemSize + itemSpacing; // Position below the flag with equal spacing
 
         ctx.globalAlpha = 0.1;
-        ctx.drawImage(state.vtcLogoImage, watermarkX, watermarkY, watermarkWidth, watermarkHeight);
+        ctx.drawImage(state.vtcLogoImage, watermarkX, watermarkY, watermarkSize, watermarkSize);
         ctx.globalAlpha = 1.0;
     }
 
