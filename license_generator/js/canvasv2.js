@@ -98,12 +98,28 @@ export async function generateImage(state) {
     ctx.textBaseline = "middle";
     ctx.fillText(state.customTitle.trim() || "TRUCKERSMP", canvas.width / 2, 40.77 * scaleFactor);
 
-    // Draw Photo
+    // --- Right-aligned items (VTC Logo, QRs, Flag) ---
+    const itemSize = config.vtcLogoSize * scaleFactor;
+    const itemSpacing = config.qrSpacing * scaleFactor;
+    const rightMargin = 20 * scaleFactor;
+    const itemY = config.qrY * scaleFactor;
+
+    const qrId_x = canvas.width - rightMargin - itemSize;
+    const qrUser_x = qrId_x - itemSize - itemSpacing;
+    const qrCompany_x = qrUser_x - itemSize - itemSpacing;
+    const vtcLogo_x = qrCompany_x - itemSize - itemSpacing;
+
+    // New photo coordinates based on user request
+    const photoSize = config.defaultPhotoSize * scaleFactor;
+    const newPhotoX = vtcLogo_x - photoSize - itemSpacing;
+    const newPhotoY = itemY;
+
+    // Draw Photo in its new position
     if (state.userImage) {
-        ctx.drawImage(state.userImage, config.photoX * scaleFactor, config.photoY * scaleFactor, config.defaultPhotoSize * scaleFactor, config.defaultPhotoSize * scaleFactor);
+        ctx.drawImage(state.userImage, newPhotoX, newPhotoY, photoSize, photoSize);
     } else {
-        const defaultPhoto = await renderTwemoji("👤", config.defaultPhotoSize * scaleFactor);
-        if (defaultPhoto) ctx.drawImage(defaultPhoto, config.photoX * scaleFactor, config.photoY * scaleFactor, config.defaultPhotoSize * scaleFactor, config.defaultPhotoSize * scaleFactor);
+        const defaultPhoto = await renderTwemoji("👤", photoSize);
+        if (defaultPhoto) ctx.drawImage(defaultPhoto, newPhotoX, newPhotoY, photoSize, photoSize);
     }
 
     // --- Text & Rank Drawing --- //
