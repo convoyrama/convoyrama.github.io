@@ -46,7 +46,6 @@ async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
             };
         }
 
-        console.log("Inspecting QRCodeStyling object:", window.QRCodeStyling);
         const qrCode = new window.QRCodeStyling(options);
 
         qrCode.getRawData("svg").then((svgBlob) => {
