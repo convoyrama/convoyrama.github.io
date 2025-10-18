@@ -33,15 +33,16 @@ export async function generateImage(state) {
     const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
 
     // --- Layout Constants ---
+    const qrCodeRenderSize = 100; // Fixed size for QR codes
     const itemSize = config.vtcLogoSize * scaleFactor;
     const itemSpacing = config.qrSpacing * scaleFactor;
     const rightMargin = 20 * scaleFactor;
     const itemY = config.qrY * scaleFactor;
 
     // Original positions (calculated as if right-aligned)
-    const qrId_x_orig = canvas.width - rightMargin - itemSize;
-    const qrUser_x_orig = qrId_x_orig - itemSize - itemSpacing;
-    const qrCompany_x_orig = qrUser_x_orig - itemSize - itemSpacing;
+    const qrId_x_orig = canvas.width - rightMargin - qrCodeRenderSize;
+    const qrUser_x_orig = qrId_x_orig - qrCodeRenderSize - itemSpacing;
+    const qrCompany_x_orig = qrUser_x_orig - qrCodeRenderSize - itemSpacing;
     const vtcLogo_x_orig = qrCompany_x_orig - itemSize - itemSpacing;
 
     const photoSize = config.defaultPhotoSize * scaleFactor;
@@ -49,7 +50,7 @@ export async function generateImage(state) {
 
     // Calculate block width and centering offset
     const blockStartX = photoX_orig;
-    const blockEndX = qrId_x_orig + itemSize;
+    const blockEndX = qrId_x_orig + qrCodeRenderSize;
     const blockWidth = blockEndX - blockStartX;
     const centeringOffset = (canvas.width - blockWidth) / 2 - blockStartX;
 
@@ -199,21 +200,21 @@ export async function generateImage(state) {
     // --- Column 1: Rightmost (Convoyrama QR, Flag, VTC Watermark) ---
     const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
     const flagColumnSpacing = itemSpacing / 2; // Use a smaller spacing for this column
-    await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, newPhotoY, itemSize, qrColor);
+    await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, newPhotoY, qrCodeRenderSize, qrColor);
 
     if (selectedCountry) {
         try {
-            const flag_y = newPhotoY + itemSize + flagColumnSpacing;
-            const flagEmoji = await renderTwemoji(selectedCountry.emoji, itemSize);
+            const flag_y = newPhotoY + qrCodeRenderSize + flagColumnSpacing;
+            const flagEmoji = await renderTwemoji(selectedCountry.emoji, qrCodeRenderSize);
             if (flagEmoji) {
-                ctx.drawImage(flagEmoji, qrId_x, flag_y, itemSize, itemSize);
+                ctx.drawImage(flagEmoji, qrId_x, flag_y, qrCodeRenderSize, qrCodeRenderSize);
             }
 
             // Draw VTC Logo as Watermark if enabled (now part of Column 1)
             if (state.watermarkToggle && state.vtcLogoImage) {
-                const watermark_y = flag_y + itemSize + flagColumnSpacing;
+                const watermark_y = flag_y + qrCodeRenderSize + flagColumnSpacing;
                 ctx.globalAlpha = 0.1;
-                ctx.drawImage(state.vtcLogoImage, qrId_x, watermark_y, itemSize, itemSize);
+                ctx.drawImage(state.vtcLogoImage, qrId_x, watermark_y, qrCodeRenderSize, qrCodeRenderSize);
                 ctx.globalAlpha = 1.0;
             }
         } catch (e) { console.error('failed to render flag', e); }
@@ -221,19 +222,19 @@ export async function generateImage(state) {
 
     // --- Column 2: Left (User/VTC QR, TMP Logo, Year) ---
     if (state.truckersmpLink) {
-        await generateQR(ctx, normalizedTruckersmpLink, qrUser_x, newPhotoY, itemSize, qrColor);
+        await generateQR(ctx, normalizedTruckersmpLink, qrUser_x, newPhotoY, qrCodeRenderSize, qrColor);
     }
     if (state.companyLink) {
-        await generateQR(ctx, normalizedCompanyLink, qrCompany_x, newPhotoY, itemSize, qrColor);
+        await generateQR(ctx, normalizedCompanyLink, qrCompany_x, newPhotoY, qrCodeRenderSize, qrColor);
     }
 
     if (state.watermarkToggle) { // Changed condition
         try {
             const truckersmpImage = await loadImage('./license_generator/images/truckersmp-logo-sm.png');
             // Calculate width to span both QRs
-            const logoWidth = (qrUser_x + itemSize) - qrCompany_x;
+            const logoWidth = (qrUser_x + qrCodeRenderSize) - qrCompany_x;
             const logoHeight = (truckersmpImage.height / truckersmpImage.width) * logoWidth;
-            const truckersmpLogo_y = newPhotoY + itemSize + itemSpacing;
+            const truckersmpLogo_y = newPhotoY + qrCodeRenderSize + itemSpacing;
             
             ctx.globalAlpha = 0.15; // 15% opacity
             ctx.drawImage(truckersmpImage, qrCompany_x, truckersmpLogo_y, logoWidth, logoHeight);
