@@ -64,7 +64,7 @@ export async function generateImage(state) {
     // --- Layout Constants ---
     const itemSize = config.vtcLogoSize * scaleFactor;
     const itemSpacing = config.qrSpacing * scaleFactor;
-    const verticalSpacing = itemSpacing / 2; // Reduced vertical spacing as per user feedback
+    const verticalSpacing = itemSpacing / 4; // Reduced vertical spacing as per user feedback
     const rightMargin = 20 * scaleFactor;
     const itemY = config.qrY * scaleFactor;
 
