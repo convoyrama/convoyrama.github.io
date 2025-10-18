@@ -61,6 +61,21 @@ export async function generateImage(state) {
     console.log('Config baseWidth:', config.baseWidth, 'Scale Factor:', scaleFactor);
     const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
 
+    // --- Layout Constants ---
+    const itemSize = config.vtcLogoSize * scaleFactor;
+    const itemSpacing = config.qrSpacing * scaleFactor;
+    const rightMargin = 20 * scaleFactor;
+    const itemY = config.qrY * scaleFactor;
+
+    const qrId_x = canvas.width - rightMargin - itemSize;
+    const qrUser_x = qrId_x - itemSize - itemSpacing;
+    const qrCompany_x = qrUser_x - itemSize - itemSpacing;
+    const vtcLogo_x = qrCompany_x - itemSize - itemSpacing;
+
+    const photoSize = config.defaultPhotoSize * scaleFactor;
+    const newPhotoX = vtcLogo_x - photoSize - itemSpacing;
+    const newPhotoY = itemY;
+
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -97,22 +112,6 @@ export async function generateImage(state) {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(state.customTitle.trim() || "TRUCKERSMP", canvas.width / 2, 40.77 * scaleFactor);
-
-    // --- Right-aligned items (VTC Logo, QRs, Flag) ---
-    const itemSize = config.vtcLogoSize * scaleFactor;
-    const itemSpacing = config.qrSpacing * scaleFactor;
-    const rightMargin = 20 * scaleFactor;
-    const itemY = config.qrY * scaleFactor;
-
-    const qrId_x = canvas.width - rightMargin - itemSize;
-    const qrUser_x = qrId_x - itemSize - itemSpacing;
-    const qrCompany_x = qrUser_x - itemSize - itemSpacing;
-    const vtcLogo_x = qrCompany_x - itemSize - itemSpacing;
-
-    // New photo coordinates based on user request
-    const photoSize = config.defaultPhotoSize * scaleFactor;
-    const newPhotoX = vtcLogo_x - photoSize - itemSpacing;
-    const newPhotoY = itemY;
 
     // Draw Photo in its new position
     if (state.userImage) {
@@ -204,16 +203,6 @@ export async function generateImage(state) {
     });
 
     // --- Right-aligned items (VTC Logo, QRs, Flag) ---
-    const itemSize = config.vtcLogoSize * scaleFactor;
-    const itemSpacing = config.qrSpacing * scaleFactor;
-    const rightMargin = 20 * scaleFactor;
-    const itemY = config.qrY * scaleFactor;
-
-    const qrId_x = canvas.width - rightMargin - itemSize;
-    const qrUser_x = qrId_x - itemSize - itemSpacing;
-    const qrCompany_x = qrUser_x - itemSize - itemSpacing;
-    const vtcLogo_x = qrCompany_x - itemSize - itemSpacing;
-
     const flag_x = qrId_x;
     const flag_y = itemY + itemSize + itemSpacing;
 
