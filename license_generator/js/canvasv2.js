@@ -53,7 +53,7 @@ async function generateQR(ctx, value, x, y, size, color) {
     });
 }
 
-async function generateQRWithLogo(value, size, logoPath) {
+async function generateQRWithLogo(value, size, logoPath, qrColor) {
     return new Promise((resolve, reject) => {
         const qrCode = new QRCodeStyling({
             width: size,
@@ -62,14 +62,14 @@ async function generateQRWithLogo(value, size, logoPath) {
             data: value,
             image: logoPath,
             dotsOptions: {
-                color: "#000000", // Default to black, can be customized
+                color: qrColor,
             },
             backgroundOptions: {
-                color: "#ffffff", // Default to white
+                color: "transparent",
             },
             imageOptions: {
                 crossOrigin: "anonymous",
-                margin: size * 0.1, // 10% margin around the logo
+                margin: 4, // Reduced margin to make logo larger
             }
         });
 
@@ -93,6 +93,7 @@ export async function generateImage(state) {
     const scaleFactor = canvas.width / config.baseWidth;
     console.log('Config baseWidth:', config.baseWidth, 'Scale Factor:', scaleFactor);
     const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
+    const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
 
     // --- Layout Constants ---
     const itemSize = config.vtcLogoSize * scaleFactor;
@@ -266,7 +267,7 @@ export async function generateImage(state) {
         if (logoName) {
             try {
                 const logoPath = `./license_generator/socials/${logoName}`;
-                const socialQRImage = await generateQRWithLogo(state.socialLink, itemSize, logoPath);
+                const socialQRImage = await generateQRWithLogo(state.socialLink, itemSize, logoPath, qrColor);
                 ctx.drawImage(socialQRImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
             } catch (e) {
                 console.error("Failed to generate social QR code:", e);
@@ -284,8 +285,6 @@ export async function generateImage(state) {
     }
 
     // --- Column 1: Rightmost (Convoyrama QR, Flag, VTC Watermark) ---
-    const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
-    const flagColumnSpacing = itemSpacing / 2; // Use a smaller spacing for this column
     await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, newPhotoY, itemSize, qrColor);
 
     if (selectedCountry) {
