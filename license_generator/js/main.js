@@ -256,8 +256,6 @@ async function initialize() {
         nicknameGroup: document.getElementById("nicknameGroup"),
         titleSelect: document.getElementById("titleSelect"),
         titleSelectLabel: document.getElementById("titleSelectLabel"),
-        promodsToggleInput: document.getElementById("promodsToggle"),
-        dbusworldToggleInput: document.getElementById("dbusworldToggle"),
         watermarkToggleInput: document.getElementById("watermarkToggle"),
         qrColorToggleInput: document.getElementById("qrColorToggle"),
         backgroundSelect: document.getElementById("backgroundSelect"),
@@ -471,16 +469,6 @@ function addEventListeners(debouncedGenerate) {
             state.vtcLogoImage = null;
             debouncedGenerate();
         }
-    });
-
-    dom.promodsToggleInput.addEventListener('change', (e) => {
-        state.promodsToggle = e.target.checked;
-        debouncedGenerate();
-    });
-
-    dom.dbusworldToggleInput.addEventListener('change', (e) => {
-        state.dbusworldToggle = e.target.checked;
-        debouncedGenerate();
     });
 
     dom.watermarkToggleInput.addEventListener('change', (e) => {
