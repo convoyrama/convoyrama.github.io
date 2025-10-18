@@ -270,7 +270,7 @@ export async function generateImage(state) {
             // Draw verified registration year if available
             if (state.verifiedJoinDate) {
                 const year = new Date(state.verifiedJoinDate).getFullYear();
-                const yearY = truckersmpLogo_y + logoHeight + itemSpacing;
+                const yearY = truckersmpLogo_y + logoHeight + (itemSpacing * 2);
                 const yearX = qrCompany_x + (logoWidth / 2); // Center it with the logo
 
                 ctx.font = `bold ${config.textFontSize * 1.5 * scaleFactor}px 'VerdanaCustom-Bold'`;
