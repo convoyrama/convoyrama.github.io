@@ -30,54 +30,47 @@ async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
             height: size,
             type: "canvas",
             data: value,
+            qrOptions: {
+                errorCorrectionLevel: 'H' // High error correction for density
+            },
             dotsOptions: {
                 color: qrColor,
+                type: 'square' // Consistent dot style
             },
             backgroundOptions: {
                 color: "transparent",
             },
+            cornersSquareOptions: {
+                type: 'square' // Consistent corner style
+            },
+            cornersDotOptions: {
+                type: 'square' // Consistent corner dot style
+            }
         };
 
         if (logoPath) {
             options.image = logoPath;
             options.imageOptions = {
                 crossOrigin: "anonymous",
-                margin: 4,
+                margin: 4, // Reduced margin to make logo larger
             };
         }
 
-        console.log("DEBUG: generateQRWithLogo - Input: ", { value, size, qrColor, logoPath });
-        qrCode.getRawData("png").then((pngBlob) => {
-            console.log("DEBUG: generateQRWithLogo - PNG Blob size:", pngBlob.size, "type:", pngBlob.type);
-            const img = new Image();
-            img.src = URL.createObjectURL(pngBlob);
-            img.onload = () => {
-                console.log("DEBUG: generateQRWithLogo - Generated QR Image dimensions:", img.width, img.height, "natural:", img.naturalWidth, img.naturalHeight);
-                resolve(img);
-                URL.revokeObjectURL(img.src); // Clean up the object URL
-            };
-            img.onerror = (err) => reject(err);
-        }).catch(err => reject(err));
+        const qrCode = new window.QRCodeStyling(options);
+
+        // Directly return the canvas element
+        resolve(qrCode.getCanvas());
     });
 }
 
 
 export async function generateImage(state) {
     const { ctx, canvas } = dom;
-    console.log('Canvas width:', canvas.width, 'Canvas height:', canvas.height);
     const scaleFactor = canvas.width / config.baseWidth;
-    console.log('Config baseWidth:', config.baseWidth, 'Scale Factor:', scaleFactor);
     const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
     const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
 
     // --- Layout Constants ---
-    const itemSize = config.vtcLogoSize * scaleFactor;
-    const itemSpacing = config.qrSpacing * scaleFactor;
-    const rightMargin = 20 * scaleFactor;
-    const itemY = config.qrY * scaleFactor;
-
-    console.log("DEBUG: generateImage - itemSize:", itemSize, "qrColor:", qrColor);
-    console.log("DEBUG: generateImage - Social Network Active:", state.socialNetwork, state.socialLink);
 
     // Original positions (calculated as if right-aligned)
     const qrId_x_orig = canvas.width - rightMargin - itemSize;
