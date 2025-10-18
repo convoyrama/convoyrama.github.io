@@ -1,6 +1,7 @@
 import { dom } from './dom-elements.js';
 import { config, translations } from './config.js';
 import { normalizeLink, generateLicenseNumber, getUserLevel } from './utils.js';
+import { generateQR } from './qr-generator.js';
 
 // Configurar la ruta base de Twemoji para usar los assets locales
 if (typeof twemoji !== 'undefined') {
@@ -21,36 +22,6 @@ async function renderTwemoji(emoji, size) {
     const src = twemoji.parse(emoji, { folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)?.[1] || '';
     if (!src) return null;
     return await loadImage(src);
-}
-
-async function generateQR(ctx, value, x, y, size, color) {
-    return new Promise(resolve => {
-        try {
-            const qr = new QRCode({
-                content: value,
-                width: size,
-                height: size,
-                color: color,
-                background: "transparent",
-                ecl: "M",
-                padding: 0,
-            });
-            const svgString = qr.svg();
-            const img = new Image();
-            img.src = 'data:image/svg+xml;base64,' + btoa(svgString);
-            img.onload = () => {
-                ctx.drawImage(img, x, y, size, size);
-                resolve();
-            };
-            img.onerror = () => {
-                console.error(`Error loading QR SVG for ${value}`);
-                resolve();
-            };
-        } catch (error) {
-            console.error(`Error generating QR for ${value}:`, error);
-            resolve();
-        }
-    });
 }
 
 
