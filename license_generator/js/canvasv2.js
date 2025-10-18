@@ -219,7 +219,7 @@ export async function generateImage(state) {
 
     // --- Right-aligned items (VTC Logo, QRs, Flag) ---
     const flag_x = qrId_x;
-    const flag_y = newPhotoY + itemSize + itemSpacing;
+    const flag_y = newPhotoY + itemSize + itemSpacing - (5 * scaleFactor);
 
     // Draw VTC Logo (in its new position)
     if (state.vtcLogoImage) {
