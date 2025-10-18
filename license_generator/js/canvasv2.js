@@ -75,10 +75,10 @@ async function generateQRWithLogo(value, size, qrColor, logoPath = null) {
 
 export async function generateImage(state) {
     const { ctx, canvas } = dom;
-    console.log('Canvas width:', canvas.width, 'Canvas height:', canvas.height);
+    console.log(\'Canvas width:\', canvas.width, \'Canvas height:\', canvas.height);
     const scaleFactor = canvas.width / config.baseWidth;
-    console.log('Config baseWidth:', config.baseWidth, 'Scale Factor:', scaleFactor);
-    const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
+    console.log(\'Config baseWidth:\', config.baseWidth, \'Scale Factor:\', scaleFactor);
+    const textColor = state.textColorToggle ? \'rgb(20, 20, 20)\' : \'rgb(240, 240, 240)\';
     const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
 
     console.log("DEBUG: generateImage - itemSize:", itemSize, "qrColor:", qrColor);
@@ -179,16 +179,16 @@ export async function generateImage(state) {
         }
     }
 
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
+    ctx.textAlign = \'left\';
+    ctx.textBaseline = \'middle\';
 
     const t = translations[state.language] || translations.es;
     const selectedCountry = state.countries.find(c => c.code === state.country);
 
     // Prepare data for drawing
     const isOwner = state.isVtcOwner;
-    const countryName = selectedCountry ? (selectedCountry[`name_${state.language}`] || selectedCountry.name_en) : '';
-    const dateStr = state.currentDate ? `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}` : '';
+    const countryName = selectedCountry ? (selectedCountry[`name_${state.language}`] || selectedCountry.name_en) : \'\';
+    const dateStr = state.currentDate ? `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}` : \'\';
 
     // Define text lines in order
     const lines = [
@@ -204,11 +204,11 @@ export async function generateImage(state) {
     // Draw lines
     let yPos = (config.photoY + config.defaultPhotoSize + 40) * scaleFactor;
     const textValueX = newPhotoX + ((config.textX - config.labelX) * scaleFactor);
-    lines.forEach(line => {
-        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'VerdanaCustom-Bold'`;\
+    lines.forEach(line => {\
+        ctx.font = `bold ${config.textFontSize * scaleFactor}px \'VerdanaCustom-Bold\'`;\
         ctx.fillText(line.label, newPhotoX, yPos);\
 \
-        ctx.font = `bold ${config.textFontSize * scaleFactor}px 'VerdanaCustom-Bold'`;\
+        ctx.font = `bold ${config.textFontSize * scaleFactor}px \'VerdanaCustom-Bold\'`;\
         if (line.isName) {\
             const nameWithoutStar = line.value;\
             ctx.fillText(nameWithoutStar, textValueX, yPos);\
