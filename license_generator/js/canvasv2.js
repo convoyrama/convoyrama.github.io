@@ -1,4 +1,4 @@
-import { QRCodeStyling } from './lib/qr-code-styling.js';
+import QRCodeStyling from './lib/qr-code-styling.js';
 import { dom } from './dom-elements.js';
 import { config, translations } from './config.js';
 import { normalizeLink, generateLicenseNumber, getUserLevel } from './utils.js';
