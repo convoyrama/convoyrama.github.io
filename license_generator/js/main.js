@@ -135,19 +135,9 @@ function updateLanguage(lang) {
     dom.textColorToggleLabel.textContent = t.textColorToggleLabel;
     dom.downloadUserbarButton.textContent = t.downloadUserbarButton;
     dom.warningMessage.textContent = t.warning_refresh_page;
-
-    try {
-        if (dom.socialSelectLabel) dom.socialSelectLabel.textContent = t.socialSelectLabel;
-        else console.error('DOM element not found: socialSelectLabel');
-
-        if (dom.socialNoneOption) dom.socialNoneOption.textContent = t.social_none;
-        else console.error('DOM element not found: socialNoneOption');
-
-        if (dom.socialLinkInput) dom.socialLinkInput.placeholder = t.social_link_placeholder;
-        else console.error('DOM element not found: socialLinkInput');
-    } catch (e) {
-        console.error("Error applying social media translations:", e);
-    }
+    dom.socialSelectLabel.textContent = t.socialSelectLabel;
+    dom.socialNoneOption.textContent = t.social_none;
+    dom.socialLinkInput.placeholder = t.social_link_placeholder;
 
     // Translations for the new verification section
     const verificationIntro = document.querySelector('#verification-section .rank-legend-intro');
