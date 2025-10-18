@@ -382,4 +382,27 @@ export async function generateImage(state) {
     }
 }
 
- 
+    // Original positions (calculated as if right-aligned)
+    const qrId_x_orig = canvas.width - rightMargin - itemSize;
+    const qrUser_x_orig = qrId_x_orig - itemSize - itemSpacing;
+    const qrCompany_x_orig = qrUser_x_orig - itemSize - itemSpacing;
+    const vtcLogo_x_orig = qrCompany_x_orig - itemSize - itemSpacing;
+
+    const photoSize = config.defaultPhotoSize * scaleFactor;
+    const photoX_orig = vtcLogo_x_orig - photoSize - itemSpacing;
+
+            // Create a temporary link to trigger the download
+            const tempLink = document.createElement('a');
+            tempLink.href = URL.createObjectURL(newBlob);
+            tempLink.download = `driver_license_${state.name || 'unknown'}.png`;
+            
+            document.body.appendChild(tempLink); // Required for Firefox
+            tempLink.click();
+            document.body.removeChild(tempLink);
+            
+            URL.revokeObjectURL(tempLink.href); // Clean up
+        }, 'image/png');
+    } catch (error) {
+        console.error("Error performing download:", error);
+    }
+}
