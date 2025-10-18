@@ -13,8 +13,6 @@ const state = {
     nickname: '',
     truckersmpLink: '',
     companyLink: '',
-    promodsToggle: false,
-    dbusworldToggle: false,
     watermarkToggle: true,
     qrColorToggle: false,
     textColorToggle: false,
@@ -254,8 +252,6 @@ async function initialize() {
         nicknameGroup: document.getElementById("nicknameGroup"),
         titleSelect: document.getElementById("titleSelect"),
         titleSelectLabel: document.getElementById("titleSelectLabel"),
-        promodsToggleInput: document.getElementById("promodsToggle"),
-        dbusworldToggleInput: document.getElementById("dbusworldToggle"),
         watermarkToggleInput: document.getElementById("watermarkToggle"),
         qrColorToggleInput: document.getElementById("qrColorToggle"),
         backgroundSelect: document.getElementById("backgroundSelect"),
@@ -449,33 +445,6 @@ function addEventListeners(debouncedGenerate) {
     });
 
     dom.vtcLogoInput.addEventListener("change", (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                const img = new Image();
-                img.src = ev.target.result;
-                img.onload = () => {
-                    state.vtcLogoImage = img;
-                    debouncedGenerate();
-                };
-            };
-            reader.readAsDataURL(file);
-        } else {
-            state.vtcLogoImage = null;
-            debouncedGenerate();
-        }
-    });
-
-    dom.promodsToggleInput.addEventListener('change', (e) => {
-        state.promodsToggle = e.target.checked;
-        debouncedGenerate();
-    });
-
-    dom.dbusworldToggleInput.addEventListener('change', (e) => {
-        state.dbusworldToggle = e.target.checked;
-        debouncedGenerate();
-    });
 
     dom.watermarkToggleInput.addEventListener('change', (e) => {
         state.watermarkToggle = e.target.checked;
