@@ -67,13 +67,27 @@ export async function generateImage(state) {
     const rightMargin = 20 * scaleFactor;
     const itemY = config.qrY * scaleFactor;
 
-    const qrId_x = canvas.width - rightMargin - itemSize;
-    const qrUser_x = qrId_x - itemSize - itemSpacing;
-    const qrCompany_x = qrUser_x - itemSize - itemSpacing;
-    const vtcLogo_x = qrCompany_x - itemSize - itemSpacing;
+    // Original positions (calculated as if right-aligned)
+    const qrId_x_orig = canvas.width - rightMargin - itemSize;
+    const qrUser_x_orig = qrId_x_orig - itemSize - itemSpacing;
+    const qrCompany_x_orig = qrUser_x_orig - itemSize - itemSpacing;
+    const vtcLogo_x_orig = qrCompany_x_orig - itemSize - itemSpacing;
 
     const photoSize = config.defaultPhotoSize * scaleFactor;
-    const newPhotoX = vtcLogo_x - photoSize - itemSpacing;
+    const photoX_orig = vtcLogo_x_orig - photoSize - itemSpacing;
+
+    // Calculate block width and centering offset
+    const blockStartX = photoX_orig;
+    const blockEndX = qrId_x_orig + itemSize;
+    const blockWidth = blockEndX - blockStartX;
+    const centeringOffset = (canvas.width - blockWidth) / 2 - blockStartX;
+
+    // Final, centered positions
+    const newPhotoX = photoX_orig + centeringOffset;
+    const vtcLogo_x = vtcLogo_x_orig + centeringOffset;
+    const qrCompany_x = qrCompany_x_orig + centeringOffset;
+    const qrUser_x = qrUser_x_orig + centeringOffset;
+    const qrId_x = qrId_x_orig + centeringOffset;
     const newPhotoY = itemY;
 
     // Clear canvas
@@ -208,18 +222,18 @@ export async function generateImage(state) {
 
     // Draw VTC Logo (in its new position)
     if (state.vtcLogoImage) {
-        ctx.drawImage(state.vtcLogoImage, vtcLogo_x, itemY, itemSize, itemSize);
+        ctx.drawImage(state.vtcLogoImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
     }
 
     // Draw QR Codes (in their new positions)
     const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
     if (state.truckersmpLink) {
-        await generateQR(ctx, normalizedTruckersmpLink, qrUser_x, itemY, itemSize, qrColor);
+        await generateQR(ctx, normalizedTruckersmpLink, qrUser_x, newPhotoY, itemSize, qrColor);
     }
     if (state.companyLink) {
-        await generateQR(ctx, normalizedCompanyLink, qrCompany_x, itemY, itemSize, qrColor);
+        await generateQR(ctx, normalizedCompanyLink, qrCompany_x, newPhotoY, itemSize, qrColor);
     }
-    await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, itemY, itemSize, qrColor);
+    await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, newPhotoY, itemSize, qrColor);
 
     // Draw flag emoji (in its new position)
     if (selectedCountry) {
