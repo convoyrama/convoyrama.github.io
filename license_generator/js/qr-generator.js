@@ -9,12 +9,19 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
             data: value,
             dotsOptions: {
                 color: color,
+                type: 'square' // Consistent dot style
             },
             backgroundOptions: {
                 color: "transparent",
             },
             qrOptions: {
                 errorCorrectionLevel: "H",
+            },
+            cornersSquareOptions: {
+                type: 'square' // Consistent corner style
+            },
+            cornersDotOptions: {
+                type: 'square' // Consistent corner style
             },
         };
 
