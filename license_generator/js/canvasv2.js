@@ -208,7 +208,10 @@ export async function generateImage(state) {
             tiktok: 'tiktok-svgrepo-com.svg',
             twitch: 'twitch-svgrepo-com.svg',
             wechat: 'wechat-communication-interaction-connection-internet-svgrepo-com.svg',
-            youtube: 'youtube-color-svgrepo-com.svg'
+            youtube: 'youtube-color-svgrepo-com.svg',
+            trucksbook: 'trucksbook.png',
+            trucky: 'trucky.jpeg',
+            pickup: 'pickup.jpg'
         };
         const logoName = socialLogoMap[state.socialNetwork];
         if (logoName) {
