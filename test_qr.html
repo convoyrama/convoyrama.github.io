@@ -57,6 +57,11 @@
         async function generateTestQR(containerId, value, logoPath = null) {
             console.log(`Generating QR for ${containerId} with value: ${value}, logoPath: ${logoPath}`);
 
+            let finalLogo = logoPath; // Initialize finalLogo
+            if (logoPath && logoPath.endsWith('.svg')) {
+                finalLogo = await svgToBase64(logoPath);
+            }
+
             const options = {
                 width: QR_SIZE * 5, // Much larger for debugging
                 height: QR_SIZE * 5, // Much larger for debugging
