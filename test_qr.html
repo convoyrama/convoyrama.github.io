@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Styling Test</title>
+    <script type="text/javascript" src="./license_generator/js/lib/qr-code-styling.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .qr-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Code Styling Test</h1>
+    <div id="qr-convoyrama" class="qr-container"></div>
+    <div id="qr-social" class="qr-container"></div>
+    <div id="qr-user" class="qr-container"></div>
+    <div id="qr-company" class="qr-container"></div>
+
+    <script type="text/javascript">
+        const QR_SIZE = 100;
+        const QR_COLOR = "#141414"; // Dark color for QR dots
+
+        async function generateTestQR(containerId, value, logoPath = null) {
+            console.log(`Generating QR for ${containerId} with value: ${value}, logoPath: ${logoPath}`);
+
+            const options = {
+                width: QR_SIZE,
+                height: QR_SIZE,
+                type: "canvas",
+                data: value,
+                dotsOptions: {
+                    color: QR_COLOR,
+                    type: 'square'
+                },
+                backgroundOptions: {
+                    color: "transparent",
+                },
+                qrOptions: {
+                    errorCorrectionLevel: "H",
+                },
+                cornersSquareOptions: {
+                    type: 'square'
+                },
+                cornersDotOptions: {
+                    type: 'square'
+                },
+            };
+
+            if (logoPath) {
+                options.image = logoPath;
+                options.imageOptions = {
+                    crossOrigin: "anonymous",
+                    hideBackgroundDots: true,
+                    imageSize: 0.25, // Logo occupies 25% of QR code area
+                    margin: 15, // Increased margin for clear space around the logo
+                };
+            }
+
+            const qrCode = new QRCodeStyling(options);
+
+            const container = document.getElementById(containerId);
+            if (container) {
+                qrCode.append(container);
+                console.log(`QR code appended to ${containerId}`);
+            } else {
+                console.error(`Container ${containerId} not found.`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Convoyrama QR (with logo)
+            generateTestQR(
+                "qr-convoyrama",
+                "https://convoyrama.github.io/id.html",
+                "./license_generator/socials/crlogo.svg"
+            );
+
+            // Social QR (with logo)
+            generateTestQR(
+                "qr-social",
+                "https://www.youtube.com/", // Example social link
+                "./license_generator/socials/youtube-color-svgrepo-com.svg"
+            );
+
+            // User QR (no logo)
+            generateTestQR(
+                "qr-user",
+                "https://truckersmp.com/user/12345", // Example user link
+                null
+            );
+
+            // Company QR (with logo - simulating vtcLogoImage.src)
+            generateTestQR(
+                "qr-company",
+                "https://truckersmp.com/vtc/67890", // Example company link
+                "./license_generator/images/cr.png" // Using an existing image as a placeholder for VTC logo
+            );
+        });
+    </script>
+</body>
+</html>
