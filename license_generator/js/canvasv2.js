@@ -263,7 +263,7 @@ export async function generateImage(state) {
 
     // --- Column 2: Left (User/VTC QR, TMP Logo, Year) ---
     if (state.truckersmpLink) {
-        await generateQR(ctx, normalizedTruckersmpLink, newQrUser_x, newPhotoY, qrCodeRenderSize, qrColor);
+        await generateQR(ctx, normalizedTruckersmpLink, newQrUser_x, newPhotoY, qrCodeRenderSize, qrColor, "./license_generator/socials/tmp.png");
     }
     if (state.companyLink) {
         const vtcLogoPath = state.vtcLogoImage ? state.vtcLogoImage.src : null;
