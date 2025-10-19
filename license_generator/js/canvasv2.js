@@ -26,11 +26,8 @@ async function renderTwemoji(emoji, size) {
 
 
 export async function generateImage(state) {
-    console.log("generateImage: Starting");
     const { ctx, canvas } = dom;
-    console.log('Canvas width:', canvas.width, 'Canvas height:', canvas.height);
     const scaleFactor = canvas.width / config.baseWidth;
-    console.log('Config baseWidth:', config.baseWidth, 'Scale Factor:', scaleFactor);
     const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
     const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
 
@@ -217,9 +214,7 @@ export async function generateImage(state) {
         if (logoName) {
             try {
                 const logoPath = `./license_generator/socials/${logoName}`;
-                console.log("generateImage: Generating Social QR for", state.socialNetwork, "with link", state.socialLink);
                 await generateQR(ctx, state.socialLink, newVtcLogo_x, newPhotoY, qrCodeRenderSize, qrColor, logoPath);
-                console.log("generateImage: Social QR generated.");
             } catch (e) {
                 console.error("Failed to generate social QR code:", e);
                 // Fallback to drawing VTC logo if social QR fails
@@ -238,9 +233,7 @@ export async function generateImage(state) {
 
     // --- Column 1: Rightmost (Convoyrama QR, Flag, VTC Watermark) ---
     const flagColumnSpacing = qrCodeSpacing / 2; // Use a smaller spacing for this column
-    console.log("generateImage: Generating Convoyrama QR.");
     await generateQR(ctx, "https://convoyrama.github.io/id.html", newQrId_x, newPhotoY, qrCodeRenderSize, qrColor, "./license_generator/socials/crlogo.svg");
-    console.log("generateImage: Convoyrama QR generated.");
 
     if (selectedCountry) {
         try {
@@ -262,15 +255,11 @@ export async function generateImage(state) {
 
     // --- Column 2: Left (User/VTC QR, TMP Logo, Year) ---
     if (state.truckersmpLink) {
-        console.log("generateImage: Generating User QR.");
         await generateQR(ctx, normalizedTruckersmpLink, newQrUser_x, newPhotoY, qrCodeRenderSize, qrColor);
-        console.log("generateImage: User QR generated.");
     }
     if (state.companyLink) {
         const vtcLogoPath = state.vtcLogoImage ? state.vtcLogoImage.src : null;
-        console.log("generateImage: Generating Company QR.");
         await generateQR(ctx, normalizedCompanyLink, newQrCompany_x, newPhotoY, qrCodeRenderSize, qrColor, vtcLogoPath);
-        console.log("generateImage: Company QR generated.");
     }
 
     if (state.watermarkToggle) { // Changed condition
