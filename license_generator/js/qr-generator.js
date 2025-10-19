@@ -36,20 +36,9 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
 
         const qrCode = new window.QRCodeStyling(options);
 
-        qrCode.getRawData("png").then((pngBlob) => {
-            const img = new Image();
-            img.src = URL.createObjectURL(pngBlob);
-            img.onload = () => {
-                img.width = size;
-                img.height = size;
-                ctx.drawImage(img, x, y, size, size);
-                URL.revokeObjectURL(img.src); // Clean up the object URL
-                resolve();
-            };
-            img.onerror = (err) => {
-                console.error(`Error loading QR PNG for ${value}:`, err);
-                reject(err);
-            };
+        qrCode.getCanvas().then((qrCanvas) => {
+            ctx.drawImage(qrCanvas, x, y, size, size);
+            resolve();
         }).catch(err => {
             console.error(`Error generating QR for ${value}:`, err);
             reject(err);
