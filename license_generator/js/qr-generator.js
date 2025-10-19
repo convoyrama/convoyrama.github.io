@@ -30,9 +30,9 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
             options.image = logoPath; // Pass the string URL directly
             options.imageOptions = {
                 crossOrigin: "anonymous",
-                hideBackgroundDots: false,
-                imageSize: 0.4, // Default image size
-                margin: 10, // Small margin for the logo
+                hideBackgroundDots: true, // Hide QR dots behind the logo
+                imageSize: 0.25, // Logo occupies 25% of QR code area
+                margin: 15, // Increased margin for clear space around the logo
             };
         }
 
@@ -51,6 +51,9 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
                 // Get the canvas element created by QRCodeStyling within the tempDiv
                 const qrCanvas = tempDiv.querySelector('canvas');
                 if (qrCanvas) {
+                    // Explicitly set the width and height of the generated canvas
+                    qrCanvas.width = size;
+                    qrCanvas.height = size;
                     ctx.drawImage(qrCanvas, x, y, size, size);
                 }
                 document.body.removeChild(tempDiv); // Clean up the temporary div
