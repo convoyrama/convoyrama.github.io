@@ -1,6 +1,7 @@
 import { config } from './config.js';
 
 async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
+    console.log("generateQR: Starting for value", value, "at (x,y)", x, y, "size", size, "color", color, "logoPath", logoPath);
     return new Promise((resolve, reject) => {
         const options = {
             width: size * 2, // Generate a larger image
@@ -32,16 +33,18 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
                 margin: size * 0.1, // 10% margin around the logo
                 imageSize: 0.8, // Make the logo larger
             };
+            console.log("generateQR: Logo path provided", logoPath, "imageOptions", options.imageOptions);
         }
 
         const qrCode = new window.QRCodeStyling(options);
 
         // Create a temporary canvas element
         const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = size;
-        tempCanvas.height = size;
+        tempCanvas.width = size * 2; // Match the generation size
+        tempCanvas.height = size * 2; // Match the generation size
         // Append to a hidden div or directly to body, then remove after rendering
         document.body.appendChild(tempCanvas);
+        console.log("generateQR: Appending to temporary canvas for value", value, "tempCanvas size", tempCanvas.width, tempCanvas.height);
 
         qrCode.append(tempCanvas);
 
@@ -49,10 +52,11 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
         // There's no direct callback for append, so we might need a small delay or a mutation observer
         // For simplicity, let's assume it renders quickly. A more robust solution might involve polling or a custom event.
         setTimeout(() => {
+            console.log("generateQR: Drawing temporary canvas to main context for value", value, "at (x,y)", x, y, "size", size);
             ctx.drawImage(tempCanvas, x, y, size, size);
             document.body.removeChild(tempCanvas); // Clean up
             resolve();
-        }, 50); // Small delay to allow rendering
+        }, 500); // Increased delay to allow rendering
 
     });
 }
