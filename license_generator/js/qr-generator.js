@@ -31,7 +31,7 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
             options.imageOptions = {
                 crossOrigin: "anonymous",
                 hideBackgroundDots: false, // Ensure logo is not hidden
-                imageSize: 0.4, // Default size, can be adjusted
+                imageSize: 1, // Test with maximum image size
                 margin: 0, // Default margin, can be adjusted
             };
             console.log("generateQR: Logo path provided", logoPath, "imageOptions", options.imageOptions);
@@ -39,26 +39,24 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
 
         const qrCode = new window.QRCodeStyling(options);
 
-        // Create a temporary canvas element
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = size * 2; // Match the generation size
-        tempCanvas.height = size * 2; // Match the generation size
-        // Append to a hidden div or directly to body, then remove after rendering
-        document.body.appendChild(tempCanvas);
-        console.log("generateQR: Appending to temporary canvas for value", value, "tempCanvas size", tempCanvas.width, tempCanvas.height);
-
-        qrCode.append(tempCanvas);
-
-        // Wait for the QR code to be rendered on the temporary canvas
-        // There's no direct callback for append, so we might need a small delay or a mutation observer
-        // For simplicity, let's assume it renders quickly. A more robust solution might involve polling or a custom event.
-        setTimeout(() => {
-            console.log("generateQR: Drawing temporary canvas to main context for value", value, "at (x,y)", x, y, "size", size);
-            ctx.drawImage(tempCanvas, x, y, size, size);
-            document.body.removeChild(tempCanvas); // Clean up
-            resolve();
-        }, 500); // Increased delay to allow rendering
-
+        qrCode.getRawData("png").then((pngBlob) => {
+            const img = new Image();
+            img.src = URL.createObjectURL(pngBlob);
+            img.onload = () => {
+                img.width = size; // Explicitly setting width and height
+                img.height = size;
+                ctx.drawImage(img, x, y, size, size);
+                URL.revokeObjectURL(img.src); // Clean up the object URL
+                resolve();
+            };
+            img.onerror = (err) => {
+                console.error(`Error loading QR PNG for ${value}:`, err);
+                reject(err);
+            };
+        }).catch(err => {
+            console.error(`Error generating QR for ${value}:`, err);
+            reject(err);
+        });
     });
 }
 
