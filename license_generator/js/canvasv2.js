@@ -233,7 +233,6 @@ export async function generateImage(state) {
     }
 
     // --- Column 1: Rightmost (Convoyrama QR, Flag, VTC Watermark) ---
-    const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
     const flagColumnSpacing = itemSpacing / 2; // Use a smaller spacing for this column
     await generateQR(ctx, "https://convoyrama.github.io/id.html", newQrId_x, newPhotoY, qrCodeRenderSize, qrColor, "./license_generator/socials/crlogo.svg");
 
