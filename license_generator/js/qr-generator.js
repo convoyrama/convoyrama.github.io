@@ -1,5 +1,5 @@
 import { config } from './config.js';
-import { loadImage } from './canvasv2.js';
+// loadImage is no longer needed here
 
 async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
     try {
@@ -27,36 +27,33 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
         };
 
         if (logoPath) {
-            try {
-                const loadedLogo = await loadImage(logoPath);
-                options.image = loadedLogo;
-                options.imageOptions = {
-                    crossOrigin: "anonymous",
-                    hideBackgroundDots: false,
-                    imageSize: 0.4, // Default image size
-                    margin: 5, // Small margin for the logo
-                };
-            } catch (error) {
-                console.error("Error loading logo for QR code:", error);
-                // Continue without logo if loading fails
-            }
+            options.image = logoPath; // Pass the string URL directly
+            options.imageOptions = {
+                crossOrigin: "anonymous",
+                hideBackgroundDots: false,
+                imageSize: 0.4, // Default image size
+                margin: 10, // Small margin for the logo
+            };
         }
 
         const qrCode = new window.QRCodeStyling(options);
 
-        // Create a temporary canvas element to render the QR code
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = size;
-        tempCanvas.height = size;
+        // Create a temporary div element to render the QR code
+        const tempDiv = document.createElement('div');
+        // Append to a hidden div or directly to body, then remove after rendering
+        document.body.appendChild(tempDiv);
 
-        // Append the QR code to the temporary canvas
-        qrCode.append(tempCanvas);
+        qrCode.append(tempDiv);
 
         // Return a Promise that resolves when the QR code is drawn
         return new Promise(resolve => {
             setTimeout(() => {
-                ctx.drawImage(tempCanvas, x, y, size, size);
-                document.body.removeChild(tempCanvas); // Clean up the temporary canvas
+                // Get the canvas element created by QRCodeStyling within the tempDiv
+                const qrCanvas = tempDiv.querySelector('canvas');
+                if (qrCanvas) {
+                    ctx.drawImage(qrCanvas, x, y, size, size);
+                }
+                document.body.removeChild(tempDiv); // Clean up the temporary div
                 resolve();
             }, 100); // Increased delay to 100ms
         });
