@@ -31,6 +31,7 @@ export async function generateImage(state) {
     const scaleFactor = canvas.width / config.baseWidth;
     console.log('Config baseWidth:', config.baseWidth, 'Scale Factor:', scaleFactor);
     const textColor = state.textColorToggle ? 'rgb(20, 20, 20)' : 'rgb(240, 240, 240)';
+    const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
 
     // --- Layout Constants ---
     const qrCodeRenderSize = 100; // Fixed size for QR codes

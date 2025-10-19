@@ -22,7 +22,8 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
             options.image = logoPath;
             options.imageOptions = {
                 crossOrigin: "anonymous",
-                margin: 4,
+                margin: size * 0.1, // 10% margin around the logo
+                imageSize: 0.8, // Make the logo larger
             };
         }
 
