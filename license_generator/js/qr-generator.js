@@ -2,7 +2,7 @@ import { config } from './config.js';
 import { loadImage } from './canvasv2.js';
 
 async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
-    return new Promise((resolve, reject) => {
+    try {
         const options = {
             width: size,
             height: size,
@@ -52,16 +52,20 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
         // Append the QR code to the temporary canvas
         qrCode.append(tempCanvas);
 
-        // Wait for the QR code to be rendered on the temporary canvas
-        // Since append is asynchronous and doesn't return a Promise, we use a small delay.
-        // A more robust solution would involve a MutationObserver or polling.
-        setTimeout(() => {
-            ctx.drawImage(tempCanvas, x, y, size, size);
-            document.body.removeChild(tempCanvas); // Clean up the temporary canvas
-            resolve();
-        }, 100); // Increased delay to 100ms
+        // Return a Promise that resolves when the QR code is drawn
+        return new Promise(resolve => {
+            setTimeout(() => {
+                ctx.drawImage(tempCanvas, x, y, size, size);
+                document.body.removeChild(tempCanvas); // Clean up the temporary canvas
+                resolve();
+            }, 100); // Increased delay to 100ms
+        });
 
-    });
+    } catch (error) {
+        console.error(`Error generating QR for ${value}:`, error);
+        // Reject the promise if there's an error
+        return Promise.reject(error);
+    }
 }
 
 export { generateQR };
