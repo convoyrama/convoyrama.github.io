@@ -30,8 +30,9 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
             options.image = logoPath;
             options.imageOptions = {
                 crossOrigin: "anonymous",
-                margin: size * 0.1, // 10% margin around the logo
-                imageSize: 0.8, // Make the logo larger
+                hideBackgroundDots: false, // Ensure logo is not hidden
+                imageSize: 0.4, // Default size, can be adjusted
+                margin: 0, // Default margin, can be adjusted
             };
             console.log("generateQR: Logo path provided", logoPath, "imageOptions", options.imageOptions);
         }
