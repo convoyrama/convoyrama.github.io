@@ -245,12 +245,20 @@ export async function generateImage(state) {
 
             // Draw VTC Logo as Watermark if enabled (now part of Column 1)
             if (state.watermarkToggle && state.vtcLogoImage) {
-                const watermark_y = flag_y + qrCodeRenderSize + flagColumnSpacing;
+                const watermark_y = newPhotoY + qrCodeRenderSize + flagColumnSpacing + qrCodeRenderSize + flagColumnSpacing;
                 ctx.globalAlpha = 0.1;
                 ctx.drawImage(state.vtcLogoImage, newQrId_x, watermark_y, qrCodeRenderSize, qrCodeRenderSize);
                 ctx.globalAlpha = 1.0;
             }
         } catch (e) { console.error('failed to render flag', e); }
+    }
+
+    // Draw VTC Logo as Watermark if enabled (independent of country selection)
+    if (!selectedCountry && state.watermarkToggle && state.vtcLogoImage) {
+        const watermark_y = newPhotoY + qrCodeRenderSize + flagColumnSpacing + qrCodeRenderSize + flagColumnSpacing;
+        ctx.globalAlpha = 0.1;
+        ctx.drawImage(state.vtcLogoImage, newQrId_x, watermark_y, qrCodeRenderSize, qrCodeRenderSize);
+        ctx.globalAlpha = 1.0;
     }
 
     // --- Column 2: Left (User/VTC QR, TMP Logo, Year) ---
