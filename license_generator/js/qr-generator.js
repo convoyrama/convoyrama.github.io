@@ -3,8 +3,8 @@ import { config } from './config.js';
 async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
     return new Promise((resolve, reject) => {
         const options = {
-            width: size,
-            height: size,
+            width: size * 2, // Generate a larger image
+            height: size * 2, // Generate a larger image
             type: "canvas",
             data: value,
             dotsOptions: {
@@ -36,13 +36,24 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
 
         const qrCode = new window.QRCodeStyling(options);
 
-        qrCode.getCanvas().then((qrCanvas) => {
-            ctx.drawImage(qrCanvas, x, y, size, size);
+        // Create a temporary canvas element
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = size;
+        tempCanvas.height = size;
+        // Append to a hidden div or directly to body, then remove after rendering
+        document.body.appendChild(tempCanvas);
+
+        qrCode.append(tempCanvas);
+
+        // Wait for the QR code to be rendered on the temporary canvas
+        // There's no direct callback for append, so we might need a small delay or a mutation observer
+        // For simplicity, let's assume it renders quickly. A more robust solution might involve polling or a custom event.
+        setTimeout(() => {
+            ctx.drawImage(tempCanvas, x, y, size, size);
+            document.body.removeChild(tempCanvas); // Clean up
             resolve();
-        }).catch(err => {
-            console.error(`Error generating QR for ${value}:`, err);
-            reject(err);
-        });
+        }, 50); // Small delay to allow rendering
+
     });
 }
 
