@@ -1,11 +1,10 @@
 import { config } from './config.js';
-// loadImage is no longer needed here
 
 async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
-    try {
+    return new Promise((resolve, reject) => {
         const options = {
-            width: size,
-            height: size,
+            width: size * 5, // Use a larger internal rendering size
+            height: size * 5, // Use a larger internal rendering size
             type: "canvas",
             data: value,
             dotsOptions: {
@@ -27,45 +26,32 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
         };
 
         if (logoPath) {
-            options.image = logoPath; // Pass the string URL directly
-            options.imageOptions = {
-                crossOrigin: "anonymous",
-                hideBackgroundDots: true, // Hide QR dots behind the logo
-                imageSize: 0.25, // Logo occupies 25% of QR code area
-                margin: 15, // Increased margin for clear space around the logo
-            };
+            options.image = logoPath;
+            // Rely on QRCodeStyling's default imageOptions when width/height are large
+            // This seems to be the working approach from test_qr.html Formula 1
         }
 
         const qrCode = new window.QRCodeStyling(options);
 
-        // Create a temporary div element to render the QR code
-        const tempDiv = document.createElement('div');
-        // Append to a hidden div or directly to body, then remove after rendering
-        document.body.appendChild(tempDiv);
-
-        qrCode.append(tempDiv);
-
-        // Return a Promise that resolves when the QR code is drawn
-        return new Promise(resolve => {
-            setTimeout(() => {
-                // Get the canvas element created by QRCodeStyling within the tempDiv
-                const qrCanvas = tempDiv.querySelector('canvas');
-                if (qrCanvas) {
-                    // Explicitly set the width and height of the generated canvas
-                    qrCanvas.width = size;
-                    qrCanvas.height = size;
-                    ctx.drawImage(qrCanvas, x, y, size, size);
-                }
-                document.body.removeChild(tempDiv); // Clean up the temporary div
+        qrCode.getRawData("png").then((pngBlob) => {
+            const img = new Image();
+            img.src = URL.createObjectURL(pngBlob);
+            img.onload = () => {
+                img.width = size; // Explicitly setting width and height
+                img.height = size;
+                ctx.drawImage(img, x, y, size, size);
+                URL.revokeObjectURL(img.src); // Clean up the object URL
                 resolve();
-            }, 100); // Increased delay to 100ms
+            };
+            img.onerror = (err) => {
+                console.error(`Error loading QR PNG for ${value}:`, err);
+                reject(err);
+            };
+        }).catch(err => {
+            console.error(`Error generating QR for ${value}:`, err);
+            reject(err);
         });
-
-    } catch (error) {
-        console.error(`Error generating QR for ${value}:`, error);
-        // Reject the promise if there's an error
-        return Promise.reject(error);
-    }
+    });
 }
 
 export { generateQR };
