@@ -8,7 +8,7 @@ if (typeof twemoji !== 'undefined') {
     twemoji.base = './twemoji-14.0.2/assets/';
 }
 
-async function loadImage(src) {
+export async function loadImage(src) {
     return new Promise((resolve, reject) => {
         const img = new Image();
         img.crossOrigin = "anonymous";
