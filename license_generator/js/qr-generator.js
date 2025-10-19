@@ -33,6 +33,8 @@ async function generateQR(ctx, value, x, y, size, color, logoPath = null) {
             const img = new Image();
             img.src = URL.createObjectURL(pngBlob);
             img.onload = () => {
+                img.width = size;
+                img.height = size;
                 ctx.drawImage(img, x, y, size, size);
                 URL.revokeObjectURL(img.src); // Clean up the object URL
                 resolve();
