@@ -133,8 +133,8 @@ function updateLanguage(lang) {
     dom.textColorToggleLabel.textContent = t.textColorToggleLabel;
     dom.downloadUserbarButton.textContent = t.downloadUserbarButton;
     dom.warningMessage.textContent = t.warning_refresh_page;
-    dom.socialSelectLabel.textContent = t.socialSelectLabel;
-    dom.socialLinkLabel.textContent = t.socialLinkLabel;
+    if (dom.socialSelectLabel) dom.socialSelectLabel.textContent = t.socialSelectLabel;
+    if (dom.socialLinkLabel) dom.socialLinkLabel.textContent = t.socialLinkLabel;
 
     // Translations for the new verification section
     const verificationIntro = document.querySelector('#verification-section .rank-legend-intro');
