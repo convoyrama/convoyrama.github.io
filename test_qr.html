@@ -16,6 +16,10 @@
             margin: 0;
             background-color: #f4f4f4;
         }
+        .test-row {
+            display: flex;
+            margin-bottom: 20px;
+        }
         .qr-container {
             border: 1px solid #ccc;
             padding: 10px;
@@ -30,11 +34,35 @@
     </style>
 </head>
 <body>
-    <h1>QR Code Styling Test</h1>
-    <div id="qr-convoyrama" class="qr-container"></div>
-    <div id="qr-social" class="qr-container"></div>
-    <div id="qr-user" class="qr-container"></div>
-    <div id="qr-company" class="qr-container"></div>
+    <h1>QR Code Styling Test - Multiple Formulas</h1>
+
+    <h2>Formula 1: Large QRCodeStyling instance, no imageOptions (Debugging)</h2>
+    <div class="test-row">
+        <div id="qr1-convoyrama" class="qr-container"></div>
+        <div id="qr1-social" class="qr-container"></div>
+        <div id="qr1-user" class="qr-container"></div>
+    </div>
+
+    <h2>Formula 2: Direct QR_SIZE, imageSize 0.4, margin 10, hideBackgroundDots true</h2>
+    <div class="test-row">
+        <div id="qr2-convoyrama" class="qr-container"></div>
+        <div id="qr2-social" class="qr-container"></div>
+        <div id="qr2-user" class="qr-container"></div>
+    </div>
+
+    <h2>Formula 3: Direct QR_SIZE, imageSize 0.6, margin 5, hideBackgroundDots true</h2>
+    <div class="test-row">
+        <div id="qr3-convoyrama" class="qr-container"></div>
+        <div id="qr3-social" class="qr-container"></div>
+        <div id="qr3-company" class="qr-container"></div>
+    </div>
+
+    <h2>Formula 4: Direct QR_SIZE, imageSize 0.4, margin 10, hideBackgroundDots false</h2>
+    <div class="test-row">
+        <div id="qr4-convoyrama" class="qr-container"></div>
+        <div id="qr4-social" class="qr-container"></div>
+        <div id="qr4-company" class="qr-container"></div>
+    </div>
 
     <script type="text/javascript">
         const QR_SIZE = 100;
@@ -54,17 +82,17 @@
             }
         }
 
-        async function generateTestQR(containerId, value, logoPath = null) {
-            console.log(`Generating QR for ${containerId} with value: ${value}, logoPath: ${logoPath}`);
+        async function generateTestQR(containerId, value, logoPath = null, formulaOptions = {}) {
+            console.log(`Generating QR for ${containerId} with value: ${value}, logoPath: ${logoPath}, formula:`, formulaOptions);
 
-            let finalLogo = logoPath; // Initialize finalLogo
+            let finalLogo = logoPath;
             if (logoPath && logoPath.endsWith('.svg')) {
                 finalLogo = await svgToBase64(logoPath);
             }
 
             const options = {
-                width: QR_SIZE * 5, // Much larger for debugging
-                height: QR_SIZE * 5, // Much larger for debugging
+                width: QR_SIZE,
+                height: QR_SIZE,
                 type: "canvas",
                 data: value,
                 dotsOptions: {
@@ -83,11 +111,15 @@
                 cornersDotOptions: {
                     type: 'square'
                 },
+                ...formulaOptions.baseOptions, // Apply base options from formula
             };
 
             if (finalLogo) {
                 options.image = finalLogo;
-                // Removed imageOptions for debugging
+                options.imageOptions = {
+                    crossOrigin: "anonymous",
+                    ...formulaOptions.imageOptions, // Apply image options from formula
+                };
             }
 
             const qrCode = new QRCodeStyling(options);
@@ -96,39 +128,65 @@
             if (container) {
                 qrCode.append(container);
                 console.log(`QR code appended to ${containerId}`);
-            }
-            else {
+            } else {
                 console.error(`Container ${containerId} not found.`);
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Convoyrama QR (with logo)
-            generateTestQR(
-                "qr-convoyrama",
-                "https://convoyrama.github.io/id.html",
-                "./license_generator/socials/crlogo.svg"
-            );
+            // --- Formula Definitions ---
+            const formulas = {
+                formula1: { // Large QRCodeStyling instance, no imageOptions (Debugging)
+                    baseOptions: { width: QR_SIZE * 5, height: QR_SIZE * 5 },
+                    imageOptions: {},
+                },
+                formula2: { // Direct QR_SIZE, imageSize 0.4, margin 10, hideBackgroundDots true
+                    baseOptions: { width: QR_SIZE, height: QR_SIZE },
+                    imageOptions: {
+                        hideBackgroundDots: true,
+                        imageSize: 0.4,
+                        margin: 10,
+                    },
+                },
+                formula3: { // Direct QR_SIZE, imageSize 0.6, margin 5, hideBackgroundDots true
+                    baseOptions: { width: QR_SIZE, height: QR_SIZE },
+                    imageOptions: {
+                        hideBackgroundDots: true,
+                        imageSize: 0.6,
+                        margin: 5,
+                    },
+                },
+                formula4: { // Direct QR_SIZE, imageSize 0.4, margin 10, hideBackgroundDots false
+                    baseOptions: { width: QR_SIZE, height: QR_SIZE },
+                    imageOptions: {
+                        hideBackgroundDots: false,
+                        imageSize: 0.4,
+                        margin: 10,
+                    },
+                },
+            };
 
-            // Social QR (with logo)
-            generateTestQR(
-                "qr-social",
-                "https://www.youtube.com/", // Example social link
-                "./license_generator/socials/youtube-color-svgrepo-com.svg"
-            );
+            // --- Test Cases ---
 
-            // User QR (no logo)
-            generateTestQR(
-                "qr-user",
-                "https://truckersmp.com/user/12345", // Example user link
-                null
-            );
+            // Formula 1 Tests
+            generateTestQR("qr1-convoyrama", "https://convoyrama.github.io/id.html", "./license_generator/socials/crlogo.svg", formulas.formula1);
+            generateTestQR("qr1-social", "https://www.youtube.com/", "./license_generator/socials/youtube-color-svgrepo-com.svg", formulas.formula1);
+            generateTestQR("qr1-user", "https://truckersmp.com/user/12345", null, formulas.formula1);
 
-            // Company QR (with logo - simulating vtcLogoImage.src)
-            generateTestQR(
-                "qr-company",
-                "./license_generator/images/cr.png" // Using an existing image as a placeholder for VTC logo
-            );
+            // Formula 2 Tests
+            generateTestQR("qr2-convoyrama", "https://convoyrama.github.io/id.html", "./license_generator/socials/crlogo.svg", formulas.formula2);
+            generateTestQR("qr2-social", "https://www.youtube.com/", "./license_generator/socials/youtube-color-svgrepo-com.svg", formulas.formula2);
+            generateTestQR("qr2-user", "https://truckersmp.com/user/12345", null, formulas.formula2);
+
+            // Formula 3 Tests
+            generateTestQR("qr3-convoyrama", "https://convoyrama.github.io/id.html", "./license_generator/socials/crlogo.svg", formulas.formula3);
+            generateTestQR("qr3-social", "https://www.youtube.com/", "./license_generator/socials/youtube-color-svgrepo-com.svg", formulas.formula3);
+            generateTestQR("qr3-company", "https://truckersmp.com/vtc/67890", "./license_generator/images/cr.png", formulas.formula3);
+
+            // Formula 4 Tests
+            generateTestQR("qr4-convoyrama", "https://convoyrama.github.io/id.html", "./license_generator/socials/crlogo.svg", formulas.formula4);
+            generateTestQR("qr4-social", "https://www.youtube.com/", "./license_generator/socials/youtube-color-svgrepo-com.svg", formulas.formula4);
+            generateTestQR("qr4-company", "https://truckersmp.com/vtc/67890", "./license_generator/images/cr.png", formulas.formula4);
         });
     </script>
 </body>
