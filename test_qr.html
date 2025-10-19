@@ -40,6 +40,20 @@
         const QR_SIZE = 100;
         const QR_COLOR = "#141414"; // Dark color for QR dots
 
+        async function svgToBase64(svgPath) {
+            try {
+                const response = await fetch(svgPath);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch SVG: ${response.statusText}`);
+                }
+                const svgText = await response.text();
+                return `data:image/svg+xml;base64,${btoa(svgText)}`;
+            } catch (error) {
+                console.error(`Error converting SVG to Base64 for ${svgPath}:`, error);
+                return null;
+            }
+        }
+
         async function generateTestQR(containerId, value, logoPath = null) {
             console.log(`Generating QR for ${containerId} with value: ${value}, logoPath: ${logoPath}`);
 
@@ -66,8 +80,13 @@
                 },
             };
 
-            if (logoPath) {
-                options.image = logoPath;
+            let finalLogo = logoPath;
+            if (logoPath && logoPath.endsWith('.svg')) {
+                finalLogo = await svgToBase64(logoPath);
+            }
+
+            if (finalLogo) {
+                options.image = finalLogo;
                 options.imageOptions = {
                     crossOrigin: "anonymous",
                     hideBackgroundDots: true,
@@ -82,7 +101,8 @@
             if (container) {
                 qrCode.append(container);
                 console.log(`QR code appended to ${containerId}`);
-            } else {
+            }
+            else {
                 console.error(`Container ${containerId} not found.`);
             }
         }
@@ -112,7 +132,6 @@
             // Company QR (with logo - simulating vtcLogoImage.src)
             generateTestQR(
                 "qr-company",
-                "https://truckersmp.com/vtc/67890", // Example company link
                 "./license_generator/images/cr.png" // Using an existing image as a placeholder for VTC logo
             );
         });
