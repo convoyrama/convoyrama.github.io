@@ -58,8 +58,8 @@
             console.log(`Generating QR for ${containerId} with value: ${value}, logoPath: ${logoPath}`);
 
             const options = {
-                width: QR_SIZE,
-                height: QR_SIZE,
+                width: QR_SIZE * 5, // Much larger for debugging
+                height: QR_SIZE * 5, // Much larger for debugging
                 type: "canvas",
                 data: value,
                 dotsOptions: {
@@ -80,19 +80,9 @@
                 },
             };
 
-            let finalLogo = logoPath;
-            if (logoPath && logoPath.endsWith('.svg')) {
-                finalLogo = await svgToBase64(logoPath);
-            }
-
             if (finalLogo) {
                 options.image = finalLogo;
-                options.imageOptions = {
-                    crossOrigin: "anonymous",
-                    hideBackgroundDots: true,
-                    imageSize: 0.25, // Logo occupies 25% of QR code area
-                    margin: 15, // Increased margin for clear space around the logo
-                };
+                // Removed imageOptions for debugging
             }
 
             const qrCode = new QRCodeStyling(options);
