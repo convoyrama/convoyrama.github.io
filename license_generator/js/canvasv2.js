@@ -34,32 +34,38 @@ export async function generateImage(state) {
 
     // --- Layout Constants ---
     const qrCodeRenderSize = 100; // Fixed size for QR codes
+    const qrCodeSpacing = 10; // Fixed spacing between QR codes
+    const qrCodeRightMargin = 20; // Fixed right margin for QR codes
+
+    // Calculate QR code positions from the right edge, using fixed sizes and spacing
+    const qrId_x = canvas.width - qrCodeRightMargin - qrCodeRenderSize;
+    const qrUser_x = qrId_x - qrCodeSpacing - qrCodeRenderSize;
+    const qrCompany_x = qrUser_x - qrCodeSpacing - qrCodeRenderSize;
+
+    // Other elements still scale
     const itemSize = config.vtcLogoSize * scaleFactor;
     const itemSpacing = config.qrSpacing * scaleFactor;
-    const rightMargin = 20 * scaleFactor;
+    const photoSize = config.defaultPhotoSize * scaleFactor;
     const itemY = config.qrY * scaleFactor;
 
-    // Original positions (calculated as if right-aligned)
-    const qrId_x_orig = canvas.width - rightMargin - qrCodeRenderSize;
-    const qrUser_x_orig = qrId_x_orig - qrCodeRenderSize - itemSpacing;
-    const qrCompany_x_orig = qrUser_x_orig - qrCodeRenderSize - itemSpacing;
-    const vtcLogo_x_orig = qrCompany_x_orig - itemSize - itemSpacing;
+    // Position VTC Logo relative to the leftmost QR code, but scaled
+    const vtcLogo_x = qrCompany_x - itemSpacing - itemSize;
 
-    const photoSize = config.defaultPhotoSize * scaleFactor;
-    const photoX_orig = vtcLogo_x_orig - photoSize - itemSpacing;
+    // Position Photo relative to VTC Logo, but scaled
+    const photoX = vtcLogo_x - itemSpacing - photoSize;
 
-    // Calculate block width and centering offset
-    const blockStartX = photoX_orig;
-    const blockEndX = qrId_x_orig + qrCodeRenderSize;
+    // Calculate block width for centering
+    const blockStartX = photoX;
+    const blockEndX = qrId_x + qrCodeRenderSize;
     const blockWidth = blockEndX - blockStartX;
     const centeringOffset = (canvas.width - blockWidth) / 2 - blockStartX;
 
-    // Final, centered positions
-    const newPhotoX = photoX_orig + centeringOffset;
-    const vtcLogo_x = vtcLogo_x_orig + centeringOffset;
-    const qrCompany_x = qrCompany_x_orig + centeringOffset;
-    const qrUser_x = qrUser_x_orig + centeringOffset;
-    const qrId_x = qrId_x_orig + centeringOffset;
+    // Apply centering offset to all elements
+    const newPhotoX = photoX + centeringOffset;
+    const newVtcLogo_x = vtcLogo_x + centeringOffset;
+    const newQrCompany_x = qrCompany_x + centeringOffset;
+    const newQrUser_x = qrUser_x + centeringOffset;
+    const newQrId_x = qrId_x + centeringOffset;
     const newPhotoY = itemY;
 
     // Clear canvas
@@ -167,7 +173,8 @@ export async function generateImage(state) {
                 ctx.fillText(' ✵', textValueX + nameWidth, yPos);
                 ctx.fillStyle = textColor; // Reset color
             }
-        } else {
+        }
+        else {
             ctx.fillText(line.value, textValueX, yPos);
         }
 
@@ -192,29 +199,56 @@ export async function generateImage(state) {
     // --- Right-aligned items (VTC Logo, QRs, Flag) ---
     // This section is now structured into two distinct vertical columns.
 
-    // Draw VTC Logo (in its new position in the top-left of the block)
-    if (state.vtcLogoImage) {
-        ctx.drawImage(state.vtcLogoImage, vtcLogo_x, newPhotoY, itemSize, itemSize);
+    // Conditionally draw Social QR or VTC Logo
+    if (state.socialNetwork && state.socialLink) {
+        const socialLogoMap = {
+            discord: 'discord-icon-svgrepo-com.svg',
+            facebook: 'facebook-svgrepo-com.svg',
+            instagram: 'instagram-1-svgrepo-com.svg',
+            kick: 'kick-streaming-platform-logo-icon.svg',
+            tiktok: 'tiktok-svgrepo-com.svg',
+            twitch: 'twitch-svgrepo-com.svg',
+            wechat: 'wechat-communication-interaction-connection-internet-svgrepo-com.svg',
+            youtube: 'youtube-color-svgrepo-com.svg'
+        };
+        const logoName = socialLogoMap[state.socialNetwork];
+        if (logoName) {
+            try {
+                const logoPath = `./license_generator/socials/${logoName}`;
+                await generateQR(ctx, state.socialLink, newVtcLogo_x, newPhotoY, qrCodeRenderSize, qrColor, logoPath);
+            } catch (e) {
+                console.error("Failed to generate social QR code:", e);
+                // Fallback to drawing VTC logo if social QR fails
+                if (state.vtcLogoImage) {
+                    ctx.drawImage(state.vtcLogoImage, newVtcLogo_x, newPhotoY, itemSize, itemSize);
+                }
+            }
+        }
+    } else {
+        // Draw VTC Logo (in its new position in the top-left of the block)
+        if (state.vtcLogoImage) {
+            ctx.drawImage(state.vtcLogoImage, newVtcLogo_x, newPhotoY, itemSize, itemSize);
+        }
     }
 
     // --- Column 1: Rightmost (Convoyrama QR, Flag, VTC Watermark) ---
     const qrColor = state.qrColorToggle ? "#141414" : "#F0F0F0";
     const flagColumnSpacing = itemSpacing / 2; // Use a smaller spacing for this column
-    await generateQR(ctx, "https://convoyrama.github.io/id.html", qrId_x, newPhotoY, qrCodeRenderSize, qrColor);
+    await generateQR(ctx, "https://convoyrama.github.io/id.html", newQrId_x, newPhotoY, qrCodeRenderSize, qrColor, "./license_generator/socials/crlogo.svg");
 
     if (selectedCountry) {
         try {
             const flag_y = newPhotoY + qrCodeRenderSize + flagColumnSpacing;
             const flagEmoji = await renderTwemoji(selectedCountry.emoji, qrCodeRenderSize);
             if (flagEmoji) {
-                ctx.drawImage(flagEmoji, qrId_x, flag_y, qrCodeRenderSize, qrCodeRenderSize);
+                ctx.drawImage(flagEmoji, newQrId_x, flag_y, qrCodeRenderSize, qrCodeRenderSize);
             }
 
             // Draw VTC Logo as Watermark if enabled (now part of Column 1)
             if (state.watermarkToggle && state.vtcLogoImage) {
                 const watermark_y = flag_y + qrCodeRenderSize + flagColumnSpacing;
                 ctx.globalAlpha = 0.1;
-                ctx.drawImage(state.vtcLogoImage, qrId_x, watermark_y, qrCodeRenderSize, qrCodeRenderSize);
+                ctx.drawImage(state.vtcLogoImage, newQrId_x, watermark_y, qrCodeRenderSize, qrCodeRenderSize);
                 ctx.globalAlpha = 1.0;
             }
         } catch (e) { console.error('failed to render flag', e); }
@@ -222,28 +256,29 @@ export async function generateImage(state) {
 
     // --- Column 2: Left (User/VTC QR, TMP Logo, Year) ---
     if (state.truckersmpLink) {
-        await generateQR(ctx, normalizedTruckersmpLink, qrUser_x, newPhotoY, qrCodeRenderSize, qrColor);
+        await generateQR(ctx, normalizedTruckersmpLink, newQrUser_x, newPhotoY, qrCodeRenderSize, qrColor);
     }
     if (state.companyLink) {
-        await generateQR(ctx, normalizedCompanyLink, qrCompany_x, newPhotoY, qrCodeRenderSize, qrColor);
+        const vtcLogoPath = state.vtcLogoImage ? state.vtcLogoImage.src : null;
+        await generateQR(ctx, normalizedCompanyLink, newQrCompany_x, newPhotoY, qrCodeRenderSize, qrColor, vtcLogoPath);
     }
 
     if (state.watermarkToggle) { // Changed condition
         try {
             const truckersmpImage = await loadImage('./license_generator/images/truckersmp-logo-sm.png');
             // Calculate width to span both QRs
-            const logoWidth = (qrUser_x + qrCodeRenderSize) - qrCompany_x;
+            const logoWidth = (newQrUser_x + qrCodeRenderSize) - newQrCompany_x;
             const logoHeight = (truckersmpImage.height / truckersmpImage.width) * logoWidth;
             const truckersmpLogo_y = newPhotoY + qrCodeRenderSize + itemSpacing;
             
             ctx.globalAlpha = 0.15; // 15% opacity
-            ctx.drawImage(truckersmpImage, qrCompany_x, truckersmpLogo_y, logoWidth, logoHeight);
+            ctx.drawImage(truckersmpImage, newQrCompany_x, truckersmpLogo_y, logoWidth, logoHeight);
 
             // Draw verified registration year if available
             if (state.verifiedJoinDate) {
                 const year = new Date(state.verifiedJoinDate).getFullYear();
                 const yearY = truckersmpLogo_y + logoHeight + (itemSpacing * 2);
-                const yearX = qrCompany_x + (logoWidth / 2); // Center it with the logo
+                const yearX = newQrCompany_x + (logoWidth / 2); // Center it with the logo
 
                 ctx.font = `bold ${config.textFontSize * 1.5 * scaleFactor}px 'VerdanaCustom-Bold'`;
                 ctx.fillStyle = 'rgb(240, 240, 240)';
