@@ -141,7 +141,7 @@ for img in "$IMG_DIR"/*.{jpg,jpeg,png,gif}; do
         # URL base para las imágenes
         img_url="https://convoyrama.github.io/userid/$filename"
         # URL del enlace para la imagen
-        link_url="https://convoyrama.github.io/pages/id.html"
+        link_url="https://convoyrama.github.io/id.html"
         # Código TruckersMP (Markdown con enlace)
         tmp_code="[![ID $name]($img_url)]($link_url)"
         # BBCode
