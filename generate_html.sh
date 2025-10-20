@@ -125,8 +125,7 @@ cat << 'EOF' > "$OUTPUT_HTML"
     <header>
         <nav>
             <a href="index.html">Home</a>
-            <a href="pages/pc.html">Creador de Perfil</a>
-            <a href="pages/id.html">Licencia</a>
+            <a href="id.html">Licencia</a>
         </nav>
         <p id="t2">Lista de Imágenes de Perfil</p>
     </header>
