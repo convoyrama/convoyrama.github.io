@@ -284,6 +284,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- INITIALIZATION ---
+    async function logImageDimensions() {
+        const b1 = await loadImage('./images/b1.png');
+        const b2 = await loadImage('./images/b2.png');
+        console.log('b1.png dimensions:', b1.width, b1.height);
+        console.log('b2.png dimensions:', b2.width, b2.height);
+    }
+
     setupEventListeners();
     redrawCanvas();
+    logImageDimensions();
 });
