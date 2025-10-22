@@ -21,25 +21,19 @@
         <div class="panel">
             <h2>Award Generator Controls</h2>
             <div class="control-group">
-                <label for="qrStyleSelector">QR Style:</label>
-                <select id="qrStyleSelector">
-                    <option value="rounded">Rounded</option>
-                    <option value="dots">Dots</option>
-                    <option value="classy">Classy</option>
-                    <option value="classy-rounded">Classy Rounded</option>
-                    <option value="square">Square</option>
-                    <option value="extra-rounded">Extra Rounded</option>
-                </select>
-            </div>
-            <div class="control-group">
                 <label for="qrUrlInput">URL:</label>
                 <input type="text" id="qrUrlInput" placeholder="https://convoyrama.com">
+            </div>
+            <div class="control-group">
+                <label for="imageUploader">Custom Image:</label>
+                <input type="file" id="imageUploader" accept="image/*">
             </div>
             <div class="control-group">
                 <button id="generateQrButton">Generate QR</button>
             </div>
         </div>
         <div id="preview">
+            <img id="uploadedImagePreview" />
             <div id="qrCodeContainer"></div>
             <div class="canvas-container">
                 <canvas id="awardCanvas" width="800" height="500"></canvas>

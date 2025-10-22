@@ -6,6 +6,17 @@
     background-position: center;
     position: relative;
     min-height: 500px; /* Ensure container has a height */
+    overflow: hidden; /* Hide parts of images that might overflow */
+}
+
+#uploadedImagePreview {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 300px; /* Limit image size */
+    max-height: 300px;
+    z-index: 1; /* Behind the QR code */
 }
 
 #qrCodeContainer {
@@ -13,9 +24,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.75);
-    border-radius: 8px;
+    z-index: 2; /* In front of the uploaded image */
 }
 
 .control-group {

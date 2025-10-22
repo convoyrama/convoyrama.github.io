@@ -14,15 +14,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     drawAward();
 
+    // Image Upload
+    const imageUploader = document.getElementById('imageUploader');
+    const uploadedImagePreview = document.getElementById('uploadedImagePreview');
+
+    imageUploader.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedImagePreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
     // QR Code Generation
-    const qrStyleSelector = document.getElementById('qrStyleSelector');
     const qrUrlInput = document.getElementById('qrUrlInput');
     const generateQrButton = document.getElementById('generateQrButton');
     const qrCodeContainer = document.getElementById('qrCodeContainer');
 
     generateQrButton.addEventListener('click', () => {
         const url = qrUrlInput.value || 'https://convoyrama.com'; // Default URL
-        const style = qrStyleSelector.value;
 
         // Clear previous QR code
         qrCodeContainer.innerHTML = '';
@@ -33,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
             height: 200,
             data: url,
             dotsOptions: {
-                color: "#000",
-                type: style
+                color: "#FFFFFF",
+                type: "extra-rounded"
             },
             backgroundOptions: {
                 color: "transparent", // Make background transparent to see the SVG behind
