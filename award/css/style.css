@@ -1,9 +1,5 @@
 /* Add award-specific styles here */
 #preview {
-    background-image: url('../images/background.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
     position: relative;
     min-height: 500px; /* Ensure container has a height */
     overflow: hidden; /* Hide parts of images that might overflow */
