@@ -9,22 +9,38 @@
     overflow: hidden; /* Hide parts of images that might overflow */
 }
 
+#rankingText {
+    position: absolute;
+    top: 15%; /* Position it towards the top */
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000000;
+    z-index: 3;
+    width: 90%;
+    text-align: center;
+}
+
 #uploadedImagePreview {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 300px; /* Limit image size */
-    max-height: 300px;
-    z-index: 1; /* Behind the QR code */
+    width: 100px;
+    height: 100px;
+    object-fit: cover; /* Prevents image distortion */
+    border-radius: 8px; /* Optional: adds rounded corners */
+    z-index: 1;
 }
 
 #qrCodeContainer {
     position: absolute;
-    top: 50%;
+    bottom: 5%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2; /* In front of the uploaded image */
+    transform: translateX(-50%);
+    z-index: 2;
 }
 
 .control-group {
