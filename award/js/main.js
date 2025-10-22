@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear previous QR code
         qrCodeContainer.innerHTML = '';
 
-        // This library is available globally because we added the script tag
-        const qrCode = new QRCodeStyling({
+        // Define base options for the QR code
+        const options = {
             width: 200,
             height: 200,
             data: url,
@@ -50,9 +50,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 type: "extra-rounded"
             },
             backgroundOptions: {
-                color: "transparent", // Make background transparent to see the SVG behind
+                color: "transparent",
             },
-        });
+            qrOptions: {
+                errorCorrectionLevel: "H" // Use high error correction for better readability with an image
+            },
+            imageOptions: {
+                crossOrigin: "anonymous",
+                margin: 4, // Margin around the image
+                imageSize: 0.4 // Size of the image relative to the QR code (40%)
+            }
+        };
+
+        // If an image has been uploaded, add it to the options
+        if (uploadedImagePreview.src && uploadedImagePreview.src.startsWith('data:image')) {
+            options.image = uploadedImagePreview.src;
+        }
+
+        // Create and append the QR code
+        const qrCode = new QRCodeStyling(options);
         qrCode.append(qrCodeContainer);
     });
 
