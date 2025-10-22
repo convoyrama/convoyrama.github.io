@@ -1,4 +1,5 @@
 // Add award-specific JavaScript here
+import { QR } from './lib/qrGrid.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const awardCanvas = document.getElementById('awardCanvas');
@@ -7,13 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial drawing on the canvas
     function drawAward() {
         // We leave this function for now, but the background is handled by CSS
-        // ctx.clearRect(0, 0, awardCanvas.width, awardCanvas.height);
-        // ctx.fillStyle = '#f0f0f0';
-        // ctx.fillRect(0, 0, awardCanvas.width, awardCanvas.height);
         ctx.fillStyle = '#333';
         ctx.font = '40px Arial';
         ctx.textAlign = 'center';
-        // ctx.fillText('Award Placeholder', awardCanvas.width / 2, awardCanvas.height / 2);
     }
 
     drawAward();
@@ -47,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             qrCode.append(qrCodeContainer);
         } else if (selectedLibrary === 'qrGrid') {
-            // The qrGrid library we downloaded (index.cjs) exposes a global named "qrGrid"
-            const qr = new qrGrid.QR({
+            // We imported the QR class from the ES Module version of the library
+            const qr = new QR({
                 data: url,
                 size: 200,
             });

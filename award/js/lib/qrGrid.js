@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * exposed const to end user
  * @module
@@ -1255,8 +1253,5 @@ class QR {
     }
 }
 
-exports.ErrorCorrectionLevel = ErrorCorrectionLevel;
-exports.Mode = Mode;
-exports.QR = QR;
-exports.ReservedBits = ReservedBits;
-//# sourceMappingURL=index.cjs.map
+export { ErrorCorrectionLevel, Mode, QR, ReservedBits };
+//# sourceMappingURL=index.mjs.map
