@@ -43,7 +43,21 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         try {
             const bgImage = await loadImage('./images/background.svg');
-            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+            const canvasRatio = canvas.width / canvas.height;
+            const bgRatio = bgImage.width / bgImage.height;
+            let drawWidth = canvas.width;
+            let drawHeight = canvas.height;
+            let xOffset = 0;
+            let yOffset = 0;
+
+            if (bgRatio > canvasRatio) {
+                drawHeight = canvas.width / bgRatio;
+                yOffset = (canvas.height - drawHeight) / 2;
+            } else {
+                drawWidth = canvas.height * bgRatio;
+                xOffset = (canvas.width - drawWidth) / 2;
+            }
+            ctx.drawImage(bgImage, xOffset, yOffset, drawWidth, drawHeight);
         } catch (e) {
             ctx.fillStyle = '#555';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
