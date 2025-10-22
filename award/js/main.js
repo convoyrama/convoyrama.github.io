@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function redrawCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         try {
-            const bgImage = await loadImage('../images/background.svg');
+            const bgImage = await loadImage('./images/background.svg');
             ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
         } catch (e) {
             ctx.fillStyle = '#555';
