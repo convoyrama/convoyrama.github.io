@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title id="pageTitle">Convoyrama | Generador de Award</title>
+    <meta name="description" content="Convoyrama Award Generator">
+    <link rel="stylesheet" href="../assets/style.css"> <!-- Link to main project style -->
+    <link rel="stylesheet" href="./css/style.css"> <!-- Link to award specific style -->
+    <link rel="icon" href="../assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="../assets/images/favicon.png">
+    <script src="./js/lib/qr-code-styling.js"></script>
+    <script src="./js/lib/qrGrid.js"></script>
+</head>
+<body>
+    <header>
+
+        <p id="headerTitle">Generador de Award</p>
+    </header>
+    <div class="contenedor">
+        <div class="panel">
+            <h2>Award Generator Controls</h2>
+            <div class="control-group">
+                <label for="librarySelector">QR Library:</label>
+                <select id="librarySelector">
+                    <option value="qr-code-styling">QR Code Styling</option>
+                    <option value="qrGrid">qrGrid</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="qrUrlInput">URL:</label>
+                <input type="text" id="qrUrlInput" placeholder="https://convoyrama.com">
+            </div>
+            <div class="control-group">
+                <button id="generateQrButton">Generate QR</button>
+            </div>
+        </div>
+        <div id="preview">
+            <div id="qrCodeContainer"></div>
+            <div class="canvas-container">
+                <canvas id="awardCanvas" width="800" height="500"></canvas>
+            </div>
+            <div class="button-group">
+                <a id="downloadAward" download="convoyrama_award.png"><button id="botonDescargar">Descargar Award</button></a>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025 - v1.0.0</small>
+    </footer>
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>
