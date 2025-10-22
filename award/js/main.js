@@ -1,5 +1,4 @@
 // Add award-specific JavaScript here
-import { QR } from './lib/qrGrid.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const awardCanvas = document.getElementById('awardCanvas');
@@ -16,41 +15,32 @@ document.addEventListener('DOMContentLoaded', () => {
     drawAward();
 
     // QR Code Generation
-    const librarySelector = document.getElementById('librarySelector');
+    const qrStyleSelector = document.getElementById('qrStyleSelector');
     const qrUrlInput = document.getElementById('qrUrlInput');
     const generateQrButton = document.getElementById('generateQrButton');
     const qrCodeContainer = document.getElementById('qrCodeContainer');
 
     generateQrButton.addEventListener('click', () => {
-        const selectedLibrary = librarySelector.value;
         const url = qrUrlInput.value || 'https://convoyrama.com'; // Default URL
+        const style = qrStyleSelector.value;
 
         // Clear previous QR code
         qrCodeContainer.innerHTML = '';
 
-        if (selectedLibrary === 'qr-code-styling') {
-            // This library is available globally because we added the script tag
-            const qrCode = new QRCodeStyling({
-                width: 200,
-                height: 200,
-                data: url,
-                dotsOptions: {
-                    color: "#000",
-                    type: "rounded"
-                },
-                backgroundOptions: {
-                    color: "transparent", // Make background transparent to see the SVG behind
-                },
-            });
-            qrCode.append(qrCodeContainer);
-        } else if (selectedLibrary === 'qrGrid') {
-            // We imported the QR class from the ES Module version of the library
-            const qr = new QR({
-                data: url,
-                size: 200,
-            });
-            qrCodeContainer.innerHTML = qr.svg();
-        }
+        // This library is available globally because we added the script tag
+        const qrCode = new QRCodeStyling({
+            width: 200,
+            height: 200,
+            data: url,
+            dotsOptions: {
+                color: "#000",
+                type: style
+            },
+            backgroundOptions: {
+                color: "transparent", // Make background transparent to see the SVG behind
+            },
+        });
+        qrCode.append(qrCodeContainer);
     });
 
 
