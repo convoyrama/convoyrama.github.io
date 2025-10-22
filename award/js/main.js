@@ -7,13 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
         vtcName: '',
         achievement: '1º',
         period: '',
+        game: '',
         mode: '',
         vtcLogo: null,
         qrCode: null,
         vtmLogoPath: null,
-        yPos1: 80, // Y-pos for '1º'
-        yPos2: 380, // Y-pos for 'Mes y Año'
-        yPos3: 410, // Y-pos for 'Modo de Competencia'
+        yPosAchievement: 55,
+        yPosMode: 85,
+        yPosGame: 158,
+        yPosDate: 330,
+        logoZoom: 100, // Default zoom at 100%
     };
 
     // --- DOM ELEMENTS ---
@@ -31,6 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const yPosValue2 = document.getElementById('yPosValue2');
     const yPosSlider3 = document.getElementById('yPosSlider3');
     const yPosValue3 = document.getElementById('yPosValue3');
+    const logoZoomSlider = document.getElementById('logoZoomSlider');
+    const logoZoomValue = document.getElementById('logoZoomValue');
 
     // --- MONTHS MAP ---
     const months = {
@@ -49,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
             let drawHeight = canvas.height;
             let xOffset = 0;
             let yOffset = 0;
-
             if (bgRatio > canvasRatio) {
                 drawHeight = canvas.width / bgRatio;
                 yOffset = (canvas.height - drawHeight) / 2;
@@ -68,25 +72,33 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.textShadow = '2px 2px 4px #000000';
 
         if (state.achievement) {
-            ctx.font = 'bold 48px Arial';
-            ctx.fillText(state.achievement, canvas.width / 2, state.yPos1);
+            ctx.font = 'bold 60px Arial';
+            ctx.fillText(state.achievement.toUpperCase(), canvas.width / 2, state.yPosAchievement);
+        }
+        if (state.mode) {
+            ctx.font = 'bold 32px Arial';
+            ctx.fillText(state.mode.toUpperCase(), canvas.width / 2, state.yPosMode);
+        }
+        if (state.game) {
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText(state.game, canvas.width / 2, state.yPosGame);
         }
         if (state.period) {
             ctx.font = 'bold 24px Arial';
-            ctx.fillText(state.period, canvas.width / 2, state.yPos2);
+            ctx.fillText(state.period, canvas.width / 2, state.yPosDate);
         }
-        if (state.mode) {
-            ctx.font = 'bold 20px Arial';
-            ctx.fillText(state.mode, canvas.width / 2, state.yPos3);
-        }
+
         ctx.textShadow = 'none';
 
         if (state.vtcLogo) {
-            ctx.drawImage(state.vtcLogo, (canvas.width - 100) / 2, (canvas.height - 100) / 2, 100, 100);
+            const size = 100 * (state.logoZoom / 100);
+            const x = (canvas.width - size) / 2;
+            const y = (canvas.height - size) / 2;
+            ctx.drawImage(state.vtcLogo, x, y, size, size);
         }
 
         if (state.qrCode) {
-            ctx.drawImage(state.qrCode, (canvas.width - 100) / 2, canvas.height * 0.85 - 50, 100, 100);
+            ctx.drawImage(state.qrCode, (canvas.width - 100) / 2, canvas.height * 0.87 - 50, 100, 100);
         }
     }
 
@@ -135,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             state.rankingUrl = qrUrlInput.value;
             state.period = '';
             state.mode = '';
+            state.game = '';
             state.vtmLogoPath = null;
 
             if (!state.rankingUrl) {
@@ -151,17 +164,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     state.vtmLogoPath = './images/vtm/pickup.jpg';
                     const [mode, , month, year, game] = pathParts.slice(-5);
                     state.mode = { '1': 'Realista (0-100 km/h)', '2': 'Carrera', '3': 'WoT' }[mode] || '';
-                    const gameText = { '0': 'ETS2', '1': 'ATS' }[game] || '';
+                    state.game = { '0': 'ETS2', '1': 'ATS' }[game] || '';
                     const monthText = months[parseInt(month)] || '';
-                    state.period = `${monthText} ${year} (${gameText})`;
+                    state.period = `${monthText} ${year}`;
 
                 } else if (url.hostname.includes('trucksbook.eu')) {
                     state.vtmLogoPath = './images/vtm/trucksbook.png';
                     const [year, month, mode, game] = pathParts.slice(-5, -1);
                     state.mode = { '1': 'Real', '2': 'Carrera', '3': 'WoT' }[mode] || '';
-                    const gameText = { '1': 'ETS2', '2': 'ATS' }[game] || '';
+                    state.game = { '1': 'ETS2', '2': 'ATS' }[game] || '';
                     const monthText = months[parseInt(month)] || '';
-                    state.period = `${monthText} ${year} (${gameText})`;
+                    state.period = `${monthText} ${year}`;
                 }
 
                 await generateQRCode(state.rankingUrl, state.vtmLogoPath);
@@ -171,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error("Invalid URL or parsing error:", error);
                 state.period = 'URL no válida';
                 state.mode = 'o formato no reconocido.';
+                state.game = '';
                 state.qrCode = null;
                 redrawCanvas();
             }
@@ -183,6 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const metadata = {
                     achievement: state.achievement,
                     period: state.period,
+                    game: state.game,
+                    mode: state.mode,
                     vtc: state.vtcName,
                     url: state.rankingUrl
                 };
@@ -199,28 +215,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Slider Listeners
         yPosSlider1.addEventListener('input', (e) => {
-            state.yPos1 = parseInt(e.target.value);
-            yPosValue1.textContent = state.yPos1;
+            state.yPosAchievement = parseInt(e.target.value);
+            yPosValue1.textContent = state.yPosAchievement;
             redrawCanvas();
         });
         yPosSlider2.addEventListener('input', (e) => {
-            state.yPos2 = parseInt(e.target.value);
-            yPosValue2.textContent = state.yPos2;
+            state.yPosDate = parseInt(e.target.value);
+            yPosValue2.textContent = state.yPosDate;
             redrawCanvas();
         });
         yPosSlider3.addEventListener('input', (e) => {
-            state.yPos3 = parseInt(e.target.value);
-            yPosValue3.textContent = state.yPos3;
+            state.yPosMode = parseInt(e.target.value);
+            yPosValue3.textContent = state.yPosMode;
+            redrawCanvas();
+        });
+        logoZoomSlider.addEventListener('input', (e) => {
+            state.logoZoom = parseInt(e.target.value);
+            logoZoomValue.textContent = `${state.logoZoom}%`;
             redrawCanvas();
         });
 
         // Initial slider values
-        yPosSlider1.value = state.yPos1;
-        yPosValue1.textContent = state.yPos1;
-        yPosSlider2.value = state.yPos2;
-        yPosValue2.textContent = state.yPos2;
-        yPosSlider3.value = state.yPos3;
-        yPosValue3.textContent = state.yPos3;
+        yPosSlider1.value = state.yPosAchievement;
+        yPosValue1.textContent = state.yPosAchievement;
+        yPosSlider2.value = state.yPosDate;
+        yPosValue2.textContent = state.yPosDate;
+        yPosSlider3.value = state.yPosMode;
+        yPosValue3.textContent = state.yPosMode;
+        logoZoomSlider.value = state.logoZoom;
+        logoZoomValue.textContent = `${state.logoZoom}%`;
     }
 
     // --- INITIALIZATION ---
