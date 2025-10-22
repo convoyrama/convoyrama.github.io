@@ -29,6 +29,22 @@
                 <input type="text" id="vtcNameInput" placeholder="Nombre de la VTC">
             </div>
             <div class="control-group">
+                <label for="middleImageUploader">Imagen Intermedia:</label>
+                <input type="file" id="middleImageUploader" accept="image/*">
+            </div>
+            <div class="control-group">
+                <label for="middleImageZoomSlider">Zoom Imagen Intermedia: <span id="middleImageZoomValue">100%</span></label>
+                <input type="range" id="middleImageZoomSlider" min="10" max="300" value="100">
+            </div>
+            <div class="control-group">
+                <label for="middleImageXSlider">Posición X Imagen Intermedia: <span id="middleImageXValue">0</span></label>
+                <input type="range" id="middleImageXSlider" min="-200" max="200" value="0">
+            </div>
+            <div class="control-group">
+                <label for="middleImageYSlider">Posición Y Imagen Intermedia: <span id="middleImageYValue">0</span></label>
+                <input type="range" id="middleImageYSlider" min="-200" max="200" value="0">
+            </div>
+            <div class="control-group">
                 <label for="yPosSlider1">Posición '1º': <span id="yPosValue1"></span></label>
                 <input type="range" id="yPosSlider1" min="0" max="500">
             </div>
@@ -41,14 +57,6 @@
                 <input type="range" id="yPosSlider3" min="0" max="500">
             </div>
             <div class="control-group">
-                <label for="imageUploader">Custom Image:</label>
-                <input type="file" id="imageUploader" accept="image/*">
-            </div>
-            <div class="control-group">
-                <label for="logoZoomSlider">Zoom Logo: <span id="logoZoomValue">100%</span></label>
-                <input type="range" id="logoZoomSlider" min="25" max="250" value="100">
-            </div>
-            <div class="control-group">
                 <button id="generateQrButton">Generate QR</button>
             </div>
         </div>
@@ -56,6 +64,10 @@
             <div id="rankingText"></div>
             <img id="uploadedImagePreview" />
             <div id="qrCodeContainer"></div>
+            <div class="award-type-buttons">
+                <button id="individualButton">Individual</button>
+                <button id="vtcButton">VTC</button>
+            </div>
             <div class="canvas-container">
                 <canvas id="awardCanvas" width="800" height="500"></canvas>
             </div>

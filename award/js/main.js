@@ -9,24 +9,29 @@ document.addEventListener('DOMContentLoaded', () => {
         period: '',
         game: '',
         mode: '',
-        vtcLogo: null,
+        awardType: 'vtc', // 'vtc' or 'individual'
         qrCode: null,
         vtmLogoPath: null,
+        middleImage: null,
+        middleImageZoom: 100,
+        middleImageX: 0,
+        middleImageY: 0,
         yPosAchievement: 55,
         yPosMode: 85,
         yPosGame: 158,
         yPosDate: 330,
-        logoZoom: 100, // Default zoom at 100%
     };
 
     // --- DOM ELEMENTS ---
     const vtcNameInput = document.getElementById('vtcNameInput');
     const qrUrlInput = document.getElementById('qrUrlInput');
     const generateQrButton = document.getElementById('generateQrButton');
-    const imageUploader = document.getElementById('imageUploader');
+    const middleImageUploader = document.getElementById('middleImageUploader');
     const downloadAwardButton = document.getElementById('downloadAward');
     const canvas = document.getElementById('awardCanvas');
     const ctx = canvas.getContext('2d');
+    const individualButton = document.getElementById('individualButton');
+    const vtcButton = document.getElementById('vtcButton');
     // Sliders
     const yPosSlider1 = document.getElementById('yPosSlider1');
     const yPosValue1 = document.getElementById('yPosValue1');
@@ -34,8 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const yPosValue2 = document.getElementById('yPosValue2');
     const yPosSlider3 = document.getElementById('yPosSlider3');
     const yPosValue3 = document.getElementById('yPosValue3');
-    const logoZoomSlider = document.getElementById('logoZoomSlider');
-    const logoZoomValue = document.getElementById('logoZoomValue');
+    const middleImageZoomSlider = document.getElementById('middleImageZoomSlider');
+    const middleImageZoomValue = document.getElementById('middleImageZoomValue');
+    const middleImageXSlider = document.getElementById('middleImageXSlider');
+    const middleImageXValue = document.getElementById('middleImageXValue');
+    const middleImageYSlider = document.getElementById('middleImageYSlider');
+    const middleImageYValue = document.getElementById('middleImageYValue');
 
     // --- MONTHS MAP ---
     const months = {
@@ -46,25 +55,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DRAWING LOGIC ---
     async function redrawCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        try {
-            const bgImage = await loadImage('./images/background.svg');
-            const canvasRatio = canvas.width / canvas.height;
-            const bgRatio = bgImage.width / bgImage.height;
-            let drawWidth = canvas.width;
-            let drawHeight = canvas.height;
-            let xOffset = 0;
-            let yOffset = 0;
-            if (bgRatio > canvasRatio) {
-                drawHeight = canvas.width / bgRatio;
-                yOffset = (canvas.height - drawHeight) / 2;
-            } else {
-                drawWidth = canvas.height * bgRatio;
-                xOffset = (canvas.width - drawWidth) / 2;
-            }
-            ctx.drawImage(bgImage, xOffset, yOffset, drawWidth, drawHeight);
-        } catch (e) {
-            ctx.fillStyle = '#555';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const bgImage1 = await loadImage('./images/b1.png');
+        ctx.drawImage(bgImage1, 0, 0, canvas.width, canvas.height);
+
+        if (state.middleImage) {
+            const zoom = state.middleImageZoom / 100;
+            const w = state.middleImage.width * zoom;
+            const h = state.middleImage.height * zoom;
+            const x = (canvas.width - w) / 2 + state.middleImageX;
+            const y = (canvas.height - h) / 2 + state.middleImageY;
+
+            ctx.save();
+            // Create a clipping path based on b2.png's transparent area in the future
+            // For now, just draw the image
+            ctx.drawImage(state.middleImage, x, y, w, h);
+            ctx.restore();
+        }
+
+        const bgImage2 = await loadImage('./images/b2.png');
+        ctx.drawImage(bgImage2, 0, 0, canvas.width, canvas.height);
+
+        if (state.awardType === 'vtc') {
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('VTC Award', canvas.width / 2, 20);
+        } else {
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('Individual Award', canvas.width / 2, 20);
         }
 
         ctx.fillStyle = 'white';
@@ -89,13 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         ctx.textShadow = 'none';
-
-        if (state.vtcLogo) {
-            const size = 100 * (state.logoZoom / 100);
-            const x = (canvas.width - size) / 2;
-            const y = (canvas.height - size) / 2;
-            ctx.drawImage(state.vtcLogo, x, y, size, size);
-        }
 
         if (state.qrCode) {
             ctx.drawImage(state.qrCode, (canvas.width - 100) / 2, canvas.height * 0.87 - 50, 100, 100);
@@ -133,10 +143,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- EVENT LISTENERS ---
     function setupEventListeners() {
-        imageUploader.addEventListener('change', async (event) => {
+        individualButton.addEventListener('click', () => {
+            state.awardType = 'individual';
+            redrawCanvas();
+        });
+
+        vtcButton.addEventListener('click', () => {
+            state.awardType = 'vtc';
+            redrawCanvas();
+        });
+
+        middleImageUploader.addEventListener('change', async (event) => {
             const file = event.target.files[0];
             if (file) {
-                state.vtcLogo = await loadImage(URL.createObjectURL(file));
+                state.middleImage = await loadImage(URL.createObjectURL(file));
                 redrawCanvas();
             }
         });
@@ -229,9 +249,22 @@ document.addEventListener('DOMContentLoaded', () => {
             yPosValue3.textContent = state.yPosMode;
             redrawCanvas();
         });
-        logoZoomSlider.addEventListener('input', (e) => {
-            state.logoZoom = parseInt(e.target.value);
-            logoZoomValue.textContent = `${state.logoZoom}%`;
+
+        middleImageZoomSlider.addEventListener('input', (e) => {
+            state.middleImageZoom = parseInt(e.target.value);
+            middleImageZoomValue.textContent = `${state.middleImageZoom}%`;
+            redrawCanvas();
+        });
+
+        middleImageXSlider.addEventListener('input', (e) => {
+            state.middleImageX = parseInt(e.target.value);
+            middleImageXValue.textContent = state.middleImageX;
+            redrawCanvas();
+        });
+
+        middleImageYSlider.addEventListener('input', (e) => {
+            state.middleImageY = parseInt(e.target.value);
+            middleImageYValue.textContent = state.middleImageY;
             redrawCanvas();
         });
 
@@ -242,8 +275,12 @@ document.addEventListener('DOMContentLoaded', () => {
         yPosValue2.textContent = state.yPosDate;
         yPosSlider3.value = state.yPosMode;
         yPosValue3.textContent = state.yPosMode;
-        logoZoomSlider.value = state.logoZoom;
-        logoZoomValue.textContent = `${state.logoZoom}%`;
+        middleImageZoomSlider.value = state.middleImageZoom;
+        middleImageZoomValue.textContent = `${state.middleImageZoom}%`;
+        middleImageXSlider.value = state.middleImageX;
+        middleImageXValue.textContent = state.middleImageX;
+        middleImageYSlider.value = state.middleImageY;
+        middleImageYValue.textContent = state.middleImageY;
     }
 
     // --- INITIALIZATION ---
