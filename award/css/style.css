@@ -1,8 +1,11 @@
 /* Add award-specific styles here */
 #preview {
     position: relative;
-    min-height: 500px; /* Ensure container has a height */
-    overflow: hidden; /* Hide parts of images that might overflow */
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
 }
 
 #rankingText {
