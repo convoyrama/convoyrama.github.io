@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
         middleImageZoom: 100,
         middleImageX: 0,
         middleImageY: 0,
-        yPosAchievement: 55,
-        yPosMode: 85,
-        yPosGame: 158,
-        yPosDate: 330,
+        yPosAchievement: 200,
+        yPosMode: 300,
+        yPosGame: 400,
+        yPosDate: 500,
     };
 
     // --- DOM ELEMENTS ---
@@ -57,7 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const bgImage1 = await loadImage('./images/b1.png');
-        ctx.drawImage(bgImage1, 0, 0, canvas.width, canvas.height);
+        const b1_x = (canvas.width - 827) / 2;
+        const b1_y = (canvas.height - 1080) / 2;
+        ctx.drawImage(bgImage1, b1_x, b1_y, 827, 1080);
 
         if (state.middleImage) {
             const zoom = state.middleImageZoom / 100;
@@ -67,21 +69,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const y = (canvas.height - h) / 2 + state.middleImageY;
 
             ctx.save();
-            // Create a clipping path based on b2.png's transparent area in the future
-            // For now, just draw the image
+            // Create a clipping path based on b2.png's dimensions
+            const b2_x = (canvas.width - 707) / 2;
+            const b2_y = (canvas.height - 959) / 2;
+            ctx.rect(b2_x, b2_y, 707, 959);
+            ctx.clip();
             ctx.drawImage(state.middleImage, x, y, w, h);
             ctx.restore();
         }
 
         const bgImage2 = await loadImage('./images/b2.png');
-        ctx.drawImage(bgImage2, 0, 0, canvas.width, canvas.height);
+        const b2_x = (canvas.width - 707) / 2;
+        const b2_y = (canvas.height - 959) / 2;
+        ctx.drawImage(bgImage2, b2_x, b2_y, 707, 959);
 
         if (state.awardType === 'vtc') {
-            ctx.font = 'bold 20px Arial';
-            ctx.fillText('VTC Award', canvas.width / 2, 20);
+            ctx.font = 'bold 40px Arial';
+            ctx.fillText('VTC Award', canvas.width / 2, 100);
         } else {
-            ctx.font = 'bold 20px Arial';
-            ctx.fillText('Individual Award', canvas.width / 2, 20);
+            ctx.font = 'bold 40px Arial';
+            ctx.fillText('Individual Award', canvas.width / 2, 100);
         }
 
         ctx.fillStyle = 'white';
@@ -89,26 +96,26 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.textShadow = '2px 2px 4px #000000';
 
         if (state.achievement) {
-            ctx.font = 'bold 60px Arial';
+            ctx.font = 'bold 80px Arial';
             ctx.fillText(state.achievement.toUpperCase(), canvas.width / 2, state.yPosAchievement);
         }
         if (state.mode) {
-            ctx.font = 'bold 32px Arial';
+            ctx.font = 'bold 50px Arial';
             ctx.fillText(state.mode.toUpperCase(), canvas.width / 2, state.yPosMode);
         }
         if (state.game) {
-            ctx.font = 'bold 24px Arial';
+            ctx.font = 'bold 40px Arial';
             ctx.fillText(state.game, canvas.width / 2, state.yPosGame);
         }
         if (state.period) {
-            ctx.font = 'bold 24px Arial';
+            ctx.font = 'bold 40px Arial';
             ctx.fillText(state.period, canvas.width / 2, state.yPosDate);
         }
 
         ctx.textShadow = 'none';
 
         if (state.qrCode) {
-            ctx.drawImage(state.qrCode, (canvas.width - 100) / 2, canvas.height * 0.87 - 50, 100, 100);
+            ctx.drawImage(state.qrCode, (canvas.width - 200) / 2, canvas.height - 300, 200, 200);
         }
     }
 
@@ -284,14 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- INITIALIZATION ---
-    async function logImageDimensions() {
-        const b1 = await loadImage('./images/b1.png');
-        const b2 = await loadImage('./images/b2.png');
-        console.log('b1.png dimensions:', b1.width, b1.height);
-        console.log('b2.png dimensions:', b2.width, b2.height);
-    }
-
     setupEventListeners();
     redrawCanvas();
-    logImageDimensions();
 });
