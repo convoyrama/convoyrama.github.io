@@ -300,4 +300,9 @@ document.addEventListener('DOMContentLoaded', () => {
         yPosValue3.textContent = state.yPosMode;
         yPosSlider4.value = state.yPosNewText; // Initialize new slider
         yPosValue4.textContent = state.yPosNewText; // Initialize new slider
+    }
 
+    // --- INITIALIZATION ---
+    setupEventListeners();
+    redrawCanvas();
+});
