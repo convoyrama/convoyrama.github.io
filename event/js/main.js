@@ -220,7 +220,7 @@ async function init() {
         const option = document.createElement('option');
         option.value = regionKey;
         option.setAttribute('data-i18n', timezoneRegions[regionKey].name);
-        option.textContent = regionKey; // Temporarily show key, will be translated
+        option.textContent = state.currentLangData[timezoneRegions[regionKey].name];
         dom.regionSelect.appendChild(option);
     }
 
