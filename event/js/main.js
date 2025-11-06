@@ -111,6 +111,10 @@ function performDownload() {
             const departureDateTime = meetingDateTime.plus({ minutes: departureOffsetMinutes });
             const arrivalDateTime = departureDateTime.plus({ minutes: 45 }); // 45 real minutes after departure
 
+            const meetingGameTime = getGameTime(meetingDateTime.toUTC());
+            const departureGameTime = getGameTime(departureDateTime.toUTC());
+            const arrivalGameTime = getGameTime(arrivalDateTime.toUTC());
+
             const metadata = {
                 eventName: dom.customEventName.value || state.currentLangData.canvas_default_event_name || "Evento Personalizado",
                 eventLink: dom.customEventLink.value || "https://convoyrama.github.io/events.html",
