@@ -204,6 +204,16 @@ function init() {
     dom.waypointUpload = document.getElementById("waypoint-upload");
     dom.customImageUpload = document.getElementById("custom-image-upload");
     dom.downloadCustomImageButton = document.getElementById("download-custom-image");
+    dom.zoomIn = document.getElementById("zoom-in");
+    dom.zoomOut = document.getElementById("zoom-out");
+    dom.zoomInTop = document.getElementById("zoom-in-top");
+    dom.zoomOutTop = document.getElementById("zoom-out-top");
+    dom.zoomInBottom = document.getElementById("zoom-in-bottom");
+    dom.zoomOutBottom = document.getElementById("zoom-out-bottom");
+    dom.zoomInDetail = document.getElementById("zoom-in-detail");
+    dom.zoomOutDetail = document.getElementById("zoom-out-detail");
+    dom.zoomInWaypoint = document.getElementById("zoom-in-waypoint");
+    dom.zoomOutWaypoint = document.getElementById("zoom-out-waypoint");
 
     let uploadedImageBuffer = null;
 
