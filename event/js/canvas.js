@@ -1,7 +1,9 @@
 import { dom } from './dom.js';
 import * as state from './state.js';
+import { getGameTime, getDetailedDayNightIcon, formatDateForDisplayShort, formatTime } from './time.js';
 import { timezoneRegions, timezoneCountryCodes } from './config.js';
-import { formatTime, formatDateForDisplayShort } from './time.js';
+
+const { DateTime } = luxon;
 import { wrapText } from './utils.js';
 
 export function drawCanvas() {
@@ -238,15 +240,15 @@ export function drawCanvas() {
         const activeTimezoneGroup = timezoneRegions[state.selectedRegion].zones;
         const datesByDay = new Map();
         activeTimezoneGroup.forEach(tz => {
-            const localTimeForTz = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
+            const localTimeForTz = DateTime.fromJSDate(utcBaseTime).setZone(tz.iana_tz);
             const dayString = formatDateForDisplayShort(localTimeForTz);
             if (!datesByDay.has(dayString)) { datesByDay.set(dayString, { times: [] }); }
             const dayEntry = datesByDay.get(dayString);
             const tzLabel = state.currentLangData[tz.key] || (timezoneCountryCodes[tz.key] || [tz.key.replace('tz_', '').toUpperCase()]).join(', ');
-            const reunionTime = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
-            const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60000;
-            const partidaTime = new Date(reunionTime.getTime() + departureOffset);
-            dayEntry.times.push({ tzLabel, reunionTime: formatTime(reunionTime), partidaTime: formatTime(partidaTime) });
+            const reunionTimeLuxon = localTimeForTz;
+            const departureOffset = parseInt(dom.departureTimeOffset.value, 10);
+            const partidaTimeLuxon = reunionTimeLuxon.plus({ minutes: departureOffset });
+            dayEntry.times.push({ tzLabel, reunionTime: formatTime(reunionTimeLuxon), partidaTime: formatTime(partidaTimeLuxon) });
         });
         const monthMap = (state.currentLangData.months_short || ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]).reduce((acc, month, index) => { acc[month] = index; return acc; }, {});
         const sortedDays = Array.from(datesByDay.keys()).sort((a, b) => { const [dayA, monthAbbrA] = a.split(' '); const [dayB, monthAbbrB] = b.split(' '); const dateA = new Date(new Date().getFullYear(), monthMap[monthAbbrA], dayA); const dateB = new Date(new Date().getFullYear(), monthMap[monthAbbrB], dayB); return dateA - dateB; });
