@@ -236,6 +236,7 @@ export function drawCanvas() {
             const dayString = formatDateForDisplayShort(localTimeForTz);
             if (!datesByDay.has(dayString)) { datesByDay.set(dayString, { times: [] }); }
             const dayEntry = datesByDay.get(dayString);
+            console.log(`[Debug] tz.key: ${tz.key}, label: ${state.currentLangData[tz.key]}`);
             const tzLabel = state.currentLangData[tz.key] || (timezoneCountryCodes[tz.key] || [tz.key.replace('tz_', '').toUpperCase()]).join(', ');
             const reunionTimeLuxon = localTimeForTz;
             const departureOffset = parseInt(dom.departureTimeOffset.value, 10);

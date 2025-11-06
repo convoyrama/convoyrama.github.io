@@ -6,6 +6,7 @@ export const timezoneRegions = {
             { iana_tz: 'America/Lima', key: 'tz_pe_ec_co' },
             { iana_tz: 'America/Caracas', key: 'tz_ve' },
             { iana_tz: 'America/La_Paz', key: 'tz_bo_cl_py' },
+            { iana_tz: 'America/Sao_Paulo', key: 'tz_br_brasilia' },
             { iana_tz: 'America/Montevideo', key: 'tz_uy_ar_br' },
             { iana_tz: 'Europe/Madrid', key: 'tz_es' }
         ]

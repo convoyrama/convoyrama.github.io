@@ -149,8 +149,10 @@ function performDownload() {
     }
 }
 
-function init() {
+async function init() {
     twemoji.parse(document.body);
+    await loadLanguage('es');
+    document.querySelector('.flag-emoji[data-lang="es"]').classList.add('selected');
     const flags = document.querySelectorAll(".flag-emoji");
     flags.forEach(flag => { flag.addEventListener("click", () => { const lang = flag.getAttribute("data-lang"); loadLanguage(lang); flags.forEach(f => f.classList.remove('selected')); flag.classList.add('selected'); }); });
     // Populate dom object after DOM is ready
