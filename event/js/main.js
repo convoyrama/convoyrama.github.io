@@ -213,6 +213,11 @@ function init() {
         dom.regionSelect.appendChild(option);
     }
 
+    dom.regionSelect.addEventListener('change', (e) => {
+        state.setSelectedRegion(e.target.value);
+        drawCanvas();
+    });
+
     // Set initial date and time using Luxon
     const userNow = DateTime.local();
     dom.customDate.value = userNow.toISODate();
