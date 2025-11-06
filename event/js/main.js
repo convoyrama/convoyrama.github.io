@@ -186,6 +186,9 @@ function init() {
     dom.copyTmpBtn = document.getElementById("copy-tmp-btn");
     dom.tmpImagesToggle = document.getElementById("tmp-images-toggle");
     dom.mapCanvas = document.getElementById("map-canvas");
+    dom.circleCanvasTop = document.getElementById("circle-canvas-top");
+    dom.circleCanvasBottom = document.getElementById("circle-canvas-bottom");
+    dom.circleCanvasWaypoint = document.getElementById("circle-canvas-waypoint");
     dom.downloadCanvas = document.getElementById("download-canvas");
     dom.waypointToggle = document.getElementById("waypoint-toggle");
     dom.textSize = document.getElementById("text-size");
