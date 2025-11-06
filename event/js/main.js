@@ -1,14 +1,13 @@
-if (typeof twemoji !== 'undefined') {
-    twemoji.base = '../twemoji-14.0.2/assets/';
-}
-
 import { dom } from './dom.js';
 import * as state from './state.js';
 import { timezoneRegions } from './config.js';
-import { updateLiveClocks, formatDateForDisplay, getGameTime, getDetailedDayNightIcon, formatDateForDisplayShort } from './time.js';
+import { updateLiveClocks, getGameTime, getDetailedDayNightIcon, formatDateForDisplay } from './time.js';
 import { fetchLanguage, applyTranslations } from './i18n.js';
 import { drawCanvas, initCanvasEventListeners } from './canvas.js';
-import { showCopyMessage, getUnixTimestamp } from './utils.js';
+import { showCopyMessage } from './utils.js';
+import { injectMetadataIntoPNG } from './png-metadata.js';
+
+const { DateTime } = luxon;
 
 async function loadLanguage(lang) {
     const langData = await fetchLanguage(lang);
@@ -27,38 +26,133 @@ function updateInGameTimeEmojis() {
         return;
     }
 
-    const [hh, mm] = customTimeValue.split(":").map(Number);
-    const dateParts = customDateValue.split('-');
-    const year = parseInt(dateParts[0], 10);
-    const month = parseInt(dateParts[1], 10) - 1;
-    const day = parseInt(dateParts[2], 10);
-    const customDateObj = new Date(year, month, day);
-    customDateObj.setHours(hh, mm, 0, 0);
+    const selectedRegionKey = dom.regionSelect.value;
+    const selectedRegion = timezoneRegions[selectedRegionKey];
+    let zone = 'UTC'; // Default to UTC
 
-    const browserOffsetHours = new Date().getTimezoneOffset() / 60;
-    let finalOffsetHours = browserOffsetHours;
+    if (selectedRegion && selectedRegion.zones.length > 0) {
+        // For simplicity, use the first zone's IANA TZ for the region's overall time context
+        zone = selectedRegion.zones[0].iana_tz;
+    }
+
+    let meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone });
+
+    // If manual offset is selected, override the zone
     const manualOffset = dom.manualOffsetSelect.value;
     if (manualOffset !== 'auto') {
-        finalOffsetHours = -parseInt(manualOffset, 10);
+        const offsetMinutes = parseInt(manualOffset, 10) * 60;
+        meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`).set({ 
+            zone: 'utc',
+            hour: meetingDateTime.hour,
+            minute: meetingDateTime.minute,
+            second: meetingDateTime.second,
+            millisecond: meetingDateTime.millisecond
+        }).plus({ minutes: -offsetMinutes });
     }
-    const offsetCorrection = (browserOffsetHours - finalOffsetHours) * 3600000;
-    const correctTimestamp = customDateObj.getTime() - offsetCorrection;
-    const utcBaseTime = new Date(correctTimestamp);
 
-    const meetingGameTime = getGameTime(utcBaseTime);
+    if (!meetingDateTime.isValid) {
+        console.error("Invalid meetingDateTime:", meetingDateTime.invalidExplanation);
+        dom.ingameEmojiDisplay.innerHTML = '';
+        return;
+    }
+
+    const meetingGameTime = getGameTime(meetingDateTime.toUTC());
     const meetingEmoji = getDetailedDayNightIcon(meetingGameTime.hours);
 
-    const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60 * 1000;
-    const departureDate = new Date(utcBaseTime.getTime() + departureOffset);
-    const departureGameTime = getGameTime(departureDate);
+    const departureOffsetMinutes = parseInt(dom.departureTimeOffset.value, 10);
+    const departureDateTime = meetingDateTime.plus({ minutes: departureOffsetMinutes });
+    const departureGameTime = getGameTime(departureDateTime.toUTC());
     const departureEmoji = getDetailedDayNightIcon(departureGameTime.hours);
 
-    const arrivalDate = new Date(departureDate.getTime() + 50 * 60000);
-    const arrivalGameTime = getGameTime(arrivalDate);
+    const arrivalDateTime = departureDateTime.plus({ minutes: 50 }); // Assuming 50 minutes travel time
+    const arrivalGameTime = getGameTime(arrivalDateTime.toUTC());
     const arrivalEmoji = getDetailedDayNightIcon(arrivalGameTime.hours);
 
     dom.ingameEmojiDisplay.innerHTML = `${meetingEmoji} ${departureEmoji} ${arrivalEmoji}`;
     twemoji.parse(dom.ingameEmojiDisplay);
+}
+
+function performDownload() {
+    const { mapCanvas: canvas } = dom;
+    try {
+        canvas.toBlob(async (blob) => {
+            const arrayBuffer = await blob.arrayBuffer();
+
+            const customDateValue = dom.customDate.value;
+            const customTimeValue = dom.customTime.value;
+            const selectedRegionKey = dom.regionSelect.value;
+            const selectedRegion = timezoneRegions[selectedRegionKey];
+            let zone = 'UTC';
+            if (selectedRegion && selectedRegion.zones.length > 0) {
+                zone = selectedRegion.zones[0].iana_tz;
+            }
+
+            let meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone });
+
+            const manualOffset = dom.manualOffsetSelect.value;
+            if (manualOffset !== 'auto') {
+                const offsetMinutes = parseInt(manualOffset, 10) * 60;
+                meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`).set({ 
+                    zone: 'utc',
+                    hour: meetingDateTime.hour,
+                    minute: meetingDateTime.minute,
+                    second: meetingDateTime.second,
+                    millisecond: meetingDateTime.millisecond
+                }).plus({ minutes: -offsetMinutes });
+            }
+
+            if (!meetingDateTime.isValid) {
+                console.error("Invalid meetingDateTime for metadata:", meetingDateTime.invalidExplanation);
+                // Proceed without metadata or throw error, depending on desired behavior
+                return;
+            }
+
+            const departureOffsetMinutes = parseInt(dom.departureTimeOffset.value, 10);
+            const departureDateTime = meetingDateTime.plus({ minutes: departureOffsetMinutes });
+            const arrivalDateTime = departureDateTime.plus({ minutes: 50 });
+
+            const metadata = {
+                eventName: dom.customEventName.value || state.currentLangData.canvas_default_event_name || "Evento Personalizado",
+                eventLink: dom.customEventLink.value || "https://convoyrama.github.io/events.html",
+                startPlace: dom.customStartPlace.value || "Sin especificar",
+                destination: dom.customDestination.value || "Sin especificar",
+                server: dom.customServer.value || "Sin especificar",
+                description: dom.customEventDescription.value || "Sin descripción",
+                meetingTimestamp: meetingDateTime.toUnixInteger(),
+                departureTimestamp: departureDateTime.toUnixInteger(),
+                arrivalTimestamp: arrivalDateTime.toUnixInteger(),
+                ianaTimeZone: zone,
+                utcOffsetMinutes: meetingDateTime.offset,
+                generatedAt: DateTime.local().toISO(),
+            };
+
+            const jsonMetadata = JSON.stringify(metadata);
+
+            const newPngBuffer = injectMetadataIntoPNG(arrayBuffer, "convoyrama-event-data", jsonMetadata);
+            const newBlob = new Blob([newPngBuffer], { type: 'image/png' });
+
+            const tempLink = document.createElement('a');
+            tempLink.href = URL.createObjectURL(newBlob);
+            
+            const eventDate = dom.customDate.value;
+            let dateString;
+            if (eventDate) {
+                dateString = eventDate;
+            } else {
+                const today = DateTime.local();
+                dateString = today.toISODate();
+            }
+            tempLink.download = `convoy-map-${dateString}.png`;
+            
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+            
+            URL.revokeObjectURL(tempLink.href);
+        }, 'image/png');
+    } catch (error) {
+        console.error("Error performing download:", error);
+    }
 }
 
 function init() {
@@ -66,17 +160,25 @@ function init() {
     const flags = document.querySelectorAll(".flag-emoji");
     flags.forEach(flag => { flag.addEventListener("click", () => { const lang = flag.getAttribute("data-lang"); loadLanguage(lang); flags.forEach(f => f.classList.remove('selected')); flag.classList.add('selected'); }); });
     const regionSelect = document.getElementById('region-select');
-    for (const regionKey in timezoneRegions) { const option = document.createElement('option'); option.value = regionKey; option.setAttribute('data-i18n', timezoneRegions[regionKey].name); option.textContent = regionKey; regionSelect.appendChild(option); }
+    for (const regionKey in timezoneRegions) {
+        const option = document.createElement('option');
+        option.value = regionKey;
+        option.setAttribute('data-i18n', timezoneRegions[regionKey].name);
+        option.textContent = regionKey; // Temporarily show key, will be translated
+        regionSelect.appendChild(option);
+    }
     regionSelect.addEventListener('change', (e) => { state.setSelectedRegion(e.target.value); drawCanvas(); updateInGameTimeEmojis(); });
     dom.manualOffsetSelect.addEventListener('change', () => { drawCanvas(); updateInGameTimeEmojis(); });
     loadLanguage('es'); document.querySelector('.flag-emoji[data-lang="es"]').classList.add('selected');
     updateLiveClocks(); setInterval(updateLiveClocks, 1000);
-    const userNow = new Date();
-    dom.customDate.value = userNow.toISOString().split('T')[0];
+    
+    const userNow = DateTime.local();
+    dom.customDate.value = userNow.toISODate();
+    dom.customTime.value = userNow.toFormat('HH:mm');
     dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(userNow)}`;
     
     dom.customDate.onchange = () => { 
-        const customDateObj = new Date(dom.customDate.value); 
+        const customDateObj = DateTime.fromISO(dom.customDate.value);
         dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`; 
         drawCanvas(); 
         updateInGameTimeEmojis(); 
@@ -87,25 +189,47 @@ function init() {
         const customEventLinkValue = dom.customEventLink.value || "https://convoyrama.github.io/events.html", customEventDescriptionValue = dom.customEventDescription.value || "Sin descripción";
         const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
         if (!customDateValue || !customTimeValue) { showCopyMessage(state.currentLangData.error_no_date || "Por favor, selecciona una fecha y hora."); return; }
-        const [hh, mm] = customTimeValue.split(":").map(Number);
-        const dateParts = customDateValue.split('-');
-        const year = parseInt(dateParts[0], 10);
-        const month = parseInt(dateParts[1], 10) - 1;
-        const day = parseInt(dateParts[2], 10);
-        const customDateObj = new Date(year, month, day);
-        customDateObj.setHours(hh, mm, 0, 0);
-        const meetingTimestamp = getUnixTimestamp(customDateObj);
-        const meetingGameTime = getGameTime(customDateObj);
+        
+        const selectedRegionKey = dom.regionSelect.value;
+        const selectedRegion = timezoneRegions[selectedRegionKey];
+        let zone = 'UTC';
+        if (selectedRegion && selectedRegion.zones.length > 0) {
+            zone = selectedRegion.zones[0].iana_tz;
+        }
+
+        let meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone });
+
+        const manualOffset = dom.manualOffsetSelect.value;
+        if (manualOffset !== 'auto') {
+            const offsetMinutes = parseInt(manualOffset, 10) * 60;
+            meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`).set({ 
+                zone: 'utc',
+                hour: meetingDateTime.hour,
+                minute: meetingDateTime.minute,
+                second: meetingDateTime.second,
+                millisecond: meetingDateTime.millisecond
+            }).plus({ minutes: -offsetMinutes });
+        }
+
+        if (!meetingDateTime.isValid) {
+            console.error("Invalid meetingDateTime:", meetingDateTime.invalidExplanation);
+            showCopyMessage(state.currentLangData.error_invalid_date || "Fecha u hora inválida.");
+            return;
+        }
+
+        const meetingTimestamp = meetingDateTime.toUnixInteger();
+        const meetingGameTime = getGameTime(meetingDateTime.toUTC());
         const meetingEmoji = getDetailedDayNightIcon(meetingGameTime.hours);
-        const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60 * 1000;
-        const departureDate = new Date(customDateObj.getTime() + departureOffset);
-        const departureTimestamp = getUnixTimestamp(departureDate);
-        const departureGameTime = getGameTime(departureDate);
+        
+        const departureOffsetMinutes = parseInt(dom.departureTimeOffset.value, 10);
+        const departureDateTime = meetingDateTime.plus({ minutes: departureOffsetMinutes });
+        const departureTimestamp = departureDateTime.toUnixInteger();
+        const departureGameTime = getGameTime(departureDateTime.toUTC());
         const departureEmoji = getDetailedDayNightIcon(departureGameTime.hours);
 
-        const arrivalDate = new Date(departureDate.getTime() + 50 * 60000);
-        const arrivalTimestamp = getUnixTimestamp(arrivalDate);
-        const arrivalGameTime = getGameTime(arrivalDate);
+        const arrivalDateTime = departureDateTime.plus({ minutes: 50 });
+        const arrivalTimestamp = arrivalDateTime.toUnixInteger();
+        const arrivalGameTime = getGameTime(arrivalDateTime.toUTC());
         const arrivalEmoji = getDetailedDayNightIcon(arrivalGameTime.hours);
 
         const ingameTimeLine = `**${state.currentLangData.ingame_time_title || 'Hora ingame'}:** ${state.currentLangData.meeting_label || 'Reunión'}: ${meetingEmoji} ${state.currentLangData.departure_label || 'Salida'}: ${departureEmoji} ${state.currentLangData.arrival_label || 'Llegada aprox'}: ${arrivalEmoji}`;
@@ -128,37 +252,43 @@ function init() {
             return;
         }
 
-        const [hh, mm] = customTimeValue.split(":").map(Number);
-        const dateParts = customDateValue.split('-');
-        const year = parseInt(dateParts[0], 10);
-        const month = parseInt(dateParts[1], 10) - 1;
-        const day = parseInt(dateParts[2], 10);
-        const customDateObj = new Date(year, month, day);
-        customDateObj.setHours(hh, mm, 0, 0);
+        const selectedRegionKey = dom.regionSelect.value;
+        const selectedRegion = timezoneRegions[selectedRegionKey];
+        let baseZone = 'UTC';
+        if (selectedRegion && selectedRegion.zones.length > 0) {
+            baseZone = selectedRegion.zones[0].iana_tz;
+        }
 
-        const browserOffsetHours = new Date().getTimezoneOffset() / 60;
-        let finalOffsetHours = browserOffsetHours;
+        let meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone: baseZone });
+
         const manualOffset = dom.manualOffsetSelect.value;
         if (manualOffset !== 'auto') {
-            finalOffsetHours = -parseInt(manualOffset, 10);
+            const offsetMinutes = parseInt(manualOffset, 10) * 60;
+            meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`).set({ 
+                zone: 'utc',
+                hour: meetingDateTime.hour,
+                minute: meetingDateTime.minute,
+                second: meetingDateTime.second,
+                millisecond: meetingDateTime.millisecond
+            }).plus({ minutes: -offsetMinutes });
         }
-        const offsetCorrection = (browserOffsetHours - finalOffsetHours) * 3600000;
-        const correctTimestamp = customDateObj.getTime() - offsetCorrection;
-        const utcBaseTime = new Date(correctTimestamp);
 
-        const departureOffset = parseInt(dom.departureTimeOffset.value, 10) * 60 * 1000;
-        const departureDate = new Date(utcBaseTime.getTime() + departureOffset);
-        const arrivalDate = new Date(departureDate.getTime() + 50 * 60000);
+        if (!meetingDateTime.isValid) {
+            console.error("Invalid meetingDateTime:", meetingDateTime.invalidExplanation);
+            showCopyMessage(state.currentLangData.error_invalid_date || "Fecha u hora inválida.");
+            return;
+        }
 
-        const meetingGameTime = getGameTime(utcBaseTime);
+        const departureOffsetMinutes = parseInt(dom.departureTimeOffset.value, 10);
+        const departureDateTime = meetingDateTime.plus({ minutes: departureOffsetMinutes });
+        const arrivalDateTime = departureDateTime.plus({ minutes: 50 });
+
+        const meetingGameTime = getGameTime(meetingDateTime.toUTC());
         const meetingEmoji = getDetailedDayNightIcon(meetingGameTime.hours);
-        const departureGameTime = getGameTime(departureDate);
+        const departureGameTime = getGameTime(departureDateTime.toUTC());
         const departureEmoji = getDetailedDayNightIcon(departureGameTime.hours);
-        const arrivalGameTime = getGameTime(arrivalDate);
+        const arrivalGameTime = getGameTime(arrivalDateTime.toUTC());
         const arrivalEmoji = getDetailedDayNightIcon(arrivalGameTime.hours);
-
-        const meetingTimeUTC = utcBaseTime.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
-        const departureTimeUTC = departureDate.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' });
 
         const includeImages = dom.tmpImagesToggle.checked;
 
@@ -168,37 +298,32 @@ function init() {
         tmpInfo += `> ${customEventDescriptionValue}\n\n`;
         if (includeImages) tmpInfo += `![](https://convoyrama.github.io/event/images/default/purple.png)\n\n`;
         tmpInfo += `## ${state.currentLangData.tmp_event_info_title || 'INFORMACION DEL EVENTO'}\n`;
-        tmpInfo += `* 🗓️ ${state.currentLangData.tmp_date_label || 'Fecha (UTC)'}: ${utcBaseTime.toLocaleDateString('en-GB', { timeZone: 'UTC'})}\n`;
-        tmpInfo += `* ⏰ ${state.currentLangData.tmp_meeting_time_label || 'Reunión (UTC)'}: ${meetingTimeUTC}\n`;
-        tmpInfo += `* 🚚 ${state.currentLangData.tmp_departure_time_label || 'Salida (UTC)'}: ${departureTimeUTC}\n`;
+        tmpInfo += `* 🗓️ ${state.currentLangData.tmp_date_label || 'Fecha (UTC)'}: ${meetingDateTime.toUTC().toFormat('dd/MM/yyyy')}\n`;
+        tmpInfo += `* ⏰ ${state.currentLangData.tmp_meeting_time_label || 'Reunión (UTC)'}: ${meetingDateTime.toUTC().toFormat('HH:mm')}\n`;
+        tmpInfo += `* 🚚 ${state.currentLangData.tmp_departure_time_label || 'Salida (UTC)'}: ${departureDateTime.toUTC().toFormat('HH:mm')}\n`;
         tmpInfo += `* 🖥️ ${state.currentLangData.tmp_server_label || 'Servidor'}: ${customServerValue}\n`;
         tmpInfo += `* ➡️ ${state.currentLangData.tmp_start_place_label || 'Ciudad de Inicio'}: ${customStartPlaceValue}\n`;
         tmpInfo += `* ⬅️ ${state.currentLangData.tmp_destination_label || 'Ciudad de Destino'}: ${customDestinationValue}\n\n`;
 
-        const selectedRegionKey = document.getElementById('region-select').value;
-        const selectedRegion = timezoneRegions[selectedRegionKey];
         if (selectedRegion) {
             const datesByDay = new Map();
             selectedRegion.zones.forEach(tz => {
-                const localTimeForTz = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
-                const dayString = formatDateForDisplayShort(localTimeForTz);
+                const localTimeForTz = meetingDateTime.setZone(tz.iana_tz);
+                const dayString = localTimeForTz.toFormat('dd MMM');
                 if (!datesByDay.has(dayString)) {
                     datesByDay.set(dayString, []);
                 }
                 const tzLabel = state.currentLangData[tz.key] || tz.key;
-                const meetingTime = new Date(utcBaseTime.getTime() + tz.offset * 3600000);
-                const departureTime = new Date(meetingTime.getTime() + departureOffset);
-                const timeString = `${meetingTime.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' })} / ${departureTime.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour: '2-digit', minute: '2-digit' })}`;
+                const meetingTime = localTimeForTz;
+                const departureTime = localTimeForTz.plus({ minutes: departureOffsetMinutes });
+                const timeString = `${meetingTime.toFormat('HH:mm')} / ${departureTime.toFormat('HH:mm')}`;
                 datesByDay.get(dayString).push({ tzLabel, timeString });
             });
 
-            const monthMap = (state.currentLangData.months_short || ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]).reduce((acc, month, index) => { acc[month] = index; return acc; }, {});
             const sortedDays = Array.from(datesByDay.keys()).sort((a, b) => {
-                const [dayA, monthAbbrA] = a.split(' ');
-                const [dayB, monthAbbrB] = b.split(' ');
-                const dateA = new Date(new Date().getFullYear(), monthMap[monthAbbrA], dayA);
-                const dateB = new Date(new Date().getFullYear(), monthMap[monthAbbrB], dayB);
-                return dateA - dateB;
+                const dateA = DateTime.fromFormat(a, 'dd MMM', { locale: state.language });
+                const dateB = DateTime.fromFormat(b, 'dd MMM', { locale: state.language });
+                return dateA.toMillis() - dateB.toMillis();
             });
 
             sortedDays.forEach(dayString => {
@@ -232,24 +357,7 @@ function init() {
     dom.textSize.addEventListener("change", drawCanvas);
     dom.textStyle.addEventListener("change", drawCanvas);
     dom.textBackgroundOpacity.addEventListener("change", drawCanvas);
-    dom.downloadCanvas.addEventListener("click", () => {
-        const canvas = dom.mapCanvas;
-        const link = document.createElement("a");
-        const eventDate = dom.customDate.value;
-        let dateString;
-        if (eventDate) {
-            dateString = eventDate;
-        } else {
-            const today = new Date();
-            const day = String(today.getDate()).padStart(2, '0');
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const year = today.getFullYear();
-            dateString = `${year}-${month}-${day}`;
-        }
-        link.download = `convoy-map-${dateString}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-    });
+    dom.downloadCanvas.addEventListener("click", performDownload);
     dom.customEventName.addEventListener("input", drawCanvas);
     dom.customStartPlace.addEventListener("input", drawCanvas);
     dom.customDestination.addEventListener("input", drawCanvas);
@@ -261,6 +369,7 @@ function init() {
     dom.resetCanvas.addEventListener("click", () => { state.setMapImage(null); state.setCircleImageTop(null); state.setCircleImageBottom(null); state.setLogoImage(null); state.setBackgroundImage(null); state.setDetailImage(null); state.setCircleImageWaypoint(null); dom.mapUpload.value = ""; dom.circleUploadTop.value = ""; dom.circleUploadBottom.value = ""; dom.logoUpload.value = ""; dom.backgroundUpload.value = ""; dom.detailUpload.value = ""; dom.waypointUpload.value = ""; drawCanvas(); });
     drawCanvas();
     updateInGameTimeEmojis();
+}
 }
 
 window.onload = init;

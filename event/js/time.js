@@ -2,10 +2,12 @@ import { dom } from './dom.js';
 import { pad } from './utils.js';
 import { currentLangData } from './state.js';
 
-export function getGameTime(utcDate) {
+const { DateTime } = luxon;
+
+export function getGameTime(utcDateTime) {
     const GAME_TIME_ANCHOR_UTC_MINUTES = 20 * 60 + 40;
     const TIME_SCALE = 6;
-    const totalMinutesUTC = utcDate.getUTCHours() * 60 + utcDate.getUTCMinutes();
+    const totalMinutesUTC = utcDateTime.hour * 60 + utcDateTime.minute;
     let realMinutesSinceAnchor = totalMinutesUTC - GAME_TIME_ANCHOR_UTC_MINUTES;
     if (realMinutesSinceAnchor < 0) { realMinutesSinceAnchor += 24 * 60; }
     let gameMinutes = realMinutesSinceAnchor * TIME_SCALE;
@@ -16,9 +18,9 @@ export function getGameTime(utcDate) {
 }
 
 export function updateLiveClocks() {
-    const now = new Date();
-    dom.localTimeDisplay.textContent = now.toLocaleTimeString();
-    const gameTime = getGameTime(now);
+    const now = DateTime.local();
+    dom.localTimeDisplay.textContent = now.toLocaleString(DateTime.TIME_WITH_SECONDS);
+    const gameTime = getGameTime(now.toUTC());
     const gameHours = pad(gameTime.hours);
     const gameMinutes = pad(gameTime.minutes);
     dom.gameTimeDisplay.textContent = `${gameHours}:${gameMinutes}`;
@@ -32,15 +34,15 @@ export function getDetailedDayNightIcon(hours) {
     return '🌙';
 }
 
-export function formatTime(d) { return pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes()); }
+export function formatTime(d) { return d.toUTC().toFormat('HH:mm'); }
 
 export function formatDateForDisplay(d) {
     const months = currentLangData.months || ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-    return `${d.getDate()} de ${months[d.getMonth()]} de ${d.getFullYear()}`;
+    return `${d.day} de ${months[d.month - 1]} de ${d.year}`;
 }
 
 export function formatDateForDisplayShort(d) {
-    const day = d.getUTCDate();
+    const day = d.day;
     const months = currentLangData.months_short || ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-    return `${day} ${months[d.getUTCMonth()]}`;
+    return `${day} ${months[d.month - 1]}`;
 }

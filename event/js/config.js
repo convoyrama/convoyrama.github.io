@@ -2,41 +2,41 @@ export const timezoneRegions = {
     hispano: {
         name: 'region_hispano',
         zones: [
-            { offset: -6, key: 'tz_mx_gt_hn_cr' },
-            { offset: -5, key: 'tz_pe_ec_co' },
-            { offset: -4.5, key: 'tz_ve' },
-            { offset: -4, key: 'tz_bo_cl_py' },
-            { offset: -3, key: 'tz_uy_ar_br' },
-            { offset: 1, key: 'tz_es' }
+            { iana_tz: 'America/Mexico_City', key: 'tz_mx_gt_hn_cr' },
+            { iana_tz: 'America/Lima', key: 'tz_pe_ec_co' },
+            { iana_tz: 'America/Caracas', key: 'tz_ve' },
+            { iana_tz: 'America/La_Paz', key: 'tz_bo_cl_py' },
+            { iana_tz: 'America/Montevideo', key: 'tz_uy_ar_br' },
+            { iana_tz: 'Europe/Madrid', key: 'tz_es' }
         ]
     },
     lusofono: {
         name: 'region_lusofono',
         zones: [
-            { offset: -4, key: 'tz_br_manaus' },
-            { offset: -3, key: 'tz_br_brasilia' },
-            { offset: 0, key: 'tz_pt_gw' },
-            { offset: 1, key: 'tz_es_ma_ao' },
-            { offset: 2, key: 'tz_mz' }
+            { iana_tz: 'America/Manaus', key: 'tz_br_manaus' },
+            { iana_tz: 'America/Sao_Paulo', key: 'tz_br_brasilia' },
+            { iana_tz: 'Europe/Lisbon', key: 'tz_pt_gw' },
+            { iana_tz: 'Europe/Madrid', key: 'tz_es_ma_ao' },
+            { iana_tz: 'Africa/Maputo', key: 'tz_mz' }
         ]
     },
     north_america: {
         name: 'region_north_america',
         zones: [
-            { offset: -8, key: 'tz_us_pst' },
-            { offset: -7, key: 'tz_us_mst' },
-            { offset: -6, key: 'tz_us_cst' },
-            { offset: -5, key: 'tz_us_est' },
-            { offset: 0, key: 'tz_gb' }
+            { iana_tz: 'America/Los_Angeles', key: 'tz_us_pst' },
+            { iana_tz: 'America/Denver', key: 'tz_us_mst' },
+            { iana_tz: 'America/Chicago', key: 'tz_us_cst' },
+            { iana_tz: 'America/New_York', key: 'tz_us_est' },
+            { iana_tz: 'Europe/London', key: 'tz_gb' }
         ]
     },
     europe: {
         name: 'region_europe',
         zones: [
-            { offset: 0, key: 'tz_pt_gb_ie' },
-            { offset: 1, key: 'tz_es_fr_it_de_pl' },
-            { offset: 2, key: 'tz_gr_fi' },
-            { offset: 3, key: 'tz_ru_tr' }
+            { iana_tz: 'Europe/London', key: 'tz_pt_gb_ie' },
+            { iana_tz: 'Europe/Berlin', key: 'tz_es_fr_it_de_pl' },
+            { iana_tz: 'Europe/Athens', key: 'tz_gr_fi' },
+            { iana_tz: 'Europe/Moscow', key: 'tz_ru_tr' }
         ]
     }
 };
