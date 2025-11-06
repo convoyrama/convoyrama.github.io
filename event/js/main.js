@@ -109,7 +109,7 @@ function performDownload() {
 
             const departureOffsetMinutes = parseInt(dom.departureTimeOffset.value, 10);
             const departureDateTime = meetingDateTime.plus({ minutes: departureOffsetMinutes });
-            const arrivalDateTime = departureDateTime.plus({ minutes: 50 });
+            const arrivalDateTime = departureDateTime.plus({ minutes: 45 }); // 45 real minutes after departure
 
             const metadata = {
                 eventName: dom.customEventName.value || state.currentLangData.canvas_default_event_name || "Evento Personalizado",
@@ -121,6 +121,8 @@ function performDownload() {
                 meetingTimestamp: meetingDateTime.toUnixInteger(),
                 departureTimestamp: departureDateTime.toUnixInteger(),
                 arrivalTimestamp: arrivalDateTime.toUnixInteger(),
+                meetingGameTime: { hours: meetingGameTime.hours, minutes: meetingGameTime.minutes },
+                arrivalGameTime: { hours: arrivalGameTime.hours, minutes: arrivalGameTime.minutes },
                 ianaTimeZone: zone,
                 utcOffsetMinutes: meetingDateTime.offset,
                 generatedAt: DateTime.local().toISO(),
@@ -370,6 +372,4 @@ function init() {
     drawCanvas();
     updateInGameTimeEmojis();
 }
-}
-
 window.onload = init;
