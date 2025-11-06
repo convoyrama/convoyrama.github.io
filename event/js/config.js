@@ -45,8 +45,6 @@ export const timezoneRegions = {
         zones: [
             { iana_tz: 'America/Los_Angeles', key: 'tz_us_pst' },
             { iana_tz: 'America/New_York', key: 'tz_us_est' },
-            { iana_tz: 'America/Mexico_City', key: 'tz_mx_gt_hn_cr' },
-            { iana_tz: 'America/Sao_Paulo', key: 'tz_br_brasilia' },
             { iana_tz: 'America/Montevideo', key: 'tz_uy_ar_br' },
             { iana_tz: 'America/Lima', key: 'tz_pe_ec_co' },
             { iana_tz: 'Europe/Madrid', key: 'tz_es' },
