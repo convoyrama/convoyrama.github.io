@@ -166,43 +166,41 @@ function init() {
     const flags = document.querySelectorAll(".flag-emoji");
     flags.forEach(flag => { flag.addEventListener("click", () => { const lang = flag.getAttribute("data-lang"); loadLanguage(lang); flags.forEach(f => f.classList.remove('selected')); flag.classList.add('selected'); }); });
     // Populate dom object after DOM is ready
-    Object.assign(dom, {
-        customDate: document.getElementById("custom-date"),
-        customTime: document.getElementById("custom-time"),
-        customEventName: document.getElementById("custom-event-name"),
-        customEventLink: document.getElementById("custom-event-link"),
-        customStartPlace: document.getElementById("custom-start-place"),
-        customDestination: document.getElementById("custom-destination"),
-        customServer: document.getElementById("custom-server"),
-        customEventDescription: document.getElementById("custom-event-description"),
-        departureTimeOffset: document.getElementById("departure-time-offset"),
-        ingameEmojiDisplay: document.getElementById("ingame-emoji-display"),
-        localTimeDisplay: document.getElementById("local-time-display"),
-        gameTimeDisplay: document.getElementById("game-time-display"),
-        gameTimeEmoji: document.getElementById("game-time-emoji"),
-        regionSelect: document.getElementById("region-select"),
-        manualOffsetSelect: document.getElementById("manual-offset-select"),
-        customDateDisplay: document.getElementById("custom-date-display"),
-        copyCustomInfo: document.getElementById("copy-custom-info"),
-        copyTmpBtn: document.getElementById("copy-tmp-btn"),
-        tmpImagesToggle: document.getElementById("tmp-images-toggle"),
-        mapCanvas: document.getElementById("map-canvas"),
-        downloadCanvas: document.getElementById("download-canvas"),
-        waypointToggle: document.getElementById("waypoint-toggle"),
-        textSize: document.getElementById("text-size"),
-        textStyle: document.getElementById("text-style"),
-        textBackgroundOpacity: document.getElementById("text-background-opacity"),
-        resetCanvas: document.getElementById("reset-canvas"),
-        mapUpload: document.getElementById("map-upload"),
-        circleUploadTop: document.getElementById("circle-upload-top"),
-        circleUploadBottom: document.getElementById("circle-upload-bottom"),
-        logoUpload: document.getElementById("logo-upload"),
-        backgroundUpload: document.getElementById("background-upload"),
-        detailUpload: document.getElementById("detail-upload"),
-        waypointUpload: document.getElementById("waypoint-upload"),
-        customImageUpload: document.getElementById("custom-image-upload"),
-        downloadCustomImageButton: document.getElementById("download-custom-image"),
-    });
+    dom.customDate = document.getElementById("custom-date");
+    dom.customTime = document.getElementById("custom-time");
+    dom.customEventName = document.getElementById("custom-event-name");
+    dom.customEventLink = document.getElementById("custom-event-link");
+    dom.customStartPlace = document.getElementById("custom-start-place");
+    dom.customDestination = document.getElementById("custom-destination");
+    dom.customServer = document.getElementById("custom-server");
+    dom.customEventDescription = document.getElementById("custom-event-description");
+    dom.departureTimeOffset = document.getElementById("departure-time-offset");
+    dom.ingameEmojiDisplay = document.getElementById("ingame-emoji-display");
+    dom.localTimeDisplay = document.getElementById("local-time-display");
+    dom.gameTimeDisplay = document.getElementById("game-time-display");
+    dom.gameTimeEmoji = document.getElementById("game-time-emoji");
+    dom.regionSelect = document.getElementById("region-select");
+    dom.manualOffsetSelect = document.getElementById("manual-offset-select");
+    dom.customDateDisplay = document.getElementById("custom-date-display");
+    dom.copyCustomInfo = document.getElementById("copy-custom-info");
+    dom.copyTmpBtn = document.getElementById("copy-tmp-btn");
+    dom.tmpImagesToggle = document.getElementById("tmp-images-toggle");
+    dom.mapCanvas = document.getElementById("map-canvas");
+    dom.downloadCanvas = document.getElementById("download-canvas");
+    dom.waypointToggle = document.getElementById("waypoint-toggle");
+    dom.textSize = document.getElementById("text-size");
+    dom.textStyle = document.getElementById("text-style");
+    dom.textBackgroundOpacity = document.getElementById("text-background-opacity");
+    dom.resetCanvas = document.getElementById("reset-canvas");
+    dom.mapUpload = document.getElementById("map-upload");
+    dom.circleUploadTop = document.getElementById("circle-upload-top");
+    dom.circleUploadBottom = document.getElementById("circle-upload-bottom");
+    dom.logoUpload = document.getElementById("logo-upload");
+    dom.backgroundUpload = document.getElementById("background-upload");
+    dom.detailUpload = document.getElementById("detail-upload");
+    dom.waypointUpload = document.getElementById("waypoint-upload");
+    dom.customImageUpload = document.getElementById("custom-image-upload");
+    dom.downloadCustomImageButton = document.getElementById("download-custom-image");
 
     let uploadedImageBuffer = null;
 
