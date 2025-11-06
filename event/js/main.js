@@ -161,30 +161,63 @@ function init() {
     twemoji.parse(document.body);
     const flags = document.querySelectorAll(".flag-emoji");
     flags.forEach(flag => { flag.addEventListener("click", () => { const lang = flag.getAttribute("data-lang"); loadLanguage(lang); flags.forEach(f => f.classList.remove('selected')); flag.classList.add('selected'); }); });
-    const regionSelect = document.getElementById('region-select');
+    // Populate dom object after DOM is ready
+    Object.assign(dom, {
+        customDate: document.getElementById("custom-date"),
+        customTime: document.getElementById("custom-time"),
+        customEventName: document.getElementById("custom-event-name"),
+        customEventLink: document.getElementById("custom-event-link"),
+        customStartPlace: document.getElementById("custom-start-place"),
+        customDestination: document.getElementById("custom-destination"),
+        customServer: document.getElementById("custom-server"),
+        customEventDescription: document.getElementById("custom-event-description"),
+        departureTimeOffset: document.getElementById("departure-time-offset"),
+        ingameEmojiDisplay: document.getElementById("ingame-emoji-display"),
+        localTimeDisplay: document.getElementById("local-time-display"),
+        gameTimeDisplay: document.getElementById("game-time-display"),
+        gameTimeEmoji: document.getElementById("game-time-emoji"),
+        regionSelect: document.getElementById("region-select"),
+        manualOffsetSelect: document.getElementById("manual-offset-select"),
+        customDateDisplay: document.getElementById("custom-date-display"),
+        copyCustomInfo: document.getElementById("copy-custom-info"),
+        copyTmpBtn: document.getElementById("copy-tmp-btn"),
+        tmpImagesToggle: document.getElementById("tmp-images-toggle"),
+        mapCanvas: document.getElementById("map-canvas"),
+        downloadCanvas: document.getElementById("download-canvas"),
+        waypointToggle: document.getElementById("waypoint-toggle"),
+        textSize: document.getElementById("text-size"),
+        textStyle: document.getElementById("text-style"),
+        textBackgroundOpacity: document.getElementById("text-background-opacity"),
+        resetCanvas: document.getElementById("reset-canvas"),
+        mapUpload: document.getElementById("map-upload"),
+        circleUploadTop: document.getElementById("circle-upload-top"),
+        circleUploadBottom: document.getElementById("circle-upload-bottom"),
+        logoUpload: document.getElementById("logo-upload"),
+        backgroundUpload: document.getElementById("background-upload"),
+        detailUpload: document.getElementById("detail-upload"),
+        waypointUpload: document.getElementById("waypoint-upload"),
+    });
+
+    // Initial population of region select
     for (const regionKey in timezoneRegions) {
         const option = document.createElement('option');
         option.value = regionKey;
         option.setAttribute('data-i18n', timezoneRegions[regionKey].name);
         option.textContent = regionKey; // Temporarily show key, will be translated
-        regionSelect.appendChild(option);
+        dom.regionSelect.appendChild(option);
     }
-    regionSelect.addEventListener('change', (e) => { state.setSelectedRegion(e.target.value); drawCanvas(); updateInGameTimeEmojis(); });
-    dom.manualOffsetSelect.addEventListener('change', () => { drawCanvas(); updateInGameTimeEmojis(); });
-    loadLanguage('es'); document.querySelector('.flag-emoji[data-lang="es"]').classList.add('selected');
-    updateLiveClocks(); setInterval(updateLiveClocks, 1000);
-    
+
+    // Set initial date and time using Luxon
     const userNow = DateTime.local();
     dom.customDate.value = userNow.toISODate();
     dom.customTime.value = userNow.toFormat('HH:mm');
     dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(userNow)}`;
-    
-    dom.customDate.onchange = () => { 
-        const customDateObj = DateTime.fromISO(dom.customDate.value);
-        dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(customDateObj)}`; 
-        drawCanvas(); 
-        updateInGameTimeEmojis(); 
-    };
+
+    // Initial calls after DOM is ready
+    updateLiveClocks(); 
+    setInterval(updateLiveClocks, 1000);
+    updateInGameTimeEmojis();
+    drawCanvas();
 
     dom.copyCustomInfo.onclick = () => {
         const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || state.currentLangData.canvas_default_event_name || "Evento Personalizado";
