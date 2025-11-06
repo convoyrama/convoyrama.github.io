@@ -95,6 +95,13 @@ function performDownload() {
                 return;
             }
 
+            let zone;
+            if (manualOffset === 'auto') {
+                zone = DateTime.local().zoneName;
+            } else {
+                zone = 'UTC';
+            }
+
             const departureOffsetMinutes = parseInt(dom.departureTimeOffset.value, 10);
             const departureDateTime = meetingDateTime.plus({ minutes: departureOffsetMinutes });
             const arrivalDateTime = departureDateTime.plus({ minutes: 45 }); // 45 real minutes after departure
