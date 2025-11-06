@@ -8,6 +8,7 @@ export async function fetchLanguage(lang) {
 export function applyTranslations(langData) {
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
+        console.log('Translating:', element, key, langData[key]);
         if (langData[key]) element.textContent = langData[key];
     });
     document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
