@@ -6,7 +6,6 @@ export const timezoneRegions = {
             { iana_tz: 'America/Lima', key: 'tz_pe_ec_co' },
             { iana_tz: 'America/Caracas', key: 'tz_ve' },
             { iana_tz: 'America/La_Paz', key: 'tz_bo_cl_py' },
-            { iana_tz: 'America/Sao_Paulo', key: 'tz_br_brasilia' },
             { iana_tz: 'America/Montevideo', key: 'tz_uy_ar_br' },
             { iana_tz: 'Europe/Madrid', key: 'tz_es' }
         ]
@@ -39,6 +38,22 @@ export const timezoneRegions = {
             { iana_tz: 'Europe/Athens', key: 'tz_gr_fi' },
             { iana_tz: 'Europe/Moscow', key: 'tz_ru_tr' }
         ]
+    },
+    universal: {
+        name: 'region_universal',
+        zones: [
+            { iana_tz: 'America/Los_Angeles', key: 'tz_us_pst' },
+            { iana_tz: 'America/New_York', key: 'tz_us_est' },
+            { iana_tz: 'America/Mexico_City', key: 'tz_mx_gt_hn_cr' },
+            { iana_tz: 'America/Sao_Paulo', key: 'tz_br_brasilia' },
+            { iana_tz: 'America/Buenos_Aires', key: 'tz_ar' },
+            { iana_tz: 'America/Lima', key: 'tz_pe_ec_co' },
+            { iana_tz: 'Europe/Madrid', key: 'tz_es' },
+            { iana_tz: 'Europe/Paris', key: 'tz_fr' },
+            { iana_tz: 'Europe/Berlin', key: 'tz_de' },
+            { iana_tz: 'Europe/Moscow', key: 'tz_ru' },
+            { iana_tz: 'Asia/Shanghai', key: 'tz_cn' }
+        ]
     }
 };
 
@@ -62,5 +77,10 @@ export const timezoneCountryCodes = {
     'tz_pt_gb_ie': ['PT', 'GB', 'IE'],
     'tz_es_fr_it_de_pl': ['ES', 'FR', 'IT', 'DE', 'PL'],
     'tz_gr_fi': ['GR', 'FI'],
-    'tz_ru_tr': ['RU', 'TR']
+    'tz_ru_tr': ['RU', 'TR'],
+    'tz_ar': ['AR'],
+    'tz_fr': ['FR'],
+    'tz_de': ['DE'],
+    'tz_ru': ['RU'],
+    'tz_cn': ['CN']
 };

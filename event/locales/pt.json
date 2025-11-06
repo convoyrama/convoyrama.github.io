@@ -76,6 +76,7 @@
   "region_lusofono": "Lusófono",
   "region_north_america": "América do Norte",
   "region_europe": "Europa",
+  "region_universal": "Universal",
 
   "tz_mx_gt_hn_cr": "MX, GT, HN, CR",
   "tz_pe_ec_co": "PE, EC, CO",
@@ -83,6 +84,11 @@
   "tz_bo_cl_py": "BO, CL, PY",
   "tz_uy_ar_br": "UY, AR, BR",
   "tz_es": "ES",
+  "tz_ar": "AR",
+  "tz_fr": "FR",
+  "tz_de": "DE",
+  "tz_ru": "RU",
+  "tz_cn": "CN",
 
   "tz_br_manaus": "BR (Manaus)",
   "tz_br_brasilia": "BR (Brasília)",
