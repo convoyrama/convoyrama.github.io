@@ -124,5 +124,13 @@
   "ingame_time_title": "Hora ingame",
   "meeting_label": "Reunión",
   "departure_label": "Salida",
-  "arrival_label": "Llegada aprox"
+  "arrival_label": "Llegada aprox",
+  "label_custom_image_upload": "Subir Imagen Personalizada:",
+  "btn_download_custom_image": "Descargar Imagen con Datos",
+  "image_uploaded_success": "Imagen cargada con éxito.",
+  "image_upload_error": "Por favor, sube un archivo PNG.",
+  "no_image_to_download": "Por favor, sube una imagen primero.",
+  "image_download_success": "Imagen descargada con éxito.",
+  "image_download_error": "Error al descargar la imagen.",
+  "error_invalid_date": "Fecha u hora inválida."
 }

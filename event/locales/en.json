@@ -124,5 +124,13 @@
   "ingame_time_title": "In-game time",
   "meeting_label": "Meeting",
   "departure_label": "Departure",
-  "arrival_label": "Arrival approx"
+  "arrival_label": "Arrival approx",
+  "label_custom_image_upload": "Upload Custom Image:",
+  "btn_download_custom_image": "Download Image with Data",
+  "image_uploaded_success": "Image uploaded successfully.",
+  "image_upload_error": "Please upload a PNG file.",
+  "no_image_to_download": "Please upload an image first.",
+  "image_download_success": "Image downloaded successfully.",
+  "image_download_error": "Error downloading image.",
+  "error_invalid_date": "Invalid date or time."
 }

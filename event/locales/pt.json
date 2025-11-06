@@ -124,5 +124,13 @@
   "ingame_time_title": "Hora no jogo",
   "meeting_label": "Encontro",
   "departure_label": "Partida",
-  "arrival_label": "Chegada aprox"
+  "arrival_label": "Chegada aprox",
+  "label_custom_image_upload": "Carregar Imagem Personalizada:",
+  "btn_download_custom_image": "Baixar Imagem com Dados",
+  "image_uploaded_success": "Imagem carregada com sucesso.",
+  "image_upload_error": "Por favor, carregue um arquivo PNG.",
+  "no_image_to_download": "Por favor, carregue uma imagem primeiro.",
+  "image_download_success": "Imagem baixada com sucesso.",
+  "image_download_error": "Erro ao baixar a imagem.",
+  "error_invalid_date": "Data ou hora inválida."
 }
