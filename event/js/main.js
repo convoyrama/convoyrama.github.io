@@ -151,10 +151,7 @@ function performDownload() {
 
 async function init() {
     twemoji.parse(document.body);
-    await loadLanguage('es');
-    document.querySelector('.flag-emoji[data-lang="es"]').classList.add('selected');
-    const flags = document.querySelectorAll(".flag-emoji");
-    flags.forEach(flag => { flag.addEventListener("click", () => { const lang = flag.getAttribute("data-lang"); loadLanguage(lang); flags.forEach(f => f.classList.remove('selected')); flag.classList.add('selected'); }); });
+    
     // Populate dom object after DOM is ready
     dom.customDate = document.getElementById("custom-date");
     dom.customTime = document.getElementById("custom-time");
@@ -203,6 +200,11 @@ async function init() {
     dom.zoomOutDetail = document.getElementById("zoom-out-detail");
     dom.zoomInWaypoint = document.getElementById("zoom-in-waypoint");
     dom.zoomOutWaypoint = document.getElementById("zoom-out-waypoint");
+
+    await loadLanguage('es');
+    document.querySelector('.flag-emoji[data-lang="es"]').classList.add('selected');
+    const flags = document.querySelectorAll(".flag-emoji");
+    flags.forEach(flag => { flag.addEventListener("click", () => { const lang = flag.getAttribute("data-lang"); loadLanguage(lang); flags.forEach(f => f.classList.remove('selected')); flag.classList.add('selected'); }); });
 
 
 
