@@ -202,8 +202,7 @@ function init() {
     dom.backgroundUpload = document.getElementById("background-upload");
     dom.detailUpload = document.getElementById("detail-upload");
     dom.waypointUpload = document.getElementById("waypoint-upload");
-    dom.customImageUpload = document.getElementById("custom-image-upload");
-    dom.downloadCustomImageButton = document.getElementById("download-custom-image");
+
     dom.zoomIn = document.getElementById("zoom-in");
     dom.zoomOut = document.getElementById("zoom-out");
     dom.zoomInTop = document.getElementById("zoom-in-top");
@@ -215,7 +214,7 @@ function init() {
     dom.zoomInWaypoint = document.getElementById("zoom-in-waypoint");
     dom.zoomOutWaypoint = document.getElementById("zoom-out-waypoint");
 
-    let uploadedImageBuffer = null;
+
 
     // Initial population of region select
     for (const regionKey in timezoneRegions) {
@@ -423,114 +422,10 @@ function init() {
     dom.resetCanvas.addEventListener("click", () => { state.setMapImage(null); state.setCircleImageTop(null); state.setCircleImageBottom(null); state.setLogoImage(null); state.setBackgroundImage(null); state.setDetailImage(null); state.setCircleImageWaypoint(null); dom.mapUpload.value = ""; dom.circleUploadTop.value = ""; dom.circleUploadBottom.value = ""; dom.logoUpload.value = ""; dom.backgroundUpload.value = ""; dom.detailUpload.value = ""; dom.waypointUpload.value = ""; drawCanvas(); });
     drawCanvas();
     updateInGameTimeEmojis();
-    dom.socialLinkInput.addEventListener('input', (e) => {
-        state.socialLink = e.target.value;
-        debouncedGenerate();
-    });
 
-    dom.customImageUpload.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file && file.type === 'image/png') {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                uploadedImageBuffer = e.target.result; // Store as ArrayBuffer
-                showCopyMessage(state.currentLangData.image_uploaded_success || "Imagen cargada con éxito.");
-            };
-            reader.readAsArrayBuffer(file);
-        } else {
-            uploadedImageBuffer = null;
-            showCopyMessage(state.currentLangData.image_upload_error || "Por favor, sube un archivo PNG.", true);
-        }
-    });
 
-    dom.downloadCustomImageButton.addEventListener('click', async () => {
-        if (!uploadedImageBuffer) {
-            showCopyMessage(state.currentLangData.no_image_to_download || "Por favor, sube una imagen primero.", true);
-            return;
-        }
 
-        const customDateValue = dom.customDate.value;
-        const customTimeValue = dom.customTime.value;
-        const selectedRegionKey = dom.regionSelect.value;
-        const selectedRegion = timezoneRegions[selectedRegionKey];
-        let zone = 'UTC';
-        if (selectedRegion && selectedRegion.zones.length > 0) {
-            zone = selectedRegion.zones[0].iana_tz;
-        }
 
-        let meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone });
 
-        const manualOffset = dom.manualOffsetSelect.value;
-        if (manualOffset !== 'auto') {
-            const offsetMinutes = parseInt(manualOffset, 10) * 60;
-            meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`).set({ 
-                zone: 'utc',
-                hour: meetingDateTime.hour,
-                minute: meetingDateTime.minute,
-                second: meetingDateTime.second,
-                millisecond: meetingDateTime.millisecond
-            }).plus({ minutes: -offsetMinutes });
-        }
-
-        if (!meetingDateTime.isValid) {
-            console.error("Invalid meetingDateTime for metadata:", meetingDateTime.invalidExplanation);
-            showCopyMessage(state.currentLangData.error_invalid_date || "Fecha u hora inválida.", true);
-            return;
-        }
-
-        const departureOffsetMinutes = parseInt(dom.departureTimeOffset.value, 10);
-        const departureDateTime = meetingDateTime.plus({ minutes: departureOffsetMinutes });
-        const arrivalDateTime = departureDateTime.plus({ minutes: 45 });
-
-        const meetingGameTime = getGameTime(meetingDateTime.toUTC());
-        const arrivalGameTime = getGameTime(arrivalDateTime.toUTC());
-
-        const metadata = {
-            eventName: dom.customEventName.value || state.currentLangData.canvas_default_event_name || "Evento Personalizado",
-            eventLink: dom.customEventLink.value || "https://convoyrama.github.io/events.html",
-            startPlace: dom.customStartPlace.value || "Sin especificar",
-            destination: dom.customDestination.value || "Sin especificar",
-            server: dom.customServer.value || "Sin especificar",
-            description: dom.customEventDescription.value || "Sin descripción",
-            meetingTimestamp: meetingDateTime.toUnixInteger(),
-            departureTimestamp: departureDateTime.toUnixInteger(),
-            arrivalTimestamp: arrivalDateTime.toUnixInteger(),
-            meetingGameTime: { hours: meetingGameTime.hours, minutes: meetingGameTime.minutes },
-            arrivalGameTime: { hours: arrivalGameTime.hours, minutes: arrivalGameTime.minutes },
-            ianaTimeZone: zone,
-            utcOffsetMinutes: meetingDateTime.offset,
-            generatedAt: DateTime.local().toISO(),
-        };
-
-        const jsonMetadata = JSON.stringify(metadata);
-
-        try {
-            const newPngBuffer = injectMetadataIntoPNG(uploadedImageBuffer, "convoyrama-event-data", jsonMetadata);
-            const newBlob = new Blob([newPngBuffer], { type: 'image/png' });
-
-            const tempLink = document.createElement('a');
-            tempLink.href = URL.createObjectURL(newBlob);
-            
-            const eventDate = dom.customDate.value;
-            let dateString;
-            if (eventDate) {
-                dateString = eventDate;
-            } else {
-                const today = DateTime.local();
-                dateString = today.toISODate();
-            }
-            tempLink.download = `convoy-custom-map-${dateString}.png`;
-            
-            document.body.appendChild(tempLink);
-            tempLink.click();
-            document.body.removeChild(tempLink);
-            
-            URL.revokeObjectURL(tempLink.href);
-            showCopyMessage(state.currentLangData.image_download_success || "Imagen descargada con éxito.");
-        } catch (error) {
-            console.error("Error downloading custom image:", error);
-            showCopyMessage(state.currentLangData.image_download_error || "Error al descargar la imagen.", true);
-        }
-    });
 }
-window.onload = init;
+document.addEventListener('DOMContentLoaded', init);
