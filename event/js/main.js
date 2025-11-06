@@ -80,27 +80,15 @@ function performDownload() {
 
             const customDateValue = dom.customDate.value;
             const customTimeValue = dom.customTime.value;
-            const selectedRegionKey = dom.regionSelect.value;
-            const selectedRegion = timezoneRegions[selectedRegionKey];
-            let zone = 'UTC';
-            if (selectedRegion && selectedRegion.zones.length > 0) {
-                zone = selectedRegion.zones[0].iana_tz;
-            }
-
-            let meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone });
-
-            const manualOffset = dom.manualOffsetSelect.value;
-            if (manualOffset !== 'auto') {
-                const offsetMinutes = parseInt(manualOffset, 10) * 60;
-                meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`).set({ 
-                    zone: 'utc',
-                    hour: meetingDateTime.hour,
-                    minute: meetingDateTime.minute,
-                    second: meetingDateTime.second,
-                    millisecond: meetingDateTime.millisecond
-                }).plus({ minutes: -offsetMinutes });
-            }
-
+                    let meetingDateTime;
+                    const manualOffset = dom.manualOffsetSelect.value;
+            
+                    if (manualOffset === 'auto') {
+                        meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`);
+                    } else {
+                        const offsetMinutes = parseInt(manualOffset, 10) * 60;
+                        meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone: 'utc' }).plus({ minutes: -offsetMinutes });
+                    }
             if (!meetingDateTime.isValid) {
                 console.error("Invalid meetingDateTime for metadata:", meetingDateTime.invalidExplanation);
                 // Proceed without metadata or throw error, depending on desired behavior
@@ -299,17 +287,12 @@ function init() {
             return;
         }
 
-        const selectedRegionKey = dom.regionSelect.value;
-        const selectedRegion = timezoneRegions[selectedRegionKey];
-        let baseZone = 'UTC';
-        if (selectedRegion && selectedRegion.zones.length > 0) {
-            baseZone = selectedRegion.zones[0].iana_tz;
-        }
-
-        let meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone: baseZone });
-
+        let meetingDateTime;
         const manualOffset = dom.manualOffsetSelect.value;
-        if (manualOffset !== 'auto') {
+
+        if (manualOffset === 'auto') {
+            meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`);
+        } else {
             const offsetMinutes = parseInt(manualOffset, 10) * 60;
             meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone: 'utc' }).plus({ minutes: -offsetMinutes });
         }

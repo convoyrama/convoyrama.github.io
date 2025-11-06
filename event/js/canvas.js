@@ -218,17 +218,12 @@ export function drawCanvas() {
     const textLines = [ `${state.currentLangData.canvas_server || 'Servidor:'} ${customServerValue}`, `${state.currentLangData.canvas_departure || 'Partida:'} ${customStartPlaceValue}`, `${state.currentLangData.canvas_destination || 'Destino:'} ${customDestinationValue}`, "", state.currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:' ];
 
     if (customDateValue && customTimeValue) {
-        const selectedRegionKey = dom.regionSelect.value;
-        const selectedRegion = timezoneRegions[selectedRegionKey];
-        let zone = 'UTC';
-        if (selectedRegion && selectedRegion.zones.length > 0) {
-            zone = selectedRegion.zones[0].iana_tz;
-        }
-
-        let meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone });
-
+        let meetingDateTime;
         const manualOffset = dom.manualOffsetSelect.value;
-        if (manualOffset !== 'auto') {
+
+        if (manualOffset === 'auto') {
+            meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`);
+        } else {
             const offsetMinutes = parseInt(manualOffset, 10) * 60;
             meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone: 'utc' }).plus({ minutes: -offsetMinutes });
         }

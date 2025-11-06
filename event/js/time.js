@@ -34,7 +34,7 @@ export function getDetailedDayNightIcon(hours) {
     return '🌙';
 }
 
-export function formatTime(d) { return d.toUTC().toFormat('HH:mm'); }
+export function formatTime(d) { return d.toFormat('HH:mm'); }
 
 export function formatDateForDisplay(d) {
     const months = currentLangData.months || ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
