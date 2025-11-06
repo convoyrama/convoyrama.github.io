@@ -6,6 +6,7 @@
   "nav_license": "Licença",
   "nav_create_event": "Criar Evento",
   "header_title": "Criar Evento Personalizado",
+  "warning_message": "Esta página pode demorar a carregar.",
   "local_time": "Hora Local:",
   "ingame_time": "Hora no Jogo:",
   "event_section_title": "Criar Evento Personalizado",
