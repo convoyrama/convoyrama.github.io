@@ -255,13 +255,7 @@ function init() {
         const manualOffset = dom.manualOffsetSelect.value;
         if (manualOffset !== 'auto') {
             const offsetMinutes = parseInt(manualOffset, 10) * 60;
-            meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`).set({ 
-                zone: 'utc',
-                hour: meetingDateTime.hour,
-                minute: meetingDateTime.minute,
-                second: meetingDateTime.second,
-                millisecond: meetingDateTime.millisecond
-            }).plus({ minutes: -offsetMinutes });
+            meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone: 'utc' }).plus({ minutes: -offsetMinutes });
         }
 
         if (!meetingDateTime.isValid) {
@@ -317,13 +311,7 @@ function init() {
         const manualOffset = dom.manualOffsetSelect.value;
         if (manualOffset !== 'auto') {
             const offsetMinutes = parseInt(manualOffset, 10) * 60;
-            meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`).set({ 
-                zone: 'utc',
-                hour: meetingDateTime.hour,
-                minute: meetingDateTime.minute,
-                second: meetingDateTime.second,
-                millisecond: meetingDateTime.millisecond
-            }).plus({ minutes: -offsetMinutes });
+            meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone: 'utc' }).plus({ minutes: -offsetMinutes });
         }
 
         if (!meetingDateTime.isValid) {

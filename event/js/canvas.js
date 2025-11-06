@@ -218,25 +218,22 @@ export function drawCanvas() {
     const textLines = [ `${state.currentLangData.canvas_server || 'Servidor:'} ${customServerValue}`, `${state.currentLangData.canvas_departure || 'Partida:'} ${customStartPlaceValue}`, `${state.currentLangData.canvas_destination || 'Destino:'} ${customDestinationValue}`, "", state.currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:' ];
 
     if (customDateValue && customTimeValue) {
-        const [hh, mm] = customTimeValue.split(":").map(Number);
-        const dateParts = customDateValue.split('-');
-        const year = parseInt(dateParts[0], 10);
-        const month = parseInt(dateParts[1], 10) - 1;
-        const day = parseInt(dateParts[2], 10);
-        const customDateObj = new Date(year, month, day);
-        customDateObj.setHours(hh, mm, 0, 0);
+        const selectedRegionKey = dom.regionSelect.value;
+        const selectedRegion = timezoneRegions[selectedRegionKey];
+        let zone = 'UTC';
+        if (selectedRegion && selectedRegion.zones.length > 0) {
+            zone = selectedRegion.zones[0].iana_tz;
+        }
 
-        const browserOffsetHours = new Date().getTimezoneOffset() / 60;
-        let finalOffsetHours = browserOffsetHours;
+        let meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone });
 
         const manualOffset = dom.manualOffsetSelect.value;
         if (manualOffset !== 'auto') {
-            finalOffsetHours = -parseInt(manualOffset, 10);
+            const offsetMinutes = parseInt(manualOffset, 10) * 60;
+            meetingDateTime = DateTime.fromISO(`${customDateValue}T${customTimeValue}:00`, { zone: 'utc' }).plus({ minutes: -offsetMinutes });
         }
-
-        const offsetCorrection = (browserOffsetHours - finalOffsetHours) * 3600000;
-        const correctTimestamp = customDateObj.getTime() - offsetCorrection;
-        const utcBaseTime = new Date(correctTimestamp);
+        
+        const utcBaseTime = meetingDateTime.toJSDate();
         const activeTimezoneGroup = timezoneRegions[state.selectedRegion].zones;
         const datesByDay = new Map();
         activeTimezoneGroup.forEach(tz => {
