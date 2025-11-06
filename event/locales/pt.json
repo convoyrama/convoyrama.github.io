@@ -90,10 +90,10 @@
   "tz_es_ma_ao": "ES, MA, AO",
   "tz_mz": "MZ",
 
-  "tz_us_pst": "EUA PST",
-  "tz_us_mst": "EUA MST",
-  "tz_us_cst": "EUA CST",
-  "tz_us_est": "EUA EST",
+  "tz_us_pst": "EUA (PST)",
+  "tz_us_mst": "EUA (MST)",
+  "tz_us_cst": "EUA (CST)",
+  "tz_us_est": "EUA (EST)",
   "tz_gb": "GB",
 
   "tz_pt_gb_ie": "PT, GB, IE",
