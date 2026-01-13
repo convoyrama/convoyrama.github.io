@@ -142,7 +142,18 @@ export async function generateImage(state) {
     // Prepare data for drawing
     const isOwner = state.isVtcOwner;
     const countryName = selectedCountry ? (selectedCountry[`name_${state.language}`] || selectedCountry.name_en) : '';
-    const dateStr = state.currentDate ? `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}` : '';
+    
+    // Date logic: Prioritize verified join date, fallback to current date
+    let dateStr = state.currentDate ? `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}` : '';
+    if (state.verifiedJoinDate) {
+        const d = new Date(state.verifiedJoinDate.replace(' ', 'T'));
+        if (!isNaN(d.getTime())) {
+            const day = d.getDate().toString().padStart(2, '0');
+            const month = (d.getMonth() + 1).toString().padStart(2, '0');
+            const year = d.getFullYear();
+            dateStr = `${day}/${month}/${year}`;
+        }
+    }
 
     // Define text lines in order
     const lines = [
