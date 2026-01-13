@@ -5,6 +5,8 @@ import { getCurrentDate, loadCountries, loadStarMap, loadTitles, loadLevelRanges
 import { generateImage, performDownload } from './canvasv2.js';
 import { generateUserbar } from './userbar.js';
 
+const HMAC_SECRET_KEY = 'TPPrZX8QA4DH3ekn4JKk';
+
 const state = {
     name: '',
     country: '',
@@ -195,39 +197,17 @@ function renderRankLegend() {
 
     const verificationIntro = document.createElement('p');
     verificationIntro.className = 'rank-legend-intro';
-    verificationIntro.innerHTML = t.verification_intro; // Use innerHTML for the instructions
+    verificationIntro.innerHTML = t.verification_intro; // Use innerHTML for the link
     verificationWrapper.appendChild(verificationIntro);
 
     const inputGroup = document.createElement('div');
     inputGroup.className = 'input-group';
     inputGroup.style.textAlign = 'center';
-    inputGroup.style.display = 'flex';
-    inputGroup.style.flexDirection = 'column';
-    inputGroup.style.gap = '10px';
-    inputGroup.style.alignItems = 'center';
 
-    // Button to open API
-    const openApiBtn = document.createElement('button');
-    openApiBtn.textContent = t.open_api_button || "Open API Link";
-    openApiBtn.className = "info-tooltip"; // Reusing existing button style class
-    openApiBtn.style.padding = "8px 16px";
-    openApiBtn.style.cursor = "pointer";
-    openApiBtn.onclick = () => {
-        const { userId } = generateLicenseNumber(state.truckersmpLink, "", state.country);
-        if (userId) {
-            window.open(`https://api.truckersmp.com/v2/player/${userId}`, '_blank');
-        } else {
-            alert(t.invalidLink || "Please enter a valid TruckersMP profile link first.");
-        }
-    };
-    inputGroup.appendChild(openApiBtn);
-
-    const verificationInput = document.createElement('textarea');
+    const verificationInput = document.createElement('input');
+    verificationInput.type = 'text';
     verificationInput.id = 'verificationCodeInput';
     verificationInput.placeholder = t.verification_placeholder;
-    verificationInput.style.width = "90%";
-    verificationInput.style.height = "60px";
-    verificationInput.style.marginTop = "10px";
     inputGroup.appendChild(verificationInput);
 
     const verificationStatus = document.createElement('div');
@@ -245,7 +225,7 @@ function renderRankLegend() {
         generateUserbar(state, dom);
     }, 100);
     dom.verificationCodeInput.addEventListener('input', (e) => {
-        handleJsonVerification(e.target.value, debouncedGenerate);
+        handleVerification(e.target.value, debouncedGenerate);
     });
 }
 
@@ -534,11 +514,12 @@ function addEventListeners(debouncedGenerate) {
 
 }
 
-async function handleJsonVerification(jsonText, callback) {
+async function handleVerification(code, callback) {
     const t = translations[state.language] || translations.es;
-    state.isVtcOwner = false; // Reset VTC owner status
+    // Reset VTC owner status at the beginning of every verification attempt
+    state.isVtcOwner = false;
 
-    if (!jsonText || jsonText.trim() === "") {
+    if (!code) {
         state.verifiedJoinDate = null;
         dom.verificationStatus.textContent = '';
         dom.nameInput.disabled = false;
@@ -548,63 +529,97 @@ async function handleJsonVerification(jsonText, callback) {
         return;
     }
 
+    const parts = code.split('.');
+    if (parts.length !== 2) {
+        state.verifiedJoinDate = null;
+        dom.verificationStatus.textContent = t.verification_invalid;
+        dom.verificationStatus.style.color = 'red';
+        dom.nameInput.disabled = false;
+        dom.truckersmpLinkInput.disabled = false;
+        dom.companyLinkInput.disabled = false;
+        callback();
+        return;
+    }
+
+    const [encodedPayload, signature] = parts;
+
     try {
-        const data = JSON.parse(jsonText);
+        const binaryString = atob(encodedPayload);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        const payload = new TextDecoder().decode(bytes);
 
-        // Basic validation of TruckersMP API response structure
-        if (data.error === false && data.response) {
-            const player = data.response;
-            
-            // Extract key data
-            const joinDate = player.joinDate;
-            const name = player.name;
-            const tmpId = player.id;
-            
-            // Validate that the pasted JSON matches the entered TMP ID (prevent cheating with someone else's JSON)
-            const { userId: currentInputId } = generateLicenseNumber(state.truckersmpLink, "", "");
-            
-            if (currentInputId && parseInt(currentInputId) !== tmpId) {
-                state.verifiedJoinDate = null;
-                dom.verificationStatus.textContent = t.verification_mismatch;
-                dom.verificationStatus.style.color = 'orange';
-                callback();
-                return;
-            }
+        const key = await window.crypto.subtle.importKey(
+            'raw',
+            new TextEncoder().encode(HMAC_SECRET_KEY),
+            { name: 'HMAC', hash: 'SHA-256' },
+            false,
+            ['verify']
+        );
 
-            // Apply verified data
+        const signatureBytes = new Uint8Array(signature.match(/../g).map(h => parseInt(h, 16)));
+
+        const isValid = await window.crypto.subtle.verify(
+            'HMAC',
+            key,
+            signatureBytes,
+            new TextEncoder().encode(payload)
+        );
+
+        if (isValid) {
+            const payloadParts = payload.split('|');
+            const [verifiedUserId, joinDate, verifiedName] = payloadParts;
+            const vtcId = payloadParts.length > 3 ? payloadParts[3] : null;
+            const ownerId = payloadParts.length > 4 ? payloadParts[4] : null;
+
+            // Always update state with verified data first
             state.verifiedJoinDate = joinDate;
-            state.name = name;
-            
-            // Handle VTC data if present
-            if (player.vtc && player.vtc.inVTC && player.vtc.id) {
-                state.companyLink = `https://truckersmp.com/vtc/${player.vtc.id}`;
-                dom.companyLinkInput.value = state.companyLink;
-                dom.companyLinkInput.disabled = true; // Lock it as it comes from verification
+            state.name = verifiedName;
+            state.truckersmpLink = `https://truckersmp.com/user/${verifiedUserId}`;
+            if (vtcId) {
+                state.companyLink = `https://truckersmp.com/vtc/${vtcId}`;
             }
 
-            // Update UI
+            // Update UI and lock fields
             dom.verificationStatus.textContent = t.verification_success;
             dom.verificationStatus.style.color = 'green';
-            dom.nameInput.value = name;
-            dom.nameInput.disabled = true; // Lock verified name
+            dom.nameInput.value = verifiedName;
+            dom.truckersmpLinkInput.value = state.truckersmpLink;
+            dom.nameInput.disabled = true;
+            dom.truckersmpLinkInput.disabled = true;
 
-            // VTC Owner Verification Logic (Best Effort)
-            // If the user is in a VTC, we assume verified membership. 
-            // Full ownership verification isn't possible without VTC API call (blocked by CORS/Cloudflare).
-            // We can optionally set isVtcOwner = true if we trust memberID, but usually ownerID is separate.
-            // For now, we will NOT set isVtcOwner to true to avoid false positives, 
-            // unless we find a way to verify ownership from this JSON.
-            state.isVtcOwner = false; 
+            if (vtcId) {
+                dom.companyLinkInput.value = state.companyLink;
+                dom.companyLinkInput.disabled = true;
+            }
 
-            updateUserRank(); // Recalculate rank with accurate date
+            // Check for VTC ownership
+            if (vtcId && ownerId && verifiedUserId === ownerId) {
+                state.isVtcOwner = true;
+                console.log('VTC Ownership VERIFIED');
+            } else {
+                state.isVtcOwner = false;
+                console.log('VTC Ownership NOT verified or data not present');
+            }
+
+            updateUserRank(); // Recalculate rank with verified data
+            
         } else {
-            throw new Error("Invalid API response format");
+            state.verifiedJoinDate = null;
+            state.isVtcOwner = false;
+            dom.verificationStatus.textContent = t.verification_tampered;
+            dom.verificationStatus.style.color = 'red';
+            dom.nameInput.disabled = false;
+            dom.truckersmpLinkInput.disabled = false;
+            dom.companyLinkInput.disabled = false;
         }
     } catch (error) {
-        console.error('Verification error:', error);
+        console.error('Error during verification:', error);
         state.verifiedJoinDate = null;
         state.isVtcOwner = false;
-        dom.verificationStatus.textContent = t.verification_invalid; // Or detailed error
+        dom.verificationStatus.textContent = t.verification_error;
         dom.verificationStatus.style.color = 'red';
         dom.nameInput.disabled = false;
         dom.truckersmpLinkInput.disabled = false;
