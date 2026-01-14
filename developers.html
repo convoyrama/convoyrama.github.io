@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convoyrama | Documentación para Desarrolladores</title>
+    <meta name="description" content="Documentación técnica para integrar herramientas con las imágenes de Convoyrama.">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="icon" href="./assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: #fff; /* Texto blanco por defecto por el tema oscuro */
+            background-color: #2c2f33; /* Fondo oscuro base */
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #5AA519; /* Verde Convoyrama */
+            margin-top: 1.5em;
+        }
+        h1 { border-bottom: 2px solid #5AA519; padding-bottom: 10px; }
+        code {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #23272a;
+            padding: 2px 5px;
+            border-radius: 4px;
+            color: #e83e8c;
+        }
+        pre {
+            background-color: #23272a;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid #444;
+        }
+        pre code {
+            background-color: transparent;
+            color: #f8f9fa;
+            padding: 0;
+        }
+        .endpoint-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8em;
+            margin-right: 10px;
+            background-color: #7289da;
+            color: white;
+        }
+        .key-name { color: #61dafb; font-weight: bold; }
+        .string { color: #a3d9a5; }
+        .number { color: #f9ca24; }
+        .boolean { color: #ff7979; }
+        .comment { color: #6c757d; font-style: italic; }
+
+        footer {
+            margin-top: 50px;
+            border-top: 1px solid #444;
+            padding-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="id.html">Licencia</a>
+            <a href="event.html">Crear Evento</a>
+        </nav>
+        <p>Documentación para Desarrolladores (API de Imágenes)</p>
+    </header>
+
+    <div class="container">
+        <section>
+            <h1>Introducción</h1>
+            <p>
+                Las herramientas de Convoyrama (Generador de Licencias y Creador de Eventos) no solo crean imágenes visuales, sino que también incrustan <strong>metadatos estructurados (JSON)</strong> dentro de los archivos PNG generados.
+            </p>
+            <p>
+                Esto permite que bots de Discord (como <em>Robotito</em>) y otras aplicaciones lean la información directamente desde la imagen sin necesidad de OCR ni bases de datos externas.
+            </p>
+        </section>
+
+        <section>
+            <h2>¿Cómo funciona?</h2>
+            <p>
+                Los datos se almacenan en un <em>chunk</em> auxiliar de tipo <code>tEXt</code> dentro de la estructura del PNG. Usamos claves específicas (Keywords) para diferenciar el tipo de contenido.
+            </p>
+        </section>
+
+        <section>
+            <h2>1. Datos de Licencia</h2>
+            <p>Utilizado por el generador de licencias (<code>id.html</code>).</p>
+            <p><span class="endpoint-badge">KEYWORD</span> <code>convoyrama-data</code></p>
+            
+            <h3>Estructura JSON</h3>
+            <pre><code>{
+  <span class="key-name">"name"</span>: <span class="string">"Nombre del Usuario"</span>,
+  <span class="key-name">"license_number"</span>: <span class="string">"UY12345"</span>,
+  <span class="key-name">"country"</span>: <span class="string">"UY"</span>, <span class="comment">// Código ISO de 2 letras</span>
+  <span class="key-name">"rank"</span>: <span class="number">5</span>, <span class="comment">// Nivel calculado por antigüedad (1-12)</span>
+  <span class="key-name">"is_verified"</span>: <span class="boolean">true</span>, <span class="comment">// Si se validó con la API de TruckersMP</span>
+  <span class="key-name">"truckersmp_link"</span>: <span class="string">"https://truckersmp.com/user/..."</span>,
+  <span class="key-name">"vtc_link"</span>: <span class="string">"https://truckersmp.com/vtc/..."</span>,
+  <span class="key-name">"tmp_join_date"</span>: <span class="string">"2020-01-15 14:30:00"</span>, <span class="comment">// Fecha de registro en TMP</span>
+  <span class="key-name">"generated_at"</span>: <span class="string">"2023-10-27T10:00:00.000Z"</span>
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>2. Datos de Evento</h2>
+            <p>Utilizado por el creador de eventos personalizados (<code>event.html</code>).</p>
+            <p><span class="endpoint-badge">KEYWORD</span> <code>convoyrama-event-data</code></p>
+
+            <h3>Estructura JSON</h3>
+            <pre><code>{
+  <span class="key-name">"eventName"</span>: <span class="string">"Gran Convoy Semanal"</span>,
+  <span class="key-name">"eventLink"</span>: <span class="string">"https://truckersmp.com/events/..."</span>,
+  <span class="key-name">"description"</span>: <span class="string">"Descripción completa del evento..."</span>,
+  <span class="key-name">"server"</span>: <span class="string">"Simulation 1"</span>,
+  <span class="key-name">"startPlace"</span>: <span class="string">"Paris (Tradeaux)"</span>,
+  <span class="key-name">"destination"</span>: <span class="string">"Calais (Port)"</span>,
+  <span class="key-name">"meetingTimestamp"</span>: <span class="number">1704067200</span>, <span class="comment">// Timestamp Unix (segundos)</span>
+  <span class="key-name">"departureTimestamp"</span>: <span class="number">1704068100</span>,
+  <span class="key-name">"arrivalTimestamp"</span>: <span class="number">1704071100</span>,
+  <span class="key-name">"meetingGameTime"</span>: { <span class="key-name">"hours"</span>: <span class="number">14</span>, <span class="key-name">"minutes"</span>: <span class="number">30</span> }, <span class="comment">// Hora in-game</span>
+  <span class="key-name">"ianaTimeZone"</span>: <span class="string">"America/Montevideo"</span>
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Ejemplo de Implementación (Node.js)</h2>
+            <p>Puedes usar paquetes como <code>png-chunk-text</code> y <code>png-chunks-extract</code> para leer estos datos fácilmente.</p>
+            <pre><code>const extract = require('png-chunks-extract');
+const text = require('png-chunk-text');
+const fs = require('fs');
+
+// 1. Leer el archivo como buffer
+const buffer = fs.readFileSync('evento.png');
+
+// 2. Extraer los chunks
+const chunks = extract(buffer);
+
+// 3. Filtrar y decodificar chunks de texto
+const textChunks = chunks
+    .filter(chunk => chunk.name === 'tEXt')
+    .map(chunk => text.decode(chunk.data));
+
+// 4. Buscar nuestra keyword
+const eventData = textChunks.find(c => c.keyword === 'convoyrama-event-data');
+
+if (eventData) {
+    const data = JSON.parse(eventData.text);
+    console.log("Evento encontrado:", data.eventName);
+}</code></pre>
+        </section>
+    </div>
+
+    <footer>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025</small>
+    </footer>
+</body>
+</html>

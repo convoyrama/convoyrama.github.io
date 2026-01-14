@@ -144,15 +144,20 @@ export async function generateImage(state) {
     const countryName = selectedCountry ? (selectedCountry[`name_${state.language}`] || selectedCountry.name_en) : '';
     
     // Date logic: Prioritize verified join date, fallback to current date
-    let dateStr = state.currentDate ? `${state.currentDate.day}/${state.currentDate.month}/${state.currentDate.year}` : '';
+    let dateStr = '';
+    const isEnglish = state.language === 'en';
+
     if (state.verifiedJoinDate) {
         const d = new Date(state.verifiedJoinDate.replace(' ', 'T'));
         if (!isNaN(d.getTime())) {
             const day = d.getDate().toString().padStart(2, '0');
             const month = (d.getMonth() + 1).toString().padStart(2, '0');
             const year = d.getFullYear();
-            dateStr = `${day}/${month}/${year}`;
+            dateStr = isEnglish ? `${month}/${day}/${year}` : `${day}/${month}/${year}`;
         }
+    } else if (state.currentDate) {
+        const { day, month, year } = state.currentDate;
+        dateStr = isEnglish ? `${month}/${day}/${year}` : `${day}/${month}/${year}`;
     }
 
     // Define text lines in order
@@ -465,7 +470,7 @@ export function performDownload(state) {
                 social_link: state.socialLink || null,
                 generated_at: new Date().toISOString(),
                 is_verified: !!state.verifiedJoinDate,
-                tmp_join_date: state.verifiedJoinDate || null,
+                tmp_join_date: state.verifiedJoinDate ? state.verifiedJoinDate.replace(' ', 'T') : null,
             };
 
             const jsonMetadata = JSON.stringify(metadata);

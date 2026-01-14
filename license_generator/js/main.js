@@ -209,7 +209,7 @@ function renderRankLegend() {
     // Button to open API
     const openApiBtn = document.createElement('button');
     openApiBtn.textContent = t.open_api_button || "Open API Link";
-    openApiBtn.className = "info-tooltip"; // Reusing existing button style class
+    // openApiBtn.className = "info-tooltip"; // Removed to prevent tooltip glitch
     openApiBtn.style.padding = "8px 16px";
     openApiBtn.style.cursor = "pointer";
     openApiBtn.onclick = () => {
@@ -301,7 +301,7 @@ async function initialize() {
         qrColorToggleLabel: document.getElementById("qrColorToggleLabel"),
         textColorToggleInput: document.getElementById("textColorToggle"),
         textColorToggleLabel: document.getElementById("textColorToggleLabel"),
-        rankToggleInput: document.getElementById("rankToggle"),
+        // rankToggleInput removed
         rankToggleLabel: document.getElementById("rankToggleLabel"),
         vtcLogoLabel: document.getElementById("vtcLogoLabel"),
         colorLabel: document.getElementById("colorLabel"),
@@ -506,10 +506,12 @@ function addEventListeners(debouncedGenerate) {
         debouncedGenerate();
     });
 
+    /* dom.rankToggleInput removed
     dom.rankToggleInput.addEventListener('change', (e) => {
         state.rankToggle = e.target.checked;
         renderRankLegend(); // Update legend on toggle change
     });
+    */
 
     dom.socialSelect.addEventListener('change', (e) => {
         const selectedNetwork = e.target.value;
@@ -575,11 +577,14 @@ async function handleJsonVerification(jsonText, callback) {
             state.verifiedJoinDate = joinDate;
             state.name = name;
             
+            // Lock inputs
+            dom.truckersmpLinkInput.disabled = true;
+
             // Handle VTC data if present
             if (player.vtc && player.vtc.inVTC && player.vtc.id) {
                 state.companyLink = `https://truckersmp.com/vtc/${player.vtc.id}`;
                 dom.companyLinkInput.value = state.companyLink;
-                dom.companyLinkInput.disabled = true; // Lock it as it comes from verification
+                dom.companyLinkInput.disabled = true; // Lock verified VTC link
             }
 
             // Update UI
