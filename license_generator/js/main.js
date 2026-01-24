@@ -127,7 +127,7 @@ function updateLanguage(lang) {
     dom.downloadButton.textContent = t.downloadButton;
     dom.infoButton.setAttribute('data-tooltip', t.infoTooltip);
     dom.downloadButton.setAttribute('data-tooltip', t.tooltipMessage);
-    dom.rankToggleLabel.textContent = t.rankToggleLabel;
+    if (dom.rankToggleLabel) dom.rankToggleLabel.textContent = t.rankToggleLabel;
     dom.textColorToggleLabel.textContent = t.textColorToggleLabel;
     dom.downloadUserbarButton.textContent = t.downloadUserbarButton;
     dom.warningMessage.textContent = t.warning_refresh_page;
