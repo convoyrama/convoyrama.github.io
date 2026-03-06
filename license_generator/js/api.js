@@ -7,6 +7,14 @@ export async function getCurrentDate() {
 
     const apis = [
         {
+            url: 'https://timeapi.io/api/Time/current/zone?timeZone=UTC',
+            parse: data => new Date(data.dateTime)
+        },
+        {
+            url: 'https://www.timeapi.org/utc/now',
+            parse: data => new Date(data)
+        },
+        {
             url: 'https://worldtimeapi.org/api/timezone/Etc/UTC',
             parse: data => new Date(data.utc_datetime)
         },
@@ -17,10 +25,6 @@ export async function getCurrentDate() {
         {
             url: 'http://worldclockapi.com/api/json/utc/now',
             parse: data => new Date(data.currentDateTime)
-        },
-        {
-            url: 'https://timeapi.io/api/Time/current/zone?timeZone=UTC',
-            parse: data => new Date(data.dateTime)
         }
     ];
 
