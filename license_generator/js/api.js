@@ -13,6 +13,14 @@ export async function getCurrentDate() {
         {
             url: 'https://worldtimeapi.org/api/timezone/America/New_York',
             parse: data => new Date(data.utc_datetime)
+        },
+        {
+            url: 'http://worldclockapi.com/api/json/utc/now',
+            parse: data => new Date(data.currentDateTime)
+        },
+        {
+            url: 'https://timeapi.io/api/Time/current/zone?timeZone=UTC',
+            parse: data => new Date(data.dateTime)
         }
     ];
 
