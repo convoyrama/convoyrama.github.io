@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convoyrama | LAGIO.FM</title>
+    <meta name="description" content="LAGIO.FM - La radio oficial de LAG'S SPEED">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="../assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="../assets/images/favicon.png">
+    <style>
+        header {
+            padding: 15px;
+            text-align: center;
+            background: var(--accent-bg);
+            border-bottom: 1px solid var(--border);
+        }
+        header p {
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: #fff;
+        }
+        nav {
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1em;
+            color: #fff;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .app-card {
+            background: var(--accent-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .app-screenshot {
+            max-width: 280px;
+            border-radius: 20px;
+            border: 4px solid #333;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .download-btn {
+            display: inline-block;
+            background: #5aa519;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .download-btn:hover {
+            background: #6bc020;
+            transform: scale(1.05);
+            color: white;
+        }
+        .app-features {
+            margin-top: 20px;
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+        .app-features li {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .app-features li::before {
+            content: "📻";
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+        footer small {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="../pc.html">Creador de Perfil</a>
+            <a href="../id.html">Licencia</a>
+            <a href="../event.html">Crear Evento</a>
+        </nav>
+        <p>LAGIO.FM - Radio Oficial</p>
+    </header>
+
+    <main class="app-container">
+        <div class="app-card">
+            <h1>LAGIO.FM</h1>
+            <p>¡Lleva la música de LAG'S SPEED a todas partes!</p>
+            
+            <img src="ui.png" alt="LAGIO.FM App Screenshot" class="app-screenshot">
+            
+            <p>Nuestra aplicación oficial para Android te permite disfrutar de la mejor música y sintonizar LAG'S SPEED en cualquier momento.</p>
+            
+            <ul class="app-features">
+                <li>Sintonización en tiempo real.</li>
+                <li>Interfaz moderna y fácil de usar.</li>
+                <li>Consumo optimizado de datos.</li>
+                <li>Totalmente gratuita y sin anuncios molestos.</li>
+            </ul>
+
+            <a href="lagiofmlatest.apk" class="download-btn">Descargar APK</a>
+            <p style="margin-top: 15px;"><small>Versión estable para Android</small></p>
+        </div>
+    </main>
+
+    <footer>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025 | <a href="../developers.html" style="color: #ccc; text-decoration: none;">API / Developers</a></small>
+    </footer>
+</body>
+</html>
