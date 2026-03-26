@@ -4,6 +4,14 @@
     "desc": "La emisora líder para la comunidad de simulación (ETS2/ATS). DJs en vivo y tráfico virtual 24/7."
   },
   { 
+    "id": 102, "title": "Radio Trucker", "src": "https://listen.radiotrucker.com/radio/8000/radio.mp3",
+    "desc": "Música de carretera y grandes éxitos internacionales. Una de las radios más veteranas de la comunidad europea de camioneros."
+  },
+  { 
+    "id": 103, "title": "EuroTruckRadio", "src": "https://eurotruckradio.com/listen.mp3",
+    "desc": "La voz de los conductores europeos. Programación dinámica, noticias de TruckersMP y los mejores hits para tu ruta."
+  },
+  { 
     "id": 105, "title": "Simulator Radio", "src": "https://simulatorradio.stream/stream",
     "desc": "Compañera perfecta para las rutas de larga distancia. Una mezcla ecléctica de pop y electrónica."
   },
@@ -40,7 +48,7 @@
     "desc": "Emisora comunitaria global. Los Openings y Endings más populares sin anuncios para tu viaje."
   },
   { 
-    "id": 110, "title": "Keygen-FM", "src": "http://stream.keygen-fm.ru:8080/",
+    "id": 110, "title": "Keygen-FM", "src": "https://stream.keygen-fm.ru:8042/live.mp3",
     "desc": "Música chiptune de instaladores y crackmes. El sonido icónico de la era de los keygens directo a tu camión."
   },
   { 
@@ -48,12 +56,20 @@
     "desc": "Pop, hits actuales y energía positiva desde Alemania. La selección perfecta para mantener el ritmo en la carretera."
   },
   { 
-    "id": 181, "title": "Vorterix", "src": "https://vorterix.com/live/audio",
-    "desc": "Rock, tecnología y cultura pop desde Argentina. Una propuesta moderna y potente para acompañar tu ruta."
+    "id": 181, "title": "Radio Aspen 102.3", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3",
+    "desc": "Clásicos de los 80, 90 y 2000 desde Argentina. La banda sonora ideal para un viaje lleno de nostalgia y buenos recuerdos."
   },
   { 
     "id": 190, "title": "Radio Disney AR", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/DISNEY_ARG_BA.mp3",
     "desc": "Música FM pura las 24 horas. Éxitos actuales y clásicos del pop en español e inglés para que no pares de conducir."
+  },
+  { 
+    "id": 182, "title": "FM Dos Chile", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/FMDOS.mp3",
+    "desc": "La radio de los dos. Música romántica y éxitos pop en español para acompañar cada kilómetro de tu ruta por Chile."
+  },
+  { 
+    "id": 191, "title": "Estación 40 PY", "src": "https://rds3.desdeparaguay.net/transestacion40/transestacion40/icecast.audio",
+    "desc": "Todos los éxitos que suenan en Paraguay. Energía, hits internacionales y el mejor ritmo para tu cabina."
   },
   { 
     "id": 130, "title": "BigR - 80s Metal", "src": "https://bigrradio.cdnstream1.com/5186_128",
