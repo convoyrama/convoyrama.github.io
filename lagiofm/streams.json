@@ -50,5 +50,33 @@
   { 
     "id": 142, "title": "LISTEN.moe", "src": "https://listen.moe/fallback",
     "desc": "Emisora comunitaria global. Los Openings y Endings más populares sin anuncios para tu viaje."
+  },
+  { 
+    "id": 150, "title": "Eurobeat Pukka", "src": "https://coruscant.pukkawifi.net/8004/stream",
+    "desc": "Ritmos de alta intensidad para los tramos más rápidos. Eurobeat puro para cuando el ping sube y la ruta se vuelve intensa."
+  },
+  { 
+    "id": 151, "title": "Lofi Radio", "src": "https://stream.zeno.fm/0r0xa792kwzuv",
+    "desc": "Hip Hop relajante y beats instrumentales. La compañía ideal para la conducción nocturna bajo la lluvia."
+  },
+  { 
+    "id": 152, "title": "Paradise Rock", "src": "http://stream.radioparadise.com/rock-128",
+    "desc": "Himnos de carretera que nunca fallan. Una selección magistral de Rock clásico y alternativo de todas las épocas."
+  },
+  { 
+    "id": 153, "title": "SomaFM U80s", "src": "http://ice1.somafm.com/u80s-128-mp3",
+    "desc": "New Wave e Industrial de los 80. Una atmósfera oscura y rítmica que define la estética retro-futurista de la ruta."
+  },
+  { 
+    "id": 160, "title": "Radio 1920", "src": "https://stream.laut.fm/radio1920",
+    "desc": "Viaje directo a la era del Swing y los gramófonos. Sonido auténtico de los años 20 y 30 para una experiencia vintage única."
+  },
+  { 
+    "id": 161, "title": "Rumsey Retro AM", "src": "https://maggie.torontocast.com:9004/stream",
+    "desc": "Clásicos de los 40 y 50 con el inconfundible sonido de la radio AM. Música, anuncios y nostalgia de la edad de oro."
+  },
+  { 
+    "id": 162, "title": "SomaFM - Doomed", "src": "http://ice1.somafm.com/doomed-128-mp3",
+    "desc": "Paisajes sonoros industriales y ambientales oscuros. Música rara y profunda para los tramos más solitarios del camino."
   }
 ]
