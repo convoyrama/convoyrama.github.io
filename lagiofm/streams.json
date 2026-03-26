@@ -4,15 +4,11 @@
     "desc": "La emisora líder para la comunidad de simulación (ETS2/ATS). DJs en vivo y tráfico virtual 24/7."
   },
   { 
-    "id": 102, "title": "Radio Trucker", "src": "https://listen.radiotrucker.com/radio/8000/radio.mp3",
-    "desc": "Música de carretera y grandes éxitos internacionales. Una de las radios más veteranas de la comunidad europea de camioneros."
+    "id": 102, "title": "TruckSimFM", "src": "https://radio.trucksim.fm/radio/8000/radio.mp3",
+    "desc": "La radio oficial de la comunidad de simulación. Programación dinámica, noticias de TruckersMP y los mejores hits para tu ruta."
   },
   { 
-    "id": 103, "title": "EuroTruckRadio", "src": "https://eurotruckradio.com/listen.mp3",
-    "desc": "La voz de los conductores europeos. Programación dinámica, noticias de TruckersMP y los mejores hits para tu ruta."
-  },
-  { 
-    "id": 105, "title": "Simulator Radio", "src": "https://simulatorradio.stream/stream",
+    "id": 103, "title": "Simulator Radio", "src": "https://simulatorradio.stream/stream",
     "desc": "Compañera perfecta para las rutas de larga distancia. Una mezcla ecléctica de pop y electrónica."
   },
   { 
@@ -48,7 +44,7 @@
     "desc": "Emisora comunitaria global. Los Openings y Endings más populares sin anuncios para tu viaje."
   },
   { 
-    "id": 110, "title": "Keygen-FM", "src": "https://stream.keygen-fm.ru:8042/live.mp3",
+    "id": 110, "title": "Keygen-FM", "src": "https://keygen-fm.kodatek.app/public/keygen-fm/playlist.m3u",
     "desc": "Música chiptune de instaladores y crackmes. El sonido icónico de la era de los keygens directo a tu camión."
   },
   { 
@@ -68,7 +64,7 @@
     "desc": "La radio de los dos. Música romántica y éxitos pop en español para acompañar cada kilómetro de tu ruta por Chile."
   },
   { 
-    "id": 191, "title": "Estación 40 PY", "src": "https://rds3.desdeparaguay.net/transestacion40/transestacion40/icecast.audio",
+    "id": 191, "title": "Estación 40 PY", "src": "https://rds3.desdeparaguay.net/transestacion40/transestacion40/playlist.m3u8",
     "desc": "Todos los éxitos que suenan en Paraguay. Energía, hits internacionales y el mejor ritmo para tu cabina."
   },
   { 
