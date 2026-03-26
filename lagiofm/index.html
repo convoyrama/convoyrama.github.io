@@ -89,6 +89,22 @@
         .app-features li::before {
             content: "📻";
         }
+        .debug-btn {
+            display: inline-block;
+            background: #444;
+            color: #ccc;
+            padding: 5px 12px;
+            font-size: 0.8em;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #555;
+            transition: background 0.2s, color 0.2s;
+        }
+        .debug-btn:hover {
+            background: #555;
+            color: #fff;
+        }
         footer {
             text-align: center;
             padding: 20px;
@@ -147,6 +163,7 @@
                         document.getElementById('md5-status').textContent = ""; // Ocultar si falla
                     });
             </script>
+            <a href="app-debug.apk" class="debug-btn">Descargar Versión Testing (Debug)</a>
         </div>
     </main>
 
