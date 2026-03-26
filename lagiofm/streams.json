@@ -44,11 +44,11 @@
     "desc": "Una selección premium de aperturas y bandas sonoras de anime. Energía y nostalgia japonesa para tu ruta."
   },
   { 
-    "id": 182, "title": "Radio Anime 24", "src": "https://radio.anime24.online/stream",
+    "id": 182, "title": "Anime Nexus", "src": "https://stream.animenexus.mx:8000/live",
     "desc": "Tu dosis diaria de J-Pop, J-Rock y bandas sonoras de anime en español. ¡Directo desde la comunidad para tu cabina!"
   },
   { 
-    "id": 180, "title": "Radio 3", "src": "http://rtveradio-live.rtve.es/radio3_main.mp3",
+    "id": 180, "title": "Radio 3", "src": "https://rtveradio-live.rtve.es/radio3_main.mp3",
     "desc": "Cultura, música alternativa y programas especializados. La emisora más ecléctica y creativa de España."
   },
   { 
@@ -56,12 +56,12 @@
     "desc": "Rock, tecnología y cultura pop desde Argentina. Una propuesta moderna para acompañar tu ruta."
   },
   { 
-    "id": 190, "title": "Antena 1 FM", "src": "https://stream.antena1.com.br/stream",
+    "id": 190, "title": "Antena 1 FM", "src": "https://antena1.stmv.com.br/stream/",
     "desc": "La red de éxitos de Brasil. Una selección impecable de pop y clásicos internacionales para un viaje relajado."
   },
   { 
-    "id": 191, "title": "Alfa 91.3 FM", "src": "https://18493.live.streamtheworld.com/XERC_FM_SC",
-    "desc": "La radio de los éxitos actuales en México. Energía constante y la mejor música comercial para devorar kilómetros."
+    "id": 191, "title": "Radio Disney AR", "src": "https://radio-disney-ar.cdn.voker.com/stream",
+    "desc": "Música FM pura las 24 horas. Éxitos actuales y clásicos del pop en español e inglés para que no pares de conducir."
   },
   { 
     "id": 130, "title": "BigR - 80s Metal", "src": "https://bigrradio.cdnstream1.com/5186_128",
