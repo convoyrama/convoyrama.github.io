@@ -8,18 +8,6 @@
     "desc": "Compañera perfecta para las rutas de larga distancia. Una mezcla ecléctica de pop y electrónica."
   },
   { 
-    "id": 107, "title": "Country Road", "src": "https://ais-sa2.cdnstream1.com/1976_128.mp3",
-    "desc": "La esencia pura de la carretera estadounidense. Bluegrass tradicional y Outlaw Country."
-  },
-  { 
-    "id": 109, "title": "Nightride.fm", "src": "https://stream.nightride.fm/nightride.mp3",
-    "desc": "Especializada en Synthwave y Retrowave. Perfecta para la conducción nocturna bajo luces neón."
-  },
-  { 
-    "id": 111, "title": "Mission Control", "src": "https://ice1.somafm.com/missioncontrol-128-mp3",
-    "desc": "Música ambiental mezclada con grabaciones originales de la NASA. Tu cabina como centro de mando."
-  },
-  { 
     "id": 115, "title": "Galaxy News Radio", "src": "https://fallout.fm:8444/falloutfm3.ogg",
     "desc": "Emitiendo desde el Yermo de Fallout 3. El carismático Three Dog con el mejor Jazz de la era atómica."
   },
@@ -32,12 +20,12 @@
     "desc": "Música de Fantasía Épica. Bandas sonoras de cine y videojuegos para transportarte a otros mundos."
   },
   { 
-    "id": 130, "title": "BigR - 80s Metal", "src": "http://bigrradio.cdnstream1.com/5186_128",
-    "desc": "La era dorada del Heavy Metal. Riffs potentes y Hard Rock de los 80 para devorar kilómetros."
+    "id": 171, "title": "Radio SEGA", "src": "https://stream.radiosega.net/radiosega",
+    "desc": "Especializada en el universo musical de SEGA. Desde Sonic hasta Yakuza, lo mejor de las consolas en tu cabina."
   },
   { 
-    "id": 131, "title": "BeGood - 80s Metal", "src": "https://bigrradio.cdnstream1.com/5212_128",
-    "desc": "Especializada exclusivamente en el metal ochentero y Hair Metal. Rotación constante de himnos clásicos."
+    "id": 170, "title": "SLAY Radio", "src": "https://www.slayradio.org/relay/slayradio128.mp3",
+    "desc": "Remezclas de música de Commodore 64. El espíritu de la informática clásica en formato musical para los camioneros más geeks."
   },
   { 
     "id": 140, "title": "Japanradio Anime", "src": "https://stream.japanradio.de/live",
@@ -52,20 +40,44 @@
     "desc": "Emisora comunitaria global. Los Openings y Endings más populares sin anuncios para tu viaje."
   },
   { 
-    "id": 150, "title": "Eurobeat Pukka", "src": "https://coruscant.pukkawifi.net/8004/stream",
-    "desc": "Ritmos de alta intensidad para los tramos más rápidos. Eurobeat puro para cuando el ping sube y la ruta se vuelve intensa."
+    "id": 172, "title": "Anime Academy", "src": "https://streaming.radionomy.com/Anime-Academy",
+    "desc": "Una selección premium de aperturas y bandas sonoras de anime. Energía y nostalgia japonesa para tu ruta."
+  },
+  { 
+    "id": 182, "title": "Radio Anime 24", "src": "https://radio.anime24.online/stream",
+    "desc": "Tu dosis diaria de J-Pop, J-Rock y bandas sonoras de anime en español. ¡Directo desde la comunidad para tu cabina!"
+  },
+  { 
+    "id": 180, "title": "Radio 3", "src": "http://rtveradio-live.rtve.es/radio3_main.mp3",
+    "desc": "Cultura, música alternativa y programas especializados. La emisora más ecléctica y creativa de España."
+  },
+  { 
+    "id": 181, "title": "Vorterix", "src": "https://vtx.vorterix.com/live/audio",
+    "desc": "Rock, tecnología y cultura pop desde Argentina. Una propuesta moderna para acompañar tu ruta."
+  },
+  { 
+    "id": 190, "title": "Antena 1 FM", "src": "https://stream.antena1.com.br/stream",
+    "desc": "La red de éxitos de Brasil. Una selección impecable de pop y clásicos internacionales para un viaje relajado."
+  },
+  { 
+    "id": 191, "title": "Alfa 91.3 FM", "src": "https://18493.live.streamtheworld.com/XERC_FM_SC",
+    "desc": "La radio de los éxitos actuales en México. Energía constante y la mejor música comercial para devorar kilómetros."
+  },
+  { 
+    "id": 130, "title": "BigR - 80s Metal", "src": "https://bigrradio.cdnstream1.com/5186_128",
+    "desc": "La era dorada del Heavy Metal. Riffs potentes y Hard Rock de los 80 para devorar kilómetros."
+  },
+  { 
+    "id": 109, "title": "Nightride.fm", "src": "https://stream.nightride.fm/nightride.mp3",
+    "desc": "Especializada en Synthwave y Retrowave. Perfecta para la conducción nocturna bajo luces neón."
+  },
+  { 
+    "id": 107, "title": "Country Road", "src": "https://ais-sa2.cdnstream1.com/1976_128.mp3",
+    "desc": "La esencia pura de la carretera estadounidense. Bluegrass tradicional y Outlaw Country."
   },
   { 
     "id": 151, "title": "Lofi Radio", "src": "https://stream.zeno.fm/0r0xa792kwzuv",
     "desc": "Hip Hop relajante y beats instrumentales. La compañía ideal para la conducción nocturna bajo la lluvia."
-  },
-  { 
-    "id": 152, "title": "Paradise Rock", "src": "http://stream.radioparadise.com/rock-128",
-    "desc": "Himnos de carretera que nunca fallan. Una selección magistral de Rock clásico y alternativo de todas las épocas."
-  },
-  { 
-    "id": 153, "title": "SomaFM U80s", "src": "http://ice1.somafm.com/u80s-128-mp3",
-    "desc": "New Wave e Industrial de los 80. Una atmósfera oscura y rítmica que define la estética retro-futurista de la ruta."
   },
   { 
     "id": 160, "title": "Radio 1920", "src": "https://stream.laut.fm/radio1920",
@@ -76,7 +88,7 @@
     "desc": "Clásicos de los 40 y 50 con el inconfundible sonido de la radio AM. Música, anuncios y nostalgia de la edad de oro."
   },
   { 
-    "id": 162, "title": "SomaFM - Doomed", "src": "http://ice1.somafm.com/doomed-128-mp3",
-    "desc": "Paisajes sonoros industriales y ambientales oscuros. Música rara y profunda para los tramos más solitarios del camino."
+    "id": 173, "title": "Mystery Play", "src": "https://streaming.brol.tech/rtfmlounge",
+    "desc": "Relatos de misterio, crimen y ciencia ficción de la radio clásica. Una atmósfera inmersiva para los viajes nocturnos."
   }
 ]
