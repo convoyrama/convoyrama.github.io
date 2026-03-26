@@ -20,12 +20,12 @@
     "desc": "Música de Fantasía Épica. Bandas sonoras de cine y videojuegos para transportarte a otros mundos."
   },
   { 
-    "id": 171, "title": "Radio SEGA", "src": "https://stream.radiosega.net/radiosega",
+    "id": 171, "title": "Radio SEGA", "src": "https://icecast.radiosega.net/live",
     "desc": "Especializada en el universo musical de SEGA. Desde Sonic hasta Yakuza, lo mejor de las consolas en tu cabina."
   },
   { 
-    "id": 170, "title": "SLAY Radio", "src": "https://www.slayradio.org/relay/slayradio128.mp3",
-    "desc": "Remezclas de música de Commodore 64. El espíritu de la informática clásica en formato musical para los camioneros más geeks."
+    "id": 170, "title": "r/a/dio", "src": "https://r-a-d.io/main.mp3",
+    "desc": "Música de anime de alta calidad y cultura de internet. Una alternativa estable para los amantes de la animación japonesa."
   },
   { 
     "id": 140, "title": "Japanradio Anime", "src": "https://stream.japanradio.de/live",
@@ -40,27 +40,19 @@
     "desc": "Emisora comunitaria global. Los Openings y Endings más populares sin anuncios para tu viaje."
   },
   { 
-    "id": 172, "title": "Anime Academy", "src": "https://streaming.radionomy.com/Anime-Academy",
-    "desc": "Una selección premium de aperturas y bandas sonoras de anime. Energía y nostalgia japonesa para tu ruta."
+    "id": 110, "title": "Keygen-FM", "src": "http://stream.keygen-fm.ru:8080/",
+    "desc": "Música chiptune de instaladores y crackmes. El sonido icónico de la era de los keygens directo a tu camión."
   },
   { 
-    "id": 182, "title": "Anime Nexus", "src": "https://stream.animenexus.mx:8000/live",
-    "desc": "Tu dosis diaria de J-Pop, J-Rock y bandas sonoras de anime en español. ¡Directo desde la comunidad para tu cabina!"
+    "id": 180, "title": "Antenne 1 FM", "src": "https://stream.antenne1.de/a1stg/livestream2.mp3",
+    "desc": "Pop, hits actuales y energía positiva desde Alemania. La selección perfecta para mantener el ritmo en la carretera."
   },
   { 
-    "id": 180, "title": "Radio 3", "src": "https://rtveradio-live.rtve.es/radio3_main.mp3",
-    "desc": "Cultura, música alternativa y programas especializados. La emisora más ecléctica y creativa de España."
+    "id": 181, "title": "Vorterix", "src": "https://vorterix.com/live/audio",
+    "desc": "Rock, tecnología y cultura pop desde Argentina. Una propuesta moderna y potente para acompañar tu ruta."
   },
   { 
-    "id": 181, "title": "Vorterix", "src": "https://vtx.vorterix.com/live/audio",
-    "desc": "Rock, tecnología y cultura pop desde Argentina. Una propuesta moderna para acompañar tu ruta."
-  },
-  { 
-    "id": 190, "title": "Antena 1 FM", "src": "https://antena1.stmv.com.br/stream/",
-    "desc": "La red de éxitos de Brasil. Una selección impecable de pop y clásicos internacionales para un viaje relajado."
-  },
-  { 
-    "id": 191, "title": "Radio Disney AR", "src": "https://radio-disney-ar.cdn.voker.com/stream",
+    "id": 190, "title": "Radio Disney AR", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/DISNEY_ARG_BA.mp3",
     "desc": "Música FM pura las 24 horas. Éxitos actuales y clásicos del pop en español e inglés para que no pares de conducir."
   },
   { 
