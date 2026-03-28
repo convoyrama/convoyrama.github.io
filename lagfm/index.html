@@ -148,20 +148,32 @@
             <p id="md5-status" style="font-family: monospace; font-size: 0.8em; color: #aaa; margin: 0; word-break: break-all;">Cargando MD5...</p>
 
             <script>
+                // Cargar MD5
                 fetch('md5')
                     .then(response => {
                         if (!response.ok) throw new Error('Error al cargar MD5');
                         return response.text();
                     })
                     .then(text => {
-                        // Extraer solo el hash (la primera parte del archivo md5)
                         const md5sum = text.split(' ')[0].trim();
                         document.getElementById('md5-status').textContent = "MD5: " + md5sum;
                     })
                     .catch(err => {
                         console.error(err);
-                        document.getElementById('md5-status').textContent = ""; // Ocultar si falla
+                        document.getElementById('md5-status').textContent = "";
                     });
+
+                // Cargar versión y configurar nombre de descarga
+                fetch('version.txt')
+                    .then(response => response.text())
+                    .then(version => {
+                        const cleanVersion = version.trim();
+                        const downloadBtn = document.querySelector('.download-btn');
+                        if (downloadBtn && cleanVersion) {
+                            downloadBtn.setAttribute('download', `lagfm-${cleanVersion}.apk`);
+                        }
+                    })
+                    .catch(err => console.error('Error al cargar la versión para la descarga:', err));
             </script>
             <a href="app-debug.apk" class="debug-btn">Descargar Versión Testing (Debug)</a>
         </div>
