@@ -12,6 +12,10 @@
     "desc": "Compañera perfecta para las rutas de larga distancia. Una mezcla ecléctica de pop y electrónica."
   },
   { 
+    "id": 104, "title": "Truckstop Radio", "src": "https://oreo.truckstopradio.co.uk/listen/truckstopradio/radio.mp3",
+    "desc": "Conectando a la comunidad global de conductores. Pop, rock y programas en vivo para amenizar tus entregas en ETS2 y ATS."
+  },
+  { 
     "id": 115, "title": "Galaxy News Radio", "src": "https://fallout.fm:8444/falloutfm3.ogg",
     "desc": "Emitiendo desde el Yermo de Fallout 3. El carismático Three Dog con el mejor Jazz de la era atómica."
   },
