@@ -14,11 +14,11 @@
         :root {
             --vtc-green: #5AA519;
             --vtc-green-glow: rgba(90, 165, 25, 0.4);
-            --vtc-black: #111111;
-            --vtc-surface: #1a1a1a;
-            --vtc-border: #333333;
+            --vtc-black: #0c0c0c;
+            --vtc-surface: #161616;
+            --vtc-border: #222222;
             --vtc-text: #ffffff;
-            --vtc-text-dim: #888888;
+            --vtc-text-dim: #777777;
         }
 
         * {
@@ -40,17 +40,17 @@
         }
 
         header {
-            padding: 20px 15px;
+            padding: 10px 15px;
             text-align: center;
-            background: linear-gradient(to bottom, #1a1a1a, #111111);
+            background: var(--vtc-black);
             border-bottom: 1px solid var(--vtc-border);
             flex-shrink: 0;
         }
 
         .logo-text {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 900;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             margin: 0;
         }
 
@@ -60,36 +60,36 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 15px;
-            gap: 15px;
+            padding: 10px;
+            gap: 10px;
             overflow: hidden;
         }
 
-        .display-card {
-            background: var(--vtc-surface);
-            border: 1px solid var(--vtc-border);
-            border-radius: 20px;
-            padding: 25px 15px;
+        /* Pantalla de reproducción compacta y sin caja gris */
+        .display-area {
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 5px 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            min-height: 140px;
+            min-height: 80px;
         }
 
         #current-station {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             color: var(--vtc-green);
             text-shadow: 0 0 10px var(--vtc-green-glow);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         #status-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             color: var(--vtc-text-dim);
             font-family: monospace;
         }
@@ -98,94 +98,94 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px 0;
+            padding: 5px 0;
         }
 
         .play-btn {
-            width: 85px;
-            height: 85px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            border: 3px solid var(--vtc-green);
+            border: 2px solid var(--vtc-green);
             background: transparent;
             color: var(--vtc-green);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 15px var(--vtc-green-glow);
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px var(--vtc-green-glow);
         }
 
         .play-btn:active { transform: scale(0.9); }
-        
-        .play-btn svg { width: 35px; height: 35px; fill: currentColor; }
+        .play-btn svg { width: 30px; height: 30px; fill: currentColor; }
 
+        /* Lista de emisoras compacta */
         .station-list {
             flex: 1;
             overflow-y: auto;
-            background: rgba(255,255,255,0.02);
-            border-radius: 20px;
+            background: rgba(255,255,255,0.01);
+            border-radius: 12px;
             border: 1px solid var(--vtc-border);
-            padding: 5px;
+            padding: 4px;
             scrollbar-width: none;
         }
 
         .station-list::-webkit-scrollbar { display: none; }
 
         .list-item {
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 5px;
-            background: rgba(255,255,255,0.03);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 2px;
+            background: rgba(255,255,255,0.02);
             border: 1px solid transparent;
             transition: 0.2s;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
-        .list-item:active { background: rgba(255,255,255,0.08); }
+        .list-item:active { background: rgba(255,255,255,0.06); }
 
         .list-item.active {
-            background: rgba(90, 165, 25, 0.1);
-            border-color: var(--vtc-green);
+            background: rgba(90, 165, 25, 0.08);
+            border-color: rgba(90, 165, 25, 0.3);
         }
 
         .item-icon {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             background: var(--vtc-surface);
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--vtc-green);
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1rem;
             flex-shrink: 0;
+            border: 1px solid var(--vtc-border);
         }
 
         .item-info { flex: 1; overflow: hidden; }
-        .item-title { font-weight: bold; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .item-desc { font-size: 0.75rem; color: var(--vtc-text-dim); margin-top: 2px; }
+        .item-title { font-weight: bold; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-desc { font-size: 0.7rem; color: var(--vtc-text-dim); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         footer {
-            padding: 10px;
+            padding: 8px;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--vtc-text-dim);
             border-top: 1px solid var(--vtc-border);
         }
 
-        /* Animación de Pulso para modo Play */
         .playing .play-btn {
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 var(--vtc-green-glow); }
-            70% { box-shadow: 0 0 0 15px rgba(90, 165, 25, 0); }
+            70% { box-shadow: 0 0 0 10px rgba(90, 165, 25, 0); }
             100% { box-shadow: 0 0 0 0 rgba(90, 165, 25, 0); }
         }
     </style>
@@ -196,7 +196,7 @@
     </header>
 
     <main class="player-main" id="player-root">
-        <div class="display-card">
+        <div class="display-area">
             <div id="status-label">LISTO</div>
             <div id="current-station">SELECCIONA EMISORA</div>
         </div>
@@ -240,7 +240,6 @@
                 const streams = await response.json();
                 renderList(streams);
                 
-                // Seleccionar la primera por defecto pero no reproducir
                 if(streams.length > 0) {
                     setupStream(streams[0]);
                 }
@@ -259,7 +258,7 @@
                     <div class="item-icon">📻</div>
                     <div class="item-info">
                         <div class="item-title">${s.title}</div>
-                        <div class="item-desc">Toca para sintonizar</div>
+                        <div class="item-desc">${s.desc || 'Toca para sintonizar'}</div>
                     </div>
                 `;
                 item.onclick = () => {
@@ -308,7 +307,6 @@
             if(isPlaying) togglePlay();
         };
 
-        // Service Worker para PWA
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
                 .then(() => console.log('SW Registered'));
