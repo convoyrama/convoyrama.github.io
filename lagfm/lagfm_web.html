@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LAG FM - Sintonizador Web</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#141414">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" href="icon.png">
+    
+    <style>
+        :root {
+            --vtc-green: #5AA519;
+            --vtc-green-glow: rgba(90, 165, 25, 0.4);
+            --vtc-black: #111111;
+            --vtc-surface: #1a1a1a;
+            --vtc-border: #333333;
+            --vtc-text: #ffffff;
+            --vtc-text-dim: #888888;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--vtc-black);
+            color: var(--vtc-text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        header {
+            padding: 20px 15px;
+            text-align: center;
+            background: linear-gradient(to bottom, #1a1a1a, #111111);
+            border-bottom: 1px solid var(--vtc-border);
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        .logo-text span { color: var(--vtc-green); }
+
+        .player-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            gap: 15px;
+            overflow: hidden;
+        }
+
+        .display-card {
+            background: var(--vtc-surface);
+            border: 1px solid var(--vtc-border);
+            border-radius: 20px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 140px;
+        }
+
+        #current-station {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--vtc-green);
+            text-shadow: 0 0 10px var(--vtc-green-glow);
+        }
+
+        #status-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--vtc-text-dim);
+            font-family: monospace;
+        }
+
+        .controls-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .play-btn {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: 3px solid var(--vtc-green);
+            background: transparent;
+            color: var(--vtc-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 15px var(--vtc-green-glow);
+        }
+
+        .play-btn:active { transform: scale(0.9); }
+        
+        .play-btn svg { width: 35px; height: 35px; fill: currentColor; }
+
+        .station-list {
+            flex: 1;
+            overflow-y: auto;
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            border: 1px solid var(--vtc-border);
+            padding: 5px;
+            scrollbar-width: none;
+        }
+
+        .station-list::-webkit-scrollbar { display: none; }
+
+        .list-item {
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 5px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid transparent;
+            transition: 0.2s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .list-item:active { background: rgba(255,255,255,0.08); }
+
+        .list-item.active {
+            background: rgba(90, 165, 25, 0.1);
+            border-color: var(--vtc-green);
+        }
+
+        .item-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--vtc-surface);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--vtc-green);
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .item-info { flex: 1; overflow: hidden; }
+        .item-title { font-weight: bold; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-desc { font-size: 0.75rem; color: var(--vtc-text-dim); margin-top: 2px; }
+
+        footer {
+            padding: 10px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--vtc-text-dim);
+            border-top: 1px solid var(--vtc-border);
+        }
+
+        /* Animación de Pulso para modo Play */
+        .playing .play-btn {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--vtc-green-glow); }
+            70% { box-shadow: 0 0 0 15px rgba(90, 165, 25, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(90, 165, 25, 0); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <p class="logo-text">LAG<span>FM</span></p>
+    </header>
+
+    <main class="player-main" id="player-root">
+        <div class="display-card">
+            <div id="status-label">LISTO</div>
+            <div id="current-station">SELECCIONA EMISORA</div>
+        </div>
+
+        <div class="controls-row">
+            <button class="play-btn" id="play-btn" aria-label="Reproducir">
+                <svg viewBox="0 0 24 24" id="play-icon">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg viewBox="0 0 24 24" id="pause-icon" style="display:none;">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="station-list" id="list-root">
+            <!-- Items generados dinámicamente -->
+        </div>
+    </main>
+
+    <footer>
+        © LAG'S SPEED - VERSION WEB PWA
+    </footer>
+
+    <script>
+        const audio = new Audio();
+        const playBtn = document.getElementById('play-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const stationLabel = document.getElementById('current-station');
+        const statusLabel = document.getElementById('status-label');
+        const listContainer = document.getElementById('list-root');
+        const playerRoot = document.getElementById('player-root');
+
+        let isPlaying = false;
+        let currentId = null;
+
+        async function init() {
+            try {
+                const response = await fetch('streams.json');
+                const streams = await response.json();
+                renderList(streams);
+                
+                // Seleccionar la primera por defecto pero no reproducir
+                if(streams.length > 0) {
+                    setupStream(streams[0]);
+                }
+            } catch (err) {
+                stationLabel.innerText = "ERROR DE CONEXIÓN";
+            }
+        }
+
+        function renderList(streams) {
+            listContainer.innerHTML = '';
+            streams.forEach(s => {
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.id = `item-${s.id}`;
+                item.innerHTML = `
+                    <div class="item-icon">📻</div>
+                    <div class="item-info">
+                        <div class="item-title">${s.title}</div>
+                        <div class="item-desc">Toca para sintonizar</div>
+                    </div>
+                `;
+                item.onclick = () => {
+                    setupStream(s);
+                    if(!isPlaying) togglePlay();
+                };
+                listContainer.appendChild(item);
+            });
+        }
+
+        function setupStream(s) {
+            currentId = s.id;
+            document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`item-${s.id}`)?.classList.add('active');
+            
+            stationLabel.innerText = s.title;
+            audio.src = s.src;
+            if(isPlaying) audio.play();
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                playerRoot.classList.remove('playing');
+                statusLabel.innerText = "PAUSADO";
+            } else {
+                audio.play().catch(e => {
+                    statusLabel.innerText = "ERROR AL CARGAR";
+                });
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                playerRoot.classList.add('playing');
+                statusLabel.innerText = "SINTONIZANDO...";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        playBtn.onclick = togglePlay;
+
+        audio.onplaying = () => statusLabel.innerText = "EN VIVO";
+        audio.onwaiting = () => statusLabel.innerText = "BUFFERING...";
+        audio.onerror = () => {
+            statusLabel.innerText = "SEÑAL PERDIDA";
+            if(isPlaying) togglePlay();
+        };
+
+        // Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('SW Registered'));
+        }
+
+        init();
+    </script>
+</body>
+</html>

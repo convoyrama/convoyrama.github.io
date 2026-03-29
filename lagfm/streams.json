@@ -16,40 +16,32 @@
     "desc": "Conectando a la comunidad global de conductores. Pop, rock y programas en vivo para amenizar tus entregas en ETS2 y ATS."
   },
   { 
-    "id": 115, "title": "Galaxy News Radio", "src": "https://fallout.fm:8444/falloutfm3.ogg",
-    "desc": "Emitiendo desde el Yermo de Fallout 3. El carismático Three Dog con el mejor Jazz de la era atómica."
+    "id": 105, "title": "Del Sol 99.5 FM", "src": "https://delsol-2.nty.uy/stream/1/?type=http",
+    "desc": "La radio más influyente de Uruguay. Rock, pop, talk shows y la esencia cultural de Montevideo directo a tu cabina."
   },
   { 
-    "id": 116, "title": "Radio New Vegas", "src": "https://fallout.fm:8444/falloutfm4.ogg",
-    "desc": "La voz de terciopelo del Sr. New Vegas te guía por el desierto de Mojave. Swing y clásicos dorados."
+    "id": 106, "title": "Radio Freccia", "src": "https://shoutcast.rtl.it/radiofreccia",
+    "desc": "Libertad y Rock 'n' Roll. El espíritu de las radios libres italianas con una selección de rock puro y sin filtros."
   },
   { 
-    "id": 120, "title": "Radio Rivendell", "src": "https://play.radiorivendell.com/radio/8000/radio.mp3",
-    "desc": "Música de Fantasía Épica. Bandas sonoras de cine y videojuegos para transportarte a otros mundos."
+    "id": 110, "title": "80s80s", "src": "https://streams.80s80s.de/web/mp3-128/",
+    "desc": "Directo desde Alemania, una selección premium de hits internacionales y cultura pop de los 80."
   },
   { 
-    "id": 171, "title": "Radio SEGA", "src": "https://icecast.radiosega.net/live",
-    "desc": "Especializada en el universo musical de SEGA. Desde Sonic hasta Yakuza, lo mejor de las consolas en tu cabina."
+    "id": 111, "title": "Awesome 80s", "src": "https://listen.181fm.com/181-awesome80s_128k.mp3",
+    "desc": "La mejor radio de los 80 del mundo. Los éxitos masivos de EE.UU. y Europa que definieron una era."
   },
   { 
-    "id": 170, "title": "r/a/dio", "src": "https://r-a-d.io/main.mp3",
-    "desc": "Música de anime de alta calidad y cultura de internet. Una alternativa estable para los amantes de la animación japonesa."
+    "id": 112, "title": "80s Hairband", "src": "https://listen.181fm.com/181-hairband_128k.mp3",
+    "desc": "Puro Glam Rock y Metal de los 80. Riffs potentes y melodías inolvidables para devorar kilómetros."
   },
   { 
-    "id": 140, "title": "Japanradio Anime", "src": "https://stream.japanradio.de/live",
-    "desc": "Música japonesa de alta calidad. Lo mejor de los Anime OST, J-Pop y J-Rock en rotación continua."
-  },
-  { 
-    "id": 141, "title": "Gensokyo Radio", "src": "https://stream.gensokyoradio.net/1/",
-    "desc": "Especializada en la cultura musical Touhou y Anime. Ritmos rápidos y melodías icónicas de Japón."
-  },
-  { 
-    "id": 142, "title": "LISTEN.moe", "src": "https://listen.moe/fallback",
-    "desc": "Emisora comunitaria global. Los Openings y Endings más populares sin anuncios para tu viaje."
-  },
-  { 
-    "id": 110, "title": "Keygen-FM", "src": "https://stream.keygen-fm.ru:8092/listen.mp3",
+    "id": 113, "title": "Keygen-FM", "src": "https://stream.keygen-fm.ru:8092/listen.mp3",
     "desc": "Música chiptune de instaladores y crackmes. El sonido icónico de la era de los keygens directo a tu camión."
+  },
+  { 
+    "id": 115, "title": "Galaxy News Radio", "src": "https://fallout.fm:8444/falloutfm3.ogg",
+    "desc": "Trayendo las noticias y la música del Yermo a tu cabina. Clásicos de los 40 y 50 con el inconfundible estilo de Three Dog."
   },
   { 
     "id": 180, "title": "Antenne 1 FM", "src": "https://stream.antenne1.de/a1stg/livestream2.mp3",

@@ -56,6 +56,12 @@
             border: 4px solid #333;
             margin: 20px 0;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s;
+        }
+        .app-screenshot:hover {
+            border-color: #5aa519;
+            transform: scale(1.02);
+            cursor: pointer;
         }
         .download-btn {
             display: inline-block;
@@ -73,6 +79,25 @@
             background: #6bc020;
             transform: scale(1.05);
             color: white;
+        }
+        .web-btn {
+            display: inline-block;
+            background: transparent;
+            color: #5aa519;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-top: 15px;
+            border: 2px solid #5aa519;
+            transition: all 0.2s;
+        }
+        .web-btn:hover {
+            background: rgba(90, 165, 25, 0.1);
+            transform: translateY(-2px);
+            color: #6bc020;
+            border-color: #6bc020;
         }
         .app-features {
             margin-top: 20px;
@@ -132,7 +157,9 @@
             <h1>LAG FM</h1>
             <p>¡Lleva la música de LAG'S SPEED a todas partes!</p>
             
-            <img src="ui2.png" alt="LAG FM App Screenshot" class="app-screenshot">
+            <a href="lagfm_web.html" title="Abrir Sintonizador Web (PWA)">
+                <img src="ui2.png" alt="LAG FM App Screenshot" class="app-screenshot">
+            </a>
             
             <p>Nuestra aplicación oficial para Android te permite disfrutar de la mejor música y sintonizar LAG'S SPEED en cualquier momento.</p>
             
@@ -144,6 +171,9 @@
             </ul>
 
             <a href="lagfmlatest.apk" class="download-btn">Descargar APK</a>
+            <br>
+            <a href="lagfm_web.html" class="web-btn">Probar Versión Web (PWA)</a>
+
             <p style="margin-top: 15px; margin-bottom: 5px;"><small>Versión estable para Android</small></p>
             <p id="md5-status" style="font-family: monospace; font-size: 0.8em; color: #aaa; margin: 0; word-break: break-all;">Cargando MD5...</p>
 
