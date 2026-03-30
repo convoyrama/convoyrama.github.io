@@ -116,6 +116,10 @@
     "desc": "Los éxitos que marcaron los años 90. Pop brillante y melodías icónicas para una ruta llena de energía positiva."
   },
   { 
+    "id": 114, "title": "KEXP 90.3 FM", "src": "https://kexp-mp3-128.streamguys1.com/kexp128.mp3",
+    "desc": "Desde Seattle, el referente mundial del indie y la música alternativa. Sesiones en vivo y una selección única para tus rutas por el Noroeste."
+  },
+  { 
     "id": 115, "title": "Galaxy News Radio", "src": "https://fallout.fm:8444/falloutfm3.ogg",
     "desc": "Trayendo las noticias y la música del Yermo a tu cabina. Clásicos de los 40 y 50 con el inconfundible estilo de Three Dog."
   },
@@ -142,6 +146,10 @@
   { 
     "id": 106, "title": "Radio Freccia", "src": "https://shoutcast.rtl.it/radiofreccia",
     "desc": "Libertad y Rock 'n' Roll. El espíritu de las radios libres italianas con una selección de rock puro y sin filtros."
+  },
+  { 
+    "id": 108, "title": "RockZone 105.9", "src": "https://icecast5.play.cz/rockzone128.mp3",
+    "desc": "La mejor selección de rock alternativo y hard rock desde el corazón de Praga. Energía pura para tus rutas europeas."
   },
   { 
     "id": 107, "title": "Country Road", "src": "https://ais-sa2.cdnstream1.com/1976_128.mp3",
