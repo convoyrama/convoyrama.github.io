@@ -16,15 +16,43 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        .app-logo {
-            width: 200px;
-            margin-bottom: 20px;
+        .logo-slideshow {
+            width: 500px;
+            height: 375px;
+            max-width: 100%;
+            margin: 0 auto 20px;
+            position: relative;
             filter: grayscale(100%);
             transition: filter 0.5s, transform 0.3s;
         }
-        .app-logo:hover {
+        .logo-slideshow:hover {
             filter: grayscale(0%);
             transform: scale(1.05);
+        }
+        .logo-slideshow img {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .logo-slideshow img:nth-child(1) {
+            animation: fadeImg1 10s infinite;
+        }
+        .logo-slideshow img:nth-child(2) {
+            animation: fadeImg2 10s infinite;
+        }
+        @keyframes fadeImg1 {
+            0%, 40% { opacity: 1; }
+            50%, 90% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes fadeImg2 {
+            0%, 40% { opacity: 0; }
+            50%, 90% { opacity: 1; }
+            100% { opacity: 0; }
         }
         .app-title {
             font-size: 3rem;
@@ -137,15 +165,18 @@
 
     <main>
         <div class="download-container">
-            <img src="assets/images/lagdrive_logo.png" alt="LAGDrive Logo" class="app-logo">
-            <h1 class="app-title"><span id="version-badge" class="version-badge">v0.1.1</span></h1>
+            <div class="logo-slideshow">
+                <img src="lagdrive/1.png" alt="LAGDrive 1">
+                <img src="lagdrive/2.png" alt="LAGDrive 2">
+            </div>
+            <h1 class="app-title"><span id="version-badge" class="version-badge">v0.1.2</span></h1>
             <p class="app-tagline">CONECTA. SINCRONIZA. CONDUCE.</p>
             
             <div class="app-description">
                 La solución definitiva para compartir y sincronizar mods de forma directa. Olvídate de subir archivos a sitios de terceros; conecta con otros conductores y mantén tus archivos actualizados al instante.
             </div>
             
-            <a href="./lagdrive/LAGDrive-0.1.1.exe" id="download-link" class="download-button">Descarga LAGDrive 0.1.1</a>
+            <a href="./lagdrive/LAGDrive-0.1.2.exe" id="download-link" class="download-button">Descarga LAGDrive 0.1.2</a>
             
             <div class="feature-grid">
                 <div class="feature-item">
@@ -191,7 +222,7 @@
                 
                 const version = (await response.text()).trim();
                 
-                if (version && version !== '0.1.1') {
+                if (version && version !== '0.1.2') {
                     const downloadLink = document.getElementById('download-link');
                     const versionBadge = document.getElementById('version-badge');
                     
