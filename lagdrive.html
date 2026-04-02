@@ -145,6 +145,29 @@
             font-size: 0.85rem;
             color: var(--text-light);
         }
+        .alpha-notice {
+            background: rgba(90, 165, 25, 0.05);
+            border: 1px dashed #5AA519;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+        }
+        .alpha-notice strong {
+            color: #5AA519;
+            display: block;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .disclaimer {
+            font-size: 0.7rem;
+            color: #666;
+            font-style: italic;
+            margin: 15px auto;
+            max-width: 500px;
+            line-height: 1.2;
+        }
         @media (max-width: 600px) {
             .feature-grid { grid-template-columns: 1fr; }
         }
@@ -169,14 +192,23 @@
                 <img src="lagdrive/1.png" alt="LAGDrive 1">
                 <img src="lagdrive/2.png" alt="LAGDrive 2">
             </div>
-            <h1 class="app-title"><span id="version-badge" class="version-badge">v0.1.2</span></h1>
+            <h1 class="app-title"><span id="version-badge" class="version-badge">v0.1.5</span></h1>
             <p class="app-tagline">CONECTA. SINCRONIZA. CONDUCE.</p>
             
             <div class="app-description">
                 La solución definitiva para compartir y sincronizar mods de forma directa. Olvídate de subir archivos a sitios de terceros; conecta con otros conductores y mantén tus archivos actualizados al instante.
             </div>
+
+            <div class="alpha-notice">
+                <strong>⚠️ VERSIÓN ALPHA EXPERIMENTAL</strong>
+                La versión 0.1.5 es la más estable hasta la fecha, pero sigue siendo experimental. Si encuentras errores, por favor repórtalos en el Discord de <a href="https://discord.gg/hjJcyREthH" target="_blank" style="color: #5AA519; font-weight: 700;">LAG'S SPEED</a>.
+            </div>
             
-            <a href="./lagdrive/LAGDrive-0.1.2.exe" id="download-link" class="download-button">Descarga LAGDrive 0.1.2</a>
+            <a href="./lagdrive/LAGDrive-0.1.5.exe" id="download-link" class="download-button">Descarga LAGDrive 0.1.5</a>
+
+            <p class="disclaimer">
+                Aviso: No nos hacemos responsables de pérdida de archivos, de novias, de publicación de archivos íntimos, ni de que tu gato aprenda a hackear el Pentágono usando esta app. Úsala bajo tu propio riesgo (y el de tu gato).
+            </p>
             
             <div class="feature-grid">
                 <div class="feature-item">
@@ -222,7 +254,7 @@
                 
                 const version = (await response.text()).trim();
                 
-                if (version && version !== '0.1.2') {
+                if (version && version !== '0.1.5') {
                     const downloadLink = document.getElementById('download-link');
                     const versionBadge = document.getElementById('version-badge');
                     
