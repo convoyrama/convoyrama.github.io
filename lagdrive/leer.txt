@@ -1,0 +1,47 @@
+  🚛 LAGDrive: Sincronización P2P Total para tu Convoy
+
+  ¿Cansado de subir mods pesados a la nube o de que tus amigos tengan versiones distintas?
+  LAGDrive es la primera plataforma descentralizada diseñada exclusivamente para la comunidad de American Truck Simulator y Euro Truck
+  Simulator 2. Conecta tu carpeta de mods directamente con tus amigos y asegúrate de que todos estén listos para rodar en segundos.
+
+  ---
+
+  🚀 ¿Qué hace LAGDrive por ti?
+
+  🔄 Sincronización Inteligente
+  No pierdas tiempo descargando gigabytes innecesarios. LAGDrive analiza tus archivos bloque por bloque. Si un mod ha sido
+  actualizado o te faltan solo unas partes, la app solo descargará los fragmentos que necesitas.
+
+  🐝 Descarga Multi-Fuente
+  Inspirado en la tecnología Torrent, LAGDrive no solo descarga de un amigo. Si tres personas en tu convoy tienen el mismo mod, la app
+  repartirá el trabajo entre todos ellos simultáneamente, sumando sus velocidades para que la descarga sea ultra-rápida.
+
+  🛡️ Descargas Smart
+  ¿Se te cortó la luz? ¿Cerraste la app por error? No pasa nada. El motor de LAGDrive usa archivos temporales de alta seguridad (.part). Al
+  abrir la app de nuevo, el sistema continuará exactamente donde se quedó, sin archivos corruptos y sin bajar ni un solo byte de más.
+
+  💬 Chat Seguro y Privado
+  Comunícate en tiempo real a través de nuestra red.
+
+
+  ---
+
+  ⚙️ ¿Cómo funciona? (La Tecnología)
+
+   * Motor Iroh (P2P de Grado Industrial): Usamos el protocolo QUIC de última generación para atravesar firewalls y conectar PCs directamente,
+     garantizando la latencia más baja posible.
+   * Seguridad Blake3: Cada archivo se verifica con algoritmos de hashing criptográfico. Si LAGDrive dice que el mod está listo, es que es
+     exactamente idéntico al de tu amigo, bit a bit.
+   * Smart-Watch en Tiempo Real: El sistema vigila tu carpeta de mods las 24 horas. En cuanto mueves un archivo manualmente o lo borras, la
+     interfaz se actualiza sola.
+   * Muro de Acero: Tú tienes el control. Con el Modo Privado, solo tus amigos autorizados pueden ver lo que compartes. Bloquea a usuarios no
+     deseados a nivel de protocolo para que nunca más vuelvan a molestarte.
+
+  ---
+
+  🏁 ¿Listo para el próximo kilómetro?
+  LAGDrive no es solo un programa, es el copiloto técnico que tu VTC necesita. Olvida los links de Mega o Mediafire. Abre LAGDrive, sincroniza
+  y enfócate en lo que importa: conducir.
+
+  ---
+  Un proyecto desarrollado por LAG'S SPEED para la comunidad de CONVOYRAMA.
