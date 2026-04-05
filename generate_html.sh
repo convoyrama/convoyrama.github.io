@@ -125,7 +125,12 @@ cat << 'EOF' > "$OUTPUT_HTML"
     <header>
         <nav>
             <a href="index.html">Home</a>
+            <a href="pc.html">Creador de Perfil</a>
             <a href="id.html">Licencia</a>
+            <a href="event.html">Crear Evento</a>
+            <a href="lagfm/index.html">LAG FM</a>
+            <a href="lagdrive.html">LAGDrive</a>
+            <a href="pitstop.html">PitStop</a>
         </nav>
         <p id="t2">Lista de IDs</p>
     </header>

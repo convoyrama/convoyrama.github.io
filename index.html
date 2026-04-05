@@ -11,29 +11,131 @@
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
     <style>
         header{padding:15px;text-align:center;position:relative;z-index:10}
-        header p{font-size:1.2em;text-shadow:none;font-family:Arial,sans-serif;font-weight:normal;margin:10px 0;color:#fff}
         nav{padding:10px;text-align:center}
-        nav a{text-decoration:none;margin:0 15px;font-size:1em;text-shadow:none;color:#fff}
+        nav a{text-decoration:none;margin:0 15px;font-size:1em;color:#fff}
         nav a:hover{text-decoration:underline}
-        footer{text-align:center;padding:10px}
-        footer small{color:#fff;font-size:.9em}
-        .help-link,.help-link:visited{display:block;margin-top:10px;color:#fff;text-decoration:none;font-size:1em;font-family:Arial,sans-serif}
-        .help-link:hover{text-decoration:underline}
-        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.5);z-index:100;justify-content:center;align-items:center}
-        .modal-content{background-color:transparent;position:relative;text-align:center}
-        .close-button{position:absolute;top:-30px;right:-10px;font-size:30px;cursor:pointer;color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,.5)}
-        .cube-container{width:200px;height:200px;position:relative;transform-style:preserve-3d;transition:transform 1s;margin:0 auto}
-        .cube{width:100%;height:100%;position:absolute;transform-style:preserve-3d}
-        .face{position:absolute;width:200px;height:200px;background-size:cover;border:2px solid #333;box-sizing:border-box}
+        
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .welcome-image {
+            display: block;
+            margin: 0 auto;
+            width: 150px; /* Tamaño reducido a la mitad */
+            height: auto;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #5AA519;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin: 0px 0 25px; /* Margen superior eliminado para acercar al logo */
+            opacity: 0.9;
+        }
+
+        .section-intro {
+            margin-bottom: 30px; /* Reducido para acercar las herramientas */
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .btn-discord {
+            display: inline-block;
+            padding: 12px 25px;
+            background: rgb(90,165,25);
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn-small {
+            flex: 1;
+            max-width: 145px;
+            padding: 10px 5px;
+            background: rgb(90,165,25);
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+            text-align: left;
+        }
+        .feature-item {
+            background: var(--accent-bg);
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #5AA519;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .feature-item:hover {
+            transform: translateY(-3px);
+            background: #333;
+        }
+        .feature-item strong {
+            display: block;
+            color: #5AA519;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            font-style: italic;
+            font-weight: 900;
+        }
+        .feature-item p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #ccc;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 600px) {
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+
+        footer{text-align:center;padding:40px 10px}
+        footer small{color:#ccc;font-size:.9em}
+        .help-link{display:block;margin-top:10px;color:#fff;text-decoration:none}
+        
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.8);z-index:100;justify-content:center;align-items:center}
+        .modal-content{position:relative}
+        .close-button{position:absolute;top:-40px;right:0;font-size:30px;cursor:pointer;color:#fff}
+        .cube-container{width:200px;height:200px;perspective:1000px;margin:0 auto}
+        .cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 1s;cursor:pointer}
+        .face{position:absolute;width:200px;height:200px;background-size:cover;border:1px solid #333}
         .face.front{transform:rotateY(0deg) translateZ(100px);background-image:url('assets/images/cara1.png')}
         .face.back{transform:rotateY(180deg) translateZ(100px);background-image:url('assets/images/cara2.png')}
         .face.right{transform:rotateY(90deg) translateZ(100px);background-image:url('assets/images/cara3.png')}
         .face.left{transform:rotateY(-90deg) translateZ(100px);background-image:url('assets/images/cara4.png')}
         .face.top{transform:rotateX(90deg) translateZ(100px);background-image:url('assets/images/cara5.png')}
         .face.bottom{transform:rotateX(-90deg) translateZ(100px);background-image:url('assets/images/cara6.png')}
-        .welcome-image{display:block;margin:0 auto;max-width:100%;max-height:200px;height:auto;border-radius:8px}
-        .music-trigger{cursor:pointer;font-size:24px;color:#fff;transition:transform 0.3s}
-        .music-trigger:hover{transform:scale(1.2)}
+        
+        .music-trigger{cursor:pointer;font-size:24px;color:#fff}
         @keyframes pulse-play {
             0% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.1); opacity: 0.7; }
@@ -50,48 +152,76 @@
             <a href="event.html">Crear Evento</a>
             <a href="lagfm/index.html">LAG FM</a>
             <a href="lagdrive.html">LAGDrive</a>
+            <a href="pitstop.html">PitStop</a>
         </nav>
-        <p id="headerTitle"></p>
     </header>
 
-    <section style="max-width:700px;margin:20px auto;padding:15px;border:1px solid #ccc;border-radius:8px;font-family:Arial,sans-serif;line-height:1.5;background:rgba(0,0,0,0.5);color:#fff">
+    <main class="main-container">
         <img src="./assets/images/cr.png" alt="Convoyrama Logo" class="welcome-image">
-        
-        <!-- PitStop Download Section -->
-        <div style="text-align:center;margin:20px 0">
-            <a href="PitStop.exe" style="display:inline-block;padding:12px 20px;background:rgb(90,165,25);color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;font-size:16px;margin:5px">Descarga PitStop</a>
-            <p style="margin:5px auto;max-width:500px;font-size:14px;color:#ccc">PitStop es una pequeña utilidad para modificar el gamesave de ATS y ETS2: permite repostar, reparar camión/remolque y quitar peso a la carga.</p>
-        </div>
+        <div class="tagline">De la comunidad para la comunidad</div>
 
-        <p>El servidor de Discord LAG'S SPEED, que fue el hogar de <strong>Canteras del Sur</strong> y <a href="https://discord.com/channels/1142255059074306108/1145608504506335313" target="_blank" style="color:#7289da">Convoy Nocturno</a>, sigue vivo como un HUB abierto para la comunidad. De esa comunidad nació CONVOYRAMA, una herramienta para todos, independiente de las VTCs.</p>
-        
-        <p>👉 Si buscás una VTC activa, podés unirte a <a href="https://discord.gg/PrHd3pA6Ev" target="_blank" style="color:#7289da">Transportes Costa Sudamericana</a> o visitar <a href="https://discord.gg/yS4PQuCkwy" target="_blank" style="color:#7289da">Convoy Nocturno - La Noche</a>.</p>
-        
-        <div style="text-align:center;margin:30px 0">
-            <!-- Play Music moved here -->
-            <div style="margin-bottom:15px">
-                <span id="play-music" class="music-trigger" title="Reproducir Música">▶</span>
-            </div>
+        <section class="section-intro">
+            <p>El servidor de Discord LAG'S SPEED, hogar de <strong>Canteras del Sur</strong> y <a href="https://discord.com/channels/1142255059074306108/1145608504506335313" target="_blank" style="color:#7289da">Convoy Nocturno</a>, sigue vivo como un HUB abierto para todos. De esa comunidad nació CONVOYRAMA, una herramienta independiente para los simuladores.</p>
+            
+            <p>👉 Si buscas una VTC activa, únete a <a href="https://discord.gg/PrHd3pA6Ev" target="_blank" style="color:#7289da">Transportes Costa Sudamericana</a> o visitar <a href="https://discord.gg/yS4PQuCkwy" target="_blank" style="color:#7289da">Convoy Nocturno - La Noche</a>.</p>
 
-            <!-- Discord Button -->
-            <div style="max-width:300px;margin:0 auto">
-                <a href="https://discord.gg/hjJcyREthH" target="_blank" style="display:block;padding:12px 20px;background:rgb(90,165,25);color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;font-size:16px">Discord de LAG'S SPEED</a>
-                
-                <!-- TMP and PICKUP filling the same width together -->
-                <div style="display:flex;gap:10px;margin-top:10px">
-                    <a href="https://truckersmp.com/vtc/78865" target="_blank" style="flex:1;padding:10px 5px;background:rgb(90,165,25);color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;font-size:14px;text-align:center">TMP</a>
-                    <a href="https://pickupvtm.com/company/8203" target="_blank" style="flex:1;padding:10px 5px;background:rgb(90,165,25);color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;font-size:14px;text-align:center">PICKUP</a>
+            <div style="margin: 25px 0;">
+                <a href="https://discord.gg/hjJcyREthH" target="_blank" class="btn-discord">Discord de LAG'S SPEED</a>
+                <div class="btn-group">
+                    <a href="https://truckersmp.com/vtc/78865" target="_blank" class="btn-small">TMP</a>
+                    <a href="https://pickupvtm.com/company/8203" target="_blank" class="btn-small">PICKUP</a>
                 </div>
             </div>
+
+            <div style="margin-top:20px">
+                <span id="play-music" class="music-trigger" title="Reproducir Música">▶</span>
+            </div>
+        </section>
+
+        <div class="feature-grid">
+            <!-- PitStop -->
+            <a href="pitstop.html" class="feature-item">
+                <strong>PitStop</strong>
+                <p>Tu parada técnica rápida para ATS y ETS2. Repara, reposta y gestiona tu carga en segundos.</p>
+            </a>
+
+            <!-- LAGDrive -->
+            <a href="lagdrive.html" class="feature-item">
+                <strong>LAGDrive</strong>
+                <p>Sincronización directa de mods. La forma más rápida de compartir archivos con tu equipo.</p>
+            </a>
+
+            <!-- LAG·FM -->
+            <a href="lagfm/index.html" class="feature-item">
+                <strong>LAG·FM</strong>
+                <p>La radio oficial de la comunidad. Disfruta de la mejor música mientras recorres las rutas.</p>
+            </a>
+
+            <!-- ID Creator -->
+            <a href="id.html" class="feature-item">
+                <strong>Licencia de Conductor</strong>
+                <p>Genera tu carnet personalizado con tus estadísticas reales de TruckersMP.</p>
+            </a>
+
+            <!-- Event Flyer -->
+            <a href="event.html" class="feature-item">
+                <strong>Flyer de Evento</strong>
+                <p>Crea invitaciones profesionales para tus convoys y eventos de forma automática.</p>
+            </a>
+
+            <!-- Profile Creator -->
+            <a href="pc.html" class="feature-item">
+                <strong>Creador de Perfil</strong>
+                <p>Personaliza tu imagen con los logos de tu VTC y banderas de tu país.</p>
+            </a>
         </div>
-    </section>
+    </main>
 
     <footer>
         <small>© LAG'S SPEED - CONVOYRAMA 2025 | <a href="developers.html" style="color: #ccc; text-decoration: none;">API / Developers</a></small>
         <a href="#" class="help-link" id="helpLink">¿Necesitas ayuda?</a>
     </footer>
 
-    <!-- Dice Modal -->
     <div class="modal" id="diceModal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -107,6 +237,10 @@
             </div>
         </div>
     </div>
+
+    <audio id="background-audio" loop>
+        <source src="LAG'S SPEED.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         const cube=document.getElementById('cube');
@@ -130,13 +264,7 @@
         });
         closeButton.addEventListener('click',()=>{modal.style.display='none'});
         modal.addEventListener('click',(e)=>{if(e.target===modal)modal.style.display='none'});
-    </script>
 
-    <audio id="background-audio" loop>
-        <source src="LAG'S SPEED.mp3" type="audio/mpeg">
-    </audio>
-
-    <script>
         const audio=document.getElementById("background-audio"),playBtn=document.getElementById("play-music");
         audio.volume=.1;
         playBtn.addEventListener("click",(()=>{
