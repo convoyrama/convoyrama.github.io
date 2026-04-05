@@ -39,19 +39,27 @@
             object-fit: contain;
         }
         .logo-slideshow img:nth-child(1) {
-            animation: fadeImg1 10s infinite;
+            animation: fadeImg1 12s infinite;
         }
         .logo-slideshow img:nth-child(2) {
-            animation: fadeImg2 10s infinite;
+            animation: fadeImg2 12s infinite;
+        }
+        .logo-slideshow img:nth-child(3) {
+            animation: fadeImg3 12s infinite;
         }
         @keyframes fadeImg1 {
-            0%, 40% { opacity: 1; }
-            50%, 90% { opacity: 0; }
+            0%, 25% { opacity: 1; }
+            33.3%, 91.6% { opacity: 0; }
             100% { opacity: 1; }
         }
         @keyframes fadeImg2 {
-            0%, 40% { opacity: 0; }
-            50%, 90% { opacity: 1; }
+            0%, 25% { opacity: 0; }
+            33.3%, 58.3% { opacity: 1; }
+            66.6%, 100% { opacity: 0; }
+        }
+        @keyframes fadeImg3 {
+            0%, 58.3% { opacity: 0; }
+            66.6%, 91.6% { opacity: 1; }
             100% { opacity: 0; }
         }
         .app-title {
@@ -191,8 +199,9 @@
             <div class="logo-slideshow">
                 <img src="lagdrive/1.png" alt="LAGDrive 1">
                 <img src="lagdrive/2.png" alt="LAGDrive 2">
+                <img src="lagdrive/3.png" alt="LAGDrive 3">
             </div>
-            <h1 class="app-title"><span id="version-badge" class="version-badge">v0.1.5</span></h1>
+            <h1 class="app-title"><span id="version-badge" class="version-badge">v0.2.0</span></h1>
             <p class="app-tagline">CONECTA. SINCRONIZA. CONDUCE.</p>
             
             <div class="app-description">
@@ -254,7 +263,7 @@
                 
                 const version = (await response.text()).trim();
                 
-                if (version && version !== '0.1.5') {
+                if (version && version !== '0.2.0') {
                     const downloadLink = document.getElementById('download-link');
                     const versionBadge = document.getElementById('version-badge');
                     
