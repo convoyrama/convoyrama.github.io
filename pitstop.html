@@ -92,6 +92,36 @@
             background-color: #4a8a14;
             box-shadow: 0 6px 20px rgba(90, 165, 25, 0.4);
         }
+        .download-button-testing {
+            display: inline-block;
+            background-color: #1a1a1a;
+            color: #888 !important;
+            padding: 10px 20px;
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: transform 0.2s, background-color 0.2s, color 0.2s;
+            margin-top: 15px;
+            border: 1px solid #333;
+        }
+        .download-button-testing:hover {
+            transform: translateY(-2px);
+            background-color: #222;
+            color: #fff !important;
+            border-color: #444;
+        }
+        .recommendation-note {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #5AA519;
+            padding: 20px;
+            margin: 30px auto;
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--text-light);
+        }
         .version-badge {
             background-color: #141414;
             color: white;
@@ -171,7 +201,7 @@
         <div class="download-container">
             <img src="pitstop/tray.svg" alt="PitStop Logo" class="app-logo">
             
-            <h1 class="app-title">PitStop <span class="version-badge">v0.2.1</span></h1>
+            <h1 class="app-title">PitStop <span class="version-badge">v0.2.3</span></h1>
             <p class="app-tagline">REPARA. REPOSTA. CONTINÚA.</p>
             
             <div class="app-description">
@@ -182,7 +212,11 @@
                 <img src="pitstop/imagen.png" alt="PitStop Screenshot">
             </div>
             
-            <a href="pitstop/PitStop_0.2.1_x64-setup.exe" class="download-button">Descarga PitStop 0.2.1</a>
+            <a href="pitstop/PitStop_0.2.3_x64-setup.exe" class="download-button">Descarga PitStop 0.2.3</a>
+            <br>
+            <a href="pitstop/PitStop_0.3.1_x64-setup.exe" class="download-button-testing">Versión Testing v0.3.1</a>
+
+            <div class="recommendation-note">Nota: La aplicación ahora incluye una pequeña muesca ingame en la parte superior. Usa <strong>Alt + 1</strong> para reabastecer, reparar y quitar el peso al instante sobre tu último guardado. Recomendamos usar <strong>F9</strong> (guardado rápido), presionar <strong>Alt + 1</strong> y luego <strong>F10</strong> (cargar partida) para aplicar los cambios. Puedes ajustar estas opciones en la Configuración de PitStop.</div>
 
             <p class="disclaimer">
                 Aviso: PitStop modifica archivos de guardado. Aunque es seguro, siempre recomendamos hacer una copia de seguridad de tu perfil.
