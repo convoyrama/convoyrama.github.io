@@ -12,17 +12,42 @@
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
     <script src="./twemoji-14.0.2/twemoji.min.js"></script>
 <style>
-/* COLOR OVERRIDES ONLY */
-body { background-color: #0f0f0f !important; color: #fff !important; }
-header { background-color: #121212 !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; }
-header p { color: #fff !important; }
+/* --- UNIFIED PREMIUM OVERRIDES --- */
+body { background-color: #0f0f0f !important; color: #fff !important; padding-top: 110px !important; }
+
+/* MODERN HEADER STYLES */
+.modern-header {
+    position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 1200px;
+    z-index: 9999 !important; background: rgba(18, 18, 18, 0.85) !important; backdrop-filter: blur(15px) !important; -webkit-backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important; border-radius: 50px !important; box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    padding: 0 !important; margin: 0 !important;
+}
+.nav-container { display: flex; justify-content: space-between; align-items: center; padding: 8px 25px; }
+.nav-brand { display: flex; align-items: center; text-decoration: none; gap: 12px; }
+.nav-logo { width: auto !important; height: 24px !important; filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.4)); }
+.nav-name { color: #fff !important; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; font-style: italic; letter-spacing: -0.5px; }
+.nav-links-premium { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.nav-links-premium a {
+    color: rgba(255, 255, 255, 0.7) !important; text-decoration: none !important; padding: 8px 16px !important; border-radius: 30px !important;
+    font-size: 0.85rem !important; font-weight: 700 !important; transition: all 0.3s !important; border: none !important;
+    margin: 0 !important; text-transform: uppercase !important;
+}
+.nav-links-premium a:hover { background: rgba(255, 255, 255, 0.05) !important; color: #fff !important; }
+.nav-links-premium a.active { background: #00aaff !important; color: #fff !important; }
+
+/* HIDE OLD NAV VISUALLY BUT KEEP IN DOM FOR SCRIPTS */
+header:not(.modern-header) { background: transparent !important; border: none !important; box-shadow: none !important; margin-top: 30px !important; text-align: center; }
+header:not(.modern-header) nav { display: none !important; }
+header:not(.modern-header) p { color: #fff !important; font-weight: 900; font-style: italic; text-transform: uppercase; font-size: 1.5rem; margin-bottom: 10px; }
+
+/* GLOBAL ELEMENT OVERRIDES */
 h1, h2, h3 { color: #00aaff !important; }
 .contenedor { background-color: transparent !important; }
 .custom-event { background-color: rgba(255, 255, 255, 0.03) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; border-radius: 15px; padding: 25px; }
 label { color: #00aaff !important; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; }
 input, select, textarea { background-color: #1a1a1a !important; color: #fff !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 6px !important; padding: 10px !important; }
 input:focus, select:focus, textarea:focus { border-color: #00aaff !important; outline: none !important; }
-.warning-message { background-color: rgba(255, 165, 0, 0.1) !important; color: #ffa500 !important; border: 1px dashed #ffa500 !important; border-radius: 8px; padding: 10px; margin-bottom: 20px; text-align: center; }
+.warning-message { background-color: rgba(255, 165, 0, 0.1) !important; color: #ffa500 !important; border: 1px dashed #ffa500 !important; border-radius: 8px; padding: 10px; text-align: center; margin-bottom: 20px; }
 button { background-color: #00aaff !important; color: #fff !important; border: none !important; border-radius: 8px !important; padding: 12px 20px !important; font-weight: 900 !important; text-transform: uppercase !important; cursor: pointer !important; transition: all 0.2s !important; }
 button:hover { background-color: #0088cc !important; transform: translateY(-2px) !important; }
 #reset-canvas { background-color: #333 !important; }
@@ -30,7 +55,23 @@ button:hover { background-color: #0088cc !important; transform: translateY(-2px)
 .zoom-buttons button { padding: 5px 12px !important; font-size: 1.2rem !important; }
 .switch input:checked + .slider { background-color: #00aaff !important; }
 #live-clocks { background-color: rgba(0, 170, 255, 0.05) !important; border: 1px solid rgba(0, 170, 255, 0.2) !important; color: #fff !important; border-radius: 10px; padding: 10px; margin-bottom: 20px; }
-footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,255,255,0.05) !important; padding: 20px !important; }
+
+/* PREMIUM FOOTER STYLES */
+footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,255,255,0.05) !important; padding: 40px 20px !important; margin-top: 80px !important; color: #fff !important; grid-column: 1 / -1 !important; }
+.footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; text-align: left; }
+.footer-brand h2 { margin: 0 0 10px 0; font-size: 1.2rem; color: #00aaff; font-style: italic; font-weight: 900; }
+.footer-brand p { color: #666; font-size: 0.75rem; line-height: 1.4; max-width: 250px; }
+.footer-links h4 { margin: 0 0 12px 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: #888; }
+.footer-links ul { list-style: none; padding: 0; margin: 0; }
+.footer-links li { margin-bottom: 6px; }
+.footer-links a { color: #666; text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
+.footer-links a:hover { color: #00aaff; }
+.footer-bottom { max-width: 1000px; margin: 30px auto 0; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.03); display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #444; }
+
+@media (max-width: 950px) {
+    .menu-toggle { display: none; }
+    .footer-content { grid-template-columns: 1fr 1fr; }
+}
 </style>
     <!--
     <script>
@@ -42,6 +83,24 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
     -->
 </head>
 <body data-i18n-plurals>
+    <header class="modern-header">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <img src="assets/images/cr.png" alt="Convoyrama Logo" class="nav-logo">
+                <span class="nav-name">Convoyrama</span>
+            </a>
+            <nav class="nav-links-premium">
+                <a href="index.html">Home</a>
+                <a href="pitstop.html">PitStop</a>
+                <a href="lagdrive.html">LAGDrive</a>
+                <a href="lagfm.html">LAG FM</a>
+                <a href="tuppertruck.html">TupperTruck</a>
+                <a href="id.html">Licencia</a>
+                <a href="event.html" class="active">Flyer</a>
+            </nav>
+        </div>
+    </header>
+
     <header>
         <nav>
             <a href="index.html" data-i18n="nav_home">Home</a>
@@ -282,8 +341,26 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
         </div>
         <div id="copy-message" data-i18n="copy_message_text">¡Información copiada al portapapeles!</div>
     </div>
-    <footer>
-        <small>© LAG'S SPEED - CONVOYRAMA 2025 - v2 | <a href="developers.html" style="color: #ccc; text-decoration: none;">API / Developers</a></small>
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>CONVOYRAMA</h2>
+                <p>Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Gadgets</h4>
+                <ul><li><a href="pitstop.html">PitStop</a></li><li><a href="tuppertruck.html">TupperTruck</a></li><li><a href="lagdrive.html">LAGDrive</a></li><li><a href="id.html">Licencia</a></li></ul>
+            </div>
+            <div class="footer-links">
+                <h4>Comunidad</h4>
+                <ul><li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li><li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li><li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li></ul>
+            </div>
+            <div class="footer-links">
+                <h4>Cosas Serias</h4>
+                <ul><li><a href="developers.html">API / Developers</a></li><li><a href="mantenimiento.html">Estado</a></li></ul>
+            </div>
+        </div>
+        <div class="footer-bottom"><div>© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div></div>
     </footer>
     <script src="./event/js/lib/luxon.min.js"></script>
     <script type="module" src="./event/js/main.js"></script>
