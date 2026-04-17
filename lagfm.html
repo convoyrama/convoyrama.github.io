@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Convoyrama | PitStop</title>
-    <meta name="description" content="PitStop - Utilidad para ATS y ETS2. Repara, reposta y gestiona tu carga al instante.">
+    <title>Convoyrama | LAG FM</title>
+    <meta name="description" content="LAG FM - La radio oficial de la comunidad">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="icon" href="./assets/images/favicon.png">
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
@@ -50,49 +50,35 @@
         .nav-links a.active { background: var(--accent); color: #fff !important; }
 
         /* CONTENT */
-        .download-container { text-align: center; padding: 40px 20px; max-width: 800px; margin: 0 auto; }
-        .app-logo { width: 100px; height: auto; margin: 0 auto 20px; display: block; filter: drop-shadow(0 0 10px rgba(0, 170, 255, 0.3)); }
+        .app-container { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; text-align: center; }
+        .app-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 25px; padding: 40px; max-width: 550px; width: 100%; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
         
-        .screenshot-container {
-            display: grid; width: 204px; max-width: 100%; margin: 20px auto; border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
-            background: #111; position: relative; z-index: 1; overflow: hidden;
-        }
-        .screenshot-container img {
-            grid-area: 1 / 1; display: block; margin: 0 auto; width: 100%; height: auto;
-            image-rendering: pixelated; transition: opacity 1s ease-in-out, transform 0.3s ease;
-            border-radius: 8px; opacity: 0; pointer-events: none;
-        }
-        .screenshot-container img.active { opacity: 1; pointer-events: auto; }
-        .screenshot-container:hover { z-index: 10; }
-        .screenshot-container:hover img.active { transform: scale(1.5); }
+        .app-screenshot { max-width: 260px; border-radius: 20px; border: 4px solid #222; margin: 25px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.3s; filter: grayscale(20%); }
+        .app-screenshot:hover { border-color: var(--accent); transform: scale(1.03) rotate(1deg); filter: grayscale(0%); cursor: pointer; }
 
-        .app-title { font-size: 3rem; font-weight: 900; margin: 0; text-transform: uppercase; font-style: italic; letter-spacing: -2px; color: #fff; }
-        .app-tagline { color: var(--accent); font-weight: 900; font-size: 1.5rem; letter-spacing: 0.1em; font-style: italic; text-transform: uppercase; margin: 10px 0; }
-        .app-description { font-weight: 400; font-size: 1.1rem; line-height: 1.6; margin: 20px auto 40px; max-width: 600px; color: var(--text-muted); }
-        
-        .download-button {
-            display: inline-block; background-color: var(--accent); color: white !important; padding: 18px 45px;
-            font-size: 1.3rem; font-weight: 900; text-transform: uppercase; text-decoration: none; border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 170, 255, 0.3); transition: transform 0.2s, background-color 0.2s; margin-top: 10px;
-        }
-        .download-button:hover { transform: translateY(-3px); background-color: #0088cc; }
-        .download-button-testing {
-            display: inline-block; background-color: #1a1a1a; color: #888 !important; padding: 10px 20px;
-            font-size: 0.8rem; font-weight: 900; text-transform: uppercase; text-decoration: none; border-radius: 6px;
-            transition: all 0.2s; margin-top: 15px; border: 1px solid #333;
-        }
-        .download-button-testing:hover { background-color: #222; color: #fff !important; border-color: #444; }
+        .app-title { font-size: 2.5rem; font-weight: 900; margin: 0; color: #fff; font-style: italic; text-transform: uppercase; }
+        .app-description { font-size: 1.1rem; color: var(--text-muted); margin: 15px 0 30px; line-height: 1.5; }
 
-        .recommendation-note {
-            background: rgba(255, 255, 255, 0.03); border-left: 4px solid var(--accent);
-            padding: 20px; margin: 30px auto; text-align: left; font-size: 0.9rem; line-height: 1.5; color: var(--text-muted);
+        .download-btn {
+            display: inline-block; background: var(--accent); color: white !important; padding: 16px 35px;
+            font-size: 1.2rem; text-decoration: none; border-radius: 12px; font-weight: 900; margin-top: 10px;
+            transition: all 0.2s; box-shadow: 0 5px 15px rgba(0, 170, 255, 0.3); text-transform: uppercase;
         }
+        .download-btn:hover { background: #0088cc; transform: translateY(-3px); }
 
-        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; text-align: left; }
-        .feature-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 6px; border-left: 4px solid var(--accent); }
-        .feature-item strong { display: block; color: #fff; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; }
-        .feature-item p { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+        .web-btn {
+            display: inline-block; background: transparent; color: var(--accent) !important; padding: 12px 30px;
+            font-size: 1rem; text-decoration: none; border-radius: 12px; font-weight: 700; margin-top: 15px;
+            border: 2px solid var(--accent); transition: all 0.2s; text-transform: uppercase;
+        }
+        .web-btn:hover { background: rgba(0, 170, 255, 0.1); transform: translateY(-2px); }
+
+        .app-features { margin: 30px 0; text-align: left; list-style: none; padding: 0; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
+        .app-features li { margin: 12px 0; display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.95rem; }
+        .app-features li::before { content: "✓"; color: var(--accent); font-weight: 900; }
+
+        .debug-btn { display: inline-block; background: #1a1a1a; color: #555 !important; padding: 6px 15px; font-size: 0.75rem; text-decoration: none; border-radius: 6px; margin-top: 25px; border: 1px solid #333; transition: all 0.2s; }
+        .debug-btn:hover { color: #888 !important; border-color: #444; }
 
         /* FOOTER */
         .modern-footer { background: var(--footer-bg); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 20px 20px; margin-top: 80px; }
@@ -118,7 +104,6 @@
                 pointer-events: none; transition: all 0.3s ease;
             }
             .nav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
-            .feature-grid { grid-template-columns: 1fr; }
             .footer-content { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 600px) { .footer-content { grid-template-columns: 1fr; text-align: center; } .footer-brand p { margin: 0 auto; } .footer-bottom { flex-direction: column; gap: 15px; text-align: center; } }
@@ -137,38 +122,37 @@
                 <a href="tuppertruck.html">TupperTruck</a>
                 <a href="id.html">Licencia</a>
                 <a href="event.html">Evento</a>
-                <a href="lagfm.html">LAG FM</a>
+                <a href="lagfm.html" class="active">LAG FM</a>
                 <a href="lagdrive.html">LAGDrive</a>
-                <a href="pitstop.html" class="active">PitStop</a>
+                <a href="pitstop.html">PitStop</a>
             </nav>
         </div>
     </header>
 
-    <main>
-        <div class="download-container">
-            <img src="pitstop/tray.svg" alt="PitStop Logo" class="app-logo">
-            <h1 class="app-title">PitStop <span style="font-size:0.4em; vertical-align:middle; border:1px solid var(--accent); padding:2px 8px; border-radius:4px; color:var(--accent);">v0.6.0</span></h1>
-            <p class="app-tagline">REPARA. REPOSTA. CONTINÚA.</p>
-            <div class="app-description">PitStop es una utilidad esencial para conductores de ATS y ETS2. Modifica tu partida guardada al instante para ahorrar tiempo en tareas de mantenimiento.</div>
-
-            <div class="screenshot-container" id="slideshow">
-                <img src="pitstop/imagen.png" alt="PitStop Screenshot" class="active">
-                <img src="pitstop/imagen1.png" alt="PitStop Screenshot 1">
-                <img src="pitstop/imagen2.png" alt="PitStop Screenshot 2">
-            </div>
+    <main class="app-container">
+        <div class="app-card">
+            <h1 class="app-title">LAG FM</h1>
+            <p class="app-description">¡Lleva la música de la comunidad a todas partes!</p>
             
-            <a href="pitstop/PitStop_0.6.0_x64-setup.exe" class="download-button">Descarga PitStop 0.6.0</a>
+            <a href="lagfm/lagfm_web.html" title="Abrir Sintonizador Web (PWA)">
+                <img src="lagfm/ui2.png" alt="LAG FM App Screenshot" class="app-screenshot">
+            </a>
+            
+            <ul class="app-features">
+                <li>Sintonización en tiempo real sin cortes.</li>
+                <li>Interfaz minimalista optimizada para móvil.</li>
+                <li>Consumo de datos extremadamente bajo.</li>
+                <li>100% libre de anuncios y rastreadores.</li>
+            </ul>
+
+            <a href="lagfm/lagfmlatest.apk" class="download-btn">Descargar para Android</a>
             <br>
-            <a href="pitstop/PitStop_test-setup.exe" class="download-button-testing">Versión Testing</a>
+            <a href="lagfm/lagfm_web.html" class="web-btn">Abrir Reproductor Web</a>
 
-            <div class="recommendation-note">Nota: La aplicación incluye una pequeña muesca ingame. Usa Alt + 1 para reabastecer, reparar y quitar el peso al instante sobre tu último guardado. Recomendamos usar F9 (guardado rápido), presionar Alt + 1 y luego F10 (cargar partida).</div>
+            <p style="margin-top: 25px; margin-bottom: 5px;"><small style="color:#444; font-weight: 700; text-transform: uppercase;">Estado de la versión</small></p>
+            <p id="md5-status" style="font-family: monospace; font-size: 0.75rem; color: #444; margin: 0; word-break: break-all;">Verificando integridad...</p>
 
-            <div class="feature-grid">
-                <div class="feature-item"><strong>Reparación Instantánea</strong><p>Repara tu camión y remolque al 100% sin buscar un taller.</p></div>
-                <div class="feature-item"><strong>Combustible al Máximo</strong><p>Llena el tanque en segundos y olvida las paradas en gasolineras.</p></div>
-                <div class="feature-item"><strong>Gestión de Carga</strong><p>Quita el peso a tu carga actual para una conducción más ligera.</p></div>
-                <div class="feature-item"><strong>Compatible</strong><p>Funciona tanto con American Truck Simulator como con Euro Truck Simulator 2.</p></div>
-            </div>
+            <a href="lagfm/app-debug.apk" class="debug-btn">Versión Debug (Testing)</a>
         </div>
     </main>
 
@@ -201,14 +185,31 @@
         const navList = document.getElementById('nav-list');
         mobileMenu.addEventListener('click', () => { mobileMenu.classList.toggle('open'); navList.classList.toggle('open'); });
 
-        const images = document.querySelectorAll('#slideshow img');
-        let currentIndex = 0;
-        function showNextImage() {
-            images[currentIndex].classList.remove('active');
-            currentIndex = (currentIndex + 1) % images.length;
-            images[currentIndex].classList.add('active');
-        }
-        setInterval(showNextImage, 4000);
+        // Cargar MD5 desde la subcarpeta
+        fetch('lagfm/md5')
+            .then(response => {
+                if (!response.ok) throw new Error('Error');
+                return response.text();
+            })
+            .then(text => {
+                const md5sum = text.split(' ')[0].trim();
+                document.getElementById('md5-status').textContent = "MD5: " + md5sum;
+            })
+            .catch(err => {
+                document.getElementById('md5-status').textContent = "";
+            });
+
+        // Cargar versión desde la subcarpeta
+        fetch('lagfm/version.txt')
+            .then(response => response.text())
+            .then(version => {
+                const cleanVersion = version.trim();
+                const downloadBtn = document.querySelector('.download-btn');
+                if (downloadBtn && cleanVersion) {
+                    downloadBtn.setAttribute('download', `lagfm-${cleanVersion}.apk`);
+                }
+            })
+            .catch(err => console.error(err));
     </script>
 </body>
 </html>
