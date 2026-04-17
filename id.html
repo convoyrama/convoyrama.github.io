@@ -15,28 +15,21 @@
     <script src="./twemoji-14.0.2/twemoji.min.js"></script>
 <style>
 /* COLOR OVERRIDES ONLY */
-body { background-color: #0f0f0f !important; color: #fff !important; }
-header { background-color: #121212 !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; }
-header p { color: #fff !important; }
+body { background-color: #0f0f0f !important; color: #fff !important; padding-top: 110px !important; }
+header:not(.modern-header) { background-color: transparent !important; border-bottom: none !important; margin-top: 30px !important; text-align: center; }
+header:not(.modern-header) nav { display: none !important; }
+header:not(.modern-header) p { color: #fff !important; font-weight: 900; font-style: italic; text-transform: uppercase; font-size: 1.5rem; }
+
 #headerTitle, h1, h2, h3 { color: #00aaff !important; }
 .panel { background-color: rgba(255, 255, 255, 0.03) !important; border-color: rgba(255, 255, 255, 0.1) !important; }
 .input-group label { color: #00aaff !important; }
 .input-group input, .input-group select { background-color: #1a1a1a !important; color: #fff !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 6px !important; padding: 8px !important; }
 .input-group input:focus, .input-group select:focus { border-color: #00aaff !important; outline: none !important; }
-.warning-message { background-color: rgba(255, 165, 0, 0.1) !important; color: #ffa500 !important; border: 1px dashed #ffa500 !important; border-radius: 8px; padding: 10px; }
-#botonDescargar, #downloadUserbarButton, .arrow-button { background-color: #00aaff !important; color: #fff !important; }
+.warning-message { background-color: rgba(255, 165, 0, 0.1) !important; color: #ffa500 !important; border: 1px dashed #ffa500 !important; border-radius: 8px; padding: 10px; display: inline-block; margin-bottom: 20px; }
+#botonDescargar, #downloadUserbarButton, .arrow-button { background-color: #00aaff !important; color: #fff !important; border: none; cursor: pointer; }
 #botonDescargar:hover, #downloadUserbarButton:hover { background-color: #0088cc !important; }
 #navLicense { color: #00aaff !important; font-weight: bold; }
 footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,255,255,0.05) !important; }
-
-/* Sliders */
-input[type=range] { accent-color: #00aaff !important; }
-#colorValue, #saturationValue { color: #00aaff !important; font-weight: bold; }
-input[type=range]::-webkit-slider-runnable-track { background: rgba(0, 170, 255, 0.2) !important; }
-input[type=range]::-webkit-slider-thumb { background: #00aaff !important; }
-
-#infoButton { background-color: #333 !important; color: #fff !important; border-color: #444 !important; }
-#infoButton:hover { background-color: #444 !important; border-color: #00aaff !important; }
 
 /* MODERN HEADER STYLES */
 .modern-header {
@@ -58,9 +51,26 @@ input[type=range]::-webkit-slider-thumb { background: #00aaff !important; }
 .nav-links-premium a:hover { background: rgba(255, 255, 255, 0.05) !important; color: #fff !important; }
 .nav-links-premium a.active { background: #00aaff !important; color: #fff !important; }
 
-/* HIDE OLD NAV VISUALLY BUT KEEP IN DOM */
-header:not(.modern-header) { background: transparent !important; border: none !important; box-shadow: none !important; margin-top: 40px !important; }
-header:not(.modern-header) nav { display: none !important; }
+/* PREMIUM FOOTER STYLES */
+footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,255,255,0.05) !important; padding: 40px 20px !important; margin-top: 80px !important; color: #fff !important; }
+.footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; text-align: left; }
+.footer-brand h2 { margin: 0 0 10px 0; font-size: 1.2rem; color: #00aaff; font-style: italic; font-weight: 900; }
+.footer-brand p { color: #666; font-size: 0.75rem; line-height: 1.4; max-width: 250px; }
+.footer-links h4 { margin: 0 0 12px 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: #888; }
+.footer-links ul { list-style: none; padding: 0; margin: 0; }
+.footer-links li { margin-bottom: 6px; }
+.footer-links a { color: #666; text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
+.footer-links a:hover { color: #00aaff; }
+.footer-bottom { max-width: 1000px; margin: 30px auto 0; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.03); display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #444; }
+
+/* Sliders */
+input[type=range] { accent-color: #00aaff !important; }
+#colorValue, #saturationValue { color: #00aaff !important; font-weight: bold; }
+input[type=range]::-webkit-slider-runnable-track { background: rgba(0, 170, 255, 0.2) !important; }
+input[type=range]::-webkit-slider-thumb { background: #00aaff !important; }
+
+#infoButton { background-color: #333 !important; color: #fff !important; border-color: #444 !important; }
+#infoButton:hover { background-color: #444 !important; border-color: #00aaff !important; }
 
 .userbar-background-selector {
     display: flex;
@@ -76,14 +86,6 @@ header:not(.modern-header) nav { display: none !important; }
     padding: 2px 5px;
 }
 </style>
-    <!--
-    <script>
-      // Redirigir a la página de mantenimiento si no es modo desarrollador
-      if (!window.location.search.includes('dev=1')) {
-        window.location.href = 'mantenimiento.html';
-      }
-    </script>
-    -->
 </head>
 <body>
     <header class="modern-header">
@@ -103,6 +105,7 @@ header:not(.modern-header) nav { display: none !important; }
             </nav>
         </div>
     </header>
+
     <header>
         <nav>
             <a href="index.html" data-translate="nav_home">Home</a>
@@ -168,10 +171,8 @@ header:not(.modern-header) nav { display: none !important; }
                     <option value="kick">Kick</option>
                     <option value="tiktok">TikTok</option>
                     <option value="twitch">Twitch</option>
-                    <option value="wechat">WeChat</option>
                     <option value="youtube">YouTube</option>
                     <option value="trucksbook">TrucksBook</option>
-                    <option value="trucky">Trucky</option>
                     <option value="pickup">PICKUP</option>
                 </select>
             </div>
@@ -274,31 +275,26 @@ header:not(.modern-header) nav { display: none !important; }
         </div>
     </div>
     <div id="rank-legend" class="rank-legend-container"></div>
-    <footer>        <small>© LAG'S SPEED - CONVOYRAMA 2025 - v2.7.1 | <a href="developers.html" style="color: #ccc; text-decoration: none;">API / Developers</a></small>
-    </footer>
-    <script type="module" src="./license_generator/js/main.js"></script>
-    <script>
-    document.fonts.load('1em Verdana').then(function() {
-      if (document.fonts.check('1em Verdana')) {
-        console.log('La fuente Verdana se ha cargado correctamente.');
-      } else {
-        console.error('La fuente Verdana no se ha podido cargar.');
-      }
-    });
-    </script>
-</body>
-</html>          </div>
-                <div class="canvas-container">
-                    <canvas id="userbar-canvas" width="344" height="25"></canvas>
-                </div>
-                <div class="button-group">
-                    <a id="download-userbar" download="userbar.png"><button id="downloadUserbarButton" data-translate="downloadUserbarButton">Download Userbar</button></a>
-                </div>
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>CONVOYRAMA</h2>
+                <p>Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Gadgets</h4>
+                <ul><li><a href="pitstop.html">PitStop</a></li><li><a href="tuppertruck.html">TupperTruck</a></li><li><a href="lagdrive.html">LAGDrive</a></li><li><a href="id.html">Licencia</a></li></ul>
+            </div>
+            <div class="footer-links">
+                <h4>Comunidad</h4>
+                <ul><li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li><li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li><li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li></ul>
+            </div>
+            <div class="footer-links">
+                <h4>Cosas Serias</h4>
+                <ul><li><a href="developers.html">API / Developers</a></li><li><a href="mantenimiento.html">Estado</a></li></ul>
             </div>
         </div>
-    </div>
-    <div id="rank-legend" class="rank-legend-container"></div>
-    <footer>        <small>© LAG'S SPEED - CONVOYRAMA 2025 - v2.7.1 | <a href="developers.html" style="color: #ccc; text-decoration: none;">API / Developers</a></small>
+        <div class="footer-bottom"><div>© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div></div>
     </footer>
     <script type="module" src="./license_generator/js/main.js"></script>
     <script>
