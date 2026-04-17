@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Convoyrama | Nueva Experiencia</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <style>
+        /* Reutilización de estilos de las propuestas anteriores */
+        :root {
+            --nav-bg: rgba(20, 20, 20, 0.85);
+            --accent: #5AA519;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --card-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        body {
+            background-color: #0f0f0f;
+            margin: 0;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        /* HEADER */
+        .modern-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            text-decoration: none;
+            color: var(--accent);
+            font-weight: 900;
+            font-size: 1.5rem;
+            font-style: italic;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.3s;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent) !important;
+        }
+
+        /* HERO */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: radial-gradient(circle at center, rgba(90, 165, 25, 0.1) 0%, transparent 70%);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin: 0;
+            font-style: italic;
+            font-weight: 900;
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        /* GRID */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-8px);
+            border-color: var(--accent);
+        }
+
+        .feature-card h3 {
+            color: var(--accent);
+            margin: 15px 0 10px;
+            font-weight: 900;
+            font-style: italic;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* FOOTER */
+        .modern-footer {
+            background: #080808;
+            padding: 60px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="modern-header">
+        <div class="nav-container">
+            <a href="#" class="logo">Convoyrama</a>
+            <nav class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">TupperTruck</a>
+                <a href="#">Licencia</a>
+                <a href="#">Evento</a>
+                <a href="#">LAG FM</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>CONVOYRAMA</h1>
+        <p>Herramientas de ingeniería para la comunidad de simulación, independientes de VTCs.</p>
+    </div>
+
+    <main class="main-content">
+        <div class="feature-grid">
+            <a href="#" class="feature-card">
+                <div style="font-size: 2rem;">🛠️</div>
+                <h3>PitStop</h3>
+                <p>Tu parada técnica rápida para ATS y ETS2. Repara y gestiona tu carga al instante.</p>
+            </a>
+            <a href="#" class="feature-card">
+                <div style="font-size: 2rem;">📦</div>
+                <h3>TupperTruck</h3>
+                <p>Empaqueta tu camión favorito y conviértelo en un mod para el concesionario.</p>
+            </a>
+            <a href="#" class="feature-card">
+                <div style="font-size: 2rem;">📡</div>
+                <h3>LAGDrive</h3>
+                <p>Sincronización directa P2P para compartir archivos con tu equipo.</p>
+            </a>
+            <a href="#" class="feature-card">
+                <div style="font-size: 2rem;">🪪</div>
+                <h3>Licencia</h3>
+                <p>Genera tu carnet de conductor con estadísticas reales de TruckersMP.</p>
+            </a>
+        </div>
+    </main>
+
+    <footer class="modern-footer">
+        <div class="footer-grid">
+            <div>
+                <h2 style="color: var(--accent); font-style: italic;">Convoyrama</h2>
+                <p style="color: var(--text-muted); max-width: 300px;">De la comunidad para la comunidad. Un proyecto nacido del servidor LAG'S SPEED.</p>
+            </div>
+            <div>
+                <h4 style="text-transform: uppercase; letter-spacing: 2px;">VTCs Alisdas</h4>
+                <ul style="list-style: none; padding: 0; color: var(--text-muted);">
+                    <li>Transportes Costa Sudamericana</li>
+                    <li>Convoy Nocturno</li>
+                    <li>Canteras del Sur</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="text-transform: uppercase; letter-spacing: 2px;">Legal</h4>
+                <ul style="list-style: none; padding: 0; color: var(--text-muted);">
+                    <li>API Developers</li>
+                    <li>Privacidad</li>
+                    <li>Discord</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Convoyrama | TupperTruck</title>
+    <meta name="description" content="TupperTruck - Empaqueta tu camión de ATS/ETS2 y compártelo como un mod">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="icon" href="./assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/images/favicon.png">
+    <style>
+        .download-container {
+            text-align: center;
+            padding: 50px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .main-logo {
+            width: 180px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(90, 165, 25, 0.3));
+        }
+        .logo-slideshow {
+            display: grid;
+            width: 400px;
+            max-width: 100%;
+            margin: 0 auto 30px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 2px solid #333;
+            background: #000;
+        }
+        .logo-slideshow img {
+            grid-area: 1 / 1;
+            width: 100%;
+            height: auto;
+            display: block;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .logo-slideshow img.active {
+            opacity: 1;
+        }
+        .app-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 0;
+            text-transform: uppercase;
+            font-style: italic;
+            letter-spacing: -2px;
+            color: #fff;
+        }
+        .app-tagline {
+            color: #5AA519;
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 0.1em;
+            font-style: italic;
+            text-transform: uppercase;
+            margin: 10px 0;
+        }
+        .app-description {
+            font-weight: 400;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 20px auto 40px;
+            max-width: 650px;
+            color: #ccc;
+        }
+        .download-button {
+            display: inline-block;
+            background-color: #5AA519;
+            color: white !important;
+            padding: 20px 50px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(90, 165, 25, 0.4);
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        .download-button:hover {
+            transform: translateY(-3px);
+            background-color: #4a8a14;
+            box-shadow: 0 6px 20px rgba(90, 165, 25, 0.6);
+        }
+        .version-badge {
+            background-color: #141414;
+            color: #5AA519;
+            padding: 4px 12px;
+            font-size: 0.9rem;
+            font-weight: 900;
+            vertical-align: middle;
+            margin-left: 10px;
+            border: 1px solid #5AA519;
+            border-radius: 4px;
+        }
+        .alpha-notice {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px dashed #ffa500;
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 650px;
+            font-size: 0.95rem;
+            border-radius: 8px;
+            color: #fff;
+            line-height: 1.5;
+        }
+        .alpha-notice strong {
+            color: #ffa500;
+            display: block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 50px;
+            text-align: left;
+        }
+        .feature-item {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 3px solid #5AA519;
+            transition: background 0.3s;
+        }
+        .feature-item:hover {
+            background: rgba(255,255,255,0.06);
+        }
+        .feature-item strong {
+            display: block;
+            color: #5AA519;
+            font-size: 1rem;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+        .feature-item p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #aaa;
+            line-height: 1.4;
+        }
+        .disclaimer {
+            font-size: 0.75rem;
+            color: #666;
+            font-style: italic;
+            margin: 25px auto;
+            max-width: 600px;
+            line-height: 1.4;
+        }
+        @media (max-width: 800px) {
+            .feature-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .feature-grid { grid-template-columns: 1fr; }
+            .app-title { font-size: 2.5rem; }
+        }
+        header p { color: #fff; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="id.html">Licencia</a>
+            <a href="tuppertruck.html">TupperTruck</a>
+            <a href="event.html">Crear Evento</a>
+            <a href="lagfm/index.html">LAG FM</a>
+            <a href="lagdrive.html">LAGDrive</a>
+            <a href="pitstop.html">PitStop</a>
+        </nav>
+        <p>Empaquetado al Vacío para tus Joyas del Asfalto</p>
+    </header>
+
+    <main>
+        <div class="download-container">
+            <img src="tuppertruck/logo.png" alt="TupperTruck Logo" class="main-logo">
+            
+            <h1 class="app-title">TupperTruck <span class="version-badge">v0.1.3</span></h1>
+            <p class="app-tagline">"Empaqueta tu camión, cómpralo cuando quieras"</p>
+            
+            <div class="app-description">
+                ¿Tienes un camión tan perfecto que te da pena dejarlo en el garaje? Con <strong>TupperTruck</strong> puedes capturar su configuración exacta (chasis, cabina, motor, accesorios y más) directamente desde tu partida de ATS o ETS2 y convertirlo en un Mod Standalone (.scs) listo para ser comprado en el concesionario.
+            </div>
+
+            <div class="logo-slideshow" id="slideshow">
+                <img src="tuppertruck/ui.png" alt="TupperTruck UI 1" class="active">
+                <img src="tuppertruck/ui1.png" alt="TupperTruck UI 2">
+                <img src="tuppertruck/ui2.png" alt="TupperTruck UI 3">
+            </div>
+
+            <div class="alpha-notice">
+                <strong>⚠️ AVISO DE CONSERVACIÓN (VERSIÓN ALPHA)</strong>
+                TupperTruck es una herramienta experimental. Ten en cuenta que el cierre del tupper podría no ser 100% hermético: algunos accesorios específicos podrían no copiarse correctamente o el camión podría aparecer con un ligero olor a cebolla (metafóricamente). Úsalo bajo tu propio riesgo.
+            </div>
+            
+            <a href="./tuppertruck/TupperTruck_0.1.3_x64-setup.exe" class="download-button">Descargar TupperTruck 0.1.3</a>
+
+            <p class="disclaimer">
+                Nota: No nos hacemos responsables si tu camión se vuelve autoconsciente después del empaquetado, si intenta comerse los mods de otros camiones o si el concesionario te mira raro por intentar comprar un camión que ya tenías.
+            </p>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <strong>Empaquetado al Vacío</strong>
+                    <p>Captura todos los componentes técnicos de tu vehículo favorito directamente del archivo de guardado.</p>
+                </div>
+                <div class="feature-item">
+                    <strong>Mod Standalone</strong>
+                    <p>Genera un archivo .scs automático que añade tu configuración como una opción de compra oficial.</p>
+                </div>
+                <div class="feature-item">
+                    <strong>Compartir es Vivir</strong>
+                    <p>¿Tus amigos quieren tu mismo camión? Pásales el tupper y que lo compren en su propio juego.</p>
+                </div>
+                <div class="feature-item">
+                    <strong>Sin Conservantes</strong>
+                    <p>No requiere plugins pesados ni conexión a servidores. Solo tú, tu camión y esta app.</p>
+                </div>
+                <div class="feature-item">
+                    <strong>Multisistema</strong>
+                    <p>Funciona tanto para American Truck Simulator como para Euro Truck Simulator 2.</p>
+                </div>
+            </div>
+
+            <p style="margin-top: 50px; font-size: 0.8rem; color: #555; text-transform: uppercase; letter-spacing: 2px;">Un proyecto de la comunidad para la comunidad</p>
+        </div>
+    </main>
+
+    <footer>
+        <small>© LAG'S SPEED - CONVOYRAMA 2025 | <a href="developers.html" style="color: #ccc; text-decoration: none;">API / Developers</a></small>
+    </footer>
+
+    <script>
+        const images = document.querySelectorAll('#slideshow img');
+        let currentIndex = 0;
+
+        function showNextImage() {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.add('active');
+        }
+
+        setInterval(showNextImage, 4000);
+    </script>
+</body>
+</html>

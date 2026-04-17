@@ -23,7 +23,8 @@
             display: block;
         }
         .screenshot-container {
-            width: fit-content;
+            display: grid;
+            width: 204px;
             max-width: 100%;
             margin: 20px auto;
             border-radius: 8px;
@@ -32,20 +33,29 @@
             background: #111;
             position: relative;
             z-index: 1;
+            overflow: hidden;
         }
         .screenshot-container img {
+            grid-area: 1 / 1;
             display: block;
             margin: 0 auto;
-            width: 204px; /* Doble del tamaño original (102px) */
+            width: 100%;
             height: auto;
             image-rendering: pixelated;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: opacity 1s ease-in-out, transform 0.3s ease;
             border-radius: 8px;
+            opacity: 0;
+            pointer-events: none;
         }
-        .screenshot-container:hover img {
-            transform: scale(1.5);
-            position: relative;
+        .screenshot-container img.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .screenshot-container:hover {
             z-index: 10;
+        }
+        .screenshot-container:hover img.active {
+            transform: scale(1.5);
         }
         .app-title {
             font-size: 3rem;
@@ -187,7 +197,7 @@
     <header>
         <nav>
             <a href="index.html">Home</a>
-            <a href="pc.html">Creador de Perfil</a>
+            <a href="tuppertruck.html">TupperTruck</a>
             <a href="id.html">Licencia</a>
             <a href="event.html">Crear Evento</a>
             <a href="lagfm/index.html">LAG FM</a>
@@ -208,8 +218,10 @@
                 PitStop es una utilidad esencial para conductores de American Truck Simulator y Euro Truck Simulator 2. Modifica tu partida guardada al instante para ahorrar tiempo en tareas de mantenimiento.
             </div>
 
-            <div class="screenshot-container">
-                <img src="pitstop/imagen.png" alt="PitStop Screenshot">
+            <div class="screenshot-container" id="slideshow">
+                <img src="pitstop/imagen.png" alt="PitStop Screenshot" class="active">
+                <img src="pitstop/imagen1.png" alt="PitStop Screenshot 1">
+                <img src="pitstop/imagen2.png" alt="PitStop Screenshot 2">
             </div>
             
             <a href="pitstop/PitStop_0.6.0_x64-setup.exe" class="download-button">Descarga PitStop 0.6.0</a>
@@ -256,5 +268,18 @@
     <footer>
         <small>© LAG'S SPEED - CONVOYRAMA 2025 | <a href="developers.html" style="color: #ccc; text-decoration: none;">API / Developers</a></small>
     </footer>
+
+    <script>
+        const images = document.querySelectorAll('#slideshow img');
+        let currentIndex = 0;
+
+        function showNextImage() {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.add('active');
+        }
+
+        setInterval(showNextImage, 4000);
+    </script>
 </body>
 </html>

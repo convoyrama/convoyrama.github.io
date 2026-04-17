@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Propuesta de Header | Convoyrama</title>
+    <link rel="stylesheet" href="./assets/style.css">
+    <style>
+        /* --- NUEVOS ESTILOS PARA EL HEADER --- */
+        :root {
+            --nav-bg: rgba(43, 43, 43, 0.8);
+            --nav-accent: #5AA519;
+            --nav-text: #ffffff;
+        }
+
+        body {
+            padding-top: 70px; /* Espacio para el header sticky */
+        }
+
+        .modern-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            grid-column: 1 / -1; /* Ocupar todo el ancho en el grid del body */
+            padding: 0 !important; /* Reset del padding del header original */
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--nav-text);
+            font-weight: 900;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        .nav-logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--nav-text);
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: 1px solid transparent !important; /* Override style.css */
+            margin: 0 !important; /* Override style.css */
+        }
+
+        .nav-links a:hover {
+            background: rgba(90, 165, 25, 0.1);
+            color: var(--nav-accent) !important;
+        }
+
+        .nav-links a.active {
+            background: var(--nav-accent);
+            color: #fff !important;
+        }
+
+        /* Menú Hamburguesa */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--nav-text);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: #1a1a1a;
+                flex-direction: column;
+                padding: 80px 40px;
+                transition: 0.4s;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            }
+
+            .nav-links.open {
+                right: 0;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+                padding: 15px 0;
+                width: 100%;
+                border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+                border-radius: 0;
+            }
+            
+            .nav-links a:last-child {
+                border-bottom: none !important;
+            }
+
+            /* Animación Hamburguesa */
+            .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .menu-toggle.open span:nth-child(2) { opacity: 0; }
+            .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); }
+        }
+
+        /* Simulación de contenido */
+        .hero {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/images/rain.png');
+            background-size: cover;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="modern-header">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/images/favicon.png" alt="Logo">
+                Convoyrama
+            </a>
+
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <nav class="nav-links" id="nav-list">
+                <a href="index.html" class="active">Home</a>
+                <a href="tuppertruck.html">TupperTruck</a>
+                <a href="id.html">Licencia</a>
+                <a href="event.html">Crear Evento</a>
+                <a href="lagfm/index.html">LAG FM</a>
+                <a href="lagdrive.html">LAGDrive</a>
+                <a href="pitstop.html">PitStop</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1 style="font-size: 3rem; margin: 0;">Propuesta de Header</h1>
+            <p>Este es un ejemplo de cómo se vería el nuevo menú.</p>
+        </div>
+
+        <section style="padding: 40px 0; line-height: 1.8;">
+            <h2>Ventajas de este diseño:</h2>
+            <ul>
+                <li><strong>Sticky:</strong> Siempre tienes el menú a mano, sin importar cuánto bajes.</li>
+                <li><strong>Glassmorphism:</strong> El efecto de desenfoque le da un toque premium y moderno.</li>
+                <li><strong>Mobile First:</strong> En celulares se convierte en un menú lateral elegante, evitando el desorden actual.</li>
+                <li><strong>Consistencia:</strong> Es fácil de replicar en todas las páginas copiando solo el bloque de HTML y CSS.</li>
+            </ul>
+            <p>Prueba a reducir el tamaño de la ventana del navegador para ver cómo aparece el botón de menú en móviles.</p>
+        </section>
+    </main>
+
+    <script>
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+            navList.classList.toggle('open');
+        });
+
+        // Cerrar menú al hacer clic en un enlace (para móviles)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                navList.classList.remove('open');
+            });
+        });
+    </script>
+</body>
+</html>

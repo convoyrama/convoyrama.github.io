@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Footer Moderno | Convoyrama</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <style>
+        :root {
+            --footer-bg: #0a0a0a;
+            --accent: #5AA519;
+            --text-muted: #777777;
+        }
+
+        body { margin: 0; background: #121212; min-height: 100vh; display: flex; flex-direction: column; }
+        main { flex: 1; padding: 50px; color: #fff; text-align: center; }
+
+        .modern-footer {
+            background: var(--footer-bg);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 60px 20px 30px;
+            color: #fff;
+            grid-column: 1 / -1;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-brand h2 {
+            margin: 0 0 15px 0;
+            font-size: 1.8rem;
+            color: var(--accent);
+            font-style: italic;
+            font-weight: 900;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        .footer-links h4 {
+            margin: 0 0 20px 0;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 50px auto 0;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-socials a {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .footer-socials a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 900px) {
+            .footer-content { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .footer-content { grid-template-columns: 1fr; text-align: center; }
+            .footer-brand p { margin: 0 auto 15px; }
+            .footer-bottom { flex-direction: column; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Contenido de la página</h1>
+        <p>El footer está abajo del todo.</p>
+    </main>
+
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>CONVOYRAMA</h2>
+                <p>Una herramienta creada por la comunidad de LAG'S SPEED para mejorar la experiencia en simuladores de camiones.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Herramientas</h4>
+                <ul>
+                    <li><a href="#">PitStop</a></li>
+                    <li><a href="#">TupperTruck</a></li>
+                    <li><a href="#">LAGDrive</a></li>
+                    <li><a href="#">Licencia</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Comunidad</h4>
+                <ul>
+                    <li><a href="#">Discord Oficial</a></li>
+                    <li><a href="#">Transportes Costa Sudamericana</a></li>
+                    <li><a href="#">Convoy Nocturno</a></li>
+                    <li><a href="#">Pickup VTM</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">API / Developers</a></li>
+                    <li><a href="#">Mantenimiento</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>© 2026 LAG'S SPEED - CONVOYRAMA. Casi todos los derechos reservados.</div>
+            <div class="footer-socials">
+                <a href="#" title="Discord">💬</a>
+                <a href="#" title="GitHub">💻</a>
+                <a href="#" title="Web">🌐</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
