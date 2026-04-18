@@ -1,0 +1,41 @@
+{
+  "version": "1.1",
+  "updatedAt": "2026-04-17",
+  "network_id": "convoyrama-mainnet",
+  "hubs": [
+    {
+      "id": "iroh-us",
+      "name": "Iroh Relay North America",
+      "address": "https://us-1.iroh.network",
+      "type": "relay",
+      "status": "official"
+    },
+    {
+      "id": "iroh-eu",
+      "name": "Iroh Relay Europe",
+      "address": "https://euw1-1.iroh.network",
+      "type": "relay",
+      "status": "official"
+    },
+    {
+      "id": "iroh-dns",
+      "name": "Iroh Discovery Service",
+      "address": "dns.iroh.link",
+      "type": "discovery",
+      "status": "official"
+    },
+    {
+      "id": "convoyrama-alpha",
+      "name": "Parador Convoyrama Central",
+      "address": "hub.convoyrama.com",
+      "type": "persistence",
+      "status": "community"
+    }
+  ],
+  "config": {
+    "genesis_bonus": 100.00,
+    "referral_bonus": 20.00,
+    "min_tmp_age_months": 6,
+    "sync_interval_ms": 300000
+  }
+}
