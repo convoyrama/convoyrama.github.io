@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Tarjetas Modernas | Convoyrama</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <style>
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-hover-bg: rgba(255, 255, 255, 0.07);
+            --accent: #00aaff;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+        }
+
+        body {
+            background-color: #121212;
+            padding: 40px 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            background: var(--card-hover-bg);
+            transform: translateY(-6px);
+            border-color: rgba(0, 170, 255, 0.4);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 170, 255, 0.1);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.1rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-style: italic;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .feature-card p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .card-arrow {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .card-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        @media (max-width: 600px) {
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="feature-grid">
+        <a href="#" class="feature-card">
+            <span class="card-icon">🛠️</span>
+            <h3>PitStop</h3>
+            <p>Tu parada técnica rápida para ATS y ETS2. Repara, reposta y gestiona tu carga en segundos sin perder el ritmo.</p>
+            <span class="card-arrow">Ver herramienta →</span>
+        </a>
+
+        <a href="#" class="feature-card">
+            <span class="card-icon">📦</span>
+            <h3>TupperTruck</h3>
+            <p>¿Te gusta tu camión? ¡Empaquétalo! Convierte tu configuración actual en un mod listo para el concesionario.</p>
+            <span class="card-arrow">Ver herramienta →</span>
+        </a>
+
+        <a href="#" class="feature-card">
+            <span class="card-icon">📡</span>
+            <h3>LAGDrive</h3>
+            <p>Sincronización directa de mods mediante P2P. La forma más rápida de compartir archivos con tu equipo.</p>
+            <span class="card-arrow">Ver herramienta →</span>
+        </a>
+
+        <a href="#" class="feature-card">
+            <span class="card-icon">📻</span>
+            <h3>LAG·FM</h3>
+            <p>La radio oficial de la comunidad. Disfruta de la mejor música y sintoniza con otros conductores en ruta.</p>
+            <span class="card-arrow">Ver herramienta →</span>
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 135.46666 135.46667"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   sodipodi:docname="diesels_symbol.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.72070006"
+     inkscape:cx="396.83638"
+     inkscape:cy="339.25348"
+     inkscape:window-width="1920"
+     inkscape:window-height="1012"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g62"
+       transform="matrix(4.6143063,0,0,4.6011233,-1411.7199,96.712556)"
+       inkscape:export-filename="../../diesels_symbol.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       style="fill:#ffffff">
+      <g
+         id="g61"
+         transform="translate(72.546664,-8.317452)"
+         style="fill:#ffffff">
+        <g
+           id="g60"
+           inkscape:export-filename="simbol.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96"
+           style="fill:#ffffff">
+          <path
+             class="cls-1"
+             d="m 248.06841,-5.3886079 c 0.94721,3.7967704 5.53508,6.9849995 5.02708,10.9616868 -0.29898,2.38125 -2.21191,3.704167 -4.66989,3.84175 -2.77019,0.153458 -5.13821,-1.153583 -5.38427,-3.894667 -0.37042,-4.1010411 3.82852,-7.0511453 5.02708,-10.9087698 z m -3.50044,9.1863328 a 0.51064583,0.51064583 0 0 1 0.48419,-0.529167 0.52916666,0.52916666 0 0 1 0.58208,0.452438 4.5958124,4.5958124 0 0 0 0.52917,1.807104 3.2967083,3.2967083 0 0 0 1.32292,1.285875 c 1.00541,0.555625 -0.68792,2.032 -2.28336,-0.820208 a 5.5906458,5.5906458 0 0 1 -0.64029,-2.182813 z"
+             id="path55"
+             style="fill:#ffffff;fill-rule:evenodd;stroke-width:0.264583" />
+          <path
+             d="m 248.32437,-12.701884 v 5.8884169 h 11.73478 V 10.851785 h -11.73478 v 5.888417 h 17.6232 v -29.442086 z m -5.88841,0 h -5.84636 v 29.442086 h 5.84636 V 4.9213078 h 2.94421 v -5.88841706 h -2.94421 z"
+             id="path56"
+             style="font-size:50.8px;font-family:Galactico;-inkscape-font-specification:Galactico;text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.827955;stroke-linecap:square"
+             aria-label="Ð"
+             transform="translate(-3.1921312)"
+             sodipodi:nodetypes="cccccccccccccccccc" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

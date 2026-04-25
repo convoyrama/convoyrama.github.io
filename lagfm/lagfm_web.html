@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LAG FM - Sintonizador Web</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#141414">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" href="icon.png">
+    
+    <style>
+        :root {
+            --vtc-green: #5AA519;
+            --vtc-green-glow: rgba(90, 165, 25, 0.4);
+            --vtc-black: #0c0c0c;
+            --vtc-surface: #161616;
+            --vtc-border: #222222;
+            --vtc-text: #ffffff;
+            --vtc-text-dim: #777777;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--vtc-black);
+            color: var(--vtc-text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        header {
+            padding: 10px 15px;
+            text-align: center;
+            background: var(--vtc-black);
+            border-bottom: 1px solid var(--vtc-border);
+            flex-shrink: 0;
+        }
+
+        header a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .logo-text span { color: var(--vtc-green); }
+
+        .player-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            gap: 10px;
+            overflow: hidden;
+        }
+
+        .display-area {
+            text-align: center;
+            padding: 5px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80px;
+        }
+
+        #current-station {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: var(--vtc-green);
+            text-shadow: 0 0 10px var(--vtc-green-glow);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #status-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--vtc-text-dim);
+            font-family: monospace;
+        }
+
+        .controls-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px 0;
+        }
+
+        /* Volume Dial Styles */
+        .dial-wrapper {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px auto;
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        .volume-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .ring-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 8;
+        }
+
+        .ring-fill {
+            fill: none;
+            stroke: var(--vtc-green);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 565;
+            stroke-dashoffset: 565;
+            transition: stroke-dashoffset 0.1s ease;
+            filter: drop-shadow(0 0 5px var(--vtc-green));
+        }
+
+        .play-btn {
+            position: relative;
+            z-index: 10;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--vtc-black);
+            border: 4px solid var(--vtc-green);
+            color: var(--vtc-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 15px rgba(90, 165, 25, 0.2);
+        }
+
+        .play-btn:active { transform: scale(0.95); }
+        .play-btn svg { width: 40px; height: 40px; fill: currentColor; }
+
+        .playing .play-btn {
+            background: var(--vtc-green);
+            color: var(--vtc-black);
+            box-shadow: 0 0 30px var(--vtc-green-glow);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.05); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.05); }
+            70% { transform: scale(1); }
+        }
+
+        .volume-icon-overlay {
+            position: absolute;
+            bottom: -5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: var(--vtc-green);
+            font-family: monospace;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 20;
+            background: var(--vtc-black);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--vtc-border);
+        }
+
+        .volume-icon-overlay.visible {
+            opacity: 1;
+        }
+
+        .station-list {
+            flex: 1;
+            overflow-y: auto;
+            background: rgba(255,255,255,0.01);
+            border-radius: 12px;
+            border: 1px solid var(--vtc-border);
+            padding: 4px;
+            scrollbar-width: none;
+        }
+
+        .station-list::-webkit-scrollbar { display: none; }
+
+        .list-item {
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 2px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid transparent;
+            transition: 0.2s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .list-item:active { background: rgba(255,255,255,0.06); }
+
+        .list-item.active {
+            background: rgba(90, 165, 25, 0.08);
+            border-color: rgba(90, 165, 25, 0.3);
+        }
+
+        .item-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--vtc-surface);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--vtc-green);
+            font-weight: bold;
+            font-size: 1rem;
+            flex-shrink: 0;
+            border: 1px solid var(--vtc-border);
+        }
+
+        .item-info { flex: 1; overflow: hidden; }
+        .item-title { font-weight: bold; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-desc { font-size: 0.7rem; color: var(--vtc-text-dim); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        footer {
+            padding: 8px;
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--vtc-text-dim);
+            border-top: 1px solid var(--vtc-border);
+        }
+
+        .playing .play-btn {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--vtc-green-glow); }
+            70% { box-shadow: 0 0 0 10px rgba(90, 165, 25, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(90, 165, 25, 0); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <p class="logo-text">LAG<span>FM</span></p>
+        </a>
+    </header>
+
+    <main class="player-main" id="player-root">
+        <div class="display-area">
+            <div id="status-label">LISTO</div>
+            <div id="current-station">SELECCIONA EMISORA</div>
+        </div>
+
+        <div class="controls-row">
+            <div class="dial-wrapper" id="dial-wrapper">
+                <svg class="volume-ring" viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r="90" class="ring-bg" />
+                    <circle cx="100" cy="100" r="90" class="ring-fill" id="volume-ring-fill" />
+                </svg>
+                <button class="play-btn" id="play-btn" aria-label="Reproducir">
+                    <svg viewBox="0 0 24 24" id="play-icon">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg viewBox="0 0 24 24" id="pause-icon" style="display:none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
+                <div class="volume-icon-overlay" id="volume-overlay">
+                    <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                    <span>70%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="station-list" id="list-root">
+            <!-- Items generados dinámicamente -->
+        </div>
+    </main>
+
+    <footer>
+        © LAG'S SPEED - VERSION WEB PWA
+    </footer>
+
+    <script>
+        const audio = new Audio();
+        const playBtn = document.getElementById('play-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const stationLabel = document.getElementById('current-station');
+        const statusLabel = document.getElementById('status-label');
+        const listContainer = document.getElementById('list-root');
+        const playerRoot = document.getElementById('player-root');
+        const dialWrapper = document.getElementById('dial-wrapper');
+        const ringFill = document.getElementById('volume-ring-fill');
+        const volumeOverlay = document.getElementById('volume-overlay');
+
+        let isPlaying = false;
+        let currentId = null;
+        let volume = 0.7;
+        let volumeTimeout;
+
+        function updateVolume(vol) {
+            volume = Math.min(Math.max(vol, 0.01), 1);
+            audio.volume = volume * volume;
+            
+            // Actualizar anillo (dasharray es 565)
+            const offset = 565 - (565 * volume);
+            ringFill.style.strokeDashoffset = offset;
+            
+            // Actualizar texto
+            volumeOverlay.querySelector('span').innerText = `${Math.round(volume * 100)}%`;
+            
+            // Mostrar overlay temporalmente
+            volumeOverlay.classList.add('visible');
+            if (volumeTimeout) clearTimeout(volumeTimeout);
+            volumeTimeout = setTimeout(() => volumeOverlay.classList.remove('visible'), 2000);
+        }
+
+        function handleDialMove(e) {
+            if (e.target.closest('#play-btn')) return;
+            
+            const rect = dialWrapper.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            const angle = Math.atan2(clientY - centerY, clientX - centerX);
+            let vol = (angle + Math.PI / 2) / (2 * Math.PI);
+            if (vol < 0) vol += 1;
+            
+            updateVolume(vol);
+        }
+
+        dialWrapper.onmousedown = (e) => {
+            if (e.target.closest('#play-btn')) return;
+            handleDialMove(e);
+            window.onmousemove = handleDialMove;
+            window.onmouseup = () => {
+                window.onmousemove = null;
+            };
+        };
+
+        dialWrapper.ontouchstart = (e) => {
+            if (e.target.closest('#play-btn')) return;
+            handleDialMove(e);
+        };
+        dialWrapper.ontouchmove = (e) => {
+            if (e.target.closest('#play-btn')) return;
+            e.preventDefault(); // Evitar scroll al ajustar volumen
+            handleDialMove(e);
+        };
+
+        // Inicializar volumen
+        updateVolume(volume);
+
+        async function init() {
+            try {
+                const response = await fetch('streams.json');
+                const streams = await response.json();
+                renderList(streams);
+                
+                if(streams.length > 0) {
+                    setupStream(streams[0]);
+                }
+            } catch (err) {
+                stationLabel.innerText = "ERROR DE CONEXIÓN";
+            }
+        }
+
+        function renderList(streams) {
+            listContainer.innerHTML = '';
+            streams.forEach(s => {
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.id = `item-${s.id}`;
+                item.innerHTML = `
+                    <div class="item-icon">📻</div>
+                    <div class="item-info">
+                        <div class="item-title">${s.title}</div>
+                        <div class="item-desc">${s.desc || 'Toca para sintonizar'}</div>
+                    </div>
+                `;
+                item.onclick = () => {
+                    setupStream(s);
+                    if(!isPlaying) togglePlay();
+                };
+                listContainer.appendChild(item);
+            });
+        }
+
+        function setupStream(s) {
+            currentId = s.id;
+            document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`item-${s.id}`)?.classList.add('active');
+            
+            stationLabel.innerText = s.title;
+            audio.src = s.src;
+            if(isPlaying) audio.play();
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                playerRoot.classList.remove('playing');
+                statusLabel.innerText = "PAUSADO";
+            } else {
+                audio.play().catch(e => {
+                    statusLabel.innerText = "ERROR AL CARGAR";
+                });
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                playerRoot.classList.add('playing');
+                statusLabel.innerText = "SINTONIZANDO...";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        playBtn.onclick = togglePlay;
+
+        audio.onplaying = () => statusLabel.innerText = "EN VIVO";
+        audio.onwaiting = () => statusLabel.innerText = "BUFFERING...";
+        audio.onerror = () => {
+            statusLabel.innerText = "SEÑAL PERDIDA";
+            if(isPlaying) togglePlay();
+        };
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('SW Registered'));
+        }
+
+        init();
+    </script>
+</body>
+</html>

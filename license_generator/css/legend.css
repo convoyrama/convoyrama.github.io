@@ -1,0 +1,10 @@
+/* Rank Legend Styles */
+.rank-legend-container { padding: 10px; margin-top: 20px; border-top: 1px solid #ccc; text-align: center; }
+.rank-legend-intro { font-size: 16px; margin-bottom: 10px; }
+.rank-legend-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+.rank-legend-item { display: flex; align-items: center; gap: 5px; position: relative; }
+    margin-right: 10px;
+}
+
+.legend-item span {
+    font-size: 18px;
