@@ -69,7 +69,7 @@ function updateInGameTimeEmojis() {
     const arrivalEmoji = getDetailedDayNightIcon(arrivalGameTime.hours);
 
     dom.ingameEmojiDisplay.innerHTML = `${meetingEmoji} ${departureEmoji} ${arrivalEmoji}`;
-    twemoji.parse(dom.ingameEmojiDisplay);
+    // twemoji.parse(dom.ingameEmojiDisplay);
 }
 
 function performDownload() {
@@ -157,7 +157,7 @@ function performDownload() {
 }
 
 async function init() {
-    twemoji.parse(document.body);
+    // twemoji.parse(document.body);
     
     // Populate dom object after DOM is ready
     dom.customDate = document.getElementById("custom-date");
