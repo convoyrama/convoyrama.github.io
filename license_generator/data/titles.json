@@ -1,0 +1,107 @@
+[
+  {
+    "key": "INTERNATIONAL_DRIVING_LICENSE",
+    "type": "serious",
+    "es": "Licencia de Conducir Internacional",
+    "en": "International Driving License",
+    "pt": "Licença Internacional de Condução"
+  },
+  {
+    "key": "CONVOY_CRASHING_PERMIT",
+    "type": "comedic",
+    "es": "Licencia para Chocar en Convoy",
+    "en": "Convoy Crashing Permit",
+    "pt": "Permissão para Causar Caos em Comboio"
+  },
+  {
+    "key": "PROFESSIONAL_TRUCKER_ID",
+    "type": "serious",
+    "es": "Identificación de Camionero Profesional",
+    "en": "Professional Trucker ID",
+    "pt": "Identificação de Caminhoneiro Profissional"
+  },
+  {
+    "key": "VIRTUAL_DRIVER_ID",
+    "type": "serious",
+    "es": "Cédula de Conductor Virtual",
+    "en": "Virtual Driver ID",
+    "pt": "Carteira de Motorista Virtual"
+  },
+  {
+    "key": "LOGISTICS_OPERATOR_REGISTRY",
+    "type": "serious",
+    "es": "Registro de Operador Logístico",
+    "en": "Logistics Operator Registry",
+    "pt": "Registro de Operador Logístico"
+  },
+  {
+    "key": "VIRTUAL_CIRCULATION_PERMIT",
+    "type": "serious",
+    "es": "Permiso de Circulación Virtual",
+    "en": "Virtual Circulation Permit",
+    "pt": "Permissão de Circulação Virtual"
+  },
+  {
+    "key": "DRIVER_ID_CARD",
+    "type": "serious",
+    "es": "Tarjeta de Identificación de Conductor",
+    "en": "Driver ID Card",
+    "pt": "Cartão de Identificação de Motorista"
+  },
+  {
+    "key": "CARGO_PILOT_ACCREDITATION",
+    "type": "serious",
+    "es": "Acreditación de Piloto de Carga",
+    "en": "Cargo Pilot Accreditation",
+    "pt": "Acreditação de Piloto de Carga"
+  },
+  {
+    "key": "LAG_ZONE_ACCESS_PASS",
+    "type": "comedic",
+    "es": "Pase de Acceso a Zonas de Lag",
+    "en": "Lag Zone Access Pass",
+    "pt": "Passe de Acesso a Zonas de Lag"
+  },
+  {
+    "key": "CERTIFIED_DRIVER_REGISTRY",
+    "type": "serious",
+    "es": "Registro de Conductor Certificado",
+    "en": "Certified Driver Registry",
+    "pt": "Registro de Motorista Certificado"
+  },
+  {
+    "key": "ADVANCED_TRANSPORT_LICENSE",
+    "type": "serious",
+    "es": "Licencia de Transporte Avanzado",
+    "en": "Advanced Transport License",
+    "pt": "Licença de Transporte Avançado"
+  },
+  {
+    "key": "CONVOY_DRIVER_ACCREDITATION",
+    "type": "serious",
+    "es": "Acreditación de Conductor de Convoy",
+    "en": "Convoy Driver Accreditation",
+    "pt": "Acreditação de Motorista de Comboio"
+  },
+  {
+    "key": "GLOBAL_CIRCULATION_PERMIT",
+    "type": "serious",
+    "es": "Permiso de Circulación Global",
+    "en": "Global Circulation Permit",
+    "pt": "Permissão de Circulação Global"
+  },
+  {
+    "key": "PROFESSIONAL_DRIVER_CARD",
+    "type": "serious",
+    "es": "Tarjeta de Conductor Profesional",
+    "en": "Professional Driver Card",
+    "pt": "Cartão de Motorista Profissional"
+  },
+  {
+    "key": "LICENSE_TO_IGNORE_GPS",
+    "type": "comedic",
+    "es": "Licencia para Ignorar el GPS",
+    "en": "License to Ignore GPS",
+    "pt": "Licença para Ignorar GPS"
+  }
+]

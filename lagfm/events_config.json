@@ -1,0 +1,14 @@
+{
+  "categories": ["today", "now", "featured", "upcoming"],
+  "filters": {
+    "only_official": false,
+    "only_featured": false,
+    "min_attendees": 0,
+    "games": ["ETS2", "ATS"],
+    "max_days_lookahead": 1
+  },
+  "ui": {
+    "show_debug": true,
+    "title_override": "EVENTOS DE HOY"
+  }
+}

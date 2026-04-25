@@ -1,0 +1,17 @@
+{
+  "name": "LAG FM Online",
+  "short_name": "LAG FM",
+  "description": "Sintonizador web oficial de LAG'S SPEED",
+  "start_url": "lagfm_web.html",
+  "display": "standalone",
+  "background_color": "#141414",
+  "theme_color": "#5AA519",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

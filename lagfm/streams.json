@@ -1,0 +1,162 @@
+[
+  { 
+    "id": 101, "title": "Truckers.FM", "src": "https://live.truckers.fm/",
+    "desc": "La emisora líder para la comunidad de simulación (ETS2/ATS). DJs en vivo y tráfico virtual 24/7."
+  },
+  { 
+    "id": 102, "title": "TruckSimFM", "src": "https://radio.trucksim.fm/radio/8000/radio.mp3",
+    "desc": "La radio oficial de la comunidad de simulación. Programación dinámica, noticias de TruckersMP y los mejores hits para tu ruta."
+  },
+  { 
+    "id": 103, "title": "Simulator Radio", "src": "https://simulatorradio.stream/stream",
+    "desc": "Compañera perfecta para las rutas de larga distancia. Una mezcla ecléctica de pop y electrónica."
+  },
+  { 
+    "id": 104, "title": "Truckstop Radio", "src": "https://oreo.truckstopradio.co.uk/listen/truckstopradio/radio.mp3",
+    "desc": "Conectando a la comunidad global de conductores. Pop, rock y programas en vivo para amenizar tus entregas en ETS2 y ATS."
+  },
+  { 
+    "id": 181, "title": "Radio Aspen 102.3", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/ASPEN.mp3",
+    "desc": "Clásicos de los 80, 90 y 2000 desde Argentina. La banda sonora ideal para un viaje lleno de nostalgia y buenos recuerdos."
+  },
+  { 
+    "id": 190, "title": "Radio Disney AR", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/DISNEY_ARG_BA.mp3",
+    "desc": "Música FM pura las 24 horas. Éxitos actuales y clásicos del pop en español e inglés para que no pares de conducir."
+  },
+  { 
+    "id": 105, "title": "Del Sol 99.5 FM", "src": "https://delsol-2.nty.uy/stream/1/?type=http",
+    "desc": "La radio más influyente de Uruguay. Rock, pop, talk shows y la esencia cultural de Montevideo directo a tu cabina."
+  },
+  { 
+    "id": 182, "title": "FM Dos Chile", "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/FMDOS.mp3",
+    "desc": "La radio de los dos. Música romántica y éxitos pop en español para acompañar cada kilómetro de tu ruta por Chile."
+  },
+  { 
+    "id": 191, "title": "Estación 40 PY", "src": "https://rds3.desdeparaguay.net/transestacion40/transestacion40/playlist.m3u8",
+    "desc": "Todos los éxitos que suenan en Paraguay. Energía, hits internacionales y el mejor ritmo para tu cabina."
+  },
+  { 
+    "id": 183, "title": "Radio Panamericana PE", "src": "https://servidor21.brlogic.com:7556/live",
+    "desc": "Salsa, merengue y ritmos latinos desde Perú. El sabor inconfundible para amenizar tus entregas por toda la región."
+  },
+  { 
+    "id": 184, "title": "La KZ Radio CO", "src": "https://stream.zeno.fm/m0akrrs4qzzuv",
+    "desc": "Reggaetón, Salsa y Vallenato desde Colombia. La energía pura del Caribe para mantener el ritmo en cada kilómetro."
+  },
+  { 
+    "id": 185, "title": "Al Fin Radio MX", "src": "https://stream.zeno.fm/e97vtkkuhchvv",
+    "desc": "Pop y Rock alternativo desde México. Una selección fresca y dinámica para acompañar tus rutas por el norte."
+  },
+  { 
+    "id": 186, "title": "Radio São Paulo BR", "src": "https://radio.saopaulo01.com.br:10970/live",
+    "desc": "Los mejores hits de Brasil. Un viaje musical por el gigante del sur con el ritmo que solo la radio brasileña puede dar."
+  },
+  { 
+    "id": 187, "title": "Rumbera Network VE", "src": "https://server6.globalhostla.com:8012/stream",
+    "desc": "Éxitos tropicales y energía caribeña desde Venezuela. La mezcla perfecta para conducir con buen humor y ritmo."
+  },
+  { 
+    "id": 188, "title": "Ecuador Radio HD", "src": "https://c21.radioboss.fm:8114/stream",
+    "desc": "Lo mejor del pop y éxitos actuales de Ecuador. Calidad digital para que no falte la música en tus rutas andinas."
+  },
+  { 
+    "id": 178, "title": "ENERGY K-Pop", "src": "https://frontend.streamonkey.net/energy-kpop/stream/mp3",
+    "desc": "Los éxitos más grandes del K-Pop actual. BTS, Blackpink y todo el fenómeno coreano con la mejor calidad de sonido."
+  },
+  { 
+    "id": 175, "title": "Saint Seiya Radio", "src": "https://ecmanager3.pro-fhi.net/saintseiyaradio",
+    "desc": "Bandas sonoras originales de Los Caballeros del Zodíaco. Revive la épica de las 12 casas mientras recorres las carreteras."
+  },
+  { 
+    "id": 176, "title": "Anime FM", "src": "https://stream.laut.fm/animefm",
+    "desc": "Openings y Endings clásicos de Dragon Ball, Naruto y más. La compañía perfecta para elevar tu cosmos al volante."
+  },
+  { 
+    "id": 177, "title": "LISTEN.moe J-Pop", "src": "https://listen.moe/fallback",
+    "desc": "La mejor selección de J-Pop y música de anime moderno sin publicidad. Calidad premium para conductores exigentes."
+  },
+  { 
+    "id": 160, "title": "Radio 1920", "src": "https://stream.laut.fm/radio1920",
+    "desc": "Viaje directo a la era del Swing y los gramófonos. Sonido auténtico de los años 20 y 30 para una experiencia vintage única."
+  },
+  { 
+    "id": 161, "title": "Rumsey Retro AM", "src": "https://maggie.torontocast.com:9004/stream",
+    "desc": "Clásicos de los 40 y 50 con el inconfundible sonido de la radio AM. Música, anuncios y nostalgia de la edad de oro."
+  },
+  { 
+    "id": 123, "title": "Classic Hits 50s", "src": "https://listen.181fm.com/181-greatoldies_128k.mp3",
+    "desc": "El nacimiento del Rock & Roll. Los éxitos masivos de los años 50 para una conducción con estilo clásico."
+  },
+  { 
+    "id": 122, "title": "Good Time 60s", "src": "https://listen.181fm.com/181-goodtime_128k.mp3",
+    "desc": "Los clásicos que definieron una década. El sonido de los 60 con los mejores éxitos del pop y rock de la época."
+  },
+  { 
+    "id": 121, "title": "Super 70s", "src": "https://listen.181fm.com/181-70s_128k.mp3",
+    "desc": "Disco, rock y pop de los años 70. Una selección premium de los hits que dominaron las pistas de baile y las carreteras."
+  },
+  { 
+    "id": 110, "title": "80s80s", "src": "https://streams.80s80s.de/web/mp3-128/",
+    "desc": "Directo desde Alemania, una selección premium de hits internacionales y cultura pop de los 80."
+  },
+  { 
+    "id": 111, "title": "Awesome 80s", "src": "https://listen.181fm.com/181-awesome80s_128k.mp3",
+    "desc": "La mejor radio de los 80 del mundo. Los éxitos masivos de EE.UU. y Europa que definieron una era."
+  },
+  { 
+    "id": 112, "title": "80s Hairband", "src": "https://listen.181fm.com/181-hairband_128k.mp3",
+    "desc": "Puro Glam Rock y Metal de los 80. Riffs potentes y melodías inolvidables para devorar kilómetros."
+  },
+  { 
+    "id": 130, "title": "BigR - 80s Metal", "src": "https://bigrradio.cdnstream1.com/5186_128",
+    "desc": "La era dorada del Heavy Metal. Riffs potentes y Hard Rock de los 80 para devorar kilómetros."
+  },
+  { 
+    "id": 120, "title": "Star 90s Pop", "src": "https://listen.181fm.com/181-star90s_128k.mp3",
+    "desc": "Los éxitos que marcaron los años 90. Pop brillante y melodías icónicas para una ruta llena de energía positiva."
+  },
+  { 
+    "id": 114, "title": "KEXP 90.3 FM", "src": "https://kexp-mp3-128.streamguys1.com/kexp128.mp3",
+    "desc": "Desde Seattle, el referente mundial del indie y la música alternativa. Sesiones en vivo y una selección única para tus rutas por el Noroeste."
+  },
+  { 
+    "id": 115, "title": "Galaxy News Radio", "src": "https://fallout.fm:8444/falloutfm3.ogg",
+    "desc": "Trayendo las noticias y la música del Yermo a tu cabina. Clásicos de los 40 y 50 con el inconfundible estilo de Three Dog."
+  },
+  { 
+    "id": 113, "title": "Keygen-FM", "src": "https://stream.keygen-fm.ru:8092/listen.mp3",
+    "desc": "Música chiptune de instaladores y crackmes. El sonido icónico de la era de los keygens directo a tu camión."
+  },
+  { 
+    "id": 109, "title": "Nightride.fm", "src": "https://stream.nightride.fm/nightride.mp3",
+    "desc": "Especializada en Synthwave y Retrowave. Perfecta para la conducción nocturna bajo luces neón."
+  },
+  { 
+    "id": 116, "title": "Synthwave", "src": "https://synthwave.stream.laut.fm/synthwave",
+    "desc": "El futuro es ahora. Una selección curada de Synthwave, Darksynth y New Retro Wave para tus rutas más futuristas."
+  },
+  { 
+    "id": 151, "title": "Lofi Radio", "src": "https://stream.zeno.fm/0r0xa792kwzuv",
+    "desc": "Hip Hop relajante y beats instrumentales. La compañía ideal para la conducción nocturna bajo la lluvia."
+  },
+  { 
+    "id": 173, "title": "Mystery Play", "src": "https://streaming.brol.tech/rtfmlounge",
+    "desc": "Relatos de misterio, crimen y ciencia ficción de la radio clásica. Una atmósfera inmersiva para los viajes nocturnos."
+  },
+  { 
+    "id": 106, "title": "Radio Freccia", "src": "https://shoutcast.rtl.it/radiofreccia",
+    "desc": "Libertad y Rock 'n' Roll. El espíritu de las radios libres italianas con una selección de rock puro y sin filtros."
+  },
+  { 
+    "id": 108, "title": "RockZone 105.9", "src": "https://icecast5.play.cz/rockzone128.mp3",
+    "desc": "La mejor selección de rock alternativo y hard rock desde el corazón de Praga. Energía pura para tus rutas europeas."
+  },
+  { 
+    "id": 107, "title": "Country Road", "src": "https://ais-sa2.cdnstream1.com/1976_128.mp3",
+    "desc": "La esencia pura de la carretera estadounidense. Bluegrass tradicional y Outlaw Country."
+  },
+  { 
+    "id": 180, "title": "Antenne 1 FM", "src": "https://stream.antenne1.de/a1stg/livestream2.mp3",
+    "desc": "Pop, hits actuales y energía positiva desde Alemania. La selección perfecta para mantener el ritmo en la carretera."
+  }
+]
