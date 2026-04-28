@@ -209,11 +209,6 @@ async function init() {
     dom.zoomOutWaypoint = document.getElementById("zoom-out-waypoint");
 
     await loadLanguage('es');
-    document.querySelector('.flag-emoji[data-lang="es"]').classList.add('selected');
-    const flags = document.querySelectorAll(".flag-emoji");
-    flags.forEach(flag => { flag.addEventListener("click", () => { const lang = flag.getAttribute("data-lang"); loadLanguage(lang); flags.forEach(f => f.classList.remove('selected')); flag.classList.add('selected'); }); });
-
-
 
     // Initial population of region select
     for (const regionKey in timezoneRegions) {
