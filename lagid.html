@@ -292,12 +292,12 @@
 
     <main class="coming-soon-hero">
         <img src="lagid/branding/lagid_full.png" alt="LAG-ID Logo" class="lagid-logo-big">
-        <div class="tagline">Un nuevo paso al roleplay</div>
+        <div id="tagline-text" class="tagline"></div>
         <div class="description">
-            Tu identidad universal y descentralizada para gestionar logros, recompensas, economía virtual y empresas con la seguridad de STEAM y TRUCKERSMP.
+            El camino no olvida a quién lo recorre. Estamos construyendo un ecosistema donde tu progreso es inmutable, tu valor es real y tu identidad te pertenece solo a ti. Sin intermediarios. Solo tú, tu camión y tu soberanía digital.
         </div>
         <div id="feature-text" class="dynamic-feature"></div>
-        <div class="proximamente">Próximamente...</div>
+        <div id="status-text" class="proximamente"></div>
     </main>
 
     <footer class="modern-footer">
@@ -349,31 +349,61 @@
             navList.classList.toggle('open');
         });
 
-        // Lógica de características dinámicas
+        // Configuración de textos dinámicos
+        const taglines = [
+            "Tu firma grabada en el asfalto",
+            "Más que un perfil. Una frecuencia propia",
+            "El Protocolo ha despertado",
+            "Tu huella en el horizonte"
+        ];
+
         const features = [
-            "Moneda Virtual",
-            "Pagos y Cobros",
-            "Empleados en Nómina",
-            "Inversiones",
-            "Juegos de Azar y Habilidad",
-            "Bonos de Referidos"
+            "Tu legado es, por fin, tu moneda de cambio",
+            "Un protocolo global nacido en la carretera",
+            "El nacimiento de una red sin dueños",
+            "Soberanía real para conductores reales",
+            "Arquitectura de libertad en un mundo vigilado",
+            "Sincronía absoluta sin centros de control",
+            "Tu identidad, blindada por tu propio esfuerzo",
+            "Donde el código se vuelve ley y el conductor su único juez"
+        ];
+
+        const statuses = [
+            "Sintonizando frecuencia...",
+            "El nodo está sincronizando",
+            "Cargando protocolo soberano...",
+            "Sincronizando con el enjambre..."
         ];
         
+        let tagIndex = 0;
         let featureIndex = 0;
-        const featureEl = document.getElementById('feature-text');
+        let statusIndex = 0;
 
-        function cycleFeatures() {
+        const taglineEl = document.getElementById('tagline-text');
+        const featureEl = document.getElementById('feature-text');
+        const statusEl = document.getElementById('status-text');
+
+        function cycleElements() {
             featureEl.classList.remove('visible');
             
             setTimeout(() => {
+                // Actualizar Tagline
+                taglineEl.textContent = taglines[tagIndex];
+                tagIndex = (tagIndex + 1) % taglines.length;
+
+                // Actualizar Feature
                 featureEl.textContent = features[featureIndex];
                 featureEl.classList.add('visible');
                 featureIndex = (featureIndex + 1) % features.length;
+
+                // Actualizar Status
+                statusEl.textContent = statuses[statusIndex];
+                statusIndex = (statusIndex + 1) % statuses.length;
             }, 500);
         }
 
-        setInterval(cycleFeatures, 3000);
-        cycleFeatures(); // Iniciar inmediatamente
+        setInterval(cycleElements, 4000);
+        cycleElements(); // Iniciar inmediatamente
     </script>
 </body>
 </html>
