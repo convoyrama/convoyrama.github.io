@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAG-ID | El Portal de Identidad Soberana</title>
+    <style>
+        :root {
+            --accent: #9266cc;
+            --accent-glow: rgba(146, 102, 204, 0.3);
+            --gold: #ffb300;
+            --bg: #0a0a0a;
+            --card-bg: #111111;
+            --text: #e0e0e0;
+            --text-dim: #888;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- Estilo Industrial/Retro --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .logo-text {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: #fff;
+            margin: 0;
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .tagline {
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        section { margin: 60px 0; }
+
+        h2 {
+            font-size: 1.8rem;
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
+            margin-bottom: 30px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #222;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .card h3 {
+            color: var(--accent);
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+
+        .card p { color: var(--text-dim); font-size: 0.95rem; }
+
+        /* --- Tech Spec Section --- */
+        .tech-box {
+            background: #000;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px dashed #333;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: #00c851;
+            overflow-x: auto;
+        }
+
+        .badge {
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            vertical-align: middle;
+        }
+
+        /* --- FAQ --- */
+        .faq-item {
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.02);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .faq-item b {
+            display: block;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #444;
+            font-size: 0.8rem;
+            border-top: 1px solid #222;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px var(--accent-glow);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <p class="tagline">Convoyrama Protocol • Identity v1.4</p>
+            <h1 class="logo-text">LAG-ID</h1>
+            <p style="color: var(--text-dim); max-width: 600px; margin: 20px auto;">La primera infraestructura de identidad soberana y economía P2P diseñada para la comunidad global de simulación.</p>
+        </header>
+
+        <section id="about">
+            <h2>¿Qué es LAG-ID?</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Identidad Soberana</h3>
+                    <p>A diferencia de otras apps, LAG-ID no guarda tus datos en una base de datos central. Tu identidad se genera criptográficamente a partir de tu Steam ID y un PIN privado que solo tú conoces. Eres el único dueño de tu "Llave Maestra".</p>
+                </div>
+                <div class="card">
+                    <h3>Local-First</h3>
+                    <p>La aplicación funciona en tu dispositivo. Tu historial, tus contactos y tu carnet viven contigo. Si cambias de móvil, puedes regenerar tu identidad completa usando tu combinación única de Steam + PIN.</p>
+                </div>
+                <div class="card">
+                    <h3>Verificación Real</h3>
+                    <p>Conectamos con las redes oficiales de TruckersMP para validar tu antigüedad, nivel y estatus de empresa (VTC), convirtiendo tus logros en una tarjeta de identidad digital infalsificable.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="diesels">
+            <h2>La Economía DIESELS <span class="badge">Ð</span></h2>
+            <p>Los DIESELS no son una criptomoneda tradicional ni dinero real. Es un sistema de **Billetes Digitales (Numanotas)** diseñado para el intercambio de valor entre conductores dentro del ecosistema.</p>
+            <div class="grid">
+                <div class="card" style="border-left: 4px solid var(--gold);">
+                    <h3>Sin Banco Central</h3>
+                    <p>Los pagos se realizan mediante códigos firmados. Cuando envías Ð, generas una "Numanota" única que el receptor puede cobrar. No hay un servidor que pueda "congelar" tu cuenta.</p>
+                </div>
+                <div class="card">
+                    <h3>Prueba de Esfuerzo</h3>
+                    <p>Gana Ð por tus logros en Steam (ETS2/ATS), por participar en eventos de la comunidad o simplemente por ser un conductor seguro sin reportes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="developers">
+            <h2>Estandar LAG-ID Identity</h2>
+            <p>Hemos abierto el protocolo para que cualquier desarrollador pueda leer los carnets de LAG-ID. Los datos se incrustan en los metadatos de las imágenes PNG usando la clave <code style="color:var(--gold)">lagid-identity</code>.</p>
+            <div class="tech-box">
+{
+  "version": "1.4",
+  "issued_at": "2026-04-20T19:25:00.000Z",
+  "iroh_node_id": "node_7a2b...",
+  "public_key": "Base64_Key...",
+  "tmp": { "id": 123456, "yearsInTmp": 5 },
+  "profile": { "customName": "...", "socials": { ... } }
+}
+            </div>
+            <p style="font-size: 0.8rem; color: #555; margin-top: 10px;">* Los datos financieros y configuraciones privadas NUNCA se incluyen en el carnet público.</p>
+        </section>
+
+        <section id="faq">
+            <h2>Preguntas Frecuentes (FAQ)</h2>
+            
+            <div class="faq-item">
+                <b>¿Qué hace la app exactamente?</b>
+                Permite crear una identidad visual verificada, gestionar una agenda de contactos de simulación y participar en una economía cerrada de intercambio de créditos (Diesels) entre usuarios.
+            </div>
+
+            <div class="faq-item">
+                <b>¿Qué NO hace la app?</b>
+                LAG-ID NO es una red social centralizada, NO vende tus datos a terceros y NO gestiona dinero real. Tampoco modifica los archivos de tus juegos ni interactúa directamente con los servidores de juego mientras conduces.
+            </div>
+
+            <div class="faq-item">
+                <b>¿Es segura mi "Llave Maestra"?</b>
+                Sí. Tu llave privada nunca sale de tu dispositivo. La app utiliza algoritmos de grado militar (Ed25519) para asegurar que solo tú puedas firmar transacciones o descargar tu carnet oficial.
+            </div>
+
+            <div class="faq-item">
+                <b>¿Cómo recupero mi cuenta si pierdo el móvil?</b>
+                Simplemente instala la app en tu nuevo dispositivo, inicia sesión con Steam e ingresa el MISMO PIN Maestro que usaste la primera vez. La criptografía determinística hará el resto y tu NodeID será exactamente el mismo.
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 Developed by dr.will for CONVOYRAMA • Licencia GNU GPL v3.0</p>
+            <p>Construido con tecnología Local-First & Criptografía Soberana.</p>
+        </footer>
+    </div>
+
+</body>
+</html>
