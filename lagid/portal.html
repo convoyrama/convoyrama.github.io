@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAG-ID | Sovereign Protocol & Swarm Hub</title>
+    <title>LAG-ID | Sovereign Portal</title>
     <style>
         :root {
             --accent: #9266cc;
@@ -29,7 +29,7 @@
 
         header {
             text-align: center;
-            padding: 80px 0;
+            padding: 60px 0;
             background: radial-gradient(circle at center, rgba(146, 102, 204, 0.05) 0%, transparent 70%);
         }
 
@@ -43,47 +43,41 @@
 
         .logo-accent { color: var(--accent); text-shadow: 0 0 20px rgba(146, 102, 204, 0.5); }
 
-        .protocol-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            background: rgba(255, 179, 0, 0.1);
-            color: var(--gold);
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 900;
-            margin-top: 20px;
-            border: 1px solid rgba(255, 179, 0, 0.2);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        nav {
+        .lang-switcher {
+            margin-top: 30px;
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 40px;
+            gap: 10px;
         }
 
-        nav a {
+        .lang-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             color: var(--muted);
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.2s;
+            transition: all 0.2s;
         }
 
-        nav a:hover { color: var(--accent); }
+        .lang-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
 
-        section { margin-top: 80px; }
+        section { margin-top: 60px; display: none; }
+        section.active { display: block; }
 
         h2 {
             font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 4px;
             color: white;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             gap: 20px;
@@ -99,181 +93,199 @@
         .card {
             background: var(--card);
             border: 1px solid rgba(255,255,255,0.05);
-            padding: 40px;
-            border-radius: 32px;
+            padding: 35px;
+            border-radius: 24px;
             margin-bottom: 24px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .card h3 {
-            color: var(--accent);
-            margin-bottom: 20px;
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .card h3 { color: var(--accent); margin-bottom: 15px; font-size: 1.1rem; }
+        .card p { font-size: 0.9rem; color: #bbb; margin-bottom: 15px; }
 
-        .card p { font-size: 0.95rem; color: #bbb; margin-bottom: 20px; }
-
-        /* FAQ SYSTEM */
-        .faq-grid { display: grid; gap: 20px; }
-        
+        .faq-grid { display: grid; gap: 15px; }
         .faq-item {
-            background: rgba(255,255,255,0.02);
+            background: rgba(255,255,255,0.015);
             border: 1px solid rgba(255,255,255,0.03);
-            border-radius: 16px;
-            padding: 25px;
-            transition: transform 0.2s;
+            border-radius: 12px;
+            padding: 20px;
         }
 
-        .faq-item:hover {
-            border-color: rgba(146, 102, 204, 0.2);
-            background: rgba(146, 102, 204, 0.02);
-        }
+        .faq-q { font-weight: 800; color: white; margin-bottom: 8px; display: block; font-size: 0.95rem; }
+        .faq-a { font-size: 0.85rem; color: #888; }
 
-        .faq-q {
-            font-weight: 800;
-            color: white;
-            margin-bottom: 12px;
-            display: block;
-            font-size: 1rem;
-        }
-
-        .faq-a {
-            font-size: 0.9rem;
-            color: #888;
-            line-height: 1.6;
-        }
-
-        .status-pill {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.65rem;
-            font-weight: 900;
-            margin-left: 10px;
-            vertical-align: middle;
-        }
-
-        .status-pill.offline { background: rgba(255, 68, 68, 0.1); color: var(--danger); }
-        .status-pill.online { background: rgba(0, 200, 81, 0.1); color: var(--success); }
-
-        code {
-            background: rgba(0,0,0,0.4);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Roboto Mono', monospace;
-            color: var(--gold);
-            font-size: 0.9em;
-        }
+        .highlight { color: var(--accent); font-weight: 700; }
+        .gold { color: var(--gold); font-weight: 700; }
 
         footer {
             text-align: center;
-            padding: 100px 0 60px;
+            padding: 80px 0 40px;
             color: var(--muted);
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
         }
 
-        .highlight { color: var(--accent); font-weight: 700; }
+        [data-content] { display: none; }
+        .lang-en [data-content="en"] { display: block; }
+        .lang-es [data-content="es"] { display: block; }
+        .lang-pt [data-content="pt"] { display: block; }
     </style>
 </head>
-<body>
+<body class="lang-en">
     <div class="container">
         <header>
             <div class="logo-text">LAG<span class="logo-accent">-ID</span></div>
-            <div class="protocol-badge">Sovereign Swarm Protocol V1.4</div>
-            <nav>
-                <a href="#protocol">Swarm Network</a>
-                <a href="#faq">The Big FAQ</a>
-                <a href="#security">Security</a>
-                <a href="developers.html" style="color: var(--gold)">Developers</a>
-            </nav>
+            <div class="lang-switcher">
+                <button class="lang-btn active" onclick="setLang('en')">English</button>
+                <button class="lang-btn" onclick="setLang('es')">Español</button>
+                <button class="lang-btn" onclick="setLang('pt')">Português</button>
+            </div>
         </header>
 
-        <section id="protocol">
-            <h2>The Vision</h2>
-            <div class="card">
-                <h3>What is LAG-ID?</h3>
-                <p>LAG-ID is a <span class="highlight">Decentralized Financial Infrastructure</span> for the simulation industry. It utilizes a Peer-to-Peer (P2P) Swarm network to transform your achievements into verifiable digital assets.</p>
-                <p>By using <code>Ed25519</code> cryptography and the <code>Iroh</code> networking stack, LAG-ID ensures that your identity and your Diesels (Ð) exist independently of any central server. You are the sovereign master of your data.</p>
-                <a href="developers.html" class="btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); margin-top: 10px;">TECHNICAL SPECS</a>
-            </div>
-        </section>
-
-        <section id="faq">
-            <h2>The Big FAQ</h2>
-            <div class="faq-grid">
-                
-                <div class="faq-item">
-                    <span class="faq-q">Is it safe to send and receive Diesels (Ð)?</span>
-                    <span class="faq-a">
-                        Yes. Every transaction is a <span class="highlight">Cryptographically Signed Payload</span>. When you receive a <code>.diesel</code> file, the Swarm network validates the issuer's signature and verifies the asset's serial number against the global ledger. It is physically impossible to forge a valid transaction.
-                    </span>
+        <!-- ENGLISH CONTENT -->
+        <div data-content="en">
+            <section class="active">
+                <h2>The Protocol</h2>
+                <div class="card">
+                    <h3>What is LAG-ID?</h3>
+                    <p>LAG-ID is a <span class="highlight">Sovereign Identity Layer</span> built for the global trucking simulation community. It is not a company or a central database; it is a Peer-to-Peer protocol that allows you to own your achievements and assets.</p>
+                    <p>Using Rust and Ed25519 cryptography, we ensure that your identity is verifiable, portable, and independent of any platform.</p>
                 </div>
-
-                <div class="faq-item">
-                    <span class="faq-q">What happens if I lose my phone? Can I recover my money?</span>
-                    <span class="faq-a">
-                        Because LAG-ID is decentralized, your "money" lives on the <span class="highlight">Global Swarm Ledger</span>. If you have your <code>LAGID_BACKUP.json</code> file, you can restore your identity on a new device. Once synced, the network will automatically recognize your past transactions and restore your balance. <span class="highlight">Without your backup, the private keys are lost forever.</span>
-                    </span>
+                <div class="card">
+                    <h3>Our Commitment</h3>
+                    <p>1. <span class="highlight">Privacy:</span> Your data never leaves your device unless you sign a transaction.</p>
+                    <p>2. <span class="highlight">Freedom:</span> No central authority can block your node or seize your Diesels.</p>
+                    <p>3. <span class="highlight">Transparency:</span> The protocol is open-source and community-driven.</p>
                 </div>
+            </section>
 
-                <div class="faq-item">
-                    <span class="faq-q">Can I send Diesels while I am driving in the desert with no 5G?</span>
-                    <span class="faq-a">
-                        Absolutely. The protocol is <span class="highlight">Offline-First</span>. You can generate a signed transaction file even with zero signal. You can then hand that file over via Bluetooth or any local transfer. The receiver's app will accept the asset into its local vault immediately, and the transaction will broadcast to the Swarm network the next time a connection is established.
-                    </span>
+            <section class="active" id="faq">
+                <h2>The Big FAQ</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <span class="faq-q">Is LAG-ID a cryptocurrency?</span>
+                        <span class="faq-a">No. <span class="gold">Diesels (Ð)</span> are simulation utility assets. They have no real-world monetary value and cannot be exchanged for fiat currency. They are used exclusively within the simulation ecosystem.</span>
+                    </div>
+                    <div class="faq-item">
+                        <span class="faq-q">How do I earn Diesels?</span>
+                        <span class="faq-a">By driving. The protocol rewards verified game time (10Ð per 100h), Steam achievements, and active participation in official VTC events.</span>
+                    </div>
+                    <div class="faq-item">
+                        <span class="faq-q">Is my Steam account safe?</span>
+                        <span class="faq-a">Yes. We only use Steam as an "Anchor" to verify your seniority. We never ask for your password; we only read public profile data via official APIs.</span>
+                    </div>
+                    <div class="faq-item">
+                        <span class="faq-q">What is the Sovereign Card?</span>
+                        <span class="faq-a">It is a high-fidelity digital ID (PNG) that contains your encrypted profile data. Other apps and bots can read this file to verify your rank and history without needing a central server.</span>
+                    </div>
                 </div>
+            </section>
+        </div>
 
-                <div class="faq-item">
-                    <span class="faq-q">Can I "double-spend" by restoring an old backup?</span>
-                    <span class="faq-a">
-                        No. The Swarm network maintains a <code>Nullifier Registry</code>. When you spend Diesels, the unique serial number of that asset is marked as "Consumed" by the P2P nodes. If you try to restore an old backup and spend the same money again, the network will reject the transaction because that serial is already dead in the global consensus.
-                    </span>
+        <!-- SPANISH CONTENT -->
+        <div data-content="es">
+            <section class="active">
+                <h2>El Protocolo</h2>
+                <div class="card">
+                    <h3>¿Qué es LAG-ID?</h3>
+                    <p>LAG-ID es una <span class="highlight">Capa de Identidad Soberana</span> diseñada para la comunidad global de simulación. No es una empresa ni una base de datos central; es un protocolo P2P que te permite ser dueño de tus logros y activos.</p>
+                    <p>Usando Rust y criptografía Ed25519, aseguramos que tu identidad sea verificable, portátil e independiente de cualquier plataforma.</p>
                 </div>
-
-                <div class="faq-item">
-                    <span class="faq-q">Who controls the exchange rate of Diesels?</span>
-                    <span class="faq-a">
-                        The community. Diesels are <span class="highlight">Simulation Utility Assets</span>. Their value is determined by the goods, services, and payrolls managed by the VTC owners and pilots within the Convoyrama ecosystem.
-                    </span>
+                <div class="card">
+                    <h3>Nuestro Compromiso</h3>
+                    <p>1. <span class="highlight">Privacidad:</span> Tus datos nunca salen de tu dispositivo a menos que firmes una transacción.</p>
+                    <p>2. <span class="highlight">Libertad:</span> Ninguna autoridad central puede bloquear tu nodo o confiscar tus Diesels.</p>
+                    <p>3. <span class="highlight">Transparencia:</span> El protocolo es de código abierto y mantenido por la comunidad.</p>
                 </div>
+            </section>
 
-            </div>
-        </section>
-
-        <section id="security">
-            <h2>Security Architecture</h2>
-            <div class="card">
-                <h3>Industrial-Grade Protection</h3>
-                <p>1. <span class="highlight">Zero-Knowledge PIN:</span> Your PIN is used as entropy to derive your keys via 100,000 PBKDF2 iterations. It is never stored on disk.</p>
-                <p>2. <span class="highlight">AES-GCM Encryption:</span> Your private keys are stored in an encrypted bunker on your device. Even if your phone is rooted, the keys remain unreadable without your PIN.</p>
-                <p>3. <span class="highlight">Volatile RAM:</span> Once unlocked, your "Live Key" only exists in protected system memory. It is purged the moment the session ends.</p>
-            </div>
-        </section>
-
-        <section id="troubleshooting">
-            <h2>Common Errors</h2>
-            <div class="card">
-                <div class="faq-item">
-                    <span class="faq-q">"Network Anchor Timeout"</span>
-                    <span class="faq-a">Your device cannot establish a connection to the Swarm Relay. Ensure your internet is active and that your local firewall permits <code>P2P Traffic</code>.</span>
+            <section class="active">
+                <h2>Preguntas Frecuentes (FAQ)</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <span class="faq-q">¿Es LAG-ID una criptomoneda?</span>
+                        <span class="faq-a">No. Los <span class="gold">Diesels (Ð)</span> son activos de utilidad para simulación. No tienen valor monetario real y no pueden ser cambiados por dinero fiat. Se usan exclusivamente dentro del ecosistema de simulación.</span>
+                    </div>
+                    <div class="faq-item">
+                        <span class="faq-q">¿Cómo gano Diesels?</span>
+                        <span class="faq-a">Conduciendo. El protocolo recompensa el tiempo de juego verificado (10Ð por cada 100h), logros de Steam y la participación activa en eventos de VTC oficiales.</span>
+                    </div>
+                    <div class="faq-item">
+                        <span class="faq-q">¿Es segura mi cuenta de Steam?</span>
+                        <span class="faq-a">Sí. Solo usamos Steam como un "Ancla" para verificar tu antigüedad. Nunca pedimos tu contraseña; solo leemos datos públicos del perfil mediante APIs oficiales.</span>
+                    </div>
+                    <div class="faq-item">
+                        <span class="faq-q">¿Qué es la Tarjeta Soberana?</span>
+                        <span class="faq-a">Es un carnet digital (PNG) de alta fidelidad que contiene los datos cifrados de tu perfil. Otras apps y bots pueden leer este archivo para verificar tu rango e historial sin necesidad de un servidor central.</span>
+                    </div>
+                    <div class="faq-item">
+                        <span class="faq-q">¿Qué pasa si pierdo mi teléfono?</span>
+                        <span class="faq-a">Al ser descentralizado, si no tienes tu archivo <code>LAGID_BACKUP.json</code>, perderás el acceso a tus llaves privadas y tus Diesels para siempre. Guarda siempre una copia de seguridad.</span>
+                    </div>
                 </div>
-                <div class="faq-item">
-                    <span class="faq-q">"Invalid Integrity Seal"</span>
-                    <span class="faq-a">The local vault detects an attempt to manually modify its internal ledger. For your protection, the wallet is locked. Please restore your <code>LAGID_BACKUP.json</code> to resume operations.</span>
+            </section>
+        </div>
+
+        <!-- PORTUGUESE CONTENT -->
+        <div data-content="pt">
+            <section class="active">
+                <h2>O Protocolo</h2>
+                <div class="card">
+                    <h3>O que é LAG-ID?</h3>
+                    <p>LAG-ID é uma <span class="highlight">Camada de Identidade Soberana</span> construída para a comunidade global de simulação. Não é uma empresa nem um banco de dados central; é um protocolo P2P que permite que você seja dono de suas conquistas e ativos.</p>
+                    <p>Usando Rust e criptografia Ed25519, garantimos que sua identidade seja verificável, portátil e independente de qualquer plataforma.</p>
                 </div>
-            </div>
-        </section>
+                <div class="card">
+                    <h3>Nosso Compromisso</h3>
+                    <p>1. <span class="highlight">Privacidade:</span> Seus dados nunca saem do seu dispositivo, a menos que você assine uma transação.</p>
+                    <p>2. <span class="highlight">Liberdade:</span> Nenhuma autoridade central pode bloquear seu nó ou confiscar seus Diesels.</p>
+                    <p>3. <span class="highlight">Transparência:</span> O protocolo é de código aberto e mantido pela comunidade.</p>
+                </div>
+            </section>
+
+            <section class="active">
+                <h2>Perguntas Frequentes (FAQ)</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <span class="faq-q">O LAG-ID é uma criptomoeda?</span>
+                        <span class="faq-a">Não. <span class="gold">Diesels (Ð)</span> são ativos de utilidade para simulação. Eles não têm valor monetário no mundo real e não podem ser trocados por moeda fiduciária. São usados exclusivamente dentro do ecossistema de simulação.</span>
+                    </div>
+                    <div class="faq-item">
+                        <span class="faq-q">Como eu ganho Diesels?</span>
+                        <span class="faq-a">Dirigindo. O protocolo recompensa o tempo de jogo verificado (10Ð por cada 100h), conquistas Steam e participação ativa em eventos de VTC oficiais.</span>
+                    </div>
+                    <div class="faq-item">
+                        <span class="faq-q">Minha conta Steam está segura?</span>
+                        <span class="faq-a">Sim. Usamos apenas a Steam como uma "Âncora" para verificar sua senioridade. Nunca pedimos sua senha; apenas lemos dados públicos do perfil por meio de APIs oficiais.</span>
+                    </div>
+                    <div class="faq-item">
+                        <span class="faq-q">O que é o Cartão Soberano?</span>
+                        <span class="faq-a">É um ID digital (PNG) de alta fidelidade que contém os dados criptografados do seu perfil. Outros aplicativos e bots podem ler este arquivo para verificar seu nível e histórico sem a necessidade de um servidor central.</span>
+                    </div>
+                </div>
+            </section>
+        </div>
 
         <footer>
             &copy; 2026 CONVOYRAMA INDUSTRIAL SYSTEMS • LAG-ID OPEN PROJECT<br>
             <span style="opacity: 0.5; margin-top: 10px; display: block;">"Decentralized. Sovereign. Unstoppable."</span>
         </footer>
     </div>
+
+    <script>
+        function setLang(lang) {
+            document.body.className = 'lang-' + lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.toLowerCase().includes(lang === 'en' ? 'english' : lang === 'es' ? 'español' : 'português')) {
+                    btn.classList.add('active');
+                }
+            });
+            localStorage.setItem('lagid_lang', lang);
+        }
+
+        // Auto-detect or load saved lang
+        const savedLang = localStorage.getItem('lagid_lang') || (navigator.language.startsWith('es') ? 'es' : navigator.language.startsWith('pt') ? 'pt' : 'en');
+        setLang(savedLang);
+    </script>
 </body>
 </html>
