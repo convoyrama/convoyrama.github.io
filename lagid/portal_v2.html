@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Conocimiento LAG-ID | Protocolo Soberano</title>
+    <style>
+        :root {
+            --accent: #9266cc;
+            --gold: #ffb300;
+            --bg: #0a0a0a;
+            --card: rgba(255, 255, 255, 0.03);
+            --text: #e0e0e0;
+            --muted: #666;
+            --success: #00c851;
+            --danger: #ff4444;
+            --neon-glow: 0 0 15px rgba(146, 102, 204, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 25px; }
+
+        /* HEADER & NAVIGATION */
+        header {
+            text-align: center;
+            padding: 80px 0 40px;
+            background: linear-gradient(to bottom, rgba(146, 102, 204, 0.05) 0%, transparent 100%);
+        }
+
+        .logo-text {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 12px;
+            color: white;
+            text-transform: uppercase;
+            text-shadow: var(--neon-glow);
+        }
+
+        .logo-accent { color: var(--accent); }
+
+        .lang-switcher {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .lang-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--muted);
+            padding: 8px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: var(--neon-glow);
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 60px;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.4;
+            transition: all 0.2s;
+        }
+
+        nav a:hover, nav a.active { opacity: 1; color: var(--accent); }
+
+        /* SECTIONS */
+        section { padding: 80px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        h2 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: white;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(to right, var(--accent), transparent); }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 24px;
+            margin-bottom: 30px;
+            transition: border-color 0.3s;
+        }
+        .card:hover { border-color: rgba(146, 102, 204, 0.2); }
+
+        .card h3 { color: var(--accent); margin-bottom: 20px; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 2px; }
+        .card p { font-size: 1rem; color: #bbb; margin-bottom: 20px; }
+
+        /* MANUAL STEPS */
+        .step { display: flex; gap: 30px; margin-bottom: 50px; }
+        .step-info { flex: 1; }
+        .step-num {
+            width: 50px; height: 50px; background: var(--accent); border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.5rem; color: white; flex-shrink: 0;
+            box-shadow: var(--neon-glow);
+        }
+
+        /* FAQ SYSTEM */
+        .faq-item {
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .faq-q { font-weight: 900; color: white; display: block; margin-bottom: 15px; font-size: 1.1rem; }
+        .faq-a { font-size: 0.95rem; color: #999; }
+
+        /* HIGHLIGHTS */
+        .highlight { color: var(--accent); font-weight: 700; }
+        .gold { color: var(--gold); font-weight: 700; }
+        .danger-text { color: var(--danger); font-weight: 800; }
+
+        footer {
+            text-align: center;
+            padding: 100px 0 60px;
+            color: var(--muted);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            line-height: 2;
+        }
+
+        /* MULTILANG CONTROL */
+        [data-content] { display: none; }
+        .lang-en [data-content="en"] { display: block; }
+        .lang-es [data-content="es"] { display: block; }
+        .lang-pt [data-content="pt"] { display: block; }
+
+        @media (max-width: 768px) {
+            .logo-text { font-size: 2rem; letter-spacing: 6px; }
+            nav { gap: 15px; flex-wrap: wrap; }
+            nav a { font-size: 0.7rem; }
+            .card { padding: 25px; }
+            .step { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body class="lang-en">
+    <header>
+        <div class="logo-text">LAG<span class="logo-accent">-ID</span></div>
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLang('en')">English</button>
+            <button class="lang-btn" onclick="setLang('es')">Español</button>
+            <button class="lang-btn" onclick="setLang('pt')">Português</button>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#vision" onclick="setActiveNav(this)">Misión</a>
+        <a href="#manual" onclick="setActiveNav(this)">Manual</a>
+        <a href="#faq" onclick="setActiveNav(this)">FAQ</a>
+        <a href="#security" onclick="setActiveNav(this)">Seguridad</a>
+        <a href="#economy" onclick="setActiveNav(this)">Economía</a>
+    </nav>
+
+    <div class="container">
+        <!-- --- SECCIÓN: VISIÓN --- -->
+        <section id="vision">
+            <div data-content="en">
+                <h2>The Sovereign Mission</h2>
+                <div class="card">
+                    <h3>Who We Are?</h3>
+                    <p>LAG-ID is not a company, a startup, or a centralized service. It is a <span class="highlight">Sovereign Identity Protocol</span> born within the simulation community.</p>
+                    <p>We believe that your achievements in SCS Software titles, your hours on TruckersMP, and your reputation in a VTC belong exclusively to you. LAG-ID provides the cryptographic tools to ensure that no central authority can ever delete, censor, or monetize your identity.</p>
+                </div>
+                <div class="card">
+                    <h3>The dr.will Seal</h3>
+                    <p>Developed by <span class="highlight">dr.will</span> for the <span class="highlight">CONVOYRAMA</span> ecosystem, this protocol represents a commitment to technical excellence and absolute privacy. Our code is open for audit because sovereignty requires transparency.</p>
+                </div>
+            </div>
+            <div data-content="es">
+                <h2>Misión Soberana</h2>
+                <div class="card">
+                    <h3>¿Quiénes Somos?</h3>
+                    <p>LAG-ID no es una empresa, una startup o un servicio centralizado. Es un <span class="highlight">Protocolo de Identidad Soberana</span> nacido en el corazón de la comunidad de simulación.</p>
+                    <p>Creemos que tus logros en los títulos de SCS Software, tus horas en TruckersMP y tu reputación en una VTC te pertenecen exclusivamente a ti. LAG-ID provee las herramientas criptográficas para asegurar que ninguna autoridad central pueda borrar, censurar o monetizar tu identidad.</p>
+                </div>
+                <div class="card">
+                    <h3>El Sello de dr.will</h3>
+                    <p>Desarrollado por <span class="highlight">dr.will</span> para el ecosistema <span class="highlight">CONVOYRAMA</span>, este protocolo representa un compromiso con la excelencia técnica y la privacidad absoluta. Nuestro código está abierto a auditoría porque la soberanía requiere transparencia.</p>
+                </div>
+            </div>
+            <div data-content="pt">
+                <h2>Missão Soberana</h2>
+                <div class="card">
+                    <h3>Quem Somos?</h3>
+                    <p>O LAG-ID não é uma empresa ou um serviço centralizado. É um <span class="highlight">Protocolo de Identidade Soberana</span> nascido na comunidade de simulação.</p>
+                    <p>Acreditamos que suas conquistas e sua reputação pertencem exclusivamente a você. O LAG-ID fornece as ferramentas para garantir que sua identidade seja sua e de mais ninguém.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- SECCIÓN: MANUAL --- -->
+        <section id="manual">
+            <div data-content="en">
+                <h2>Universal App Manual</h2>
+                <div class="step">
+                    <div class="step-num">01</div>
+                    <div class="step-info">
+                        <h3>Secure Onboarding</h3>
+                        <p>Link your <span class="highlight">Steam Account</span> to anchor your seniority. You must then create a 6-digit PIN. This PIN is never stored; it is used only to derive your encryption keys. <span class="danger-text">If you lose your PIN, you lose your vault forever.</span></p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">02</div>
+                    <div class="step-info">
+                        <h3>Identity Hub</h3>
+                        <p>Your main manifest. Here you view your Sovereign Card. This card is an encrypted PNG that you can export and share. It contains your verified game statistics and VTC affiliation.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">03</div>
+                    <div class="step-info">
+                        <h3>Fleet Hub (VTC)</h3>
+                        <p>Manage your professional standing. The protocol verifies your VTC membership and rank. Owners can manage collective assets and distribute payrolls via the Swarm.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">04</div>
+                    <div class="step-info">
+                        <h3>The Wallet</h3>
+                        <p>Sign and send <span class="gold">Diesels (Ð)</span>. Every transaction is a signed cryptographic block. You can pay via QR, NodeID, or by sharing signed <code>.diesel</code> receipt files.</p>
+                    </div>
+                </div>
+            </div>
+            <div data-content="es">
+                <h2>Manual Universal</h2>
+                <div class="step">
+                    <div class="step-num">01</div>
+                    <div class="step-info">
+                        <h3>Registro Seguro</h3>
+                        <p>Vincula tu <span class="highlight">Cuenta de Steam</span> para anclar tu antigüedad. Luego, crea un PIN de 6 dígitos. Este PIN nunca se guarda; se usa solo para derivar tus llaves de cifrado. <span class="danger-text">Si pierdes tu PIN, pierdes tu bóveda para siempre.</span></p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">02</div>
+                    <div class="step-info">
+                        <h3>Identity Hub</h3>
+                        <p>Tu manifiesto principal. Aquí ves tu Tarjeta Soberana. Esta tarjeta es un PNG cifrado que puedes exportar. Contiene tus estadísticas verificadas y tu afiliación a VTC.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">03</div>
+                    <div class="step-info">
+                        <h3>Fleet Hub (VTC)</h3>
+                        <p>Gestiona tu estatus profesional. El protocolo verifica tu rango y pertenencia a flotas. Los dueños pueden gestionar activos colectivos y nóminas mediante el Enjambre.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">04</div>
+                    <div class="step-info">
+                        <h3>La Billetera</h3>
+                        <p>Firma y envía <span class="gold">Diesels (Ð)</span>. Cada transacción es un bloque criptográfico firmado. Puedes pagar vía QR, NodeID o compartiendo archivos de recibo <code>.diesel</code>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- SECCIÓN: FAQ --- -->
+        <section id="faq">
+            <div data-content="en">
+                <h2>Extended FAQ</h2>
+                <div class="faq-item">
+                    <span class="faq-q">Where is my data stored?</span>
+                    <span class="faq-a">Only on your phone. LAG-ID uses a <span class="highlight">Local-First</span> architecture. We do not have servers, databases, or cloud logins. You are the only person who has the keys to your information.</span>
+                </div>
+                <div class="faq-item">
+                    <span class="faq-q">What happens if I delete the app?</span>
+                    <span class="faq-a">Your data is deleted from the device. To recover it, you MUST have a manual backup of your <code>LAGID_BACKUP.json</code> and remember your Master PIN.</span>
+                </div>
+                <div class="faq-item">
+                    <span class="faq-q">Why do I need to connect Steam?</span>
+                    <span class="faq-a">Steam acts as an <span class="highlight">Oracle of Merit</span>. It allows the protocol to verify that you are a real driver with real SCS game time, preventing the creation of fake "bot" identities.</span>
+                </div>
+            </div>
+            <div data-content="es">
+                <h2>Preguntas Frecuentes (FAQ)</h2>
+                <div class="faq-item">
+                    <span class="faq-q">¿Dónde se guardan mis datos?</span>
+                    <span class="faq-a">Solo en tu teléfono. LAG-ID utiliza una arquitectura <span class="highlight">Local-First</span>. No tenemos servidores, bases de datos ni logins en la nube. Tú eres la única persona con las llaves de tu información.</span>
+                </div>
+                <div class="faq-item">
+                    <span class="faq-q">¿Qué pasa si borro la aplicación?</span>
+                    <span class="faq-a">Tus datos se eliminan del dispositivo. Para recuperarlos, DEBES tener una copia manual de tu <code>LAGID_BACKUP.json</code> y recordar tu PIN Maestro.</span>
+                </div>
+                <div class="faq-item">
+                    <span class="faq-q">¿Por qué conectar Steam?</span>
+                    <span class="faq-a">Steam actúa como un <span class="highlight">Oráculo de Mérito</span>. Permite al protocolo verificar que eres un conductor real con tiempo de juego legítimo en SCS, evitando identidades falsas o bots.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- SECCIÓN: ECONOMÍA --- -->
+        <section id="economy">
+            <div data-content="en">
+                <h2>The Diesel Standard (Ð)</h2>
+                <div class="card">
+                    <h3>Utility, not Currency</h3>
+                    <p><span class="gold">Diesels (Ð)</span> are utility assets designed to reward verified participation. They have <span class="danger-text">ZERO real-world monetary value</span>. You cannot buy them with fiat, and you cannot sell them for fiat.</p>
+                    <p>Diesels are earned through merit (driving hours, achievements, VTC service) and are spent on digital services, vanity items, and reputation upgrades within the Convoyrama ecosystem.</p>
+                </div>
+            </div>
+            <div data-content="es">
+                <h2>El Estándar Diesel (Ð)</h2>
+                <div class="card">
+                    <h3>Utilidad, no Divisa</h3>
+                    <p>Los <span class="gold">Diesels (Ð)</span> son activos de utilidad diseñados para premiar la participación verificada. Tienen <span class="danger-text">VALOR MONETARIO CERO</span> en el mundo real. No puedes comprarlos ni venderlos por dinero real.</p>
+                    <p>Los Diesels se ganan por mérito (horas de conducción, logros, servicio en VTC) y se gastan en servicios digitales, cosméticos y mejoras de reputación dentro del ecosistema Convoyrama.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- SECCIÓN: SEGURIDAD --- -->
+        <section id="security">
+            <div data-content="en">
+                <h2>Security: The Triple Shield</h2>
+                <div class="card">
+                    <h3>1. Hardware Guard</h3>
+                    <p>Encryption keys are managed by the <span class="highlight">Android Keystore</span>. They never leave the hardware security module of your phone.</p>
+                </div>
+                <div class="card">
+                    <h3>2. Blinded Internal Logic</h3>
+                    <p>The protocol enforces security rules (Time, Network, Vault) at the core level. The UI is just a read-only mirror of this hardened logic.</p>
+                </div>
+                <div class="card">
+                    <h3>3. Ed25519 P2P Tunnel</h3>
+                    <p>Communications between drivers are signed and encrypted. No middleman can intercept or forge your messages.</p>
+                </div>
+            </div>
+            <div data-content="es">
+                <h2>Seguridad: El Triple Escudo</h2>
+                <div class="card">
+                    <h3>1. Hardware Guard</h3>
+                    <p>Las llaves de cifrado son gestionadas por el <span class="highlight">Keystore de Android</span>. Nunca abandonan el módulo de seguridad físico de tu teléfono.</p>
+                </div>
+                <div class="card">
+                    <h3>2. Blinded Internal Logic</h3>
+                    <p>El protocolo impone reglas de seguridad (Tiempo, Red, Bóveda) a nivel de núcleo. La interfaz es solo un espejo de esta lógica blindada.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            Developed by <span class="highlight" style="opacity: 1">dr.will</span> for <span class="highlight" style="opacity: 1">CONVOYRAMA</span><br>
+            LSP Protocol Standard v2.0 • 2026<br>
+            <span style="opacity: 0.3; font-size: 0.6rem; display: block; margin-top: 15px;">LAG-ID is a Sovereign Open Project. Decentralized. Sovereign. Unstoppable.</span>
+        </footer>
+    </div>
+
+    <script>
+        function setLang(lang) {
+            document.body.className = 'lang-' + lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.toLowerCase().includes(lang === 'en' ? 'english' : lang === 'es' ? 'español' : 'português')) {
+                    btn.classList.add('active');
+                }
+            });
+            localStorage.setItem('lagid_lang', lang);
+        }
+
+        function setActiveNav(el) {
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        // Init
+        const savedLang = localStorage.getItem('lagid_lang') || (navigator.language.startsWith('es') ? 'es' : navigator.language.startsWith('pt') ? 'pt' : 'en');
+        setLang(savedLang);
+    </script>
+</body>
+</html>
