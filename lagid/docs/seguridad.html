@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAG-ID | Security & Demystification</title>
+    <style>
+        :root {
+            --accent: #9266cc;
+            --gold: #ffb300;
+            --bg: #0a0a0a;
+            --card: rgba(255, 255, 255, 0.03);
+            --text: #e0e0e0;
+            --muted: #666;
+            --danger: #ff4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .layout { display: flex; min-height: 100vh; }
+
+        /* SIDEBAR / NAV */
+        aside {
+            width: 280px;
+            background: rgba(0,0,0,0.8);
+            border-right: 1px solid rgba(255,255,255,0.05);
+            padding: 40px 20px;
+            position: fixed;
+            height: 100vh;
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .logo-accent { color: var(--accent); }
+
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .lang-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--muted);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 15px; }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+        }
+        nav a:hover, nav a.active { color: var(--accent); }
+        nav a.active { color: white; border-left: 2px solid var(--accent); padding-left: 10px; }
+
+        /* MAIN CONTENT */
+        main { flex: 1; margin-left: 280px; padding: 80px 60px; max-width: 1200px; }
+
+        h1 { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; color: white; margin-bottom: 20px; }
+        h2 { font-size: 1.4rem; color: var(--accent); margin: 60px 0 20px; text-transform: uppercase; letter-spacing: 2px; }
+        h3 { font-size: 1.1rem; color: white; margin-top: 30px; margin-bottom: 15px; }
+
+        p { margin-bottom: 25px; color: #bbb; font-size: 1.05rem; text-align: justify; }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .highlight { color: white; font-weight: 700; }
+        .danger { color: var(--danger); font-weight: 800; }
+
+        /* MOBILE MENU TOGGLE */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            z-index: 2000;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        /* MULTILANG CONTENT */
+        [data-content] { display: none; }
+        .lang-en [data-content="en"] { display: block; }
+        .lang-es [data-content="es"] { display: block; }
+        .lang-pt [data-content="pt"] { display: block; }
+
+        @media (max-width: 900px) {
+            aside { transform: translateX(-100%); width: 250px; }
+            aside.open { transform: translateX(0); }
+            main { margin-left: 0; padding: 60px 20px; }
+            .menu-toggle { display: block; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body class="lang-en">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    
+    <div class="layout">
+        <aside id="sidebar">
+            <a href="index.html" class="sidebar-logo">LAG<span class="logo-accent">-ID</span></a>
+            
+            <div class="lang-switcher">
+                <button class="lang-btn active" onclick="setLang('en')">EN</button>
+                <button class="lang-btn" onclick="setLang('es')">ES</button>
+                <button class="lang-btn" onclick="setLang('pt')">PT</button>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Manifesto</a></li>
+                    <li><a href="seguridad.html" class="active">Security</a></li>
+                    <li><a href="economia.html">Diesel Standard</a></li>
+                    <li><a href="manual.html">App Manual</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><hr style="opacity: 0.1; margin: 15px 0;"></li>
+                    <li><a href="../index.html" style="color: var(--gold)">← Portal Hub</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main>
+            <!-- ENGLISH -->
+            <div data-content="en">
+                <h1>Security & Demystification</h1>
+                <p>Security is not just a feature; it is the shield that protects your sovereignty. We have built LAG-ID to be an impenetrable vault for your driver data.</p>
+                
+                <section>
+                    <h2>1. The Steam Connection (OpenID)</h2>
+                    <div class="card">
+                        <h3>Is it safe to link Steam?</h3>
+                        <p>Yes. LAG-ID uses the official <span class="highlight">Steam OpenID</span> protocol. When you click the Steam button, you are redirected to Valve's official website. **We never see, ask for, or store your password.**</p>
+                        <p>Steam only provides a public identifier used as an <span class="highlight">Anchor of Merit</span> to verify your SCS game time and prevent bot identities.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>2. Ban Risks & Interaction</h2>
+                    <div class="card">
+                        <h3>Will I be banned from TruckersMP?</h3>
+                        <p>Absolutely <span class="highlight">NOT</span>. LAG-ID is an external application. It does not inject code into your game, does not modify SCS files, and does not interact with TMP servers in any way that violates their terms. It is as safe as using a web browser or a notepad while you drive.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>3. Data Sovereignty & Backups</h2>
+                    <div class="card">
+                        <h3>Automatic Safety Net</h3>
+                        <p>Because LAG-ID is <span class="highlight">Local-First</span>, your data only exists on your phone. To protect you, the app creates an **Automatic Backup** every time you log in or unlock your vault. This ensures that you have a recent snapshot of your identity and balance ready to be exported.</p>
+                        <p><span class="danger">WARNING:</span> If you delete the app without having a manual copy of <code>LAGID_BACKUP.json</code>, your data is gone forever. We cannot recover it because we never had it.</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SPANISH -->
+            <div data-content="es">
+                <h1>Seguridad y Blindaje</h1>
+                <p>La seguridad no es solo una función; es el escudo que protege tu soberanía. Hemos construido LAG-ID para ser una bóveda impenetrable.</p>
+                
+                <section>
+                    <h2>1. El Login de Steam (OpenID)</h2>
+                    <div class="card">
+                        <h3>¿Es seguro vincular mi cuenta?</h3>
+                        <p>Sí. LAG-ID utiliza el protocolo oficial <span class="highlight">Steam OpenID</span>. Nosotros nunca vemos ni guardamos tu contraseña. El login ocurre en los servidores oficiales de Valve.</p>
+                        <p>Usamos Steam solo como un **Ancla de Mérito** para verificar tu antigüedad y evitar identidades falsas.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>2. Riesgos de Ban</h2>
+                    <div class="card">
+                        <h3>¿Me pueden banear de TruckersMP?</h3>
+                        <p>Definitivamente <span class="highlight">NO</span>. LAG-ID es una app externa. No inyecta código ni modifica archivos de juego. Es tan seguro como tener abierto el navegador o un bloc de notas mientras conduces.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>3. Soberanía y Backups</h2>
+                    <div class="card">
+                        <h3>Red de Seguridad Automática</h3>
+                        <p>Como LAG-ID es <span class="highlight">Local-First</span>, tus datos solo existen en tu teléfono. Para protegerte, la aplicación genera un **Backup Automático** cada vez que inicias sesión o desbloqueas tu bóveda. Esto asegura que siempre tengas una captura reciente de tu identidad lista para ser exportada.</p>
+                        <p><span class="danger">ADVERTENCIA:</span> Si borras la app sin tener una copia manual de <code>LAGID_BACKUP.json</code>, tus datos se pierden para siempre. Nosotros no podemos recuperarlos porque nunca los tuvimos.</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PORTUGUESE -->
+            <div data-content="pt">
+                <h1>Segurança e Blindagem</h1>
+                <p>A segurança é o escudo que protege sua soberania.</p>
+                <section>
+                    <h2>1. Backup Automático</h2>
+                    <div class="card">
+                        <p>O aplicativo cria um **Backup Automático** toda vez que você faz login, garantindo que seus dados estejam seguros.</p>
+                    </div>
+                </section>
+            </div>
+
+            <footer>
+                © 2026 Developed by dr.will for CONVOYRAMA<br>
+                Licencia GNU GPL v3.0 | Hardware-Grade Encryption Active.
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        function setLang(lang) {
+            document.body.className = 'lang-' + lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.toLowerCase() === lang) btn.classList.add('active');
+            });
+            localStorage.setItem('lagid_wiki_lang', lang);
+        }
+
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        const savedLang = localStorage.getItem('lagid_wiki_lang') || 'en';
+        setLang(savedLang);
+    </script>
+</body>
+</html>

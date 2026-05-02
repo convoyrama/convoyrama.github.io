@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAG-ID | The Sovereign Manifesto</title>
+    <style>
+        :root {
+            --accent: #9266cc;
+            --gold: #ffb300;
+            --bg: #0a0a0a;
+            --card: rgba(255, 255, 255, 0.03);
+            --text: #e0e0e0;
+            --muted: #666;
+            --success: #00c851;
+            --danger: #ff4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .layout { display: flex; min-height: 100vh; }
+
+        /* SIDEBAR / NAV */
+        aside {
+            width: 280px;
+            background: rgba(0,0,0,0.8);
+            border-right: 1px solid rgba(255,255,255,0.05);
+            padding: 40px 20px;
+            position: fixed;
+            height: 100vh;
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .logo-accent { color: var(--accent); }
+
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .lang-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--muted);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 15px; }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+        }
+        nav a:hover, nav a.active { color: var(--accent); }
+        nav a.active { color: white; border-left: 2px solid var(--accent); padding-left: 10px; }
+
+        /* MAIN CONTENT */
+        main { flex: 1; margin-left: 280px; padding: 80px 60px; max-width: 1200px; }
+
+        h1 { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; color: white; margin-bottom: 20px; }
+        h2 { font-size: 1.4rem; color: var(--accent); margin: 60px 0 20px; text-transform: uppercase; letter-spacing: 2px; }
+        h3 { font-size: 1.1rem; color: white; margin-top: 30px; margin-bottom: 15px; }
+
+        p { margin-bottom: 25px; color: #bbb; font-size: 1.05rem; text-align: justify; }
+
+        .callout {
+            background: var(--card);
+            border-left: 4px solid var(--accent);
+            padding: 30px;
+            border-radius: 0 16px 16px 0;
+            margin: 40px 0;
+        }
+
+        .highlight { color: white; font-weight: 700; border-bottom: 1px solid var(--accent); }
+        .quote { font-style: italic; color: var(--muted); padding-left: 20px; border-left: 2px solid var(--muted); margin: 40px 0; }
+
+        footer {
+            margin-top: 100px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 1px;
+        }
+
+        /* MOBILE MENU TOGGLE */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            z-index: 2000;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        /* MULTILANG CONTENT */
+        [data-content] { display: none; }
+        .lang-en [data-content="en"] { display: block; }
+        .lang-es [data-content="es"] { display: block; }
+        .lang-pt [data-content="pt"] { display: block; }
+
+        @media (max-width: 900px) {
+            aside { transform: translateX(-100%); width: 250px; }
+            aside.open { transform: translateX(0); }
+            main { margin-left: 0; padding: 60px 20px; }
+            .menu-toggle { display: block; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body class="lang-en">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    
+    <div class="layout">
+        <aside id="sidebar">
+            <a href="index.html" class="sidebar-logo">LAG<span class="logo-accent">-ID</span></a>
+            
+            <div class="lang-switcher">
+                <button class="lang-btn active" onclick="setLang('en')">EN</button>
+                <button class="lang-btn" onclick="setLang('es')">ES</button>
+                <button class="lang-btn" onclick="setLang('pt')">PT</button>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Manifesto</a></li>
+                    <li><a href="seguridad.html">Security</a></li>
+                    <li><a href="economia.html">Diesel Standard</a></li>
+                    <li><a href="manual.html">App Manual</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><hr style="opacity: 0.1; margin: 15px 0;"></li>
+                    <li><a href="../index.html" style="color: var(--gold)">← Portal Hub</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main>
+            <!-- ENGLISH -->
+            <div data-content="en">
+                <h1>The Sovereign Manifesto</h1>
+                <p class="quote">"If the users don't control the program, the program controls the users." — Richard Stallman</p>
+                <section>
+                    <h2>1. Why does LAG-ID exist?</h2>
+                    <p>LAG-ID was born from a shared frustration: the stagnation of large simulation platforms. For years, we have seen how massive communities have remained frozen in time, limited by central structures that do not evolve or that prioritize control over user experience.</p>
+                    <p>We wanted a more complete, more <span class="highlight">roleplay-focused</span> experience. We wanted VTCs to have real tools to manage their drivers, reward merit, and build their own economy without asking anyone for permission. Since no one did it, we decided to do it ourselves.</p>
+                </section>
+                <section>
+                    <h2>2. What is LSP (LAG Sovereign Protocol)?</h2>
+                    <p>LSP is the engine behind LAG-ID. It is a high-performance **Rust-based** protocol designed for the decentralized trucking world. Unlike traditional apps that rely on a central server, LSP treats every driver's phone as a "Node". These nodes talk directly to each other using the **Iroh Swarm** engine, creating an unstoppable network where the community is the owner.</p>
+                </section>
+                <section>
+                    <h2>3. GNU Philosophy: Your Identity is Yours</h2>
+                    <p>LAG-ID is governed under the principles of <span class="highlight">Free Software</span>. This is not just a matter of price; it is a matter of <span class="highlight">Liberty</span>. In this protocol, the user is the absolute sovereign.</p>
+                    <div class="callout">
+                        <h3>Our "Golden Rule" of Privacy:</h3>
+                        <p>We do not collect your data. We do not handle your statistics. We do not have a central database. There is no "Cloud Login". We sell nothing.</p>
+                        <p>LAG-ID is a tool that lives on your device. Your information is **blinded** to us. We provide the technical chassis, but you own the data.</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SPANISH -->
+            <div data-content="es">
+                <h1>El Manifiesto Soberano</h1>
+                <p class="quote">"Si el usuario no controla el programa, el programa controla al usuario." — Richard Stallman</p>
+                <section>
+                    <h2>1. ¿Por qué existe LAG-ID?</h2>
+                    <p>LAG-ID nació de una frustración compartida: el estancamiento de las grandes plataformas de simulación. Durante años, hemos visto cómo comunidades masivas se han quedado congeladas en el tiempo, limitadas por estructuras centrales que no evolucionan o que priorizan el control sobre la experiencia del usuario.</p>
+                    <p>Queríamos una experiencia más completa, más <span class="highlight">rolera</span>. Queríamos que las VTC tuvieran herramientas reales para gestionar a sus conductores, premiar el mérito y construir una economía propia sin pedir permiso a nadie.</p>
+                </section>
+                <section>
+                    <h2>2. ¿Qué es LSP (LAG Sovereign Protocol)?</h2>
+                    <p>LSP es el motor detrás de LAG-ID. Es un protocolo de alto rendimiento basado en **Rust** diseñado para la descentralización. A diferencia de las apps tradicionales que dependen de un servidor central, LSP trata el teléfono de cada conductor como un "Nodo". Estos nodos hablan directamente entre sí usando el motor **Iroh Swarm**, creando una red imparable donde la comunidad es la dueña.</p>
+                </section>
+                <section>
+                    <h2>3. Filosofía GNU: Tu Identidad es Tuya</h2>
+                    <p>LAG-ID se rige bajo los principios del <span class="highlight">Software Libre</span>. Esto no es solo una cuestión de precio, es una cuestión de <span class="highlight">Libertad</span>. En este protocolo, el usuario es el soberano absoluto.</p>
+                    <div class="callout">
+                        <h3>Nuestra "Regla de Oro" de Privacidad:</h3>
+                        <p>No recopilamos tus datos. No manejamos tus estadísticas. No tenemos una base de datos central. No hay "Cloud Login". No vendemos nada.</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PORTUGUESE -->
+            <div data-content="pt">
+                <h1>O Manifesto Soberano</h1>
+                <p class="quote">"Se os usuários não controlam o programa, o programa controla os usuários." — Richard Stallman</p>
+                <section>
+                    <h2>1. Por que o LAG-ID existe?</h2>
+                    <p>O LAG-ID nasceu de uma frustração compartilhada: a estagnação das grandes plataformas de simulação. Queríamos uma experiência mais completa, mais <span class="highlight">focada em roleplay</span>.</p>
+                </section>
+                <section>
+                    <h2>2. O que é o LSP (LAG Sovereign Protocol)?</h2>
+                    <p>LSP é o motor do LAG-ID. É um protocolo baseado em **Rust** para descentralização total. Cada telefone é um "Nó" que fala diretamente com outros motoristas.</p>
+                </section>
+                <section>
+                    <h2>3. Filosofia GNU: Sua Identidade é Sua</h2>
+                    <p>O LAG-ID é regido pelos princípios do <span class="highlight">Software Livre</span>. Neste protocolo, o usuário é o soberano absoluto.</p>
+                </section>
+            </div>
+
+            <footer>
+                © 2026 Developed by dr.will for CONVOYRAMA<br>
+                Licencia GNU GPL v3.0 | Decentralized. Sovereign. Unstoppable.
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        function setLang(lang) {
+            document.body.className = 'lang-' + lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.toLowerCase() === lang) btn.classList.add('active');
+            });
+            localStorage.setItem('lagid_wiki_lang', lang);
+        }
+
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        const savedLang = localStorage.getItem('lagid_wiki_lang') || 'en';
+        setLang(savedLang);
+    </script>
+</body>
+</html>
