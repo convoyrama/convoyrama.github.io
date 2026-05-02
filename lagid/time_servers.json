@@ -1,0 +1,17 @@
+{
+  "protocol": "LSP-Time-v1",
+  "architect": "dr.will",
+  "sync_threshold_seconds": 5,
+  "sources": [
+    {"id": "google", "url": "https://www.google.com", "method": "HEAD_HEADER"},
+    {"id": "cloudflare", "url": "https://www.cloudflare.com", "method": "HEAD_HEADER"},
+    {"id": "apple", "url": "https://www.apple.com", "method": "HEAD_HEADER"},
+    {"id": "github", "url": "https://github.com", "method": "HEAD_HEADER"},
+    {"id": "microsoft", "url": "https://www.microsoft.com", "method": "HEAD_HEADER"},
+    {"id": "amazon", "url": "https://www.amazon.com", "method": "HEAD_HEADER"},
+    {"id": "facebook", "url": "https://www.facebook.com", "method": "HEAD_HEADER"},
+    {"id": "convoyrama", "url": "https://convoyrama.github.io", "method": "HEAD_HEADER"},
+    {"id": "timeapi_io", "url": "https://timeapi.io/api/Time/current/zone?timeZone=UTC", "method": "JSON_GET", "path": "dateTime"},
+    {"id": "worldtime", "url": "https://worldtimeapi.org/api/timezone/Etc/UTC", "method": "JSON_GET", "path": "datetime"}
+  ]
+}
