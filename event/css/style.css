@@ -125,24 +125,25 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 .input-row { 
     display: flex; 
     gap: 15px; 
-    align-items: flex-end; 
+    align-items: center; 
     flex-wrap: wrap; 
     justify-content: flex-start;
     margin-bottom: 15px; 
     width: 100%;
 }
 
-.input-col { display: flex; flex-direction: column; gap: 4px; }
-.input-col label { color: #00aaff; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+/* COLUMNA COMPACTA: ETIQUETA E INPUT EN LA MISMA LÍNEA */
+.input-col { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+.input-col label { color: #00aaff; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; white-space: nowrap; margin: 0; }
 
 #custom-date, #custom-time, #departure-time-offset { 
-    width: 150px; 
-    padding: 8px; 
+    width: auto; 
+    padding: 5px 10px; 
     background: #252525; 
     border: 1px solid #444; 
     color: #fff; 
     border-radius: 6px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 #custom-event-name, #custom-event-link, #custom-start-place, #custom-destination, #custom-server { 
@@ -167,6 +168,19 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
     margin-top: 5px;
     margin-bottom: 20px;
     resize: vertical;
+}
+
+/* INDICADOR DE EMOJIS COMPACTO */
+#ingame-emoji-display { 
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.1rem; 
+    background: rgba(255,255,255,0.03); 
+    padding: 4px 12px; 
+    border-radius: 20px; 
+    border: 1px solid rgba(255,255,255,0.05);
+    color: #aaa;
 }
 
 /* GRID DE ASSETS */
@@ -261,8 +275,6 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
 input:checked + .slider { background-color: #00aaff; }
 input:checked + .slider:before { transform: translateX(20px); }
-
-#ingame-emoji-display { align-self: center; margin-left: 15px; font-size: 1.5rem; }
 
 @media (max-width: 768px) {
     .input-row { flex-direction: column; align-items: flex-start; }
