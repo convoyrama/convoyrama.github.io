@@ -4,12 +4,12 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 .contenedor { padding: 15px; max-width: 1200px; margin: 0 auto; flex: 1; }
 #live-clocks { color: #fff; text-align: center; margin: 0 0 20px 0; font-size: 1.2em; padding: 10px; background: #2a2a2a; border-radius: 8px; }
 #live-clocks span { margin: 0 15px; }
-.custom-event { margin-top: 20px; padding: 15px; background: #333; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,.1); }
-.custom-event h3 { font-size: 1em; color: rgb(90,165,25); text-align: center; margin-bottom: 10px; }
-.custom-event label { color: #fff; font-size: .9em; margin-right: 5px; }
-.input-col { display: flex; flex-direction: column; }
-#custom-date, #custom-time, #departure-time-offset { width: 150px; }
-.input-row { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 20px; }
+.custom-event { margin-top: 10px; padding: 15px 20px; background: #333; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.custom-event h3 { font-size: 1.1rem; color: rgb(90,165,25); text-align: left; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+.custom-event label { color: #aaa; font-size: 0.75rem; margin-bottom: 5px; text-transform: uppercase; font-weight: bold; }
+.input-col { display: flex; flex-direction: column; justify-content: flex-end; }
+#custom-date, #custom-time, #departure-time-offset { width: 140px; margin: 0; }
+.input-row { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 15px; }
 .input-row.last-row { margin-bottom: 60px; }
 #custom-date, #custom-time, #departure-time-offset, #custom-event-name, #custom-event-link, #custom-start-place, #custom-destination, #custom-server { padding: 6px; margin: 5px; font-size: .85em; border: 2px solid rgb(90,165,25); border-radius: 6px; }
 #custom-date, #custom-time { width: 150px; }
@@ -88,14 +88,16 @@ input[type="file"] { color: transparent; }
 }
 
 .warning-message {
-    background-color: rgb(90, 165, 25);
-    color: rgb(240, 240, 240);
-    padding: 5px 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    background-color: rgba(90, 165, 25, 0.15);
+    color: rgb(90, 165, 25);
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
     text-align: center;
-    font-size: 12px;
+    font-size: 0.85rem;
     font-weight: bold;
+    border: 1px solid rgba(90, 165, 25, 0.3);
+    letter-spacing: 0.5px;
 }
 #circle-canvas-waypoint { bottom: 10px; left: 10px; }
 
