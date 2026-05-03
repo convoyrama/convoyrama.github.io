@@ -66,13 +66,24 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
     background: #1a1a1a; border-radius: 15px; 
     border: 1px solid rgba(255,255,255,0.05);
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    width: 100%;
 }
 .custom-event h3 { 
     font-size: 1.1rem; color: #00aaff; text-align: left; 
     margin: 0 0 15px 0; text-transform: uppercase; 
     letter-spacing: 1px; font-weight: 900;
 }
-.input-row { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 15px; width: 100%; }
+
+/* FILAS DE INPUTS - CENTRADAS */
+.input-row { 
+    display: flex; 
+    gap: 15px; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    justify-content: center; /* CENTRADO */
+    margin-bottom: 15px; 
+    width: 100%;
+}
 
 /* COLUMNA COMPACTA */
 .input-col { display: flex; flex-direction: row; align-items: center; gap: 8px; }
@@ -86,7 +97,7 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 
 #ingame-emoji-display { display: inline-flex; align-items: center; gap: 5px; font-size: 1.1rem; background: rgba(255,255,255,0.03); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); color: #aaa; }
 
-/* GRID DE ASSETS Y LÍMITES */
+/* GRID DE ASSETS Y LÍMITES - CENTRADOS */
 .input-row .input-group {
     display: flex;
     flex-direction: column;
@@ -138,7 +149,19 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 .input-row .input-group input[type="file"] { width: 100%; font-size: 0.62rem; color: #666; margin-top: 4px; }
 .input-row .label-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
 
-.input-row.last-row { margin-bottom: 60px; }
+.input-row.last-row { margin-bottom: 20px; }
+
+#preview-note {
+    text-align: center;
+    font-size: 0.7rem;
+    color: rgba(0, 170, 255, 0.6);
+    font-style: italic;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 /* CANVAS */
 .canvas-container { position: relative; width: 100%; max-width: 960px; height: 540px; margin: 20px auto; border: 2px solid #00aaff; border-radius: 10px; overflow: hidden; background: #000; }
@@ -148,21 +171,53 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 #circle-canvas-bottom { bottom: 10px; right: 10px; }
 #circle-canvas-waypoint { bottom: 10px; left: 10px; }
 
-/* CONTROLES */
-.canvas-controls { display: flex; gap: 10px; margin: 10px auto; flex-wrap: wrap; align-items: center; justify-content: center; max-width: 960px; }
-.canvas-controls button { padding: 10px 20px; font-size: .85em; background: #00aaff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 900; text-transform: uppercase; }
+/* CONTROLES UNIFICADOS DEBAJO DEL CANVAS */
+.canvas-controls { 
+    display: flex; 
+    gap: 15px; 
+    margin: 20px auto; 
+    flex-wrap: wrap; 
+    align-items: center; 
+    justify-content: center; 
+    max-width: 1000px; 
+    background: #1a1a1a;
+    padding: 15px 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.canvas-controls button { 
+    padding: 8px 16px; 
+    font-size: 0.75rem; 
+    background: #00aaff; 
+    color: #fff; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-weight: 900; 
+    text-transform: uppercase;
+    transition: background 0.2s;
+}
 .canvas-controls button:hover { background: #0088cc; }
 #reset-canvas { background: #444; }
+#reset-canvas:hover { background: #555; }
+
+/* SELECTORES DE TEXTO DENTRO DE LA BARRA */
+.text-control-item { display: flex; align-items: center; gap: 8px; }
+.text-control-item label { color: #666; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; white-space: nowrap; }
+.text-control-item select { 
+    padding: 4px 8px; 
+    font-size: 0.75rem; 
+    background: #252525; 
+    color: #fff; 
+    border: 1px solid #444; 
+    border-radius: 6px; 
+    cursor: pointer;
+}
 
 /* ZOOM MICRO */
 .zoom-buttons { display: flex; gap: 3px; margin-top: 4px; }
 .zoom-buttons button { padding: 0; font-size: 0.6rem; min-width: 16px; height: 16px; background: #222; border: 1px solid #444; color: #fff; cursor: pointer; border-radius: 2px; display: flex; align-items: center; justify-content: center; line-height: 1; }
-
-/* TEXT CONTROLS */
-.text-controls { margin: 10px auto; padding: 20px; background: #1a1a1a; border-radius: 12px; display: flex; flex-direction: column; gap: 15px; max-width: 960px; border: 1px solid rgba(255,255,255,0.05); }
-.text-controls div { display: flex; align-items: center; gap: 15px; width: 100%; }
-.text-controls label { color: #aaa; font-size: .85rem; min-width: 160px; text-align: right; font-weight: bold; }
-.text-controls select { padding: 8px; font-size: .85em; background: #1a1a1a; color: #fff; border: 1px solid #444; border-radius: 6px; flex: 1; }
 
 /* OTROS */
 #copy-message { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 15px 30px; background: #00aaff; border-radius: 8px; color: #fff; font-weight: bold; text-align: center; display: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
