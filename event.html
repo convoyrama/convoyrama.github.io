@@ -87,6 +87,27 @@ button:hover { background-color: #0088cc !important; transform: translateY(-2px)
 .switch input:checked + .slider { background-color: #00aaff !important; }
 #live-clocks { background-color: rgba(0, 170, 255, 0.05) !important; border: 1px solid rgba(0, 170, 255, 0.2) !important; color: #fff !important; border-radius: 10px; padding: 10px; margin-bottom: 20px; }
 
+/* UNIVERSAL LANG SELECTOR */
+#lang-selector { display: flex; gap: 8px; align-items: center; }
+.lang-icon {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s;
+    user-select: none;
+}
+.lang-icon:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+.lang-icon.active {
+    color: #fff;
+    background: #00aaff;
+    border-color: #00aaff;
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+}
+
 /* PREMIUM FOOTER STYLES */
 footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,255,255,0.05) !important; padding: 40px 20px !important; margin-top: 80px !important; color: #fff !important; grid-column: 1 / -1 !important; }
 .footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; text-align: left; }
@@ -155,9 +176,9 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
 
         <div id="controls-bar">
             <div id="lang-selector">
-                <img src="assets/images/es.png" class="flag-icon" data-lang="es" alt="ES" style="width:24px; cursor:pointer;">
-                <img src="assets/images/en.png" class="flag-icon" data-lang="en" alt="EN" style="width:24px; cursor:pointer;">
-                <img src="assets/images/pt.png" class="flag-icon" data-lang="pt" alt="PT" style="width:24px; cursor:pointer;">
+                <span class="lang-icon" data-lang="es" title="Español">ES</span>
+                <span class="lang-icon" data-lang="en" title="English">EN</span>
+                <span class="lang-icon" data-lang="pt" title="Português">PT</span>
             </div>
             <div class="time-controls-container">
                 <div id="region-selector-container">
