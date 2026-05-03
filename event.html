@@ -306,11 +306,11 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                     </div>
                 </div>
             </div>
-            <div class="input-row">
-                <!-- Speed Limit 1 -->
+            <div class="input-row last-row">
+                <!-- Limit 1 -->
                 <div class="input-group">
                     <div class="label-container">
-                        <label data-i18n="label_speed_limit_1">Velocidad 1</label>
+                        <label data-i18n="label_speed_limit_1">Límite 1</label>
                         <label class="switch">
                             <input type="checkbox" id="speed-toggle-0">
                             <span class="slider round"></span>
@@ -322,10 +322,10 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                         <option value="mph">mph</option>
                     </select>
                 </div>
-                <!-- Speed Limit 2 -->
+                <!-- Limit 2 -->
                 <div class="input-group">
                     <div class="label-container">
-                        <label data-i18n="label_speed_limit_2">Velocidad 2</label>
+                        <label data-i18n="label_speed_limit_2">Límite 2</label>
                         <label class="switch">
                             <input type="checkbox" id="speed-toggle-1">
                             <span class="slider round"></span>
@@ -337,22 +337,7 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                         <option value="mph">mph</option>
                     </select>
                 </div>
-                <!-- Speed Limit 3 -->
-                <div class="input-group">
-                    <div class="label-container">
-                        <label data-i18n="label_speed_limit_3">Velocidad 3</label>
-                        <label class="switch">
-                            <input type="checkbox" id="speed-toggle-2">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <input type="number" id="speed-value-2" value="110">
-                    <select id="speed-unit-2">
-                        <option value="km/h">km/h</option>
-                        <option value="mph">mph</option>
-                    </select>
-                </div>
-                <!-- Custom Text (Free Move) -->
+                <!-- Free Text / Fuga (Reused Toggle 3) -->
                 <div class="input-group">
                     <div class="label-container">
                         <label data-i18n="label_custom_text">Libre / Fuga</label>
@@ -362,23 +347,20 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                         </label>
                     </div>
                     <input type="text" id="speed-value-3" value="FUGA" maxlength="12">
-                    <div style="font-size: 0.6rem; color: #666; margin-top: 5px; text-align: center;" data-i18n="hint_custom_text">Texto libre (máx. 12 car.)</div>
+                    <div style="font-size: 0.6rem; color: #666; margin-top: 4px; text-align: center;" data-i18n="hint_custom_text">Texto libre (máx. 12 car.)</div>
                 </div>
-            </div>
-            <div class="input-row last-row">
+                <!-- Background -->
                 <div class="input-group">
                     <label for="background-upload" data-i18n="label_background">Fondo:</label>
                     <input type="file" id="background-upload" accept="image/*">
                 </div>
+                <!-- Logo VTC -->
                 <div class="input-group">
                     <label for="logo-upload" data-i18n="label_vtc_logo">Logo VTC:</label>
                     <input type="file" id="logo-upload" accept="image/*">
-                    <div class="zoom-buttons" style="display: none;">
-                        <button>+</button>
-                        <button>-</button>
-                    </div>
                 </div>
             </div>
+            <div class="canvas-container">
             <div class="canvas-container">
                 <canvas id="map-canvas"></canvas>
                 <canvas id="circle-canvas-top" class="circle-canvas"></canvas>
