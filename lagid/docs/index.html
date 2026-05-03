@@ -94,30 +94,33 @@
         /* MAIN CONTENT */
         main { flex: 1; margin-left: 280px; padding: 80px 60px; max-width: 1200px; }
 
-        h1 { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; color: white; margin-bottom: 20px; }
-        h2 { font-size: 1.4rem; color: var(--accent); margin: 60px 0 20px; text-transform: uppercase; letter-spacing: 2px; }
-        h3 { font-size: 1.1rem; color: white; margin-top: 30px; margin-bottom: 15px; }
+        h1 { font-size: 2.8rem; font-weight: 900; letter-spacing: -1px; color: white; margin-bottom: 30px; }
+        h2 { font-size: 1.6rem; color: var(--accent); margin: 60px 0 25px; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid rgba(146, 102, 204, 0.2); padding-bottom: 10px; }
+        h3 { font-size: 1.2rem; color: white; margin-top: 35px; margin-bottom: 15px; }
 
-        p { margin-bottom: 25px; color: #bbb; font-size: 1.05rem; text-align: justify; }
+        p { margin-bottom: 25px; color: #bbb; font-size: 1.1rem; text-align: justify; }
 
         .callout {
             background: var(--card);
             border-left: 4px solid var(--accent);
-            padding: 30px;
-            border-radius: 0 16px 16px 0;
-            margin: 40px 0;
+            padding: 35px;
+            border-radius: 0 20px 24px 0;
+            margin: 45px 0;
         }
 
         .highlight { color: white; font-weight: 700; border-bottom: 1px solid var(--accent); }
-        .quote { font-style: italic; color: var(--muted); padding-left: 20px; border-left: 2px solid var(--muted); margin: 40px 0; }
+        .gold { color: var(--gold); font-weight: 800; }
+        .quote { font-style: italic; color: var(--muted); padding-left: 25px; border-left: 2px solid var(--muted); margin: 50px 0; font-size: 1.2rem; }
 
         footer {
-            margin-top: 100px;
-            padding-top: 40px;
+            margin-top: 120px;
+            padding-top: 50px;
             border-top: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--muted);
             letter-spacing: 1px;
+            text-align: center;
+            line-height: 2;
         }
 
         /* MOBILE MENU TOGGLE */
@@ -129,12 +132,13 @@
             background: var(--accent);
             color: white;
             border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             z-index: 2000;
             font-weight: 900;
             cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         /* MULTILANG CONTENT */
@@ -144,11 +148,11 @@
         .lang-pt [data-content="pt"] { display: block; }
 
         @media (max-width: 900px) {
-            aside { transform: translateX(-100%); width: 250px; }
+            aside { transform: translateX(-100%); width: 260px; }
             aside.open { transform: translateX(0); }
-            main { margin-left: 0; padding: 60px 20px; }
+            main { margin-left: 0; padding: 60px 25px; }
             .menu-toggle { display: block; }
-            h1 { font-size: 1.8rem; }
+            h1 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -168,12 +172,12 @@
             <nav>
                 <ul>
                     <li><a href="index.html" class="active">Manifesto</a></li>
-                    <li><a href="seguridad.html">Security</a></li>
+                    <li><a href="seguridad.html">Security & Privacy</a></li>
                     <li><a href="economia.html">Diesel Standard</a></li>
-                    <li><a href="manual.html">App Manual</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="manual.html">Operational Manual</a></li>
+                    <li><a href="faq.html">The Great FAQ</a></li>
                     <li><hr style="opacity: 0.1; margin: 15px 0;"></li>
-                    <li><a href="../index.html" style="color: var(--gold)">← Portal Hub</a></li>
+                    <li><a href="../index.html" style="color: var(--gold)">← Return to Gateway</a></li>
                 </ul>
             </nav>
         </aside>
@@ -183,23 +187,32 @@
             <div data-content="en">
                 <h1>The Sovereign Manifesto</h1>
                 <p class="quote">"If the users don't control the program, the program controls the users." — Richard Stallman</p>
+                
                 <section>
-                    <h2>1. Why does LAG-ID exist?</h2>
-                    <p>LAG-ID was born from a shared frustration: the stagnation of large simulation platforms. For years, we have seen how massive communities have remained frozen in time, limited by central structures that do not evolve or that prioritize control over user experience.</p>
-                    <p>We wanted a more complete, more <span class="highlight">roleplay-focused</span> experience. We wanted VTCs to have real tools to manage their drivers, reward merit, and build their own economy without asking anyone for permission. Since no one did it, we decided to do it ourselves.</p>
+                    <h2>1. The Simulation Stagnation</h2>
+                    <p>For over a decade, the trucking simulation community has been the backbone of a niche but massive hobby. However, we have reached a critical point of stagnation. Large platforms like TruckersMP have remained frozen in time, offering few new tools for roleplay, management, or meaningful progression. Decisions are made by central authorities, and users are treated as guests in their own hobby.</p>
+                    <p>We believe that the community's effort—thousands of hours driven, carefully managed VTCs, and established reputations—should be <span class="highlight">Sovereign</span>. It shouldn't depend on the survival of a single server or the whims of a corporate entity. LAG-ID exists to fill that void.</p>
                 </section>
+
                 <section>
                     <h2>2. What is LSP (LAG Sovereign Protocol)?</h2>
-                    <p>LSP is the engine behind LAG-ID. It is a high-performance **Rust-based** protocol designed for the decentralized trucking world. Unlike traditional apps that rely on a central server, LSP treats every driver's phone as a "Node". These nodes talk directly to each other using the **Iroh Swarm** engine, creating an unstoppable network where the community is the owner.</p>
+                    <p>LSP is not just a bunch of code; it is the <span class="highlight">Technical Chassis of Freedom</span>. Built using the **Rust** language for military-grade performance and safety, LSP is a Peer-to-Peer protocol. </p>
+                    <p>In traditional systems, you talk to a server. In LSP, your phone is a **Node**. Your phone talks directly to other phones in the "Swarm" using the **Iroh** engine. There is no middleman to censor your identity or seize your assets. If the internet exists, LAG-ID exists.</p>
                 </section>
+
                 <section>
-                    <h2>3. GNU Philosophy: Your Identity is Yours</h2>
-                    <p>LAG-ID is governed under the principles of <span class="highlight">Free Software</span>. This is not just a matter of price; it is a matter of <span class="highlight">Liberty</span>. In this protocol, the user is the absolute sovereign.</p>
+                    <h2>3. GNU & Free Software Philosophy</h2>
+                    <p>LAG-ID is, and will always be, <span class="highlight">Free Software</span> (as in Speech, not just as in Beer). Following the footsteps of the GNU movement, we provide total transparency. </p>
                     <div class="callout">
-                        <h3>Our "Golden Rule" of Privacy:</h3>
-                        <p>We do not collect your data. We do not handle your statistics. We do not have a central database. There is no "Cloud Login". We sell nothing.</p>
-                        <p>LAG-ID is a tool that lives on your device. Your information is **blinded** to us. We provide the technical chassis, but you own the data.</p>
+                        <h3>Our Ethical Commitment:</h3>
+                        <p>We do not collect your data. We do not handle your statistics. We do not have a central database. We do not track your location. We have **zero** interest in your private life.</p>
+                        <p>Our only job is to provide the tool. What you do with your identity, who you trade with, and how you roleplay is entirely up to you. We are **Blinded** to your operations by design.</p>
                     </div>
+                </section>
+
+                <section>
+                    <h2>4. A Tool for the Professional Driver</h2>
+                    <p>LAG-ID was created by drivers, for drivers. It is designed to add that missing layer of depth to SCS titles: a verifiable identity, a merit-based economy, and a network of trust. Whether you are an independent trucker or part of a massive VTC, this is your tool to take your simulation experience to the next level.</p>
                 </section>
             </div>
 
@@ -207,21 +220,26 @@
             <div data-content="es">
                 <h1>El Manifiesto Soberano</h1>
                 <p class="quote">"Si el usuario no controla el programa, el programa controla al usuario." — Richard Stallman</p>
+                
                 <section>
-                    <h2>1. ¿Por qué existe LAG-ID?</h2>
-                    <p>LAG-ID nació de una frustración compartida: el estancamiento de las grandes plataformas de simulación. Durante años, hemos visto cómo comunidades masivas se han quedado congeladas en el tiempo, limitadas por estructuras centrales que no evolucionan o que priorizan el control sobre la experiencia del usuario.</p>
-                    <p>Queríamos una experiencia más completa, más <span class="highlight">rolera</span>. Queríamos que las VTC tuvieran herramientas reales para gestionar a sus conductores, premiar el mérito y construir una economía propia sin pedir permiso a nadie.</p>
+                    <h2>1. El Estancamiento de la Simulación</h2>
+                    <p>Durante más de una década, la comunidad de simulación de camiones ha sido el alma de un hobby masivo. Sin embargo, hemos llegado a un punto de estancamiento. Las grandes plataformas como TruckersMP se han quedado congeladas en el tiempo, ofreciendo pocas herramientas nuevas para el rol, la gestión o la progresión real. Las decisiones las toman autoridades centrales, y los usuarios son tratados como invitados en su propio hobby.</p>
+                    <p>Creemos que el esfuerzo de la comunidad —las miles de horas conducidas, las VTC gestionadas con mimo y las reputaciones ganadas— debe ser <span class="highlight">Soberano</span>. No debe depender de la supervivencia de un servidor o de los caprichos de una entidad corporativa. LAG-ID existe para llenar ese vacío.</p>
                 </section>
+
                 <section>
                     <h2>2. ¿Qué es LSP (LAG Sovereign Protocol)?</h2>
-                    <p>LSP es el motor detrás de LAG-ID. Es un protocolo de alto rendimiento basado en **Rust** diseñado para la descentralización. A diferencia de las apps tradicionales que dependen de un servidor central, LSP trata el teléfono de cada conductor como un "Nodo". Estos nodos hablan directamente entre sí usando el motor **Iroh Swarm**, creando una red imparable donde la comunidad es la dueña.</p>
+                    <p>LSP no es solo código; es el <span class="highlight">Chasis Técnico de la Libertad</span>. Construido en **Rust** para un rendimiento y seguridad de nivel militar, LSP es un protocolo Peer-to-Peer.</p>
+                    <p>En los sistemas tradicionales, tú hablas con un servidor. En LSP, tu teléfono es un **Nodo**. Tu teléfono habla directamente con otros teléfonos en el "Enjambre" (Swarm) usando el motor **Iroh**. No hay intermediarios que puedan censurar tu identidad o confiscar tus activos. Mientras exista internet, LAG-ID existirá.</p>
                 </section>
+
                 <section>
-                    <h2>3. Filosofía GNU: Tu Identidad es Tuya</h2>
-                    <p>LAG-ID se rige bajo los principios del <span class="highlight">Software Libre</span>. Esto no es solo una cuestión de precio, es una cuestión de <span class="highlight">Libertad</span>. En este protocolo, el usuario es el soberano absoluto.</p>
+                    <h2>3. Filosofía GNU y Software Libre</h2>
+                    <p>LAG-ID es, y siempre será, <span class="highlight">Software Libre</span>. Siguiendo los pasos del movimiento GNU, ofrecemos transparencia total.</p>
                     <div class="callout">
-                        <h3>Nuestra "Regla de Oro" de Privacidad:</h3>
-                        <p>No recopilamos tus datos. No manejamos tus estadísticas. No tenemos una base de datos central. No hay "Cloud Login". No vendemos nada.</p>
+                        <h3>Nuestro Compromiso Ético:</h3>
+                        <p>No recopilamos tus datos. No manejamos tus estadísticas. No tenemos una base de datos central. No rastreamos tu ubicación. Tenemos **cero** interés en tu vida privada.</p>
+                        <p>Nuestra única labor es proveer la herramienta. Lo que hagas con tu identidad y cómo rolees es decisión tuya. Por diseño, somos **Ciegos** a tus operaciones.</p>
                     </div>
                 </section>
             </div>
@@ -230,23 +248,27 @@
             <div data-content="pt">
                 <h1>O Manifesto Soberano</h1>
                 <p class="quote">"Se os usuários não controlam o programa, o programa controla os usuários." — Richard Stallman</p>
+                
                 <section>
-                    <h2>1. Por que o LAG-ID existe?</h2>
-                    <p>O LAG-ID nasceu de uma frustração compartilhada: a estagnação das grandes plataformas de simulação. Queríamos uma experiência mais completa, mais <span class="highlight">focada em roleplay</span>.</p>
+                    <h2>1. Estagnação da Simulação</h2>
+                    <p>Durante anos, vimos as grandes plataformas de simulação congeladas no tempo. O LAG-ID nasceu para mudar isso, devolvendo o controle aos motoristas.</p>
                 </section>
+
                 <section>
-                    <h2>2. O que é o LSP (LAG Sovereign Protocol)?</h2>
-                    <p>LSP é o motor do LAG-ID. É um protocolo baseado em **Rust** para descentralização total. Cada telefone é um "Nó" que fala diretamente com outros motoristas.</p>
+                    <h2>2. O que é o LSP?</h2>
+                    <p>O **LAG Sovereign Protocol** é um motor baseado em **Rust** para descentralização total. Seu telefone é um nó independente em uma rede imparável.</p>
                 </section>
+
                 <section>
-                    <h2>3. Filosofia GNU: Sua Identidade é Sua</h2>
-                    <p>O LAG-ID é regido pelos princípios do <span class="highlight">Software Livre</span>. Neste protocolo, o usuário é o soberano absoluto.</p>
+                    <h2>3. Filosofia de Software Livre</h2>
+                    <p>Seguimos os princípios da GNU: transparência total, sem coleta de dados e soberania do usuário.</p>
                 </section>
             </div>
 
             <footer>
-                © 2026 Developed by dr.will for CONVOYRAMA<br>
-                Licencia GNU GPL v3.0 | Decentralized. Sovereign. Unstoppable.
+                Developed by <span class="highlight" style="opacity: 1">dr.will</span> for <span class="highlight" style="opacity: 1">CONVOYRAMA</span><br>
+                LSP Protocol Standard v2.0 • Licensed under GNU GPL v3.0<br>
+                <span style="opacity: 0.4; font-size: 0.7rem; display: block; margin-top: 15px;">"Your identity, your rules, our community."</span>
             </footer>
         </main>
     </div>

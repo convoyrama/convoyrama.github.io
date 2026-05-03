@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAG-ID | Security & Demystification</title>
+    <title>LAG-ID | Security & Privacy Shield</title>
     <style>
         :root {
             --accent: #9266cc;
@@ -93,22 +93,33 @@
         /* MAIN CONTENT */
         main { flex: 1; margin-left: 280px; padding: 80px 60px; max-width: 1200px; }
 
-        h1 { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; color: white; margin-bottom: 20px; }
-        h2 { font-size: 1.4rem; color: var(--accent); margin: 60px 0 20px; text-transform: uppercase; letter-spacing: 2px; }
-        h3 { font-size: 1.1rem; color: white; margin-top: 30px; margin-bottom: 15px; }
+        h1 { font-size: 2.8rem; font-weight: 900; letter-spacing: -1px; color: white; margin-bottom: 30px; }
+        h2 { font-size: 1.6rem; color: var(--accent); margin: 60px 0 25px; text-transform: uppercase; letter-spacing: 3px; border-bottom: 1px solid rgba(146, 102, 204, 0.2); padding-bottom: 10px; }
+        h3 { font-size: 1.2rem; color: white; margin-top: 35px; margin-bottom: 15px; }
 
-        p { margin-bottom: 25px; color: #bbb; font-size: 1.05rem; text-align: justify; }
+        p { margin-bottom: 25px; color: #bbb; font-size: 1.1rem; text-align: justify; }
 
         .card {
             background: var(--card);
             border: 1px solid rgba(255,255,255,0.05);
-            padding: 30px;
-            border-radius: 16px;
+            padding: 35px;
+            border-radius: 20px;
             margin-bottom: 30px;
         }
 
-        .highlight { color: white; font-weight: 700; }
+        .highlight { color: white; font-weight: 700; border-bottom: 1px solid var(--accent); }
         .danger { color: var(--danger); font-weight: 800; }
+
+        footer {
+            margin-top: 120px;
+            padding-top: 50px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.8rem;
+            color: var(--muted);
+            letter-spacing: 1px;
+            text-align: center;
+            line-height: 2;
+        }
 
         /* MOBILE MENU TOGGLE */
         .menu-toggle {
@@ -119,12 +130,13 @@
             background: var(--accent);
             color: white;
             border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             z-index: 2000;
             font-weight: 900;
             cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         /* MULTILANG CONTENT */
@@ -134,11 +146,11 @@
         .lang-pt [data-content="pt"] { display: block; }
 
         @media (max-width: 900px) {
-            aside { transform: translateX(-100%); width: 250px; }
+            aside { transform: translateX(-100%); width: 260px; }
             aside.open { transform: translateX(0); }
-            main { margin-left: 0; padding: 60px 20px; }
+            main { margin-left: 0; padding: 60px 25px; }
             .menu-toggle { display: block; }
-            h1 { font-size: 1.8rem; }
+            h1 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -158,12 +170,12 @@
             <nav>
                 <ul>
                     <li><a href="index.html">Manifesto</a></li>
-                    <li><a href="seguridad.html" class="active">Security</a></li>
+                    <li><a href="seguridad.html" class="active">Security & Privacy</a></li>
                     <li><a href="economia.html">Diesel Standard</a></li>
-                    <li><a href="manual.html">App Manual</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="manual.html">Operational Manual</a></li>
+                    <li><a href="faq.html">The Great FAQ</a></li>
                     <li><hr style="opacity: 0.1; margin: 15px 0;"></li>
-                    <li><a href="../index.html" style="color: var(--gold)">← Portal Hub</a></li>
+                    <li><a href="../index.html" style="color: var(--gold)">← Return to Gateway</a></li>
                 </ul>
             </nav>
         </aside>
@@ -171,83 +183,96 @@
         <main>
             <!-- ENGLISH -->
             <div data-content="en">
-                <h1>Security & Demystification</h1>
-                <p>Security is not just a feature; it is the shield that protects your sovereignty. We have built LAG-ID to be an impenetrable vault for your driver data.</p>
+                <h1>Security & Blinded Logic</h1>
+                <p>In LAG-ID, security is not an excuse for control. It is the tool that ensures your data belongs to you and no one else.</p>
                 
                 <section>
                     <h2>1. The Steam Connection (OpenID)</h2>
                     <div class="card">
                         <h3>Is it safe to link Steam?</h3>
                         <p>Yes. LAG-ID uses the official <span class="highlight">Steam OpenID</span> protocol. When you click the Steam button, you are redirected to Valve's official website. **We never see, ask for, or store your password.**</p>
-                        <p>Steam only provides a public identifier used as an <span class="highlight">Anchor of Merit</span> to verify your SCS game time and prevent bot identities.</p>
+                        <p>Valve only provides a public numeric ID and your simulation stats. We use this as an **Anchor of Merit** to verify you are a real driver, protecting the community from bots and fake identities.</p>
                     </div>
                 </section>
 
                 <section>
-                    <h2>2. Ban Risks & Interaction</h2>
+                    <h2>2. The Zero-Ban Architecture</h2>
                     <div class="card">
                         <h3>Will I be banned from TruckersMP?</h3>
-                        <p>Absolutely <span class="highlight">NOT</span>. LAG-ID is an external application. It does not inject code into your game, does not modify SCS files, and does not interact with TMP servers in any way that violates their terms. It is as safe as using a web browser or a notepad while you drive.</p>
+                        <p>Absolutely <span class="highlight">NOT</span>. LAG-ID is a standalone native application. It does not inject code, does not modify game memory, and does not interact with TMP's internal servers. To the game, LAG-ID is as invisible as a web browser or a music player running in the background.</p>
                     </div>
                 </section>
 
                 <section>
-                    <h2>3. Data Sovereignty & Backups</h2>
+                    <h2>3. The Deterministic Vault</h2>
                     <div class="card">
-                        <h3>Automatic Safety Net</h3>
-                        <p>Because LAG-ID is <span class="highlight">Local-First</span>, your data only exists on your phone. To protect you, the app creates an **Automatic Backup** every time you log in or unlock your vault. This ensures that you have a recent snapshot of your identity and balance ready to be exported.</p>
-                        <p><span class="danger">WARNING:</span> If you delete the app without having a manual copy of <code>LAGID_BACKUP.json</code>, your data is gone forever. We cannot recover it because we never had it.</p>
+                        <h3>How secure is a 6-digit PIN?</h3>
+                        <p>The PIN is not just a password; it is a **key derivation factor**. Combined with your unique hardware signature, it unlocks a vault protected by **AES-256-GCM** encryption. Even if someone steals your phone, they would need your PIN and physical access to the device's security chip to read your data.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>4. Safety Net: Auto-Backups</h2>
+                    <div class="card">
+                        <p>Because there are no central servers, your data is only on your phone. To prevent total loss, the app creates an **Automatic Backup** every time you log in or unlock your vault. This ensures you always have a fresh copy of your identity ready to be moved to another device if needed.</p>
                     </div>
                 </section>
             </div>
 
             <!-- SPANISH -->
             <div data-content="es">
-                <h1>Seguridad y Blindaje</h1>
-                <p>La seguridad no es solo una función; es el escudo que protege tu soberanía. Hemos construido LAG-ID para ser una bóveda impenetrable.</p>
+                <h1>Seguridad y Lógica Ciega</h1>
+                <p>En LAG-ID, la seguridad no es una excusa para el control. Es la herramienta que asegura que tus datos te pertenecen a ti y a nadie más.</p>
                 
                 <section>
-                    <h2>1. El Login de Steam (OpenID)</h2>
+                    <h2>1. La Conexión con Steam (OpenID)</h2>
                     <div class="card">
                         <h3>¿Es seguro vincular mi cuenta?</h3>
-                        <p>Sí. LAG-ID utiliza el protocolo oficial <span class="highlight">Steam OpenID</span>. Nosotros nunca vemos ni guardamos tu contraseña. El login ocurre en los servidores oficiales de Valve.</p>
-                        <p>Usamos Steam solo como un **Ancla de Mérito** para verificar tu antigüedad y evitar identidades falsas.</p>
+                        <p>Sí. LAG-ID utiliza el protocolo oficial <span class="highlight">Steam OpenID</span>. Cuando pulsas el botón, eres redirigido a la web oficial de Valve. **Nosotros nunca vemos ni guardamos tu contraseña.**</p>
+                        <p>Valve solo nos entrega un ID público y tus estadísticas. Usamos esto como un **Ancla de Mérito** para confirmar que eres un conductor real, protegiendo a la comunidad de bots.</p>
                     </div>
                 </section>
 
                 <section>
-                    <h2>2. Riesgos de Ban</h2>
+                    <h2>2. Arquitectura de "Baneo Cero"</h2>
                     <div class="card">
                         <h3>¿Me pueden banear de TruckersMP?</h3>
-                        <p>Definitivamente <span class="highlight">NO</span>. LAG-ID es una app externa. No inyecta código ni modifica archivos de juego. Es tan seguro como tener abierto el navegador o un bloc de notas mientras conduces.</p>
+                        <p>Definitivamente <span class="highlight">NO</span>. LAG-ID es una aplicación nativa independiente. No inyecta código ni modifica la memoria del juego. Para el simulador, LAG-ID es tan invisible como un navegador web o un reproductor de música.</p>
                     </div>
                 </section>
 
                 <section>
-                    <h2>3. Soberanía y Backups</h2>
+                    <h2>3. La Bóveda Determinística</h2>
                     <div class="card">
-                        <h3>Red de Seguridad Automática</h3>
-                        <p>Como LAG-ID es <span class="highlight">Local-First</span>, tus datos solo existen en tu teléfono. Para protegerte, la aplicación genera un **Backup Automático** cada vez que inicias sesión o desbloqueas tu bóveda. Esto asegura que siempre tengas una captura reciente de tu identidad lista para ser exportada.</p>
-                        <p><span class="danger">ADVERTENCIA:</span> Si borras la app sin tener una copia manual de <code>LAGID_BACKUP.json</code>, tus datos se pierden para siempre. Nosotros no podemos recuperarlos porque nunca los tuvimos.</p>
+                        <h3>¿Es seguro un PIN de solo 6 dígitos?</h3>
+                        <p>El PIN no es solo una contraseña; es un factor de derivación. Junto con la firma única de tu hardware, desbloquea una bóveda protegida por cifrado **AES-256-GCM**. Tus datos están blindados por el mismo chip de seguridad que protege tus apps bancarias.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>4. Red de Seguridad: Backups Automáticos</h2>
+                    <div class="card">
+                        <p>Al no haber servidores, tus datos solo existen en tu móvil. Para evitar pérdidas, la app crea un **Backup Automático** cada vez que entras. Esto garantiza que siempre tengas una copia fresca de tu identidad lista para ser exportada.</p>
                     </div>
                 </section>
             </div>
 
             <!-- PORTUGUESE -->
             <div data-content="pt">
-                <h1>Segurança e Blindagem</h1>
-                <p>A segurança é o escudo que protege sua soberania.</p>
+                <h1>Segurança e Lógica Cega</h1>
                 <section>
-                    <h2>1. Backup Automático</h2>
-                    <div class="card">
-                        <p>O aplicativo cria um **Backup Automático** toda vez que você faz login, garantindo que seus dados estejam seguros.</p>
-                    </div>
+                    <h2>1. Conexão Steam Segura</h2>
+                    <p>O LAG-ID usa Steam OpenID. Nunca vemos sua senha.</p>
+                </section>
+                <section>
+                    <h2>2. Sem Risco de Banimento</h2>
+                    <p>O LAG-ID é invisível para o jogo. É 100% seguro de usar com o TruckersMP.</p>
                 </section>
             </div>
 
             <footer>
                 © 2026 Developed by dr.will for CONVOYRAMA<br>
-                Licencia GNU GPL v3.0 | Hardware-Grade Encryption Active.
+                Licencia GNU GPL v3.0 | Protected by Sovereign Encryption.
             </footer>
         </main>
     </div>
