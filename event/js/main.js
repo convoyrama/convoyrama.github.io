@@ -45,6 +45,16 @@ async function loadLanguage(lang) {
         }
     }
 
+    // Refresh Style selector
+    if (dom.textStyle) {
+        const currentStyle = dom.textStyle.value;
+        Array.from(dom.textStyle.options).forEach(option => {
+            const key = `style_${option.value}`;
+            if (langData[key]) option.textContent = langData[key];
+        });
+        dom.textStyle.value = currentStyle;
+    }
+
     drawCanvas();
     updateInGameTimeEmojis();
 }
