@@ -9,7 +9,7 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 .custom-event label { color: #fff; font-size: .9em; margin-right: 5px; }
 .input-col { display: flex; flex-direction: column; }
 #custom-date, #custom-time, #departure-time-offset { width: 150px; }
-.input-row { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 10px; }
+.input-row { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 25px; }
 #custom-date, #custom-time, #departure-time-offset, #custom-event-name, #custom-event-link, #custom-start-place, #custom-destination, #custom-server { padding: 6px; margin: 5px; font-size: .85em; border: 2px solid rgb(90,165,25); border-radius: 6px; }
 #custom-date, #custom-time { width: 150px; }
 #custom-event-name, #custom-event-link, #custom-start-place, #custom-destination, #custom-server { width: 45%; }
@@ -169,5 +169,7 @@ input:checked + .slider:before {
 #ingame-emoji-display img.emoji {
     height: 1.2em;
     width: 1.2em;
+    vertical-align: middle;
+}   width: 1.2em;
     vertical-align: middle;
 }
