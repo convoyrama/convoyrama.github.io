@@ -140,5 +140,16 @@
   "no_image_to_download": "Please upload an image first.",
   "image_download_success": "Image downloaded successfully.",
   "image_download_error": "Error downloading image.",
-  "error_invalid_date": "Invalid date or time."
+  "error_invalid_date": "Invalid date or time.",
+  "label_speed_limit_1": "Speed 1",
+  "label_speed_limit_2": "Speed 2",
+  "label_speed_limit_3": "Speed 3",
+  "label_custom_text": "Free / Text",
+  "hint_custom_text": "Custom text (max. 12 char.)",
+  "label_text_style_shadow": "Shadow",
+  "style_shadow": "Shadow",
+  "style_metallic": "Metallic",
+  "style_toxic": "Toxic",
+  "style_cosmic": "Cosmic",
+  "style_sunburst": "Sunburst"
 }

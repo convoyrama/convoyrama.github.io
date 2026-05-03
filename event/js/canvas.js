@@ -16,7 +16,6 @@ export function drawCanvas() {
     canvas.width = 1920; canvas.height = 1080;
     if (state.backgroundImage) { ctx.drawImage(state.backgroundImage, 0, 0, canvas.width, canvas.height); } else { ctx.fillStyle = "#333"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
     if (state.mapImage) ctx.drawImage(state.mapImage, state.imageX, state.imageY, state.mapImage.width * state.imageScale, state.mapImage.height * state.imageScale);
-    if (state.watermarkImage.complete && state.watermarkImage.naturalWidth !== 0) { ctx.globalAlpha = 0.1; ctx.drawImage(state.watermarkImage, (canvas.width - state.watermarkImage.width * 0.5) / 2, canvas.height - state.watermarkImage.height * 0.5 - 20, state.watermarkImage.width * 0.5, state.watermarkImage.height * 0.5); ctx.globalAlpha = 1.0; }
 
     let textFill = "rgb(240,240,240)";
     let shadowColor = "rgba(0,0,0,0.8)";
@@ -358,6 +357,16 @@ export function drawCanvas() {
             ctx.shadowBlur = 0; // Reset shadow for next drawings
         }
     });
+
+    // WATERMARK (Final layer, on top of everything)
+    if (state.watermarkImage.complete && state.watermarkImage.naturalWidth !== 0) { 
+        ctx.globalAlpha = 0.6; // More opaque
+        const wmWidth = state.watermarkImage.width * 0.5;
+        const wmHeight = state.watermarkImage.height * 0.5;
+        // Restored to bottom position: canvas.height - wmHeight - 20
+        ctx.drawImage(state.watermarkImage, (canvas.width - wmWidth) / 2, canvas.height - wmHeight - 20, wmWidth, wmHeight); 
+        ctx.globalAlpha = 1.0; 
+    }
 }
 
 export function initCanvasEventListeners() {
@@ -434,12 +443,12 @@ export function initCanvasEventListeners() {
     canvas.addEventListener("mouseup", () => { 
         state.setIsDragging(false); 
         state.setIsDraggingDetail(false); 
-        state.isDraggingSpeed = [false, false, false, false];
+        state.isDraggingSpeed.fill(false);
     });
     canvas.addEventListener("mouseleave", () => { 
         state.setIsDragging(false); 
         state.setIsDraggingDetail(false); 
-        state.isDraggingSpeed = [false, false, false, false];
+        state.isDraggingSpeed.fill(false);
     });
 
     const circleCanvasTop = dom.circleCanvasTop;

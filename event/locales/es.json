@@ -139,5 +139,16 @@
   "no_image_to_download": "Por favor, sube una imagen primero.",
   "image_download_success": "Imagen descargada con éxito.",
   "image_download_error": "Error al descargar la imagen.",
-  "error_invalid_date": "Fecha u hora inválida."
+  "error_invalid_date": "Fecha u hora inválida.",
+  "label_speed_limit_1": "Velocidad 1",
+  "label_speed_limit_2": "Velocidad 2",
+  "label_speed_limit_3": "Velocidad 3",
+  "label_custom_text": "Libre / Fuga",
+  "hint_custom_text": "Texto libre (máx. 12 car.)",
+  "label_text_style_shadow": "Sombra",
+  "style_shadow": "Sombra",
+  "style_metallic": "Metálico",
+  "style_toxic": "Tóxico",
+  "style_cosmic": "Cósmico",
+  "style_sunburst": "Ráfaga Solar"
 }
