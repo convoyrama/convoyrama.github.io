@@ -241,20 +241,20 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                         <option value="45">45 min</option>
                     </select>
                 </div>
-                <span id="ingame-emoji-display"></span>
                 </div>
+                <div id="custom-date-display" style="font-size: 0.75rem; opacity: 0.6; color: #fff; margin-left: auto; font-style: italic;"></div>
             </div>
-            <div id="custom-date-display"></div>
             <div class="input-row">
-                <input type="text" id="custom-event-name" data-i18n-placeholder="placeholder_event_name" placeholder="Nombre del evento">
-                <input type="text" id="custom-event-link" data-i18n-placeholder="placeholder_event_link" placeholder="Enlace del evento">
+                <input type="text" id="custom-event-name" data-i18n-placeholder="placeholder_event_name" placeholder="Nombre del evento" style="flex: 2;">
+                <input type="text" id="custom-server" data-i18n-placeholder="placeholder_server" placeholder="Servidor" style="flex: 1;">
             </div>
             <div class="input-row">
                 <input type="text" id="custom-start-place" data-i18n-placeholder="placeholder_start_place" placeholder="Lugar de partida">
+                <div style="color: #00aaff; font-weight: 900;">➔</div>
                 <input type="text" id="custom-destination" data-i18n-placeholder="placeholder_destination" placeholder="Lugar de destino">
             </div>
             <div class="input-row">
-                <input type="text" id="custom-server" data-i18n-placeholder="placeholder_server" placeholder="Servidor">
+                <input type="text" id="custom-event-link" data-i18n-placeholder="placeholder_event_link" placeholder="Enlace del evento">
             </div>
             <label for="custom-event-description" data-i18n="label_description">Descripción:</label>
             <textarea id="custom-event-description" data-i18n-placeholder="placeholder_event_description" placeholder="Descripción del evento" rows="6"></textarea>

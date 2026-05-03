@@ -266,7 +266,7 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 
 /* OTROS */
 #copy-message { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 15px 30px; background: #00aaff; border-radius: 8px; color: #fff; font-weight: bold; text-align: center; display: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-#custom-date-display { font-size: .9em; color: #00aaff; text-align: left; margin: 10px 0; font-weight: bold; }
+#custom-date-display { font-size: 0.8rem; color: #aaa; text-align: right; margin: 0; font-weight: normal; }
 
 /* SWITCH */
 .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
