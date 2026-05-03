@@ -13,6 +13,27 @@ async function loadLanguage(lang) {
     const langData = await fetchLanguage(lang);
     state.setCurrentLangData(langData);
     applyTranslations(langData);
+    
+    // Refresh elements that depend on state.currentLangData
+    if (dom.regionSelect) {
+        const currentRegion = dom.regionSelect.value;
+        dom.regionSelect.innerHTML = '';
+        for (const regionKey in timezoneRegions) {
+            const option = document.createElement('option');
+            option.value = regionKey;
+            option.textContent = langData[timezoneRegions[regionKey].name] || timezoneRegions[regionKey].name;
+            dom.regionSelect.appendChild(option);
+        }
+        dom.regionSelect.value = currentRegion;
+    }
+
+    if (dom.customDateDisplay && dom.customDate.value) {
+        const d = DateTime.fromISO(dom.customDate.value);
+        if (d.isValid) {
+            dom.customDateDisplay.textContent = `${langData.label_selected_date || 'Fecha seleccionada'}: ${formatDateForDisplay(d)}`;
+        }
+    }
+
     drawCanvas();
     updateInGameTimeEmojis();
 }
@@ -197,6 +218,8 @@ async function init() {
     dom.detailUpload = document.getElementById("detail-upload");
     dom.waypointUpload = document.getElementById("waypoint-upload");
 
+    dom.langIcons = document.querySelectorAll(".flag-icon");
+
     dom.zoomIn = document.getElementById("zoom-in");
     dom.zoomOut = document.getElementById("zoom-out");
     dom.zoomInTop = document.getElementById("zoom-in-top");
@@ -208,16 +231,34 @@ async function init() {
     dom.zoomInWaypoint = document.getElementById("zoom-in-waypoint");
     dom.zoomOutWaypoint = document.getElementById("zoom-out-waypoint");
 
-    await loadLanguage('es');
+    // Language selection listeners
+    dom.langIcons.forEach(icon => {
+        icon.addEventListener("click", () => {
+            const lang = icon.getAttribute("data-lang");
+            loadLanguage(lang);
+        });
+    });
+
+    // Detect browser language or fallback to 'es'
+    const browserLang = navigator.language.split('-')[0];
+    const supportedLangs = ['es', 'en', 'pt'];
+    const initialLang = supportedLangs.includes(browserLang) ? browserLang : 'es';
+    
+    await loadLanguage(initialLang);
 
     // Initial population of region select
-    for (const regionKey in timezoneRegions) {
-        const option = document.createElement('option');
-        option.value = regionKey;
-        option.setAttribute('data-i18n', timezoneRegions[regionKey].name);
-        option.textContent = state.currentLangData[timezoneRegions[regionKey].name];
-        dom.regionSelect.appendChild(option);
-    }
+    const populateRegions = () => {
+        dom.regionSelect.innerHTML = '';
+        for (const regionKey in timezoneRegions) {
+            const option = document.createElement('option');
+            option.value = regionKey;
+            option.textContent = state.currentLangData[timezoneRegions[regionKey].name] || timezoneRegions[regionKey].name;
+            dom.regionSelect.appendChild(option);
+        }
+        dom.regionSelect.value = state.selectedRegion;
+    };
+
+    populateRegions();
 
     dom.regionSelect.addEventListener('change', (e) => {
         state.setSelectedRegion(e.target.value);
@@ -228,7 +269,7 @@ async function init() {
     const userNow = DateTime.local();
     dom.customDate.value = userNow.toISODate();
     dom.customTime.value = userNow.toFormat('HH:mm');
-    dom.customDateDisplay.textContent = `Fecha seleccionada: ${formatDateForDisplay(userNow)}`;
+    dom.customDateDisplay.textContent = `${state.currentLangData.label_selected_date || 'Fecha seleccionada'}: ${formatDateForDisplay(userNow)}`;
 
     // Initial calls after DOM is ready
     updateLiveClocks(); 
