@@ -6,7 +6,9 @@
   "nav_license": "License",
   "nav_create_event": "Create Event",
   "header_title": "Create Custom Event",
-  "warning_message": "v0.121 | This page may take a while to load.",
+  "warning_message": "v0.124 | This page may take a while to load.",
+  "canvas_preview_warning": "Note: Map circles may appear displaced in the preview, but will show correctly in the downloaded image.",
+
 
   "local_time": "Local Time:",
   "ingame_time": "In-Game Time:",
