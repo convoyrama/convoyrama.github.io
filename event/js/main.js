@@ -212,7 +212,6 @@ async function init() {
     dom.customServer = document.getElementById("custom-server");
     dom.customEventDescription = document.getElementById("custom-event-description");
     dom.departureTimeOffset = document.getElementById("departure-time-offset");
-    dom.ingameEmojiDisplay = document.getElementById("ingame-emoji-display");
     dom.localTimeDisplay = document.getElementById("local-time-display");
     dom.gameTimeDisplay = document.getElementById("game-time-display");
     dom.gameTimeEmoji = document.getElementById("game-time-emoji");
@@ -220,6 +219,7 @@ async function init() {
     dom.regionSelect = document.getElementById("region-select");
     dom.manualOffsetSelect = document.getElementById("manual-offset-select");
     dom.customDateDisplay = document.getElementById("custom-date-display");
+
     dom.copyMessage = document.getElementById("copy-message");
     dom.copyCustomInfo = document.getElementById("copy-custom-info");
     dom.copyTmpBtn = document.getElementById("copy-tmp-btn");
