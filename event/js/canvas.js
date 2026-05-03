@@ -336,6 +336,28 @@ export function drawCanvas() {
     ctx.fillText(destinationText, circleCenterX, destinationTextY);
 
     if (state.detailImage) { ctx.drawImage(state.detailImage, state.detailImageX, state.detailImageY, state.detailImage.width * state.detailImageScale, state.detailImage.height * state.detailImageScale); }
+
+    // DRAW SPEED LIMIT INDICATORS
+    state.speedIndicators.forEach(indicator => {
+        if (indicator.visible) {
+            const speedText = `${indicator.value} ${indicator.unit}`;
+            ctx.font = `bold ${textSize + 10}px Arial`;
+            ctx.textAlign = "center";
+            
+            const metrics = ctx.measureText(speedText);
+            const bgWidth = metrics.width + 30;
+            const bgHeight = textSize + 20;
+            
+            ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
+            ctx.fillRect(indicator.x - bgWidth / 2, indicator.y - bgHeight + 15, bgWidth, bgHeight);
+            
+            ctx.shadowColor = shadowColor;
+            ctx.shadowBlur = (textStyle === "neon" || textStyle === "toxic") ? 20 : 10;
+            ctx.fillStyle = textFill;
+            ctx.fillText(speedText, indicator.x, indicator.y);
+            ctx.shadowBlur = 0; // Reset shadow for next drawings
+        }
+    });
 }
 
 export function initCanvasEventListeners() {
@@ -353,6 +375,27 @@ export function initCanvasEventListeners() {
 
     canvas.addEventListener("mousedown", (e) => { 
         const pos = getMousePos(e);
+        const textSize = parseInt(dom.textSize.value);
+
+        // Check speed indicators first (top layer)
+        for (let i = state.speedIndicators.length - 1; i >= 0; i--) {
+            const ind = state.speedIndicators[i];
+            if (ind.visible) {
+                const ctx = canvas.getContext("2d");
+                ctx.font = `bold ${textSize + 10}px Arial`;
+                const metrics = ctx.measureText(`${ind.value} ${ind.unit}`);
+                const bgWidth = metrics.width + 30;
+                const bgHeight = textSize + 20;
+
+                if (pos.x >= ind.x - bgWidth/2 && pos.x <= ind.x + bgWidth/2 && pos.y >= ind.y - bgHeight + 15 && pos.y <= ind.y + 15) {
+                    state.isDraggingSpeed[i] = true;
+                    state.setStartX(pos.x - ind.x);
+                    state.setStartY(pos.y - ind.y);
+                    return; // Stop checking others
+                }
+            }
+        }
+
         if (state.detailImage && pos.x >= state.detailImageX && pos.x <= state.detailImageX + state.detailImage.width * state.detailImageScale && pos.y >= state.detailImageY && pos.y <= state.detailImageY + state.detailImage.height * state.detailImageScale) {
             state.setIsDraggingDetail(true);
             state.setStartX(pos.x - state.detailImageX);
@@ -365,6 +408,19 @@ export function initCanvasEventListeners() {
     });
     canvas.addEventListener("mousemove", (e) => { 
         const pos = getMousePos(e);
+        
+        let handled = false;
+        state.isDraggingSpeed.forEach((isDragging, i) => {
+            if (isDragging) {
+                state.speedIndicators[i].x = pos.x - state.startX;
+                state.speedIndicators[i].y = pos.y - state.startY;
+                drawCanvas();
+                handled = true;
+            }
+        });
+
+        if (handled) return;
+
         if (state.isDraggingDetail && state.detailImage) {
             state.setDetailImageX(pos.x - state.startX);
             state.setDetailImageY(pos.y - state.startY);
@@ -375,8 +431,16 @@ export function initCanvasEventListeners() {
             drawCanvas(); 
         } 
     });
-    canvas.addEventListener("mouseup", () => { state.setIsDragging(false); state.setIsDraggingDetail(false); });
-    canvas.addEventListener("mouseleave", () => { state.setIsDragging(false); state.setIsDraggingDetail(false); });
+    canvas.addEventListener("mouseup", () => { 
+        state.setIsDragging(false); 
+        state.setIsDraggingDetail(false); 
+        state.isDraggingSpeed = [false, false, false, false];
+    });
+    canvas.addEventListener("mouseleave", () => { 
+        state.setIsDragging(false); 
+        state.setIsDraggingDetail(false); 
+        state.isDraggingSpeed = [false, false, false, false];
+    });
 
     const circleCanvasTop = dom.circleCanvasTop;
     circleCanvasTop.addEventListener("mousedown", (e) => { if (state.circleImageTop) { state.setIsDraggingTop(true); state.setStartX(e.offsetX - state.circleImageXTop); state.setStartY(e.offsetY - state.circleImageYTop); } });

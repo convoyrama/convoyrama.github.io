@@ -229,6 +229,10 @@ async function init() {
     dom.detailUpload = document.getElementById("detail-upload");
     dom.waypointUpload = document.getElementById("waypoint-upload");
 
+    dom.speedToggles = [document.getElementById('speed-toggle-0'), document.getElementById('speed-toggle-1'), document.getElementById('speed-toggle-2'), document.getElementById('speed-toggle-3')];
+    dom.speedValues = [document.getElementById('speed-value-0'), document.getElementById('speed-value-1'), document.getElementById('speed-value-2'), document.getElementById('speed-value-3')];
+    dom.speedUnits = [document.getElementById('speed-unit-0'), document.getElementById('speed-unit-1'), document.getElementById('speed-unit-2')];
+
     dom.langIcons = document.querySelectorAll(".lang-icon");
 
     dom.zoomIn = document.getElementById("zoom-in");
@@ -454,6 +458,28 @@ async function init() {
     dom.departureTimeOffset.addEventListener("change", () => { drawCanvas(); updateInGameTimeEmojis(); });
 
     dom.resetCanvas.addEventListener("click", () => { state.setMapImage(null); state.setCircleImageTop(null); state.setCircleImageBottom(null); state.setLogoImage(null); state.setBackgroundImage(null); state.setDetailImage(null); state.setCircleImageWaypoint(null); dom.mapUpload.value = ""; dom.circleUploadTop.value = ""; dom.circleUploadBottom.value = ""; dom.logoUpload.value = ""; dom.backgroundUpload.value = ""; dom.detailUpload.value = ""; dom.waypointUpload.value = ""; drawCanvas(); });
+    
+    dom.speedToggles.forEach((toggle, index) => {
+        toggle.addEventListener('change', (e) => {
+            state.speedIndicators[index].visible = e.target.checked;
+            drawCanvas();
+        });
+    });
+
+    dom.speedValues.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            state.speedIndicators[index].value = e.target.value;
+            drawCanvas();
+        });
+    });
+
+    dom.speedUnits.forEach((select, index) => {
+        select.addEventListener('change', (e) => {
+            state.speedIndicators[index].unit = e.target.value;
+            drawCanvas();
+        });
+    });
+
     drawCanvas();
     updateInGameTimeEmojis();
 
