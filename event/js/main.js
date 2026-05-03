@@ -242,9 +242,9 @@ async function init() {
     dom.detailUpload = document.getElementById("detail-upload");
     dom.waypointUpload = document.getElementById("waypoint-upload");
 
-    dom.speedToggles = [document.getElementById('speed-toggle-0'), document.getElementById('speed-toggle-1'), document.getElementById('speed-toggle-2'), document.getElementById('speed-toggle-3')];
-    dom.speedValues = [document.getElementById('speed-value-0'), document.getElementById('speed-value-1'), document.getElementById('speed-value-2'), document.getElementById('speed-value-3')];
-    dom.speedUnits = [document.getElementById('speed-unit-0'), document.getElementById('speed-unit-1'), document.getElementById('speed-unit-2')];
+    dom.speedToggles = [document.getElementById('speed-toggle-0'), document.getElementById('speed-toggle-1'), document.getElementById('speed-toggle-3')].filter(el => el !== null);
+    dom.speedValues = [document.getElementById('speed-value-0'), document.getElementById('speed-value-1'), document.getElementById('speed-value-3')].filter(el => el !== null);
+    dom.speedUnits = [document.getElementById('speed-unit-0'), document.getElementById('speed-unit-1')].filter(el => el !== null);
 
     dom.langIcons = document.querySelectorAll(".lang-icon");
 

@@ -33,30 +33,22 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 
 /* RELOJES */
 #live-clocks { 
-    margin: 0; 
-    padding: 0; 
+    margin: 0; padding: 0; 
     background: transparent; 
     font-size: 0.8rem; 
-    display: flex; 
-    gap: 8px; 
-    border: none;
-    color: #888;
-    white-space: nowrap;
-    align-items: center;
+    display: flex; gap: 8px; 
+    border: none; color: #888;
+    white-space: nowrap; align-items: center;
 }
-
 #local-time-display, #game-time-display { color: #00aaff; font-weight: 800; }
 
 /* IDIOMAS */
 #lang-selector { display: flex; gap: 8px; align-items: center; }
 .lang-icon {
     color: rgba(255, 255, 255, 0.4);
-    font-size: 0.7rem;
-    font-weight: 800;
-    cursor: pointer;
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.7rem; font-weight: 800;
+    cursor: pointer; padding: 4px 10px;
+    border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.2s;
 }
 .lang-icon:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
@@ -70,24 +62,16 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 
 /* BLOQUE DE CREACIÓN */
 .custom-event { 
-    margin-top: 10px; 
-    padding: 15px 25px; 
-    background: #1a1a1a; 
-    border-radius: 15px; 
+    margin-top: 10px; padding: 15px 25px; 
+    background: #1a1a1a; border-radius: 15px; 
     border: 1px solid rgba(255,255,255,0.05);
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
-
 .custom-event h3 { 
-    font-size: 1.1rem; 
-    color: #00aaff; 
-    text-align: left; 
-    margin: 0 0 15px 0; 
-    text-transform: uppercase; 
-    letter-spacing: 1px; 
-    font-weight: 900;
+    font-size: 1.1rem; color: #00aaff; text-align: left; 
+    margin: 0 0 15px 0; text-transform: uppercase; 
+    letter-spacing: 1px; font-weight: 900;
 }
-
 .input-row { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 15px; width: 100%; }
 
 /* COLUMNA COMPACTA */
@@ -100,7 +84,7 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 
 #custom-event-description { width: 100%; min-height: 80px; padding: 10px; background: #252525; border: 1px solid #444; color: #fff; border-radius: 6px; margin-top: 5px; margin-bottom: 20px; resize: vertical; }
 
-#ingame-emoji-display { display: inline-flex; align-items: center; gap: 5px; font-size: 1.1rem; background: rgba(255,255,255,0.03); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+#ingame-emoji-display { display: inline-flex; align-items: center; gap: 5px; font-size: 1.1rem; background: rgba(255,255,255,0.03); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); color: #aaa; }
 
 /* GRID DE ASSETS Y LÍMITES - CHATOS Y ESTANDARIZADOS */
 .input-row .input-group {
@@ -108,8 +92,8 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
     flex-direction: column;
     align-items: center;
     width: 160px;
-    min-height: 100px; /* Chatos */
-    padding: 10px;
+    min-height: 90px; /* Reducido aún más */
+    padding: 8px;
     border: 1px solid #333;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.03);
@@ -117,43 +101,42 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
     justify-content: center;
     transition: all 0.3s ease;
 }
-
 .input-row .input-group:hover { border-color: rgba(0, 170, 255, 0.3); background: rgba(255, 255, 255, 0.05); }
+.input-row .input-group label { font-size: 0.62rem; color: #00aaff; margin-bottom: 4px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
 
-.input-row .input-group label { font-size: 0.65rem; color: #00aaff; margin-bottom: 6px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-
-/* INPUTS Y SELECTS DENTRO DE LOS BOXES */
+/* INPUTS Y SELECTS DENTRO DE LOS BOXES - COMPACTACIÓN REAL */
 .input-group input[type="number"], 
 .input-group input[type="text"] {
-    width: 80% !important;
-    margin-top: 5px;
-    padding: 2px 5px;
+    width: 70% !important; /* Más estrechos */
+    height: 22px; /* Más chatos */
+    margin-top: 2px;
+    padding: 0 5px;
     background: #252525;
     border: 1px solid #444;
     color: #fff;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-align: center;
 }
 
 .input-group select { 
     width: auto; 
-    min-width: 55px;
+    min-width: 65px;
     height: 18px;
     padding: 0 4px; 
     font-size: 0.6rem; 
-    background: #00aaff; 
-    color: #fff;
+    background: #00aaff !important; 
+    color: #fff !important;
     border: none;
     border-radius: 3px;
-    margin-top: 4px;
+    margin-top: 3px;
     cursor: pointer;
     font-weight: bold;
     text-align: center;
+    display: block !important; /* Asegurar visibilidad */
 }
 
-.input-row .input-group input[type="file"] { width: 100%; font-size: 0.65rem; color: #666; margin-top: 5px; }
-
+.input-row .input-group input[type="file"] { width: 100%; font-size: 0.62rem; color: #666; margin-top: 4px; }
 .input-row .label-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
 
 .input-row.last-row { margin-bottom: 60px; }
@@ -172,24 +155,9 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 .canvas-controls button:hover { background: #0088cc; }
 #reset-canvas { background: #444; }
 
-/* ZOOM BUTTONS MICRO-MINIMALISTAS */
+/* ZOOM MICRO */
 .zoom-buttons { display: flex; gap: 3px; margin-top: 4px; }
-.zoom-buttons button { 
-    padding: 0; 
-    font-size: 0.6rem; 
-    min-width: 16px; 
-    height: 16px;
-    background: #222; 
-    border: 1px solid #444; 
-    color: #fff; 
-    cursor: pointer; 
-    border-radius: 2px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-}
-.zoom-buttons button:hover { background: #444; border-color: #666; }
+.zoom-buttons button { padding: 0; font-size: 0.6rem; min-width: 16px; height: 16px; background: #222; border: 1px solid #444; color: #fff; cursor: pointer; border-radius: 2px; display: flex; align-items: center; justify-content: center; line-height: 1; }
 
 /* TEXT CONTROLS */
 .text-controls { margin-top: 10px; padding: 20px; background: #252525; border-radius: 12px; display: flex; flex-direction: column; gap: 15px; }

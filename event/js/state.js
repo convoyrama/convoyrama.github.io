@@ -7,12 +7,11 @@ export let circleImageXBottom = 0, circleImageYBottom = 0, circleImageScaleBotto
 export let circleImageXWaypoint = 0, circleImageYWaypoint = 0, circleImageScaleWaypoint = 1;
 export let detailImageX = 0, detailImageY = 0, detailImageScale = 1;
 export let isDragging = false, isDraggingTop = false, isDraggingBottom = false, isDraggingDetail = false, isDraggingWaypoint = false;
-export let isDraggingSpeed = [false, false, false, false];
+export let isDraggingSpeed = [false, false, false];
 export let isWaypointVisible = false;
 export let speedIndicators = [
     { visible: false, value: '80', unit: 'km/h', x: 500, y: 500 },
     { visible: false, value: '60', unit: 'km/h', x: 600, y: 600 },
-    { visible: false, value: '110', unit: 'km/h', x: 700, y: 700 },
     { visible: false, value: 'FUGA', unit: '', x: 800, y: 800 }
 ];
 export let startX, startY;
