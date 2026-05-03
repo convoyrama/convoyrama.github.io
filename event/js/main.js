@@ -14,6 +14,17 @@ async function loadLanguage(lang) {
     state.setCurrentLangData(langData);
     applyTranslations(langData);
     
+    // Highlight active language icon
+    if (dom.langIcons) {
+        dom.langIcons.forEach(icon => {
+            if (icon.getAttribute("data-lang") === lang) {
+                icon.classList.add("active");
+            } else {
+                icon.classList.remove("active");
+            }
+        });
+    }
+
     // Refresh elements that depend on state.currentLangData
     if (dom.regionSelect) {
         const currentRegion = dom.regionSelect.value;
@@ -218,7 +229,7 @@ async function init() {
     dom.detailUpload = document.getElementById("detail-upload");
     dom.waypointUpload = document.getElementById("waypoint-upload");
 
-    dom.langIcons = document.querySelectorAll(".flag-icon");
+    dom.langIcons = document.querySelectorAll(".lang-icon");
 
     dom.zoomIn = document.getElementById("zoom-in");
     dom.zoomOut = document.getElementById("zoom-out");
