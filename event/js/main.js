@@ -208,6 +208,7 @@ async function init() {
     dom.regionSelect = document.getElementById("region-select");
     dom.manualOffsetSelect = document.getElementById("manual-offset-select");
     dom.customDateDisplay = document.getElementById("custom-date-display");
+    dom.copyMessage = document.getElementById("copy-message");
     dom.copyCustomInfo = document.getElementById("copy-custom-info");
     dom.copyTmpBtn = document.getElementById("copy-tmp-btn");
     dom.tmpImagesToggle = document.getElementById("tmp-images-toggle");
@@ -383,6 +384,7 @@ async function init() {
 
         const includeImages = dom.tmpImagesToggle.checked;
 
+        const selectedRegion = timezoneRegions[dom.regionSelect.value];
         let tmpInfo = `# ${customEventNameValue}\n\n`;
         if (includeImages) tmpInfo += `![](https://convoyrama.github.io/event/images/default/green.png)\n\n`;
         tmpInfo += `## ${state.currentLangData.tmp_description_title || 'DESCRIPCIÓN'}\n`;

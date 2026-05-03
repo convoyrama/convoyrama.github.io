@@ -1,6 +1,6 @@
 export let mapImage = null, circleImageTop = null, circleImageBottom = null, logoImage = null, backgroundImage = null, detailImage = null, circleImageWaypoint = null;
 export let watermarkImage = new Image();
-watermarkImage.src = './assets/images/cr.png';
+watermarkImage.src = './event/images/default/convoyrama_logo.png';
 export let imageX = 0, imageY = 0, imageScale = 1;
 export let circleImageXTop = 0, circleImageYTop = 0, circleImageScaleTop = 1;
 export let circleImageXBottom = 0, circleImageYBottom = 0, circleImageScaleBottom = 1;
