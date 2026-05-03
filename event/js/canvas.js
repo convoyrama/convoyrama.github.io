@@ -340,25 +340,38 @@ export function drawCanvas() {
 
 export function initCanvasEventListeners() {
     const canvas = dom.mapCanvas;
+    
+    const getMousePos = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return {
+            x: (e.clientX - rect.left) * scaleX,
+            y: (e.clientY - rect.top) * scaleY
+        };
+    };
+
     canvas.addEventListener("mousedown", (e) => { 
-        if (state.detailImage && e.offsetX >= state.detailImageX && e.offsetX <= state.detailImageX + state.detailImage.width * state.detailImageScale && e.offsetY >= state.detailImageY && e.offsetY <= state.detailImageY + state.detailImage.height * state.detailImageScale) {
+        const pos = getMousePos(e);
+        if (state.detailImage && pos.x >= state.detailImageX && pos.x <= state.detailImageX + state.detailImage.width * state.detailImageScale && pos.y >= state.detailImageY && pos.y <= state.detailImageY + state.detailImage.height * state.detailImageScale) {
             state.setIsDraggingDetail(true);
-            state.setStartX(e.offsetX - state.detailImageX);
-            state.setStartY(e.offsetY - state.detailImageY);
+            state.setStartX(pos.x - state.detailImageX);
+            state.setStartY(pos.y - state.detailImageY);
         } else if (state.mapImage) { 
             state.setIsDragging(true); 
-            state.setStartX(e.offsetX - state.imageX); 
-            state.setStartY(e.offsetY - state.imageY); 
+            state.setStartX(pos.x - state.imageX); 
+            state.setStartY(pos.y - state.imageY); 
         } 
     });
     canvas.addEventListener("mousemove", (e) => { 
+        const pos = getMousePos(e);
         if (state.isDraggingDetail && state.detailImage) {
-            state.setDetailImageX(e.offsetX - state.startX);
-            state.setDetailImageY(e.offsetY - state.startY);
+            state.setDetailImageX(pos.x - state.startX);
+            state.setDetailImageY(pos.y - state.startY);
             drawCanvas();
         } else if (state.isDragging && state.mapImage) { 
-            state.setImageX(e.offsetX - state.startX); 
-            state.setImageY(e.offsetY - state.startY); 
+            state.setImageX(pos.x - state.startX); 
+            state.setImageY(pos.y - state.startY); 
             drawCanvas(); 
         } 
     });
