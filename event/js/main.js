@@ -464,7 +464,14 @@ async function init() {
     dom.customEventName.addEventListener("input", drawCanvas);
     dom.customStartPlace.addEventListener("input", drawCanvas);
     dom.customDestination.addEventListener("input", drawCanvas);
-    dom.customServer.addEventListener("input", drawCanvas);
+    dom.customDate.addEventListener("change", (e) => {
+        const d = DateTime.fromISO(e.target.value);
+        if (d.isValid) {
+            dom.customDateDisplay.textContent = `${state.currentLangData.label_selected_date || 'Fecha seleccionada'}: ${formatDateForDisplay(d)}`;
+        }
+        drawCanvas();
+    });
+
     
     dom.customTime.addEventListener("input", () => { drawCanvas(); updateInGameTimeEmojis(); });
     dom.departureTimeOffset.addEventListener("change", () => { drawCanvas(); updateInGameTimeEmojis(); });
