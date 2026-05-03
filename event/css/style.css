@@ -4,10 +4,97 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 
 .contenedor { padding: 15px; max-width: 1200px; margin: 0 auto; flex: 1; width: 100%; }
 
-#live-clocks { color: #fff; text-align: center; margin: 0 0 20px 0; font-size: 1.2em; padding: 10px; background: #2a2a2a; border-radius: 8px; }
-#live-clocks span { margin: 0 15px; }
+/* ADVERTENCIA MINIMIZADA */
+.warning-message {
+    background-color: rgba(90, 165, 25, 0.05);
+    color: rgba(255, 255, 255, 0.3);
+    padding: 2px 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
 
-/* BLOQUE DE CREACIÓN - COMPACTO */
+/* BARRA DE CONTROLES UNIFICADA */
+#controls-bar { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 6px 20px; 
+    background: #1a1a1a; 
+    border-radius: 50px; 
+    margin-bottom: 15px; 
+    border: 1px solid rgba(255,255,255,0.05);
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+#live-clocks { 
+    margin: 0; 
+    padding: 0; 
+    background: transparent; 
+    font-size: 0.8rem; 
+    display: flex; 
+    gap: 10px; 
+    border: none;
+    color: #888;
+    white-space: nowrap;
+}
+
+#live-clocks span { margin: 0; }
+#local-time-display, #game-time-display { color: #00aaff; font-weight: bold; }
+
+/* SELECTOR DE IDIOMAS */
+#lang-selector { display: flex; gap: 6px; align-items: center; }
+.lang-icon {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.65rem;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 3px 7px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s;
+}
+.lang-icon:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+.lang-icon.active {
+    color: #fff;
+    background: #00aaff;
+    border-color: #00aaff;
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+}
+
+/* CONTENEDORES DE TIEMPO */
+.time-controls-container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+#region-selector-container, #manual-offset-container { 
+    display: flex; 
+    align-items: center; 
+    gap: 6px; 
+}
+
+#region-selector-container label, #manual-offset-container label { 
+    font-size: 0.6rem; 
+    color: #666; 
+    text-transform: uppercase; 
+    font-weight: 800;
+}
+
+#region-select, #manual-offset-select { 
+    padding: 3px 8px; 
+    font-size: 0.75rem; 
+    background: #1a1a1a; 
+    color: #fff; 
+    border: 1px solid #333; 
+    border-radius: 20px; 
+}
+
+/* BLOQUE DE CREACIÓN */
 .custom-event { 
     margin-top: 10px; 
     padding: 15px 25px; 
@@ -28,7 +115,6 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
     font-weight: 900;
 }
 
-/* FILAS DE INPUTS */
 .input-row { 
     display: flex; 
     gap: 15px; 
@@ -42,7 +128,6 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 .input-col { display: flex; flex-direction: column; gap: 4px; }
 .input-col label { color: #00aaff; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
 
-/* ESTILOS DE INPUTS */
 #custom-date, #custom-time, #departure-time-offset { 
     width: 150px; 
     padding: 8px; 
@@ -77,7 +162,7 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
     resize: vertical;
 }
 
-/* GRID DE ASSETS (Mapas, Logos, Límites) */
+/* GRID DE ASSETS */
 .input-row .input-group {
     display: flex;
     flex-direction: column;
@@ -104,7 +189,6 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
     color: transparent;
 }
 
-/* FILA DE LÍMITES - ESPACIO EXTRA PARA EL CANVAS */
 .input-row.last-row { margin-bottom: 60px; }
 
 /* CANVAS */
@@ -134,7 +218,7 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 #circle-canvas-bottom { bottom: 10px; right: 10px; }
 #circle-canvas-waypoint { bottom: 10px; left: 10px; }
 
-/* CONTROLES DEL CANVAS */
+/* CONTROLES */
 .canvas-controls { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
 .canvas-controls button { 
     padding: 10px 20px; 
@@ -162,8 +246,6 @@ body { font-family: Arial, sans-serif; min-height: 100vh; display: flex; flex-di
 /* OTROS */
 #copy-message { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 15px 30px; background: #00aaff; border-radius: 8px; color: #fff; font-weight: bold; text-align: center; display: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 #custom-date-display { font-size: .9em; color: #00aaff; text-align: left; margin: 10px 0; font-weight: bold; }
-
-#controls-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #1a1a1a; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); }
 
 /* SWITCH */
 .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
