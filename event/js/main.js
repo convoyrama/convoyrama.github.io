@@ -60,6 +60,7 @@ async function loadLanguage(lang) {
 }
 
 function updateInGameTimeEmojis() {
+    if (!dom.ingameEmojiDisplay) return;
     const customDateValue = dom.customDate.value;
     const customTimeValue = dom.customTime.value;
 
@@ -215,6 +216,7 @@ async function init() {
     dom.localTimeDisplay = document.getElementById("local-time-display");
     dom.gameTimeDisplay = document.getElementById("game-time-display");
     dom.gameTimeEmoji = document.getElementById("game-time-emoji");
+    dom.ingameEmojiDisplay = document.getElementById("ingame-emoji-display");
     dom.regionSelect = document.getElementById("region-select");
     dom.manualOffsetSelect = document.getElementById("manual-offset-select");
     dom.customDateDisplay = document.getElementById("custom-date-display");
