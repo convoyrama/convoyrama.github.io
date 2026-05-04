@@ -23,7 +23,8 @@ const crc32 = (function() {
 })();
 
 /**
- * Injects a tEXt chunk with custom metadata into a PNG ArrayBuffer.
+ * Injects an iTXt chunk with custom metadata into a PNG ArrayBuffer.
+ * iTXt supports UTF-8 and is the standard for international text in PNGs.
  * @param {ArrayBuffer} pngBuffer The original PNG data.
  * @param {string} key The metadata key (e.g., "convoyrama-event-data").
  * @param {string} value The metadata value (e.g., a JSON string).
@@ -31,7 +32,7 @@ const crc32 = (function() {
  */
 export function injectMetadataIntoPNG(pngBuffer, key, value) {
     const IEND_CHUNK_TYPE = 'IEND';
-    const TEXT_CHUNK_TYPE = 'tEXt';
+    const ITXT_CHUNK_TYPE = 'iTXt';
 
     const dataView = new DataView(pngBuffer);
     // PNG signature
@@ -55,21 +56,56 @@ export function injectMetadataIntoPNG(pngBuffer, key, value) {
             const iendChunk = pngBuffer.slice(offset);
             const pngWithoutIend = pngBuffer.slice(0, offset);
 
-            // Create the new tEXt chunk
-            const keywordBytes = new TextEncoder().encode(key);
-            const valueBytes = new TextEncoder().encode(value);
-            const chunkDataLength = keywordBytes.length + 1 + valueBytes.length;
+            // iTXt structure:
+            // Keyword: 1-79 bytes (character string)
+            // Null separator: 1 byte
+            // Compression flag: 1 byte (0 = uncompressed, 1 = compressed)
+            // Compression method: 1 byte (0 = deflate)
+            // Language tag: 0 or more bytes (character string)
+            // Null separator: 1 byte
+            // Translated keyword: 0 or more bytes
+            // Null separator: 1 byte
+            // Text: 0 or more bytes (UTF-8)
+
+            const encoder = new TextEncoder();
+            const keywordBytes = encoder.encode(key);
+            const valueBytes = encoder.encode(value);
+            const langTagBytes = encoder.encode(""); // Empty language tag
+            const transKeyBytes = encoder.encode(""); // Empty translated keyword
+            
+            // Calculate total chunk data length
+            // keyword (len) + null (1) + flag (1) + method (1) + lang (len) + null (1) + trans (len) + null (1) + value (len)
+            const chunkDataLength = keywordBytes.length + 1 + 1 + 1 + langTagBytes.length + 1 + transKeyBytes.length + 1 + valueBytes.length;
             
             const newChunkBuffer = new ArrayBuffer(12 + chunkDataLength);
             const newChunkView = new DataView(newChunkBuffer);
             const newChunkBytes = new Uint8Array(newChunkBuffer);
 
+            // Length
             writeUint32(newChunkView, 0, chunkDataLength);
-            newChunkBytes.set(new TextEncoder().encode(TEXT_CHUNK_TYPE), 4);
-            newChunkBytes.set(keywordBytes, 8);
-            newChunkBytes[8 + keywordBytes.length] = 0; // Null separator
-            newChunkBytes.set(valueBytes, 8 + keywordBytes.length + 1);
+            // Type
+            newChunkBytes.set(encoder.encode(ITXT_CHUNK_TYPE), 4);
             
+            // Data
+            let dataOffset = 8;
+            newChunkBytes.set(keywordBytes, dataOffset);
+            dataOffset += keywordBytes.length;
+            newChunkBytes[dataOffset++] = 0; // Null separator for keyword
+            
+            newChunkBytes[dataOffset++] = 0; // Compression flag: 0 (uncompressed)
+            newChunkBytes[dataOffset++] = 0; // Compression method: 0
+            
+            newChunkBytes.set(langTagBytes, dataOffset);
+            dataOffset += langTagBytes.length;
+            newChunkBytes[dataOffset++] = 0; // Null separator for lang tag
+            
+            newChunkBytes.set(transKeyBytes, dataOffset);
+            dataOffset += transKeyBytes.length;
+            newChunkBytes[dataOffset++] = 0; // Null separator for translated keyword
+            
+            newChunkBytes.set(valueBytes, dataOffset);
+            
+            // CRC
             const crc = crc32(newChunkBytes, 4, chunkDataLength + 4);
             writeUint32(newChunkView, 8 + chunkDataLength, crc);
 
@@ -87,5 +123,5 @@ export function injectMetadataIntoPNG(pngBuffer, key, value) {
     }
 
     console.error("IEND chunk not found.");
-    return pngBuffer; // Return original buffer if IEND is not found
+    return pngBuffer; 
 }

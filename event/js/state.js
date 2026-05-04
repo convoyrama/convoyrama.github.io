@@ -10,9 +10,9 @@ export let isDragging = false, isDraggingTop = false, isDraggingBottom = false, 
 export let isDraggingSpeed = [false, false, false];
 export let isWaypointVisible = false;
 export let speedIndicators = [
-    { visible: false, value: '80', unit: 'km/h', x: 500, y: 500 },
-    { visible: false, value: '60', unit: 'km/h', x: 600, y: 600 },
-    { visible: false, value: 'FUGA', unit: '', x: 800, y: 800 }
+    { visible: false, value: '80', unit: 'km/h', x: 330, y: 330 },
+    { visible: false, value: '60', unit: 'km/h', x: 400, y: 400 },
+    { visible: false, value: 'FUGA', unit: '', x: 530, y: 530 }
 ];
 export let startX, startY;
 
