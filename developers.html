@@ -132,6 +132,15 @@
             <p>
                 Los datos se almacenan en un <em>chunk</em> auxiliar de tipo <code>iTXt</code> (International Text) dentro de la estructura del PNG. Este formato es el estándar moderno para texto internacional y asegura que la codificación sea siempre UTF-8. Usamos claves específicas (Keywords) para diferenciar el tipo de contenido.
             </p>
+            
+            <h3>Estructura técnica de iTXt</h3>
+            <p>Para decodificar manualmente el bloque, se debe seguir este orden de bytes:</p>
+            <pre><code>1. Keyword: (1-79 bytes) + [00] (Separador nulo)
+2. Compression Flag: [00] (1 byte, 0 = sin comprimir)
+3. Compression Method: [00] (1 byte, 0 = deflate)
+4. Language Tag: (0+ bytes) + [00] (Separador nulo)
+5. Translated Keyword: (0+ bytes) + [00] (Separador nulo)
+6. Text Data: (Resto del bloque en UTF-8)</code></pre>
         </section>
 
         <section>
@@ -157,32 +166,61 @@
             <p><span class="endpoint-badge">KEYWORD</span> <code>convoyrama-event-data</code></p>
             <p><span class="endpoint-badge" style="background-color: #28a745;">FORMATO</span> <code>iTXt (UTF-8)</code></p>
 
-            <h3>Estructura JSON</h3>
+            <h3>Estructura JSON Completa</h3>
             <pre><code>{
   <span class="key-name">"eventName"</span>: <span class="string">"Después de Hora"</span>,
+  <span class="key-name">"eventLink"</span>: <span class="string">"https://..."</span>,
+  <span class="key-name">"startPlace"</span>: <span class="string">"Montevideo"</span>,
+  <span class="key-name">"destination"</span>: <span class="string">"Buenos Aires"</span>,
   <span class="key-name">"server"</span>: <span class="string">"Simulation 1"</span>,
-  <span class="key-name">"meetingTimestamp"</span>: <span class="number">1704067200</span>, <span class="comment">// Unix Timestamp</span>
+  <span class="key-name">"description"</span>: <span class="string">"Ruta tranquila..."</span>,
+  <span class="key-name">"meetingTimestamp"</span>: <span class="number">1704067200</span>, <span class="comment">// Unix Seconds</span>
   <span class="key-name">"departureTimestamp"</span>: <span class="number">1704068100</span>,
-  <span class="key-name">"ianaTimeZone"</span>: <span class="string">"America/Montevideo"</span>
+  <span class="key-name">"arrivalTimestamp"</span>: <span class="number">1704070800</span>,
+  <span class="key-name">"meetingGameTime"</span>: { <span class="key-name">"hours"</span>: <span class="number">20</span>, <span class="key-name">"minutes"</span>: <span class="number">40</span> },
+  <span class="key-name">"arrivalGameTime"</span>: { <span class="key-name">"hours"</span>: <span class="number">2</span>, <span class="key-name">"minutes"</span>: <span class="number">15</span> },
+  <span class="key-name">"ianaTimeZone"</span>: <span class="string">"America/Montevideo"</span>,
+  <span class="key-name">"utcOffsetMinutes"</span>: <span class="number">-180</span>,
+  <span class="key-name">"generatedAt"</span>: <span class="string">"2026-05-04T..."</span>
 }</code></pre>
         </section>
 
         <section>
+            <h2>Implementación del Lector (Algoritmo)</h2>
+            <p>Para leer los datos de forma manual o con un bot, el algoritmo de parsing para un chunk <code>iTXt</code> debe ser:</p>
+            <pre><code><span class="comment">// 1. Leer Keyword (hasta el primer byte 00)</span>
+const keyword = readNullTerminatedString(data);
+
+<span class="comment">// 2. Saltar 2 bytes (Compression Flag y Compression Method)</span>
+offset += 2;
+
+<span class="comment">// 3. Saltar Language Tag (hasta el siguiente byte 00)</span>
+const langTag = readNullTerminatedString(data);
+
+<span class="comment">// 4. Saltar Translated Keyword (hasta el siguiente byte 00)</span>
+const transKey = readNullTerminatedString(data);
+
+<span class="comment">// 5. El resto es el JSON en UTF-8 puro</span>
+const jsonText = data.slice(offset).toString('utf8');
+const metadata = JSON.parse(jsonText);</code></pre>
+        </section>
+
+        <section>
             <h2>Ejemplo en Node.js</h2>
-            <p>Se recomienda usar librerías que soporten <code>iTXt</code> para una decodificación correcta de UTF-8:</p>
+            <p>Usando la librería <code>png-chunks-extract</code>:</p>
             <pre><code>const extract = require('png-chunks-extract');
-const text = require('png-chunk-text'); <span class="comment">// O similares que manejen iTXt</span>
 
-<span class="comment">// Extraer chunks iTXt o tEXt</span>
-const metadataChunks = chunks
-    .filter(chunk => chunk.name === 'iTXt' || chunk.name === 'tEXt')
-    .map(chunk => {
-        <span class="comment">// La lógica de decodificación varía según el tipo de chunk</span>
-        return decodeChunk(chunk); 
-    });
+const chunks = extract(imageBuffer);
+const itxtChunk = chunks.find(c => c.name === 'iTXt');
 
-<span class="comment">// Buscar nuestra keyword</span>
-const eventData = metadataChunks.find(c => c.keyword === 'convoyrama-event-data');</code></pre>
+if (itxtChunk) {
+    const data = itxtChunk.data;
+    <span class="comment">// Buscar el inicio del JSON saltando los 5 separadores nulos</span>
+    <span class="comment">// O mejor aún, buscar la posición del primer '{' </span>
+    const jsonStart = data.indexOf(123); <span class="comment">// 123 es '{'</span>
+    const json = JSON.parse(data.slice(jsonStart).toString('utf8'));
+    console.log(json.eventName);
+}</code></pre>
         </section>
     </div>
 
