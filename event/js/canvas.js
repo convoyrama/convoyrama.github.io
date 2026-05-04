@@ -13,7 +13,7 @@ export function drawCanvas() {
     const customDateValue = dom.customDate.value, customTimeValue = dom.customTime.value, customEventNameValue = dom.customEventName.value || (state.currentLangData.canvas_default_event_name || "Evento Personalizado");
     const customStartPlaceValue = dom.customStartPlace.value || "Sin especificar", customDestinationValue = dom.customDestination.value || "Sin especificar", customServerValue = dom.customServer.value || "Sin especificar";
 
-    canvas.width = 1920; canvas.height = 1080;
+    canvas.width = 1280; canvas.height = 720;
     if (state.backgroundImage) { ctx.drawImage(state.backgroundImage, 0, 0, canvas.width, canvas.height); } else { ctx.fillStyle = "#333"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
     if (state.mapImage) ctx.drawImage(state.mapImage, state.imageX, state.imageY, state.mapImage.width * state.imageScale, state.mapImage.height * state.imageScale);
 
@@ -198,19 +198,19 @@ export function drawCanvas() {
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
     
-    ctx.font = `bold ${textSize + 10}px Arial`;
+    ctx.font = `bold ${textSize + 8}px Arial`;
     ctx.textAlign = "center";
     const eventName = customEventNameValue;
     const eventNameMetrics = ctx.measureText(eventName);
     const eventNameWidth = eventNameMetrics.width + 40;
-    const eventNameHeight = textSize + 20;
+    const eventNameHeight = textSize + 15;
     ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
-    ctx.fillRect((canvas.width - eventNameWidth) / 2, 30, eventNameWidth, eventNameHeight);
+    ctx.fillRect((canvas.width - eventNameWidth) / 2, 20, eventNameWidth, eventNameHeight);
     ctx.fillStyle = textFill;
-    ctx.fillText(eventName, canvas.width / 2, 60);
+    ctx.fillText(eventName, canvas.width / 2, 45);
 
-    let topOffset = 60;
-    if (state.logoImage) { const logoHeight = 100; const logoWidth = state.logoImage.width * (logoHeight / state.logoImage.height); const logoX = (canvas.width - logoWidth) / 2; const logoY = 80; ctx.drawImage(state.logoImage, logoX, logoY, logoWidth, logoHeight); topOffset = logoY + logoHeight + 30; }
+    let topOffset = 45;
+    if (state.logoImage) { const logoHeight = 80; const logoWidth = state.logoImage.width * (logoHeight / state.logoImage.height); const logoX = (canvas.width - logoWidth) / 2; const logoY = 60; ctx.drawImage(state.logoImage, logoX, logoY, logoWidth, logoHeight); topOffset = logoY + logoHeight + 20; }
 
     ctx.font = `bold ${textSize}px Arial`;
     ctx.textAlign = "left";
@@ -249,8 +249,8 @@ export function drawCanvas() {
         textLines.splice(4, textLines.length - 4, ...newTextLines);
     } else { textLines.splice(4, textLines.length - 4); textLines.push(`${state.currentLangData.canvas_meeting_time || 'Hora de reunión / Hora de partida:'}`); textLines.push(`  N/A`); }
 
-    const textX = 20, lineHeight = textSize + 15;
-    let textY = topOffset + (textSize + 15);
+    const textX = 20, lineHeight = textSize + 10;
+    let textY = topOffset + (textSize + 10);
 
     const textWidth = Math.max(...textLines.map(line => ctx.measureText(line).width)) + 40;
     const textHeight = textLines.length * lineHeight + 20;
@@ -261,7 +261,7 @@ export function drawCanvas() {
     const maxTextWidth = canvas.width - textX - 20;
     textLines.forEach((line, index) => { let currentTextX = textX; let currentLineHeight = lineHeight; if (line.startsWith('  ')) { currentTextX += 15; } const wrappedLines = wrapText(ctx, line, maxTextWidth - (currentTextX - textX)); wrappedLines.forEach((wrappedLine, wrappedIndex) => { ctx.fillText(wrappedLine, currentTextX, textY + (index * lineHeight) + (wrappedIndex * currentLineHeight)); }); });
 
-    const circleDiameter = 360; const circleX = canvas.width - circleDiameter - 10; const topY = 10; const bottomY = canvas.height - circleDiameter - 10;
+    const circleDiameter = 240; const circleX = canvas.width - circleDiameter - 10; const topY = 10; const bottomY = canvas.height - circleDiameter - 10;
     const circleCanvasTop = dom.circleCanvasTop, circleCanvasBottom = dom.circleCanvasBottom;
     const circleCtxTop = circleCanvasTop.getContext("2d"), circleCtxBottom = circleCanvasBottom.getContext("2d");
     circleCanvasTop.width = circleDiameter; circleCanvasTop.height = circleDiameter; circleCanvasBottom.width = circleDiameter; circleCanvasBottom.height = circleDiameter;
@@ -291,16 +291,16 @@ export function drawCanvas() {
 
         ctx.beginPath();
         ctx.arc(waypointX + circleDiameter / 2, bottomY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
-        ctx.strokeStyle = borderColor; ctx.lineWidth = 10; ctx.stroke();
+        ctx.strokeStyle = borderColor; ctx.lineWidth = 8; ctx.stroke();
 
         const waypointText = state.currentLangData.canvas_label_waypoint || "Waypoint";
         const waypointTextMetrics = ctx.measureText(waypointText); 
-        const waypointTextWidth = waypointTextMetrics.width + 40; 
-        const waypointTextHeight = textSize + 20; 
-        const waypointTextY = bottomY - 20;
+        const waypointTextWidth = waypointTextMetrics.width + 30; 
+        const waypointTextHeight = textSize + 15; 
+        const waypointTextY = bottomY - 15;
         const waypointCircleCenterX = waypointX + circleDiameter / 2;
         ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
-        ctx.fillRect(waypointCircleCenterX - waypointTextWidth / 2, waypointTextY - waypointTextHeight + 15, waypointTextWidth, waypointTextHeight);
+        ctx.fillRect(waypointCircleCenterX - waypointTextWidth / 2, waypointTextY - waypointTextHeight + 10, waypointTextWidth, waypointTextHeight);
         ctx.textAlign = "center";
         ctx.fillStyle = textFill;
         ctx.fillText(waypointText, waypointCircleCenterX, waypointTextY);
@@ -309,12 +309,12 @@ export function drawCanvas() {
     
     ctx.beginPath();
     ctx.arc(circleX + circleDiameter / 2, topY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
-    ctx.strokeStyle = borderColor; ctx.lineWidth = 10; ctx.stroke();
+    ctx.strokeStyle = borderColor; ctx.lineWidth = 8; ctx.stroke();
     ctx.beginPath();
     ctx.arc(circleX + circleDiameter / 2, bottomY + circleDiameter / 2, circleDiameter / 2, 0, Math.PI * 2);
-    ctx.strokeStyle = borderColor; ctx.lineWidth = 10; ctx.stroke();
+    ctx.strokeStyle = borderColor; ctx.lineWidth = 8; ctx.stroke();
 
-    ctx.font = `bold ${textSize + 10}px Arial`;
+    ctx.font = `bold ${textSize + 8}px Arial`;
     ctx.textAlign = "center";
     
     const departureText = state.currentLangData.canvas_label_departure || "Partida";
@@ -322,15 +322,15 @@ export function drawCanvas() {
 
     const circleCenterX = circleX + circleDiameter / 2;
     
-    const departureTextMetrics = ctx.measureText(departureText); const departureTextWidth = departureTextMetrics.width + 40; const departureTextHeight = textSize + 20; const departureTextY = topY + circleDiameter + 40;
+    const departureTextMetrics = ctx.measureText(departureText); const departureTextWidth = departureTextMetrics.width + 30; const departureTextHeight = textSize + 15; const departureTextY = topY + circleDiameter + 30;
     ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
-    ctx.fillRect(circleCenterX - departureTextWidth / 2, departureTextY - departureTextHeight + 15, departureTextWidth, departureTextHeight);
+    ctx.fillRect(circleCenterX - departureTextWidth / 2, departureTextY - departureTextHeight + 10, departureTextWidth, departureTextHeight);
     ctx.fillStyle = textFill;
     ctx.fillText(departureText, circleCenterX, departureTextY);
 
-    const destinationTextMetrics = ctx.measureText(destinationText); const destinationTextWidth = destinationTextMetrics.width + 40; const destinationTextHeight = textSize + 20; const destinationTextY = bottomY - 20;
+    const destinationTextMetrics = ctx.measureText(destinationText); const destinationTextWidth = destinationTextMetrics.width + 30; const destinationTextHeight = textSize + 15; const destinationTextY = bottomY - 15;
     ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
-    ctx.fillRect(circleCenterX - destinationTextWidth / 2, destinationTextY - destinationTextHeight + 15, destinationTextWidth, destinationTextHeight);
+    ctx.fillRect(circleCenterX - destinationTextWidth / 2, destinationTextY - destinationTextHeight + 10, destinationTextWidth, destinationTextHeight);
     ctx.fillStyle = textFill;
     ctx.fillText(destinationText, circleCenterX, destinationTextY);
 
@@ -340,15 +340,15 @@ export function drawCanvas() {
     state.speedIndicators.forEach(indicator => {
         if (indicator.visible) {
             const speedText = `${indicator.value} ${indicator.unit}`;
-            ctx.font = `bold ${textSize + 10}px Arial`;
+            ctx.font = `bold ${textSize + 8}px Arial`;
             ctx.textAlign = "center";
             
             const metrics = ctx.measureText(speedText);
-            const bgWidth = metrics.width + 30;
-            const bgHeight = textSize + 20;
+            const bgWidth = metrics.width + 25;
+            const bgHeight = textSize + 15;
             
             ctx.fillStyle = `rgba(0, 0, 0, ${textBackgroundOpacity})`;
-            ctx.fillRect(indicator.x - bgWidth / 2, indicator.y - bgHeight + 15, bgWidth, bgHeight);
+            ctx.fillRect(indicator.x - bgWidth / 2, indicator.y - bgHeight + 10, bgWidth, bgHeight);
             
             ctx.shadowColor = shadowColor;
             ctx.shadowBlur = (textStyle === "neon" || textStyle === "toxic") ? 20 : 10;
@@ -361,10 +361,10 @@ export function drawCanvas() {
     // WATERMARK (Final layer, on top of everything)
     if (state.watermarkImage.complete && state.watermarkImage.naturalWidth !== 0) { 
         ctx.globalAlpha = 0.6; // More opaque
-        const wmWidth = state.watermarkImage.width * 0.5;
-        const wmHeight = state.watermarkImage.height * 0.5;
-        // Restored to bottom position: canvas.height - wmHeight - 20
-        ctx.drawImage(state.watermarkImage, (canvas.width - wmWidth) / 2, canvas.height - wmHeight - 20, wmWidth, wmHeight); 
+        const wmWidth = state.watermarkImage.width * 0.35;
+        const wmHeight = state.watermarkImage.height * 0.35;
+        // Restored to bottom position: canvas.height - wmHeight - 15
+        ctx.drawImage(state.watermarkImage, (canvas.width - wmWidth) / 2, canvas.height - wmHeight - 15, wmWidth, wmHeight); 
         ctx.globalAlpha = 1.0; 
     }
 }

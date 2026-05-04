@@ -123,14 +123,14 @@
         <section>
             <h1>Introducción</h1>
             <p>
-                Las herramientas de Convoyrama no solo crean imágenes visuales, sino que también incrustan <strong>metadatos estructurados (JSON)</strong> dentro de los archivos PNG generados. Esto permite que bots de Discord y otras aplicaciones lean la información directamente desde la imagen sin necesidad de OCR.
+                Las herramientas de Convoyrama no solo crean imágenes visuales, sino que también incrustan <strong>metadatos estructurados (JSON)</strong> dentro de los archivos PNG generados. Esto permite que bots de Discord y otras aplicaciones lean la información directamente desde la imagen sin necesidad de OCR, soportando <strong>UTF-8 nativo</strong> (acentos, emojis y caracteres especiales).
             </p>
         </section>
 
         <section>
             <h2>¿Cómo funciona?</h2>
             <p>
-                Los datos se almacenan en un <em>chunk</em> auxiliar de tipo <code>tEXt</code> dentro de la estructura del PNG. Usamos claves específicas (Keywords) para diferenciar el tipo de contenido.
+                Los datos se almacenan en un <em>chunk</em> auxiliar de tipo <code>iTXt</code> (International Text) dentro de la estructura del PNG. Este formato es el estándar moderno para texto internacional y asegura que la codificación sea siempre UTF-8. Usamos claves específicas (Keywords) para diferenciar el tipo de contenido.
             </p>
         </section>
 
@@ -138,6 +138,7 @@
             <h2>1. Datos de Licencia</h2>
             <p>Utilizado por el generador de licencias (<code>id.html</code>).</p>
             <p><span class="endpoint-badge">KEYWORD</span> <code>convoyrama-data</code></p>
+            <p><span class="endpoint-badge" style="background-color: #28a745;">FORMATO</span> <code>iTXt / tEXt</code></p>
             
             <h3>Estructura JSON</h3>
             <pre><code>{
@@ -154,29 +155,34 @@
             <h2>2. Datos de Evento</h2>
             <p>Utilizado por el creador de eventos (<code>event.html</code>).</p>
             <p><span class="endpoint-badge">KEYWORD</span> <code>convoyrama-event-data</code></p>
+            <p><span class="endpoint-badge" style="background-color: #28a745;">FORMATO</span> <code>iTXt (UTF-8)</code></p>
 
             <h3>Estructura JSON</h3>
             <pre><code>{
-  <span class="key-name">"eventName"</span>: <span class="string">"Gran Convoy Semanal"</span>,
+  <span class="key-name">"eventName"</span>: <span class="string">"Después de Hora"</span>,
   <span class="key-name">"server"</span>: <span class="string">"Simulation 1"</span>,
   <span class="key-name">"meetingTimestamp"</span>: <span class="number">1704067200</span>, <span class="comment">// Unix Timestamp</span>
-  <span class="key-name">"departureTimestamp"</span>: <span class="number">1704068100</span>
+  <span class="key-name">"departureTimestamp"</span>: <span class="number">1704068100</span>,
+  <span class="key-name">"ianaTimeZone"</span>: <span class="string">"America/Montevideo"</span>
 }</code></pre>
         </section>
 
         <section>
             <h2>Ejemplo en Node.js</h2>
-            <p>Usa <code>png-chunk-text</code> para leer estos datos:</p>
+            <p>Se recomienda usar librerías que soporten <code>iTXt</code> para una decodificación correcta de UTF-8:</p>
             <pre><code>const extract = require('png-chunks-extract');
-const text = require('png-chunk-text');
+const text = require('png-chunk-text'); <span class="comment">// O similares que manejen iTXt</span>
 
-// Extraer chunks de texto
-const textChunks = chunks
-    .filter(chunk => chunk.name === 'tEXt')
-    .map(chunk => text.decode(chunk.data));
+<span class="comment">// Extraer chunks iTXt o tEXt</span>
+const metadataChunks = chunks
+    .filter(chunk => chunk.name === 'iTXt' || chunk.name === 'tEXt')
+    .map(chunk => {
+        <span class="comment">// La lógica de decodificación varía según el tipo de chunk</span>
+        return decodeChunk(chunk); 
+    });
 
-// Buscar nuestra keyword
-const eventData = textChunks.find(c => c.keyword === 'convoyrama-event-data');</code></pre>
+<span class="comment">// Buscar nuestra keyword</span>
+const eventData = metadataChunks.find(c => c.keyword === 'convoyrama-event-data');</code></pre>
         </section>
     </div>
 
