@@ -139,5 +139,26 @@
     "ev_upload_success": "Image uploaded successfully.",
     "ev_upload_error": "Please upload a PNG file.",
     "ev_manual_offset": "Manual UTC Offset:",
-    "ev_custom_text_hint": "Custom text (max. 12 char.)"
+    "ev_custom_text_hint": "Custom text (max. 12 char.)",
+
+    "dev_title": "Convoyrama | API & Developers",
+    "dev_intro_h": "Introduction",
+    "dev_intro_p": "Convoyrama tools don't just create visual images; they also embed <strong>structured metadata (JSON)</strong> within the generated PNG files. This allows Discord bots and other applications to read information directly from the image without OCR, supporting <strong>native UTF-8</strong> (accents, emojis, and special characters).",
+    "dev_how_h": "How does it work?",
+    "dev_how_p": "Data is stored in an auxiliary chunk of type <code>iTXt</code> (International Text) within the PNG structure. This format is the modern standard for international text and ensures the encoding is always UTF-8. We use specific keys (Keywords) to differentiate content types.",
+    "dev_itxt_h": "Technical Structure of iTXt",
+    "dev_itxt_p": "To manually decode the block, follow this byte order:",
+    "dev_license_h": "1. License Data",
+    "dev_license_p": "Used by the license generator (<code>id.html</code>) and the <strong>LAG-ID</strong> protocol.",
+    "dev_event_h": "2. Event Data",
+    "dev_event_p": "Used by the flyer creator (<code>event.html</code>).",
+    "dev_structure_h": "Complete JSON Structure",
+    "dev_implementation_h": "Reader Implementation (Robust Algorithm)",
+    "dev_implementation_p": "To ensure compatibility with UTF-8 characters and avoid errors from null separator variations, the recommended algorithm to parse an <code>iTXt</code> chunk is:",
+    "dev_example_h": "Example in Node.js",
+    "dev_example_p": "Using the <code>png-chunks-extract</code> library:",
+
+    "maint_title": "Convoyrama | Maintenance",
+    "maint_h": "Under Maintenance",
+    "maint_p": "We are oiling the gears and fueling up. CONVOYRAMA will be back on the road very soon."
 }

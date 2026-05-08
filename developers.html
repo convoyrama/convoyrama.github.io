@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convoyrama | API & Developers</title>
-    <meta name="description" content="Documentación técnica para integrar herramientas con las imágenes de Convoyrama.">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title data-i18n="dev_title">Convoyrama | API & Developers</title>
+    <meta name="description" content="Technical documentation for integrating tools with Convoyrama images.">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="icon" href="./assets/images/favicon.png">
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
@@ -50,6 +50,18 @@
         }
         .nav-links a:hover { background: rgba(255, 255, 255, 0.05); color: #fff !important; }
         .nav-links a.active { background: var(--accent); color: #fff !important; }
+
+        /* Lang Selector Styles */
+        .lang-selector { display: flex; gap: 6px; margin-left: 15px; align-items: center; }
+        .lang-btn {
+            color: rgba(255, 255, 255, 0.5); font-size: 0.7rem; font-weight: 800; cursor: pointer; padding: 4px 8px;
+            border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s; user-select: none;
+            background: rgba(255, 255, 255, 0.05); text-decoration: none; line-height: 1;
+        }
+        .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
+        .lang-btn.active { color: #fff; background: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+
+        .architect { color: var(--accent); font-weight: bold; }
 
         /* CONTENT */
         .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
@@ -106,35 +118,42 @@
                 <img src="assets/images/cr.png" alt="Convoyrama Logo" class="nav-logo">
                 <span class="nav-name">Convoyrama</span>
             </a>
-            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+                <div class="lang-selector">
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="es">ES</button>
+                    <button class="lang-btn" data-lang="pt">PT</button>
+                </div>
+            </div>
             <nav class="nav-links" id="nav-list">
-                <a href="index.html">Home</a>
-                <a href="pitstop.html">PitStop</a>
-                <a href="lagdrive.html">LAGDrive</a>
-                <a href="lagfm.html">LAG FM</a>
-                <a href="tuppertruck.html">TupperTruck</a>
-                <a href="event.html">Flyer</a>
-                <a href="lagid.html">LAG-ID</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="pitstop.html" data-i18n="nav_pitstop">PitStop</a>
+                <a href="lagdrive.html" data-i18n="nav_lagdrive">LAGDrive</a>
+                <a href="lagfm.html" data-i18n="nav_lagfm">LAG FM</a>
+                <a href="tuppertruck.html" data-i18n="nav_tuppertruck">TupperTruck</a>
+                <a href="event.html" data-i18n="nav_flyer">Flyer</a>
+                <a href="lagid.html" data-i18n="nav_lagid">LAG-ID</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
         <section>
-            <h1>Introducción</h1>
-            <p>
+            <h1 data-i18n="dev_intro_h">Introducción</h1>
+            <p data-i18n="dev_intro_p">
                 Las herramientas de Convoyrama no solo crean imágenes visuales, sino que también incrustan <strong>metadatos estructurados (JSON)</strong> dentro de los archivos PNG generados. Esto permite que bots de Discord y otras aplicaciones lean la información directamente desde la imagen sin necesidad de OCR, soportando <strong>UTF-8 nativo</strong> (acentos, emojis y caracteres especiales).
             </p>
         </section>
 
         <section>
-            <h2>¿Cómo funciona?</h2>
-            <p>
+            <h2 data-i18n="dev_how_h">¿Cómo funciona?</h2>
+            <p data-i18n="dev_how_p">
                 Los datos se almacenan en un <em>chunk</em> auxiliar de tipo <code>iTXt</code> (International Text) dentro de la estructura del PNG. Este formato es el estándar moderno para texto internacional y asegura que la codificación sea siempre UTF-8. Usamos claves específicas (Keywords) para diferenciar el tipo de contenido.
             </p>
             
-            <h3>Estructura técnica de iTXt</h3>
-            <p>Para decodificar manualmente el bloque, se debe seguir este orden de bytes:</p>
+            <h3 data-i18n="dev_itxt_h">Estructura técnica de iTXt</h3>
+            <p data-i18n="dev_itxt_p">Para decodificar manualmente el bloque, se debe seguir este orden de bytes:</p>
             <pre><code>1. Keyword: (1-79 bytes) + [00] (Separador nulo)
 2. Compression Flag: [00] (1 byte, 0 = sin comprimir)
 3. Compression Method: [00] (1 byte, 0 = deflate)
@@ -144,12 +163,12 @@
         </section>
 
         <section>
-            <h2>1. Datos de Licencia</h2>
-            <p>Utilizado por el generador de licencias (<code>id.html</code>) y el protocolo <strong>LAG-ID</strong>.</p>
+            <h2 data-i18n="dev_license_h">1. Datos de Licencia</h2>
+            <p data-i18n="dev_license_p">Utilizado por el generador de licencias (<code>id.html</code>) y el protocolo <strong>LAG-ID</strong>.</p>
             <p><span class="endpoint-badge">KEYWORD</span> <code>convoyrama-data</code></p>
             <p><span class="endpoint-badge" style="background-color: #28a745;">FORMATO</span> <code>iTXt (UTF-8)</code></p>
             
-            <h3>Estructura JSON Completa</h3>
+            <h3 data-i18n="dev_structure_h">Estructura JSON Completa</h3>
             <pre><code>{
   <span class="key-name">"name"</span>: <span class="string">"Nombre del Usuario"</span>,
   <span class="key-name">"license_number"</span>: <span class="string">"UY12345"</span>,
@@ -166,12 +185,12 @@
         </section>
 
         <section>
-            <h2>2. Datos de Evento</h2>
-            <p>Utilizado por el creador de flyers (<code>event.html</code>).</p>
+            <h2 data-i18n="dev_event_h">2. Datos de Evento</h2>
+            <p data-i18n="dev_event_p">Utilizado por el creador de flyers (<code>event.html</code>).</p>
             <p><span class="endpoint-badge">KEYWORD</span> <code>convoyrama-event-data</code></p>
             <p><span class="endpoint-badge" style="background-color: #28a745;">FORMATO</span> <code>iTXt (UTF-8)</code></p>
 
-            <h3>Estructura JSON Completa</h3>
+            <h3 data-i18n="dev_structure_h">Estructura JSON Completa</h3>
             <pre><code>{
   <span class="key-name">"eventName"</span>: <span class="string">"Nombre del Convoy"</span>,
   <span class="key-name">"eventLink"</span>: <span class="string">"https://..."</span>,
@@ -190,8 +209,8 @@
         </section>
 
         <section>
-            <h2>Implementación del Lector (Algoritmo Robusto)</h2>
-            <p>Para garantizar la compatibilidad con caracteres UTF-8 y evitar errores por variaciones en los separadores nulos, el algoritmo recomendado para parsear un chunk <code>iTXt</code> es:</p>
+            <h2 data-i18n="dev_implementation_h">Implementación del Lector (Algoritmo Robusto)</h2>
+            <p data-i18n="dev_implementation_p">Para garantizar la compatibilidad con caracteres UTF-8 y evitar errores por variaciones en los separadores nulos, el algoritmo recomendado para parsear un chunk <code>iTXt</code> es:</p>
             <pre><code><span class="comment">// 1. Identificar el Keyword (primeros bytes hasta el nulo 00)</span>
 const keyword = data.slice(0, data.indexOf(0)).toString('utf8');
 
@@ -205,8 +224,8 @@ const metadata = JSON.parse(jsonText);</code></pre>
         </section>
 
         <section>
-            <h2>Ejemplo en Node.js</h2>
-            <p>Usando la librería <code>png-chunks-extract</code>:</p>
+            <h2 data-i18n="dev_example_h">Ejemplo en Node.js</h2>
+            <p data-i18n="dev_example_p">Usando la librería <code>png-chunks-extract</code>:</p>
             <pre><code>const extract = require('png-chunks-extract');
 
 const chunks = extract(imageBuffer);
@@ -227,26 +246,27 @@ if (chunk) {
         <div class="footer-content">
             <div class="footer-brand">
                 <h2>CONVOYRAMA</h2>
-                <p>Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
+                <p data-i18n="footer_tagline">Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
             </div>
             <div class="footer-links">
-                <h4>Gadgets</h4>
-                <ul><li><a href="pitstop.html">PitStop</a></li><li><a href="tuppertruck.html">TupperTruck</a></li><li><a href="lagdrive.html">LAGDrive</a></li><li><a href="lagfm.html">LAG FM</a></li><li><a href="event.html">Flyer</a></li><li><a href="lagid.html">LAG-ID</a></li></ul>
+                <h4 data-i18n="footer_gadgets">Gadgets</h4>
+                <ul><li><a href="pitstop.html">PitStop</a></li><li><a href="tuppertruck.html">TupperTruck</a></li><li><a href="lagdrive.html">LAGDrive</a></li><li><a href="lagfm.html">LAG·FM</a></li><li><a href="event.html">Flyer</a></li><li><a href="lagid.html">LAG-ID</a></li></ul>
             </div>
             <div class="footer-links">
-                <h4>Comunidad</h4>
+                <h4 data-i18n="footer_community">Comunidad</h4>
                 <ul><li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li><li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li><li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li></ul>
             </div>
             <div class="footer-links">
-                <h4>Cosas Serias</h4>
-                <ul><li><a href="developers.html">API / Developers</a></li><li><a href="mantenimiento.html">Estado</a></li></ul>
+                <h4 data-i18n="footer_serious">Cosas Serias</h4>
+                <ul><li><a href="developers.html">API / Developers</a></li><li><a href="#" id="helpLink" data-i18n="footer_help">¿Necesitas ayuda?</a></li><li><a href="mantenimiento.html" data-i18n="footer_status">Estado</a></li></ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <div>© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
+            <div data-i18n="footer_rights">© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
         </div>
     </footer>
 
+    <script src="assets/js/main-i18n.js"></script>
     <script>
         const mobileMenu = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');

@@ -138,5 +138,26 @@
     "ev_upload_success": "Imagen cargada con éxito.",
     "ev_upload_error": "Por favor, sube un archivo PNG.",
     "ev_manual_offset": "Ajuste Manual UTC:",
-    "ev_custom_text_hint": "Texto libre (máx. 12 car.)"
+    "ev_custom_text_hint": "Texto libre (máx. 12 car.)",
+
+    "dev_title": "Convoyrama | API & Developers",
+    "dev_intro_h": "Introducción",
+    "dev_intro_p": "Las herramientas de Convoyrama no solo crean imágenes visuales, sino que también incrustan <strong>metadatos estructurados (JSON)</strong> dentro de los archivos PNG generados. Esto permite que bots de Discord y otras aplicaciones lean la información directamente desde la imagen sin necesidad de OCR, soportando <strong>UTF-8 nativo</strong> (acentos, emojis y caracteres especiales).",
+    "dev_how_h": "¿Cómo funciona?",
+    "dev_how_p": "Los datos se almacenan en un <em>chunk</em> auxiliar de tipo <code>iTXt</code> (International Text) dentro de la estructura del PNG. Este formato es el estándar moderno para texto internacional y asegura que la codificación sea siempre UTF-8. Usamos claves específicas (Keywords) para diferenciar el tipo de contenido.",
+    "dev_itxt_h": "Estructura técnica de iTXt",
+    "dev_itxt_p": "Para decodificar manualmente el bloque, se debe seguir este orden de bytes:",
+    "dev_license_h": "1. Datos de Licencia",
+    "dev_license_p": "Utilizado por el generador de licencias (<code>id.html</code>) y el protocolo <strong>LAG-ID</strong>.",
+    "dev_event_h": "2. Datos de Evento",
+    "dev_event_p": "Utilizado por el creador de flyers (<code>event.html</code>).",
+    "dev_structure_h": "Estructura JSON Completa",
+    "dev_implementation_h": "Implementación del Lector (Algoritmo Robusto)",
+    "dev_implementation_p": "Para garantizar la compatibilidad con caracteres UTF-8 y evitar errores por variaciones en los separadores nulos, el algoritmo recomendado para parsear un chunk <code>iTXt</code> es:",
+    "dev_example_h": "Ejemplo en Node.js",
+    "dev_example_p": "Usando la librería <code>png-chunks-extract</code>:",
+
+    "maint_title": "Convoyrama | Mantenimiento",
+    "maint_h": "En Mantenimiento",
+    "maint_p": "Estamos aceitando los engranajes y cargando combustible. CONVOYRAMA estará de vuelta en la ruta muy pronto."
 }
