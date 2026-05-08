@@ -11,7 +11,7 @@
     "intro_p2": "Não somos uma VTC; somos um HUB impulsionado pela comunidade. Se você tiver dúvidas ou quiser colaborar, poderá encontrar <span class='architect'>dr.will</span> em nosso servidor central do Discord.",
     "btn_discord": "ENTRAR NO DISCORD DO LAG'S SPEED",
     "feature_pitstop_desc": "Sua parada técnica rápida para ATS e ETS2. Repare, reabasteça e gerencie sua carga em segundos.",
-    "feature_lagdrive_desc": "Sincronização directa de mods. La maneira mais rápida de compartilhar arquivos com sua equipe.",
+    "feature_lagdrive_desc": "Sincronização directa de mods. La maneira más rápida de compartilhar arquivos com sua equipe.",
     "feature_lagfm_desc": "A rádio oficial da comunidade. Curta a melhor música enquanto percorre as rotas.",
     "feature_lagid_desc": "Um novo passo para o roleplay. Identidade e economia comunitária verificada. Em breve.",
     "feature_flyer_desc": "Crie convites profissionais para seus comboios e eventos de forma automática.",
@@ -50,5 +50,18 @@
     "ld_f3_title": "Chat Direto",
     "ld_f3_desc": "Comunicação instantânea para resolver dúvidas.",
     "ld_f4_title": "Controle Total",
-    "ld_f4_desc": "Você decide quais pastas compartilhar e quando sincronizar."
+    "ld_f4_desc": "Você decide quais pastas compartilhar e quando sincronizar.",
+
+    "fm_desc": "Leve a música da comunidade para todos los lugares!",
+    "fm_screenshot_title": "Abrir Sintonizador Web (PWA)",
+    "fm_f1": "Sintonização em tempo real sem cortes.",
+    "fm_f2": "Interface minimalista otimizada para celular.",
+    "fm_f3": "Consumo de dados extremamente baixo.",
+    "fm_f4": "100% livre de anúncios e rastreadores.",
+    "fm_win_download": "Baixar para Windows",
+    "fm_android_download": "Baixar para Android",
+    "fm_web_player": "Abrir Player Web",
+    "fm_version_status": "Status da versão",
+    "fm_verifying": "Verificando integridade...",
+    "fm_debug": "Versão Debug (Teste)"
 }

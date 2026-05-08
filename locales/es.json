@@ -50,5 +50,18 @@
     "ld_f3_title": "Chat Directo",
     "ld_f3_desc": "Comunicación instantánea para resolver dudas.",
     "ld_f4_title": "Control Total",
-    "ld_f4_desc": "Tú decides qué carpetas compartir y cuándo sincronizar."
+    "ld_f4_desc": "Tú decides qué carpetas compartir y cuándo sincronizar.",
+
+    "fm_desc": "¡Lleva la música de la comunidad a todas partes!",
+    "fm_screenshot_title": "Abrir Sintonizador Web (PWA)",
+    "fm_f1": "Sintonización en tiempo real sin cortes.",
+    "fm_f2": "Interfaz minimalista optimizada para móvil.",
+    "fm_f3": "Consumo de datos extremadamente bajo.",
+    "fm_f4": "100% libre de anuncios y rastreadores.",
+    "fm_win_download": "Descargar para Windows",
+    "fm_android_download": "Descargar para Android",
+    "fm_web_player": "Abrir Reproductor Web",
+    "fm_version_status": "Estado de la versión",
+    "fm_verifying": "Verificando integridad...",
+    "fm_debug": "Versión Debug (Testing)"
 }
