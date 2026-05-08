@@ -8,7 +8,7 @@
     "nav_lagid": "LAG-ID",
     "hero_motto": "FROM THE COMMUNITY FOR THE COMMUNITY",
     "intro_p1": "CONVOYRAMA is a project born within the TruckersMP community. We created this space to offer a neutral place, open to all players and VTCs, where anyone can find tools to improve their game experience.",
-    "intro_p2": "We are not a VTC; we are a community-driven HUB. If you have questions or want to collaborate, you can find dr.will on our central Discord server.",
+    "intro_p2": "We are not a VTC; we are a community-driven HUB. If you have questions or want to collaborate, you can find <span class='architect'>dr.will</span> on our central Discord server.",
     "btn_discord": "JOIN LAG'S SPEED DISCORD",
     "feature_pitstop_desc": "Your quick technical stop for ATS and ETS2. Repair, refuel, and manage your cargo in seconds.",
     "feature_lagdrive_desc": "Direct mod synchronization. The fastest way to share files with your team.",
