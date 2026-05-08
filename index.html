@@ -414,20 +414,12 @@
         </section>
 
         <section class="section-intro">
-            <p data-i18n="intro_p1">The LAG'S SPEED Discord server, home of Canteras del Sur and Convoy Nocturno, is still alive as an open HUB for everyone. From that community, CONVOYRAMA was born.</p>
+            <p data-i18n="intro_p1">CONVOYRAMA es un proyecto nacido dentro de la comunidad de TruckersMP. Creamos este espacio para ofrecer un lugar neutral, abierto a todos los jugadores y VTCs, donde cualquiera pueda encontrar herramientas para mejorar su experiencia de juego.</p>
             
-            <p data-i18n="intro_p2">👉 Si buscas una VTC únete a <a href="https://discord.gg/yS4PQuCkwy" target="_blank">Convoy Nocturno - La Noche</a>.</p>
+            <p data-i18n="intro_p2">No somos una VTC; somos un HUB impulsado por la comunidad. Si tienes preguntas o quieres colaborar, puedes encontrar a dr.will en nuestro servidor central de Discord.</p>
 
             <div style="margin: 25px 0;">
-                <a href="https://discord.gg/hjJcyREthH" target="_blank" class="btn-discord" data-i18n="btn_discord">Discord de LAG'S SPEED</a>
-                <div class="btn-group">
-                    <a href="https://truckersmp.com/vtc/78865" target="_blank" class="btn-small">TMP</a>
-                    <a href="https://pickupvtm.com/companies/8203" target="_blank" class="btn-small">PICKUP</a>
-                </div>
-            </div>
-
-            <div style="margin-top:20px">
-                <span id="play-music" class="music-trigger" title="Reproducir Música" data-i18n-title="play_music_title">▶</span>
+                <a href="https://discord.gg/hjJcyREthH" target="_blank" class="btn-discord" data-i18n="btn_discord">UNIRSE AL DISCORD DE LAG'S SPEED</a>
             </div>
         </section>
 
@@ -497,9 +489,6 @@
         </div>
         <div class="footer-bottom">
             <div data-i18n="footer_rights">© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
-            <div style="display:flex; gap:10px;">
-                <a href="https://github.com/convoyrama/convoyrama.github.io" style="text-decoration:none;">💻</a>
-            </div>
         </div>
     </footer>
 
@@ -515,8 +504,6 @@
             </div>
         </div>
     </div>
-
-    <audio id="background-audio" loop><source src="LAG'S SPEED.mp3" type="audio/mpeg"></audio>
 
     <script src="assets/js/main-i18n.js"></script>
     <script>
@@ -541,13 +528,6 @@
         helpLink.addEventListener('click',(e)=>{ e.preventDefault(); modal.style.display='flex'; rotateCube(); });
         closeButton.addEventListener('click',()=>{modal.style.display='none'});
         window.onclick=(e)=>{if(e.target===modal)modal.style.display='none'};
-
-        // Música
-        const audio=document.getElementById("background-audio"), playBtn=document.getElementById("play-music");
-        audio.volume=.1;
-        playBtn.addEventListener("click",(()=>{
-            audio.paused?(audio.play(),playBtn.style.animation="none",playBtn.style.opacity="1"):(audio.pause(),playBtn.style.animation="pulse-play 1.5s infinite")
-        }));
     </script>
 </body>
 </html>
