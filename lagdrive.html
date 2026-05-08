@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Convoyrama | LAGDrive</title>
-    <meta name="description" content="LAGDrive - Sincronización directa de mods para la comunidad de simulación">
+    <meta name="description" content="LAGDrive - Direct mod synchronization for the simulation community">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="icon" href="./assets/images/favicon.png">
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
@@ -48,6 +48,18 @@
         }
         .nav-links a:hover { background: rgba(255, 255, 255, 0.05); color: #fff !important; }
         .nav-links a.active { background: var(--accent); color: #fff !important; }
+
+        /* Lang Selector Styles */
+        .lang-selector { display: flex; gap: 6px; margin-left: 15px; align-items: center; }
+        .lang-btn {
+            color: rgba(255, 255, 255, 0.5); font-size: 0.7rem; font-weight: 800; cursor: pointer; padding: 4px 8px;
+            border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s; user-select: none;
+            background: rgba(255, 255, 255, 0.05); text-decoration: none; line-height: 1;
+        }
+        .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
+        .lang-btn.active { color: #fff; background: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+
+        .architect { color: #00ff41; font-family: 'Roboto Mono', monospace; font-weight: bold; text-shadow: 0 0 5px rgba(0, 255, 65, 0.3); }
 
         /* CONTENT */
         .download-container { text-align: center; padding: 40px 20px; max-width: 800px; margin: 0 auto; }
@@ -123,15 +135,22 @@
                 <img src="assets/images/cr.png" alt="Convoyrama Logo" class="nav-logo">
                 <span class="nav-name">Convoyrama</span>
             </a>
-            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+                <div class="lang-selector">
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="es">ES</button>
+                    <button class="lang-btn" data-lang="pt">PT</button>
+                </div>
+            </div>
             <nav class="nav-links" id="nav-list">
-                <a href="index.html">Home</a>
-                <a href="pitstop.html">PitStop</a>
-                <a href="lagdrive.html" class="active">LAGDrive</a>
-                <a href="lagfm.html">LAG·FM</a>
-                <a href="tuppertruck.html">TupperTruck</a>
-                <a href="event.html">Flyer</a>
-                <a href="lagid.html">LAG-ID</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="pitstop.html" data-i18n="nav_pitstop">PitStop</a>
+                <a href="lagdrive.html" class="active" data-i18n="nav_lagdrive">LAGDrive</a>
+                <a href="lagfm.html" data-i18n="nav_lagfm">LAG·FM</a>
+                <a href="tuppertruck.html" data-i18n="nav_tuppertruck">TupperTruck</a>
+                <a href="event.html" data-i18n="nav_flyer">Flyer</a>
+                <a href="lagid.html" data-i18n="nav_lagid">LAG-ID</a>
             </nav>
         </div>
     </header>
@@ -144,22 +163,22 @@
                 <img src="lagdrive/3.png" alt="LAGDrive 3">
             </div>
             <h1 class="app-title"><span id="version-badge" class="version-badge">v0.2.1</span></h1>
-            <p class="app-tagline">CONECTA. SINCRONIZA. CONDUCE.</p>
+            <p class="app-tagline" data-i18n="ld_tagline">CONECTA. SINCRONIZA. CONDUCE.</p>
             
-            <div class="app-description">La solución definitiva para compartir mods de forma directa. Conecta con otros conductores y mantén tus archivos actualizados al instante.</div>
+            <div class="app-description" data-i18n="ld_desc">La solución definitiva para compartir mods de forma directa. Conecta con otros conductores y mantén tus archivos actualizados al instante.</div>
 
             <div class="alpha-notice">
-                <strong>⚠️ VERSIÓN ALPHA EXPERIMENTAL</strong>
-                La versión 0.2.1 es experimental. Reporta errores en el Discord de LAG'S SPEED.
+                <strong data-i18n="ld_alpha_title">⚠️ VERSIÓN ALPHA EXPERIMENTAL</strong>
+                <span data-i18n="ld_alpha_desc">La versión 0.2.1 es experimental. Reporta errores en el Discord de LAG'S SPEED.</span>
             </div>
             
-            <a href="./lagdrive/LAGDrive_0.2.1_x64-setup.exe" id="download-link" class="download-button">Descarga LAGDrive 0.2.1</a>
+            <a href="./lagdrive/LAGDrive_0.2.1_x64-setup.exe" id="download-link" class="download-button" data-i18n="ld_download">Descarga LAGDrive 0.2.1</a>
 
             <div class="feature-grid">
-                <div class="feature-item"><strong>Sin Intermediarios</strong><p>Transferencia directa entre jugadores mediante P2P.</p></div>
-                <div class="feature-item"><strong>Ideal para VTCs</strong><p>Mantén a todo tu equipo con la misma versión de mods.</p></div>
-                <div class="feature-item"><strong>Chat Directo</strong><p>Comunicación instantánea para resolver dudas.</p></div>
-                <div class="feature-item"><strong>Control Total</strong><p>Tú decides qué carpetas compartir y cuándo sincronizar.</p></div>
+                <div class="feature-item"><strong data-i18n="ld_f1_title">Sin Intermediarios</strong><p data-i18n="ld_f1_desc">Transferencia directa entre jugadores mediante P2P.</p></div>
+                <div class="feature-item"><strong data-i18n="ld_f2_title">Ideal para VTCs</strong><p data-i18n="ld_f2_desc">Mantén a todo tu equipo con la misma versión de mods.</p></div>
+                <div class="feature-item"><strong data-i18n="ld_f3_title">Chat Directo</strong><p data-i18n="ld_f3_desc">Comunicación instantánea para resolver dudas.</p></div>
+                <div class="feature-item"><strong data-i18n="ld_f4_title">Control Total</strong><p data-i18n="ld_f4_desc">Tú decides qué carpetas compartir y cuándo sincronizar.</p></div>
             </div>
         </div>
     </main>
@@ -168,26 +187,41 @@
         <div class="footer-content">
             <div class="footer-brand">
                 <h2>CONVOYRAMA</h2>
-                <p>Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
+                <p data-i18n="footer_tagline">Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
             </div>
             <div class="footer-links">
-                <h4>Gadgets</h4>
-                <ul><li><a href="pitstop.html">PitStop</a></li><li><a href="tuppertruck.html">TupperTruck</a></li><li><a href="lagfm.html">LAG·FM</a></li><li><a href="event.html">Flyer</a></li><li><a href="lagid.html">LAG-ID</a></li></ul>
+                <h4 data-i18n="footer_gadgets">Gadgets</h4>
+                <ul>
+                    <li><a href="pitstop.html">PitStop</a></li>
+                    <li><a href="tuppertruck.html">TupperTruck</a></li>
+                    <li><a href="lagfm.html">LAG·FM</a></li>
+                    <li><a href="event.html">Flyer</a></li>
+                    <li><a href="lagid.html">LAG-ID</a></li>
+                </ul>
             </div>
             <div class="footer-links">
-                <h4>Comunidad</h4>
-                <ul><li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li><li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li><li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li></ul>
+                <h4 data-i18n="footer_community">Comunidad</h4>
+                <ul>
+                    <li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li>
+                    <li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li>
+                    <li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li>
+                </ul>
             </div>
             <div class="footer-links">
-                <h4>Cosas Serias</h4>
-                <ul><li><a href="developers.html">API / Developers</a></li><li><a href="mantenimiento.html">Estado</a></li></ul>
+                <h4 data-i18n="footer_serious">Cosas Serias</h4>
+                <ul>
+                    <li><a href="developers.html">API / Developers</a></li>
+                    <li><a href="#" id="helpLink" data-i18n="footer_help">¿Necesitas ayuda?</a></li>
+                    <li><a href="mantenimiento.html" data-i18n="footer_status">Estado</a></li>
+                </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <div>© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
+            <div data-i18n="footer_rights">© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
         </div>
     </footer>
 
+    <script src="assets/js/main-i18n.js"></script>
     <script>
         const mobileMenu = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
@@ -198,12 +232,13 @@
                 const response = await fetch('./lagdrive/version');
                 if (!response.ok) return;
                 const version = (await response.text()).trim();
-                if (version && version !== '0.2.0') {
+                if (version) {
                     const downloadLink = document.getElementById('download-link');
                     const versionBadge = document.getElementById('version-badge');
                     downloadLink.href = `./lagdrive/LAGDrive-${version}.exe`;
-                    downloadLink.textContent = `Descarga LAGDrive ${version}`;
-                    versionBadge.textContent = `v${version}`;
+                    // Note: textContent update is handled by i18n initially, 
+                    // but we can manually update it here if needed with a template string.
+                    // versionBadge.textContent = `v${version}`;
                 }
             } catch (error) { console.log('Nota: No se pudo actualizar la versión dinámicamente.'); }
         }

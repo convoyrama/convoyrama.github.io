@@ -36,5 +36,19 @@
     "ps_f3_title": "Gestión de Carga",
     "ps_f3_desc": "Quita el peso a tu carga actual para una conducción más ligera.",
     "ps_f4_title": "Compatible",
-    "ps_f4_desc": "Funciona tanto con American Truck Simulator como con Euro Truck Simulator 2."
+    "ps_f4_desc": "Funciona tanto con American Truck Simulator como con Euro Truck Simulator 2.",
+
+    "ld_tagline": "CONECTA. SINCRONIZA. CONDUCE.",
+    "ld_desc": "La solución definitiva para compartir mods de forma directa. Conecta con otros conductores y mantén tus archivos actualizados al instante.",
+    "ld_alpha_title": "⚠️ VERSIÓN ALPHA EXPERIMENTAL",
+    "ld_alpha_desc": "La versión 0.2.1 es experimental. Reporta errores en el Discord de LAG'S SPEED.",
+    "ld_download": "Descarga LAGDrive 0.2.1",
+    "ld_f1_title": "Sin Intermediarios",
+    "ld_f1_desc": "Transferencia directa entre jugadores mediante P2P.",
+    "ld_f2_title": "Ideal para VTCs",
+    "ld_f2_desc": "Mantén a todo tu equipo con la misma versión de mods.",
+    "ld_f3_title": "Chat Directo",
+    "ld_f3_desc": "Comunicación instantánea para resolver dudas.",
+    "ld_f4_title": "Control Total",
+    "ld_f4_desc": "Tú decides qué carpetas compartir y cuándo sincronizar."
 }
