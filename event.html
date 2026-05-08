@@ -34,28 +34,33 @@ body { background-color: #0f0f0f !important; color: #fff !important; padding-top
 .nav-links a:hover { background: rgba(255, 255, 255, 0.05) !important; color: #fff !important; }
 .nav-links a.active { background: #00aaff !important; color: #fff !important; }
 
-        /* Lang Selector Styles - FIXED SIZE */
-        .lang-selector { display: flex; gap: 6px; margin-left: 15px; align-items: center; }
+        /* Lang Selector Styles - RIGID SIZE MATCH */
+        .lang-selector { display: flex !important; gap: 6px !important; margin-left: 15px !important; align-items: center !important; height: auto !important; }
         .lang-btn {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.7rem;
-            font-weight: 800;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.2s;
-            user-select: none;
-            background: rgba(255, 255, 255, 0.05);
-            text-decoration: none;
-            line-height: 1;
+            color: rgba(255, 255, 255, 0.5) !important;
+            font-size: 0.7rem !important;
+            font-weight: 800 !important;
+            cursor: pointer !important;
+            padding: 4px 8px !important;
+            border-radius: 4px !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            transition: all 0.2s !important;
+            user-select: none !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            text-decoration: none !important;
+            line-height: 1 !important;
+            width: auto !important;
+            height: auto !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
-        .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
+        .lang-btn:hover { color: #fff !important; background: rgba(255, 255, 255, 0.1) !important; border-color: #00aaff !important; }
         .lang-btn.active {
-            color: #fff;
-            background: var(--accent);
-            border-color: var(--accent);
-            box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+            color: #fff !important;
+            background: #00aaff !important;
+            border-color: #00aaff !important;
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.3) !important;
         }
 
 .architect { color: #00aaff; font-weight: bold; }
