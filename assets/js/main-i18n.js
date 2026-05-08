@@ -1,13 +1,27 @@
 async function loadLanguage(lang) {
     try {
-        const response = await fetch(`./locales/${lang}.json`);
+        const pathPrefix = window.location.pathname.includes('/lagfm/') || window.location.pathname.includes('/event/') ? '../' : './';
+        const response = await fetch(`${pathPrefix}locales/${lang}.json`);
         const translations = await response.json();
         
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            if (translations[key]) {
-                el.innerHTML = translations[key];
+            const translation = translations[key] || translations[`ev_${key}`];
+            if (translation) {
+                if (typeof translation === 'string') el.innerHTML = translation;
             }
+        });
+
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            const translation = translations[key] || translations[`ev_placeholder_${key.replace('placeholder_', '')}`];
+            if (translation) el.placeholder = translation;
+        });
+
+        document.querySelectorAll('[data-i18n-title]').forEach(el => {
+            const key = el.getAttribute('data-i18n-title');
+            const translation = translations[key] || translations[`ev_${key}`];
+            if (translation) el.title = translation;
         });
 
         document.documentElement.lang = lang;
@@ -15,12 +29,12 @@ async function loadLanguage(lang) {
 
         // Update active state in UI
         document.querySelectorAll('.lang-btn').forEach(btn => {
-            if (btn.getAttribute('data-lang') === lang) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
+            btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
         });
+
+        // Trigger custom event for specific pages (like event creator)
+        window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang, translations } }));
+        
     } catch (error) {
         console.error('Error loading language:', error);
     }
@@ -30,12 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('preferred-lang') || 'en';
     loadLanguage(savedLang);
 
-    // Setup language switchers if they exist
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            const lang = btn.getAttribute('data-lang');
-            loadLanguage(lang);
+            loadLanguage(btn.getAttribute('data-lang'));
         });
     });
 });
