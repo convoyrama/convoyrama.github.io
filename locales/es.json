@@ -63,5 +63,16 @@
     "fm_web_player": "Abrir Reproductor Web",
     "fm_version_status": "Estado de la versión",
     "fm_verifying": "Verificando integridad...",
-    "fm_debug": "Versión Debug (Testing)"
+    "fm_debug": "Versión Debug (Testing)",
+
+    "fm_web_status_ready": "LISTO",
+    "fm_web_select_station": "SELECCIONA EMISORA",
+    "fm_web_conn_error": "ERROR DE CONEXIÓN",
+    "fm_web_tap_to_tune": "Toca para sintonizar",
+    "fm_web_paused": "PAUSADO",
+    "fm_web_loading": "SINTONIZANDO...",
+    "fm_web_live": "EN VIVO",
+    "fm_web_buffering": "BUFFERING...",
+    "fm_web_signal_lost": "SEÑAL PERDIDA",
+    "fm_web_load_error": "ERROR AL CARGAR"
 }
