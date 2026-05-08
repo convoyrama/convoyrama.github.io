@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title data-i18n="page_title">Convoyrama | Crear Flyer de Evento</title>
-    <meta name="description" content="Convoyrama - Crear eventos personalizados para convoys">
+    <title data-i18n="ev_page_title">Convoyrama | Custom Event Creator</title>
+    <meta name="description" content="Convoyrama - Create custom events for convoys">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="./event/css/style.css">
     <link rel="icon" href="./assets/images/favicon.png">
@@ -25,14 +25,26 @@ body { background-color: #0f0f0f !important; color: #fff !important; padding-top
 .nav-brand { display: flex; align-items: center; text-decoration: none; gap: 12px; }
 .nav-logo { width: auto !important; height: 24px !important; filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.4)); }
 .nav-name { color: #fff !important; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; font-style: italic; letter-spacing: -0.5px; }
-.nav-links-premium { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; }
-.nav-links-premium a {
+.nav-links { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.nav-links a {
     color: rgba(255, 255, 255, 0.7) !important; text-decoration: none !important; padding: 8px 16px !important; border-radius: 30px !important;
     font-size: 0.85rem !important; font-weight: 700 !important; transition: all 0.3s !important; border: none !important;
     margin: 0 !important; text-transform: uppercase !important;
 }
-.nav-links-premium a:hover { background: rgba(255, 255, 255, 0.05) !important; color: #fff !important; }
-.nav-links-premium a.active { background: #00aaff !important; color: #fff !important; }
+.nav-links a:hover { background: rgba(255, 255, 255, 0.05) !important; color: #fff !important; }
+.nav-links a.active { background: #00aaff !important; color: #fff !important; }
+
+/* Lang Selector Styles */
+.lang-selector { display: flex; gap: 6px; margin-left: 15px; align-items: center; }
+.lang-btn {
+    color: rgba(255, 255, 255, 0.5); font-size: 0.7rem; font-weight: 800; cursor: pointer; padding: 4px 8px;
+    border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s; user-select: none;
+    background: rgba(255, 255, 255, 0.05); text-decoration: none; line-height: 1;
+}
+.lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: #00aaff; }
+.lang-btn.active { color: #fff; background: #00aaff; border-color: #00aaff; box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+
+.architect { color: #00aaff; font-weight: bold; }
 
 /* MENÚ HAMBURGUESA */
 .menu-toggle {
@@ -45,15 +57,15 @@ body { background-color: #0f0f0f !important; color: #fff !important; padding-top
 /* RESPONSIVIDAD HEADER Y FOOTER */
 @media (max-width: 950px) {
     .menu-toggle { display: flex; }
-    .nav-links-premium {
+    .nav-links {
         position: absolute; top: 70px; right: 0; width: 200px;
         background: rgba(18, 18, 18, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px;
         flex-direction: column; padding: 15px; gap: 5px;
         opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s ease;
     }
-    .nav-links-premium.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    .nav-links-premium a { width: 100%; box-sizing: border-box; text-align: center; }
+    .nav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .nav-links a { width: 100%; box-sizing: border-box; text-align: center; }
     
     .footer-content { grid-template-columns: 1fr 1fr !important; }
 }
@@ -65,11 +77,6 @@ body { background-color: #0f0f0f !important; color: #fff !important; padding-top
     .footer-links ul { display: flex; flex-direction: column; align-items: center; }
     .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
 }
-
-/* HIDE OLD NAV VISUALLY BUT KEEP IN DOM FOR SCRIPTS */
-header:not(.modern-header) { background: transparent !important; border: none !important; box-shadow: none !important; margin-top: 30px !important; text-align: center; }
-header:not(.modern-header) nav { display: none !important; }
-header:not(.modern-header) p { color: #fff !important; font-weight: 900; font-style: italic; text-transform: uppercase; font-size: 1.5rem; margin-bottom: 10px; }
 
 /* GLOBAL ELEMENT OVERRIDES */
 h1, h2, h3 { color: #00aaff !important; }
@@ -87,27 +94,6 @@ button:hover { background-color: #0088cc !important; transform: translateY(-2px)
 .switch input:checked + .slider { background-color: #00aaff !important; }
 #live-clocks { background-color: rgba(0, 170, 255, 0.05) !important; border: 1px solid rgba(0, 170, 255, 0.2) !important; color: #fff !important; border-radius: 10px; padding: 10px; margin-bottom: 20px; }
 
-/* UNIVERSAL LANG SELECTOR */
-#lang-selector { display: flex; gap: 8px; align-items: center; }
-.lang-icon {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.75rem;
-    font-weight: 800;
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.2s;
-    user-select: none;
-}
-.lang-icon:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
-.lang-icon.active {
-    color: #fff;
-    background: #00aaff;
-    border-color: #00aaff;
-    box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
-}
-
 /* PREMIUM FOOTER STYLES */
 footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,255,255,0.05) !important; padding: 40px 20px !important; margin-top: 80px !important; color: #fff !important; grid-column: 1 / -1 !important; }
 .footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; text-align: left; }
@@ -120,14 +106,6 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
 .footer-links a:hover { color: #00aaff; }
 .footer-bottom { max-width: 1000px; margin: 30px auto 0; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.03); display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #444; }
 </style>
-    <!--
-    <script>
-      // Redirigir a la página de mantenimiento si no es modo desarrollador
-      if (!window.location.search.includes('dev=1')) {
-        window.location.href = 'mantenimiento.html';
-      }
-    </script>
-    -->
 </head>
 <body data-i18n-plurals>
     <header class="modern-header">
@@ -137,56 +115,42 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                 <span class="nav-name">Convoyrama</span>
             </a>
 
-            <div class="menu-toggle" id="mobile-menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+                <div class="lang-selector">
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="es">ES</button>
+                    <button class="lang-btn" data-lang="pt">PT</button>
+                </div>
             </div>
 
-            <nav class="nav-links-premium" id="nav-list">
-                <a href="index.html">Home</a>
-                <a href="pitstop.html">PitStop</a>
-                <a href="lagdrive.html">LAGDrive</a>
-                <a href="lagfm.html">LAG·FM</a>
-                <a href="tuppertruck.html">TupperTruck</a>
-                <a href="event.html" class="active">Flyer</a>
-                <a href="lagid.html">LAG-ID</a>
+            <nav class="nav-links" id="nav-list">
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="pitstop.html" data-i18n="nav_pitstop">PitStop</a>
+                <a href="lagdrive.html" data-i18n="nav_lagdrive">LAGDrive</a>
+                <a href="lagfm.html" data-i18n="nav_lagfm">LAG·FM</a>
+                <a href="tuppertruck.html" data-i18n="nav_tuppertruck">TupperTruck</a>
+                <a href="event.html" class="active" data-i18n="nav_flyer">Flyer</a>
+                <a href="lagid.html" data-i18n="nav_lagid">LAG-ID</a>
             </nav>
         </div>
     </header>
 
-    <header>
-        <nav>
-            <a href="index.html" data-i18n="nav_home">Home</a>
-            <a href="pitstop.html" data-i18n="nav_pitstop">PitStop</a>
-            <a href="lagdrive.html" data-i18n="nav_lagdrive">LAGDrive</a>
-            <a href="lagfm.html" data-i18n="nav_lagfm">LAG·FM</a>
-            <a href="tuppertruck.html">TupperTruck</a>
-            <a href="event.html" data-i18n="nav_create_event">Flyer</a>
-            <a href="lagid.html">LAG-ID</a>
-        </nav>
-        <p data-i18n="header_title">Crear Flyer de Evento</p>
-    </header>
-    <div class="warning-message" data-i18n="warning_message">Esta página puede demorar en cargar.</div>
+    <div class="warning-message" data-i18n="ev_warning">Esta página puede demorar en cargar.</div>
     <div class="contenedor">
         <div id="controls-bar">
             <div id="live-clocks">
-                <span data-i18n="local_time">Hora Local:</span> <span id="local-time-display">--:--:--</span> |
-                <span data-i18n="ingame_time">Hora In-Game:</span> <span id="game-time-display">--:--:--</span> <span id="game-time-emoji"></span>
+                <span data-i18n="ev_local_time">Hora Local:</span> <span id="local-time-display">--:--:--</span> |
+                <span data-i18n="ev_ingame_time">Hora In-Game:</span> <span id="game-time-display">--:--:--</span> <span id="game-time-emoji"></span>
             </div>
 
-            <div id="lang-selector">
-                <span class="lang-icon" data-lang="es" title="Español">ES</span>
-                <span class="lang-icon" data-lang="en" title="English">EN</span>
-                <span class="lang-icon" data-lang="pt" title="Português">PT</span>
-            </div>
             <div class="time-controls-container">
                 <div id="region-selector-container">
-                    <label for="region-select" data-i18n="region_selector_title">Regiones Horarias</label>
+                    <label for="region-select" data-i18n="ev_regions_title">Regiones Horarias</label>
                     <select id="region-select"></select>
                 </div>
                 <div id="manual-offset-container">
-                    <label for="manual-offset-select" data-i18n="manual_offset_title">Ajuste Manual UTC:</label>
+                    <label for="manual-offset-select" data-i18n="ev_manual_offset">Ajuste Manual UTC:</label>
                     <select id="manual-offset-select">
                         <option value="auto" selected>Auto</option>
                         <option value="-12">UTC-12</option>
@@ -222,18 +186,18 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
         </div>
 
         <div class="custom-event">
-            <h3 data-i18n="event_section_title">Crear Flyer de Evento</h3>
+            <h3 data-i18n="ev_header_title">Crear Flyer de Evento</h3>
             <div class="input-row">
                 <div class="input-col">
-                    <label for="custom-date" data-i18n="label_date">Fecha:</label>
+                    <label for="custom-date" data-i18n="ev_label_date">Fecha:</label>
                     <input type="date" id="custom-date">
                 </div>
                 <div class="input-col">
-                    <label for="custom-time" data-i18n="label_meeting_time">Hora de reunión:</label>
+                    <label for="custom-time" data-i18n="ev_label_meeting">Hora de reunión:</label>
                     <input type="time" id="custom-time">
                 </div>
                 <div class="input-col">
-                    <label for="departure-time-offset" data-i18n="label_departure_time_offset">Hora de salida:</label>
+                    <label for="departure-time-offset" data-i18n="ev_label_departure">Hora de salida:</label>
                     <select id="departure-time-offset">
                         <option value="10">10 min</option>
                         <option value="15" selected>15 min</option>
@@ -245,22 +209,22 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                 <div id="custom-date-display"></div>
             </div>
             <div class="input-row">
-                <input type="text" id="custom-event-name" data-i18n-placeholder="placeholder_event_name" placeholder="Nombre del evento" style="flex: 2;">
-                <input type="text" id="custom-server" data-i18n-placeholder="placeholder_server" placeholder="Servidor" style="flex: 1;">
+                <input type="text" id="custom-event-name" data-i18n-placeholder="ev_placeholder_name" placeholder="Nombre del evento" style="flex: 2;">
+                <input type="text" id="custom-server" data-i18n-placeholder="ev_placeholder_server" placeholder="Servidor" style="flex: 1;">
             </div>
             <div class="input-row">
-                <input type="text" id="custom-start-place" data-i18n-placeholder="placeholder_start_place" placeholder="Lugar de partida">
+                <input type="text" id="custom-start-place" data-i18n-placeholder="ev_placeholder_start" placeholder="Lugar de partida">
                 <div style="color: #00aaff; font-weight: 900;">➔</div>
-                <input type="text" id="custom-destination" data-i18n-placeholder="placeholder_destination" placeholder="Lugar de destino">
+                <input type="text" id="custom-destination" data-i18n-placeholder="ev_placeholder_dest" placeholder="Lugar de destino">
             </div>
             <div class="input-row">
-                <input type="text" id="custom-event-link" data-i18n-placeholder="placeholder_event_link" placeholder="Enlace del evento">
+                <input type="text" id="custom-event-link" data-i18n-placeholder="ev_placeholder_link" placeholder="Enlace del evento">
             </div>
-            <label for="custom-event-description" data-i18n="label_description">Descripción:</label>
-            <textarea id="custom-event-description" data-i18n-placeholder="placeholder_event_description" placeholder="Descripción del evento" rows="6"></textarea>
+            <label for="custom-event-description" data-i18n="ev_label_desc">Descripción:</label>
+            <textarea id="custom-event-description" data-i18n-placeholder="ev_placeholder_desc" placeholder="Descripción del evento" rows="6"></textarea>
             <div class="input-row">
                 <div class="input-group">
-                    <label for="map-upload" data-i18n="label_map">Mapa:</label>
+                    <label for="map-upload" data-i18n="ev_label_map">Mapa:</label>
                     <input type="file" id="map-upload" accept="image/*">
                     <div class="zoom-buttons">
                         <button id="zoom-in">+</button>
@@ -268,7 +232,7 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                     </div>
                 </div>
                 <div class="input-group">
-                    <label for="circle-upload-top" data-i18n="label_departure_map">Partida:</label>
+                    <label for="circle-upload-top" data-i18n="ev_label_dep_map">Partida:</label>
                     <input type="file" id="circle-upload-top" accept="image/*">
                     <div class="zoom-buttons">
                         <button id="zoom-in-top">+</button>
@@ -276,7 +240,7 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                     </div>
                 </div>
                 <div class="input-group">
-                    <label for="circle-upload-bottom" data-i18n="label_destination_map">Destino:</label>
+                    <label for="circle-upload-bottom" data-i18n="ev_label_dest_map">Destino:</label>
                     <input type="file" id="circle-upload-bottom" accept="image/*">
                     <div class="zoom-buttons">
                         <button id="zoom-in-bottom">+</button>
@@ -285,7 +249,7 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                 </div>
                 <div class="input-group" id="waypoint-group">
                     <div class="label-container">
-                        <label for="waypoint-upload" data-i18n="label_waypoint">Waypoint:</label>
+                        <label for="waypoint-upload" data-i18n="ev_label_waypoint">Waypoint:</label>
                         <label class="switch">
                             <input type="checkbox" id="waypoint-toggle">
                             <span class="slider round"></span>
@@ -298,7 +262,7 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                     </div>
                 </div>
                 <div class="input-group">
-                    <label for="detail-upload" data-i18n="label_detail">Detalle:</label>
+                    <label for="detail-upload" data-i18n="ev_label_detail">Detalle:</label>
                     <input type="file" id="detail-upload" accept="image/*">
                     <div class="zoom-buttons">
                         <button id="zoom-in-detail">+</button>
@@ -310,7 +274,7 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                 <!-- Limit 1 -->
                 <div class="input-group">
                     <div class="label-container">
-                        <label data-i18n="label_speed_limit_1">Límite 1</label>
+                        <label data-i18n="ev_label_speed_limit_1">Límite 1</label>
                         <label class="switch">
                             <input type="checkbox" id="speed-toggle-0">
                             <span class="slider round"></span>
@@ -325,7 +289,7 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                 <!-- Limit 2 -->
                 <div class="input-group">
                     <div class="label-container">
-                        <label data-i18n="label_speed_limit_2">Límite 2</label>
+                        <label data-i18n="ev_label_speed_limit_2">Límite 2</label>
                         <label class="switch">
                             <input type="checkbox" id="speed-toggle-1">
                             <span class="slider round"></span>
@@ -340,27 +304,27 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                 <!-- Free Text / Fuga (Reused Toggle 3) -->
                 <div class="input-group">
                     <div class="label-container">
-                        <label data-i18n="label_custom_text">Libre / Fuga</label>
+                        <label data-i18n="ev_label_custom_text">Libre / Texto</label>
                         <label class="switch">
                             <input type="checkbox" id="speed-toggle-3">
                             <span class="slider round"></span>
                         </label>
                     </div>
                     <input type="text" id="speed-value-3" value="FUGA" maxlength="12">
-                    <div style="font-size: 0.6rem; color: #666; margin-top: 4px; text-align: center;" data-i18n="hint_custom_text">Texto libre (máx. 12 car.)</div>
+                    <div style="font-size: 0.6rem; color: #666; margin-top: 4px; text-align: center;" data-i18n="ev_custom_text_hint">Texto libre (máx. 12 car.)</div>
                 </div>
                 <!-- Background -->
                 <div class="input-group">
-                    <label for="background-upload" data-i18n="label_background">Fondo:</label>
+                    <label for="background-upload" data-i18n="ev_label_bg">Fondo:</label>
                     <input type="file" id="background-upload" accept="image/*">
                 </div>
                 <!-- Logo VTC -->
                 <div class="input-group">
-                    <label for="logo-upload" data-i18n="label_vtc_logo">Logo VTC:</label>
+                    <label for="logo-upload" data-i18n="ev_label_vtc">Logo VTC:</label>
                     <input type="file" id="logo-upload" accept="image/*">
                 </div>
             </div>
-            <div id="preview-note" data-i18n="canvas_preview_warning">Nota: Los círculos de mapa pueden verse desplazados en la vista previa, pero aparecerán correctamente en la imagen descargada.</div>
+            <div id="preview-note" data-i18n="ev_canvas_warning">Nota: Los círculos de mapa pueden verse desplazados en la vista previa, pero aparecerán correctamente en la imagen descargada.</div>
             <div class="canvas-container">
                 <canvas id="map-canvas"></canvas>
                 <canvas id="circle-canvas-top" class="circle-canvas"></canvas>
@@ -368,10 +332,10 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                 <canvas id="circle-canvas-waypoint" class="circle-canvas"></canvas>
             </div>
             <div class="canvas-controls">
-                <button id="download-canvas" data-i18n="btn_download_image">Descargar Imagen</button>
-                <button id="copy-custom-info" data-i18n="btn_copy_discord">Discord</button>
-                <button id="copy-tmp-btn" data-i18n="btn_copy_tmp">TMP</button>
-                <div title="" data-i18n-title="tmp_images_tooltip" class="text-control-item">
+                <button id="download-canvas" data-i18n="ev_btn_download">Descargar Imagen</button>
+                <button id="copy-custom-info" data-i18n="ev_btn_discord">Discord</button>
+                <button id="copy-tmp-btn" data-i18n="ev_btn_tmp">TMP</button>
+                <div title="" data-i18n-title="ev_tmp_images_tooltip" class="text-control-item">
                     <label class="switch">
                         <input type="checkbox" id="tmp-images-toggle" checked>
                         <span class="slider round"></span>
@@ -379,7 +343,7 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                 </div>
                 
                 <div class="text-control-item">
-                    <label for="text-size" data-i18n="label_text_size">Tamaño:</label>
+                    <label for="text-size" data-i18n="ev_label_text_size">Tamaño:</label>
                     <select id="text-size">
                         <option value="10" data-i18n="size_small">10px</option>
                         <option value="15" selected data-i18n="size_medium">15px</option>
@@ -388,7 +352,7 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                 </div>
                 
                 <div class="text-control-item">
-                    <label for="text-style" data-i18n="label_text_style">Estilo:</label>
+                    <label for="text-style" data-i18n="ev_label_style">Estilo:</label>
                     <select id="text-style">
                         <option value="classic" selected data-i18n="style_classic">Clásico</option>
                         <option value="mint" data-i18n="style_mint">Menta</option>
@@ -421,7 +385,7 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                 </div>
 
                 <div class="text-control-item">
-                    <label for="text-background-opacity" data-i18n="label_text_background_opacity">Opacidad:</label>
+                    <label for="text-background-opacity" data-i18n="ev_label_opacity">Opacidad:</label>
                     <select id="text-background-opacity">
                         <option value="0">0%</option>
                         <option value="0.05">5%</option>
@@ -432,46 +396,66 @@ footer { background-color: #0a0a0a !important; border-top: 1px solid rgba(255,25
                     </select>
                 </div>
 
-                <button id="reset-canvas" data-i18n="btn_reset_canvas">Reset</button>
+                <button id="reset-canvas" data-i18n="ev_btn_reset">Reset</button>
             </div>
 
         </div>
-        <div id="copy-message" data-i18n="copy_message_text">¡Información copiada al portapapeles!</div>
+        <div id="copy-message" data-i18n="ev_copy_success">¡Información copiada al portapapeles!</div>
     </div>
     <footer class="modern-footer">
         <div class="footer-content">
             <div class="footer-brand">
                 <h2>CONVOYRAMA</h2>
-                <p>Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
+                <p data-i18n="footer_tagline">Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
             </div>
             <div class="footer-links">
-                <h4>Gadgets</h4>
-                <ul><li><a href="pitstop.html">PitStop</a></li><li><a href="tuppertruck.html">TupperTruck</a></li><li><a href="lagdrive.html">LAGDrive</a></li><li><a href="lagfm.html">LAG FM</a></li><li><a href="lagid.html">LAG-ID</a></li></ul>
+                <h4 data-i18n="footer_gadgets">Gadgets</h4>
+                <ul>
+                    <li><a href="pitstop.html">PitStop</a></li>
+                    <li><a href="tuppertruck.html">TupperTruck</a></li>
+                    <li><a href="lagdrive.html">LAGDrive</a></li>
+                    <li><a href="lagfm.html">LAG·FM</a></li>
+                    <li><a href="event.html">Flyer</a></li>
+                    <li><a href="lagid.html">LAG-ID</a></li>
+                </ul>
             </div>
             <div class="footer-links">
-                <h4>Comunidad</h4>
-                <ul><li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li><li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li><li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li></ul>
+                <h4 data-i18n="footer_community">Comunidad</h4>
+                <ul>
+                    <li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li>
+                    <li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li>
+                    <li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li>
+                </ul>
             </div>
             <div class="footer-links">
-                <h4>Cosas Serias</h4>
-                <ul><li><a href="developers.html">API / Developers</a></li><li><a href="mantenimiento.html">Estado</a></li></ul>
+                <h4 data-i18n="footer_serious">Cosas Serias</h4>
+                <ul>
+                    <li><a href="developers.html">API / Developers</a></li>
+                    <li><a href="#" id="helpLink" data-i18n="footer_help">¿Necesitas ayuda?</a></li>
+                    <li><a href="mantenimiento.html" data-i18n="footer_status">Estado</a></li>
+                </ul>
             </div>
         </div>
-        <div class="footer-bottom"><div>© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div></div>
+        <div class="footer-bottom">
+            <div data-i18n="footer_rights">© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
+        </div>
     </footer>
+    <script src="assets/js/main-i18n.js"></script>
     <script>
     const mobileMenu = document.getElementById('mobile-menu');
     const navList = document.getElementById('nav-list');
 
     if (mobileMenu && navList) {
         mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
             navList.classList.toggle('open');
         });
 
         // Cerrar al hacer click en un link
-        document.querySelectorAll('.nav-links-premium a').forEach(link => {
+        document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navList.classList.remove('open');
+                mobileMenu.classList.remove('open');
             });
         });
     }
