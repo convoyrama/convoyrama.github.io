@@ -51,5 +51,18 @@
     "ld_f3_title": "Direct Chat",
     "ld_f3_desc": "Instant communication to resolve questions.",
     "ld_f4_title": "Total Control",
-    "ld_f4_desc": "You decide which folders to share and when to sync."
+    "ld_f4_desc": "You decide which folders to share and when to sync.",
+
+    "fm_desc": "Take the community's music everywhere!",
+    "fm_screenshot_title": "Open Web Tuner (PWA)",
+    "fm_f1": "Real-time tuning without interruptions.",
+    "fm_f2": "Minimalist interface optimized for mobile.",
+    "fm_f3": "Extremely low data consumption.",
+    "fm_f4": "100% free of ads and trackers.",
+    "fm_win_download": "Download for Windows",
+    "fm_android_download": "Download for Android",
+    "fm_web_player": "Open Web Player",
+    "fm_version_status": "Version Status",
+    "fm_verifying": "Verifying integrity...",
+    "fm_debug": "Debug Version (Testing)"
 }

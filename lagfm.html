@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Convoyrama | LAG FM</title>
-    <meta name="description" content="LAG·FM - La radio oficial de la comunidad">
+    <meta name="description" content="LAG·FM - The community's official radio">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="icon" href="./assets/images/favicon.png">
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
@@ -48,6 +48,18 @@
         }
         .nav-links a:hover { background: rgba(255, 255, 255, 0.05); color: #fff !important; }
         .nav-links a.active { background: var(--accent); color: #fff !important; }
+
+        /* Lang Selector Styles */
+        .lang-selector { display: flex; gap: 6px; margin-left: 15px; align-items: center; }
+        .lang-btn {
+            color: rgba(255, 255, 255, 0.5); font-size: 0.7rem; font-weight: 800; cursor: pointer; padding: 4px 8px;
+            border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s; user-select: none;
+            background: rgba(255, 255, 255, 0.05); text-decoration: none; line-height: 1;
+        }
+        .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
+        .lang-btn.active { color: #fff; background: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+
+        .architect { color: var(--accent); font-weight: bold; }
 
         /* CONTENT */
         .app-container { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; text-align: center; }
@@ -116,15 +128,22 @@
                 <img src="assets/images/cr.png" alt="Convoyrama Logo" class="nav-logo">
                 <span class="nav-name">Convoyrama</span>
             </a>
-            <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+                <div class="lang-selector">
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="es">ES</button>
+                    <button class="lang-btn" data-lang="pt">PT</button>
+                </div>
+            </div>
             <nav class="nav-links" id="nav-list">
-                <a href="index.html">Home</a>
-                <a href="pitstop.html">PitStop</a>
-                <a href="lagdrive.html">LAGDrive</a>
-                <a href="lagfm.html" class="active">LAG·FM</a>
-                <a href="tuppertruck.html">TupperTruck</a>
-                <a href="event.html">Flyer</a>
-                <a href="lagid.html">LAG-ID</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="pitstop.html" data-i18n="nav_pitstop">PitStop</a>
+                <a href="lagdrive.html" data-i18n="nav_lagdrive">LAGDrive</a>
+                <a href="lagfm.html" class="active" data-i18n="nav_lagfm">LAG·FM</a>
+                <a href="tuppertruck.html" data-i18n="nav_tuppertruck">TupperTruck</a>
+                <a href="event.html" data-i18n="nav_flyer">Flyer</a>
+                <a href="lagid.html" data-i18n="nav_lagid">LAG-ID</a>
             </nav>
         </div>
     </header>
@@ -132,29 +151,29 @@
     <main class="app-container">
         <div class="app-card">
             <h1 class="app-title">LAG·FM</h1>
-            <p class="app-description">¡Lleva la música de la comunidad a todas partes!</p>
+            <p class="app-description" data-i18n="fm_desc">¡Lleva la música de la comunidad a todas partes!</p>
             
-            <a href="lagfm/lagfm_web.html" title="Abrir Sintonizador Web (PWA)">
+            <a href="lagfm/lagfm_web.html" title="Abrir Sintonizador Web (PWA)" data-i18n-title="fm_screenshot_title">
                 <img src="lagfm/ui3.png" alt="LAG FM App Screenshot" class="app-screenshot">
             </a>
             
             <ul class="app-features">
-                <li>Sintonización en tiempo real sin cortes.</li>
-                <li>Interfaz minimalista optimizada para móvil.</li>
-                <li>Consumo de datos extremadamente bajo.</li>
-                <li>100% libre de anuncios y rastreadores.</li>
+                <li data-i18n="fm_f1">Sintonización en tiempo real sin cortes.</li>
+                <li data-i18n="fm_f2">Interfaz minimalista optimizada para móvil.</li>
+                <li data-i18n="fm_f3">Consumo de datos extremadamente bajo.</li>
+                <li data-i18n="fm_f4">100% libre de anuncios y rastreadores.</li>
             </ul>
 
-            <a href="lagfm/LAG·FM_Setup_v1.1.5.exe" class="download-btn" style="background: #0078d4; margin-bottom: 5px;">Descargar para Windows</a>
+            <a href="lagfm/LAG·FM_Setup_v1.1.5.exe" class="download-btn" style="background: #0078d4; margin-bottom: 5px;" data-i18n="fm_win_download">Descargar para Windows</a>
             <br>
-            <a href="lagfm/lagfmlatest.apk" class="download-btn" id="android-download">Descargar para Android</a>
+            <a href="lagfm/lagfmlatest.apk" class="download-btn" id="android-download" data-i18n="fm_android_download">Descargar para Android</a>
             <br>
-            <a href="lagfm/lagfm_web.html" class="web-btn">Abrir Reproductor Web</a>
+            <a href="lagfm/lagfm_web.html" class="web-btn" data-i18n="fm_web_player">Abrir Reproductor Web</a>
 
-            <p style="margin-top: 25px; margin-bottom: 5px;"><small style="color:#444; font-weight: 700; text-transform: uppercase;">Estado de la versión</small></p>
-            <p id="md5-status" style="font-family: monospace; font-size: 0.75rem; color: #444; margin: 0; word-break: break-all;">Verificando integridad...</p>
+            <p style="margin-top: 25px; margin-bottom: 5px;"><small style="color:#444; font-weight: 700; text-transform: uppercase;" data-i18n="fm_version_status">Estado de la versión</small></p>
+            <p id="md5-status" style="font-family: monospace; font-size: 0.75rem; color: #444; margin: 0; word-break: break-all;" data-i18n="fm_verifying">Verificando integridad...</p>
 
-            <a href="lagfm/app-debug.apk" class="debug-btn">Versión Debug (Testing)</a>
+            <a href="lagfm/app-debug.apk" class="debug-btn" data-i18n="fm_debug">Versión Debug (Testing)</a>
         </div>
     </main>
 
@@ -162,26 +181,27 @@
         <div class="footer-content">
             <div class="footer-brand">
                 <h2>CONVOYRAMA</h2>
-                <p>Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
+                <p data-i18n="footer_tagline">Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
             </div>
             <div class="footer-links">
-                <h4>Gadgets</h4>
-                <ul><li><a href="pitstop.html">PitStop</a></li><li><a href="tuppertruck.html">TupperTruck</a></li><li><a href="lagdrive.html">LAGDrive</a></li><li><a href="event.html">Flyer</a></li><li><a href="lagid.html">LAG-ID</a></li></ul>
+                <h4 data-i18n="footer_gadgets">Gadgets</h4>
+                <ul><li><a href="tuppertruck.html">TupperTruck</a></li><li><a href="lagdrive.html">LAGDrive</a></li><li><a href="lagfm.html">LAG·FM</a></li><li><a href="event.html">Flyer</a></li><li><a href="lagid.html">LAG-ID</a></li></ul>
             </div>
             <div class="footer-links">
-                <h4>Comunidad</h4>
+                <h4 data-i18n="footer_community">Comunidad</h4>
                 <ul><li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li><li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li><li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li></ul>
             </div>
             <div class="footer-links">
-                <h4>Cosas Serias</h4>
-                <ul><li><a href="developers.html">API / Developers</a></li><li><a href="mantenimiento.html">Estado</a></li></ul>
+                <h4 data-i18n="footer_serious">Cosas Serias</h4>
+                <ul><li><a href="developers.html">API / Developers</a></li><li><a href="#" id="helpLink" data-i18n="footer_help">¿Necesitas ayuda?</a></li><li><a href="mantenimiento.html" data-i18n="footer_status">Estado</a></li></ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <div>© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
+            <div data-i18n="footer_rights">© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
         </div>
     </footer>
 
+    <script src="assets/js/main-i18n.js"></script>
     <script>
         const mobileMenu = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
@@ -198,7 +218,7 @@
                 document.getElementById('md5-status').textContent = "MD5: " + md5sum;
             })
             .catch(err => {
-                document.getElementById('md5-status').textContent = "";
+                // document.getElementById('md5-status').textContent = "";
             });
 
         // Cargar versión desde la subcarpeta
