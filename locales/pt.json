@@ -11,7 +11,7 @@
     "intro_p2": "Não somos uma VTC; somos um HUB impulsionado pela comunidade. Se você tiver dúvidas ou quiser colaborar, poderá encontrar <span class='architect'>dr.will</span> em nosso servidor central do Discord.",
     "btn_discord": "ENTRAR NO DISCORD DO LAG'S SPEED",
     "feature_pitstop_desc": "Sua parada técnica rápida para ATS e ETS2. Repare, reabasteça e gerencie sua carga em segundos.",
-    "feature_lagdrive_desc": "Sincronização direta de mods. A maneira mais rápida de compartilhar arquivos com sua equipe.",
+    "feature_lagdrive_desc": "Sincronização direta de mods. La maneira mais rápida de compartilhar arquivos com sua equipe.",
     "feature_lagfm_desc": "A rádio oficial da comunidade. Curta a melhor música enquanto percorre as rotas.",
     "feature_lagid_desc": "Um novo passo para o roleplay. Identidade e economia comunitária verificada. Em breve.",
     "feature_flyer_desc": "Crie convites profissionais para seus comboios e eventos de forma automática.",
@@ -22,5 +22,19 @@
     "footer_serious": "Coisas Sérias",
     "footer_help": "Precisa de ajuda?",
     "footer_status": "Status",
-    "footer_rights": "© 2026 CONVOYRAMA. Quase todos os direitos reservados."
+    "footer_rights": "© 2026 CONVOYRAMA. Quase todos os direitos reservados.",
+
+    "ps_tagline": "REPARE. REABASTEÇA. CONTINUE.",
+    "ps_desc": "PitStop é uma utilidade essencial para motoristas de ATS e ETS2. Modifica o seu jogo salvo instantaneamente para economizar tempo em tarefas de manutenção.",
+    "ps_download": "Baixar PitStop 0.8.1",
+    "ps_testing": "Versão de Teste",
+    "ps_note": "Nota: O aplicativo inclui uma pequena interface in-game. Use Alt + 1 para reabastecer, reparar e remover o peso da carga instantaneamente no seu último save. Recomendamos usar F9 (save rápido), pressionar Alt + 1 e depois F10 (carregar jogo).",
+    "ps_f1_title": "Reparo Instantâneo",
+    "ps_f1_desc": "Repare seu caminhão e reboque a 100% sem procurar uma oficina.",
+    "ps_f2_title": "Combustível ao Máximo",
+    "ps_f2_desc": "Encha o tanque em segundos e esqueça as paradas em postos de gasolina.",
+    "ps_f3_title": "Gestão de Carga",
+    "ps_f3_desc": "Remova o peso da sua carga atual para uma condução mais leve.",
+    "ps_f4_title": "Compatível",
+    "ps_f4_desc": "Funciona tanto com American Truck Simulator quanto com Euro Truck Simulator 2."
 }

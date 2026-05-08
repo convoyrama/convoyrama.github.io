@@ -10,6 +10,7 @@
     "intro_p1": "CONVOYRAMA is a project born within the TruckersMP community. We created this space to offer a neutral place, open to all players and VTCs, where anyone can find tools to improve their game experience.",
     "intro_p2": "We are not a VTC; we are a community-driven HUB. If you have questions or want to collaborate, you can find <span class='architect'>dr.will</span> on our central Discord server.",
     "btn_discord": "JOIN LAG'S SPEED DISCORD",
+    "play_music_title": "Play Music",
     "feature_pitstop_desc": "Your quick technical stop for ATS and ETS2. Repair, refuel, and manage your cargo in seconds.",
     "feature_lagdrive_desc": "Direct mod synchronization. The fastest way to share files with your team.",
     "feature_lagfm_desc": "The official community radio. Enjoy the best music while you travel the routes.",
@@ -22,5 +23,19 @@
     "footer_serious": "Serious Stuff",
     "footer_help": "Need help?",
     "footer_status": "Status",
-    "footer_rights": "© 2026 CONVOYRAMA. Almost all rights reserved."
+    "footer_rights": "© 2026 CONVOYRAMA. Almost all rights reserved.",
+
+    "ps_tagline": "REPAIR. REFUEL. CONTINUE.",
+    "ps_desc": "PitStop is an essential utility for ATS and ETS2 drivers. Modify your saved game instantly to save time on maintenance tasks.",
+    "ps_download": "Download PitStop 0.8.1",
+    "ps_testing": "Testing Version",
+    "ps_note": "Note: The application includes a small in-game overlay. Use Alt + 1 to refuel, repair, and remove cargo weight instantly on your last save. We recommend using F9 (quick save), pressing Alt + 1, and then F10 (load game).",
+    "ps_f1_title": "Instant Repair",
+    "ps_f1_desc": "Repair your truck and trailer to 100% without looking for a workshop.",
+    "ps_f2_title": "Max Fuel",
+    "ps_f2_desc": "Fill the tank in seconds and forget about gas station stops.",
+    "ps_f3_title": "Cargo Management",
+    "ps_f3_desc": "Remove the weight from your current cargo for a lighter drive.",
+    "ps_f4_title": "Compatible",
+    "ps_f4_desc": "Works with both American Truck Simulator and Euro Truck Simulator 2."
 }
