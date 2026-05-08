@@ -22,5 +22,19 @@
     "footer_serious": "Cosas Serias",
     "footer_help": "¿Necesitas ayuda?",
     "footer_status": "Estado",
-    "footer_rights": "© 2026 CONVOYRAMA. Casi todos los derechos reservados."
+    "footer_rights": "© 2026 CONVOYRAMA. Casi todos los derechos reservados.",
+
+    "ps_tagline": "REPARA. REPOSTA. CONTINÚA.",
+    "ps_desc": "PitStop es una utilidad esencial para conductores de ATS y ETS2. Modifica tu partida guardada al instante para ahorrar tiempo en tareas de mantenimiento.",
+    "ps_download": "Descarga PitStop 0.8.1",
+    "ps_testing": "Versión Testing",
+    "ps_note": "Nota: La aplicación incluye una pequeña muesca ingame. Usa Alt + 1 para reabastecer, reparar y quitar el peso al instante sobre tu último guardado. Recomendamos usar F9 (guardado rápido), presionar Alt + 1 y luego F10 (cargar partida).",
+    "ps_f1_title": "Reparación Instantánea",
+    "ps_f1_desc": "Repara tu camión y remolque al 100% sin buscar un taller.",
+    "ps_f2_title": "Combustible al Máximo",
+    "ps_f2_desc": "Llena el tanque en segundos y olvida las paradas en gasolineras.",
+    "ps_f3_title": "Gestión de Carga",
+    "ps_f3_desc": "Quita el peso a tu carga actual para una conducción más ligera.",
+    "ps_f4_title": "Compatible",
+    "ps_f4_desc": "Funciona tanto con American Truck Simulator como con Euro Truck Simulator 2."
 }
