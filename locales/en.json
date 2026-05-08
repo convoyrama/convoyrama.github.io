@@ -64,5 +64,16 @@
     "fm_web_player": "Open Web Player",
     "fm_version_status": "Version Status",
     "fm_verifying": "Verifying integrity...",
-    "fm_debug": "Debug Version (Testing)"
+    "fm_debug": "Debug Version (Testing)",
+
+    "fm_web_status_ready": "READY",
+    "fm_web_select_station": "SELECT STATION",
+    "fm_web_conn_error": "CONNECTION ERROR",
+    "fm_web_tap_to_tune": "Tap to tune",
+    "fm_web_paused": "PAUSED",
+    "fm_web_loading": "TUNING...",
+    "fm_web_live": "LIVE",
+    "fm_web_buffering": "BUFFERING...",
+    "fm_web_signal_lost": "SIGNAL LOST",
+    "fm_web_load_error": "LOAD ERROR"
 }

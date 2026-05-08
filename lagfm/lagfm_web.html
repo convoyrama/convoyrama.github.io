@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LAG FM - Sintonizador Web</title>
+    <title>LAG FM - Web Tuner</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#141414">
     <meta name="mobile-web-app-capable" content="yes">
@@ -46,6 +46,9 @@
             background: var(--vtc-black);
             border-bottom: 1px solid var(--vtc-border);
             flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         header a {
@@ -61,6 +64,16 @@
         }
 
         .logo-text span { color: var(--vtc-green); }
+
+        /* Lang Selector Styles */
+        .lang-selector { display: flex; gap: 4px; align-items: center; }
+        .lang-btn {
+            color: rgba(255, 255, 255, 0.3); font-size: 0.6rem; font-weight: 800; cursor: pointer; padding: 2px 6px;
+            border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.2s; user-select: none;
+            background: rgba(255, 255, 255, 0.02); text-decoration: none; line-height: 1;
+        }
+        .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.05); border-color: var(--vtc-green); }
+        .lang-btn.active { color: #fff; background: var(--vtc-green); border-color: var(--vtc-green); box-shadow: 0 0 8px var(--vtc-green-glow); }
 
         .player-main {
             flex: 1;
@@ -277,15 +290,21 @@
 </head>
 <body>
     <header>
-        <a href="index.html">
+        <div style="width: 80px;"></div> <!-- Spacer -->
+        <a href="../index.html">
             <p class="logo-text">LAG<span>FM</span></p>
         </a>
+        <div class="lang-selector">
+            <button class="lang-btn" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="es">ES</button>
+            <button class="lang-btn" data-lang="pt">PT</button>
+        </div>
     </header>
 
     <main class="player-main" id="player-root">
         <div class="display-area">
-            <div id="status-label">LISTO</div>
-            <div id="current-station">SELECCIONA EMISORA</div>
+            <div id="status-label" data-i18n="fm_web_status_ready">READY</div>
+            <div id="current-station" data-i18n="fm_web_select_station">SELECT STATION</div>
         </div>
 
         <div class="controls-row">
@@ -294,7 +313,7 @@
                     <circle cx="100" cy="100" r="90" class="ring-bg" />
                     <circle cx="100" cy="100" r="90" class="ring-fill" id="volume-ring-fill" />
                 </svg>
-                <button class="play-btn" id="play-btn" aria-label="Reproducir">
+                <button class="play-btn" id="play-btn" aria-label="Play">
                     <svg viewBox="0 0 24 24" id="play-icon">
                         <path d="M8 5v14l11-7z"/>
                     </svg>
@@ -318,11 +337,62 @@
         </div>
     </main>
 
-    <footer>
-        © LAG'S SPEED - VERSION WEB PWA
+    <footer id="web-footer">
+        © LAG'S SPEED - WEB PWA VERSION
     </footer>
 
     <script>
+        // --- i18n Core ---
+        let translations = {};
+        const savedLang = localStorage.getItem('preferred-lang') || 'en';
+
+        async function loadLanguage(lang) {
+            try {
+                const response = await fetch(`../locales/${lang}.json`);
+                translations = await response.json();
+                
+                // Static translations
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (translations[key]) el.innerHTML = translations[key];
+                });
+
+                document.documentElement.lang = lang;
+                localStorage.setItem('preferred-lang', lang);
+
+                // Update active state in UI
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+                });
+
+                // Update Footer explicitly
+                const footer = document.getElementById('web-footer');
+                footer.innerText = `© LAG'S SPEED - ${lang === 'es' ? 'VERSIÓN WEB PWA' : (lang === 'pt' ? 'VERSÃO WEB PWA' : 'WEB PWA VERSION')}`;
+
+                // Re-render list to update descriptions if data is already loaded
+                if (window.currentStreams) renderList(window.currentStreams);
+                
+                // Update current station label if it's the placeholder
+                if (stationLabel.getAttribute('data-i18n') === 'fm_web_select_station' && !currentId) {
+                    stationLabel.innerText = translations.fm_web_select_station;
+                }
+                
+                // Update status label based on current state
+                updateStatusLabelUI();
+
+            } catch (error) {
+                console.error('Error loading language:', error);
+            }
+        }
+
+        function updateStatusLabelUI() {
+            if (!isPlaying && !currentId) statusLabel.innerText = translations.fm_web_status_ready || "READY";
+            else if (!isPlaying && currentId) statusLabel.innerText = translations.fm_web_paused || "PAUSED";
+            else if (isPlaying && audio.paused) statusLabel.innerText = translations.fm_web_loading || "TUNING...";
+            else if (isPlaying && !audio.paused) statusLabel.innerText = translations.fm_web_live || "LIVE";
+        }
+
+        // --- Audio Logic ---
         const audio = new Audio();
         const playBtn = document.getElementById('play-btn');
         const playIcon = document.getElementById('play-icon');
@@ -343,15 +413,9 @@
         function updateVolume(vol) {
             volume = Math.min(Math.max(vol, 0.01), 1);
             audio.volume = volume * volume;
-            
-            // Actualizar anillo (dasharray es 565)
             const offset = 565 - (565 * volume);
             ringFill.style.strokeDashoffset = offset;
-            
-            // Actualizar texto
             volumeOverlay.querySelector('span').innerText = `${Math.round(volume * 100)}%`;
-            
-            // Mostrar overlay temporalmente
             volumeOverlay.classList.add('visible');
             if (volumeTimeout) clearTimeout(volumeTimeout);
             volumeTimeout = setTimeout(() => volumeOverlay.classList.remove('visible'), 2000);
@@ -359,17 +423,14 @@
 
         function handleDialMove(e) {
             if (e.target.closest('#play-btn')) return;
-            
             const rect = dialWrapper.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            
             const angle = Math.atan2(clientY - centerY, clientX - centerX);
             let vol = (angle + Math.PI / 2) / (2 * Math.PI);
             if (vol < 0) vol += 1;
-            
             updateVolume(vol);
         }
 
@@ -377,35 +438,36 @@
             if (e.target.closest('#play-btn')) return;
             handleDialMove(e);
             window.onmousemove = handleDialMove;
-            window.onmouseup = () => {
-                window.onmousemove = null;
-            };
+            window.onmouseup = () => { window.onmousemove = null; };
         };
 
-        dialWrapper.ontouchstart = (e) => {
-            if (e.target.closest('#play-btn')) return;
-            handleDialMove(e);
-        };
+        dialWrapper.ontouchstart = (e) => { if (e.target.closest('#play-btn')) return; handleDialMove(e); };
         dialWrapper.ontouchmove = (e) => {
             if (e.target.closest('#play-btn')) return;
-            e.preventDefault(); // Evitar scroll al ajustar volumen
+            e.preventDefault();
             handleDialMove(e);
         };
 
-        // Inicializar volumen
         updateVolume(volume);
 
         async function init() {
+            await loadLanguage(savedLang);
+            
+            // Setup language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => loadLanguage(btn.getAttribute('data-lang')));
+            });
+
             try {
                 const response = await fetch('streams.json');
-                const streams = await response.json();
-                renderList(streams);
+                window.currentStreams = await response.json();
+                renderList(window.currentStreams);
                 
-                if(streams.length > 0) {
-                    setupStream(streams[0]);
+                if(window.currentStreams.length > 0) {
+                    setupStream(window.currentStreams[0], false);
                 }
             } catch (err) {
-                stationLabel.innerText = "ERROR DE CONEXIÓN";
+                stationLabel.innerText = translations.fm_web_conn_error || "CONNECTION ERROR";
             }
         }
 
@@ -413,31 +475,35 @@
             listContainer.innerHTML = '';
             streams.forEach(s => {
                 const item = document.createElement('div');
-                item.className = 'list-item';
+                item.className = 'list-item' + (currentId === s.id ? ' active' : '');
                 item.id = `item-${s.id}`;
                 item.innerHTML = `
                     <div class="item-icon">📻</div>
                     <div class="item-info">
                         <div class="item-title">${s.title}</div>
-                        <div class="item-desc">${s.desc || 'Toca para sintonizar'}</div>
+                        <div class="item-desc">${s.desc || (translations.fm_web_tap_to_tune || 'Tap to tune')}</div>
                     </div>
                 `;
                 item.onclick = () => {
-                    setupStream(s);
-                    if(!isPlaying) togglePlay();
+                    setupStream(s, true);
                 };
                 listContainer.appendChild(item);
             });
         }
 
-        function setupStream(s) {
+        function setupStream(s, autoPlay) {
             currentId = s.id;
             document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
             document.getElementById(`item-${s.id}`)?.classList.add('active');
             
             stationLabel.innerText = s.title;
+            stationLabel.removeAttribute('data-i18n'); // Remove placeholder key
             audio.src = s.src;
-            if(isPlaying) audio.play();
+            
+            if (autoPlay) {
+                if (!isPlaying) togglePlay();
+                else audio.play();
+            }
         }
 
         function togglePlay() {
@@ -446,31 +512,30 @@
                 playIcon.style.display = 'block';
                 pauseIcon.style.display = 'none';
                 playerRoot.classList.remove('playing');
-                statusLabel.innerText = "PAUSADO";
+                statusLabel.innerText = translations.fm_web_paused || "PAUSED";
             } else {
                 audio.play().catch(e => {
-                    statusLabel.innerText = "ERROR AL CARGAR";
+                    statusLabel.innerText = translations.fm_web_load_error || "LOAD ERROR";
                 });
                 playIcon.style.display = 'none';
                 pauseIcon.style.display = 'block';
                 playerRoot.classList.add('playing');
-                statusLabel.innerText = "SINTONIZANDO...";
+                statusLabel.innerText = translations.fm_web_loading || "TUNING...";
             }
             isPlaying = !isPlaying;
         }
 
         playBtn.onclick = togglePlay;
 
-        audio.onplaying = () => statusLabel.innerText = "EN VIVO";
-        audio.onwaiting = () => statusLabel.innerText = "BUFFERING...";
+        audio.onplaying = () => statusLabel.innerText = translations.fm_web_live || "LIVE";
+        audio.onwaiting = () => statusLabel.innerText = translations.fm_web_buffering || "BUFFERING...";
         audio.onerror = () => {
-            statusLabel.innerText = "SEÑAL PERDIDA";
+            statusLabel.innerText = translations.fm_web_signal_lost || "SIGNAL LOST";
             if(isPlaying) togglePlay();
         };
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(() => console.log('SW Registered'));
+            navigator.serviceWorker.register('sw.js').then(() => console.log('SW Registered'));
         }
 
         init();
