@@ -348,6 +348,12 @@
             .footer-brand p { margin: 0 auto; }
             .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
         }
+
+        /* Lang Selector */
+        .lang-selector { display: flex; gap: 8px; margin-left: 15px; align-items: center; }
+        .lang-btn { cursor: pointer; opacity: 0.8; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); padding: 4px; display: flex; border-radius: 6px; }
+        .lang-btn:hover { opacity: 1; transform: translateY(-2px); background: rgba(255,255,255,0.1); border-color: var(--accent); }
+        .lang-btn img { width: 20px; height: 14px; object-fit: cover; border-radius: 2px; display: block; }
     </style>
 </head>
 <body>
@@ -358,18 +364,26 @@
                 <span class="nav-name">Convoyrama</span>
             </a>
 
-            <div class="menu-toggle" id="mobile-menu">
-                <span></span><span></span><span></span>
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" id="mobile-menu">
+                    <span></span><span></span><span></span>
+                </div>
+
+                <div class="lang-selector">
+                    <button class="lang-btn" data-lang="en"><img src="assets/images/en.png" alt="EN"></button>
+                    <button class="lang-btn" data-lang="es"><img src="assets/images/es.png" alt="ES"></button>
+                    <button class="lang-btn" data-lang="pt"><img src="assets/images/pt.png" alt="PT"></button>
+                </div>
             </div>
 
             <nav class="nav-links" id="nav-list">
-                <a href="index.html" class="active">Home</a>
-                <a href="pitstop.html">PitStop</a>
-                <a href="lagdrive.html">LAGDrive</a>
-                <a href="lagfm.html">LAG·FM</a>
-                <a href="tuppertruck.html">TupperTruck</a>
-                <a href="event.html">Flyer</a>
-                <a href="lagid.html">LAG-ID</a>
+                <a href="index.html" class="active" data-i18n="nav_home">Home</a>
+                <a href="pitstop.html" data-i18n="nav_pitstop">PitStop</a>
+                <a href="lagdrive.html" data-i18n="nav_lagdrive">LAGDrive</a>
+                <a href="lagfm.html" data-i18n="nav_lagfm">LAG·FM</a>
+                <a href="tuppertruck.html" data-i18n="nav_tuppertruck">TupperTruck</a>
+                <a href="event.html" data-i18n="nav_flyer">Flyer</a>
+                <a href="lagid.html" data-i18n="nav_lagid">LAG-ID</a>
             </nav>
         </div>
     </header>
@@ -378,16 +392,16 @@
         <section class="hero">
             <img src="assets/images/cr.png" alt="Convoyrama Logo" class="hero-logo">
             <h1>CONVOYRAMA</h1>
-            <div class="motto">DE LA COMUNIDAD PARA LA COMUNIDAD</div>
+            <div class="motto" data-i18n="hero_motto">FROM THE COMMUNITY FOR THE COMMUNITY</div>
         </section>
 
         <section class="section-intro">
-            <p>El servidor de Discord LAG'S SPEED, hogar de <strong>Canteras del Sur</strong> y <a href="https://discord.com/channels/1142255059074306108/1145608504506335313" target="_blank">Convoy Nocturno</a>, sigue vivo como un HUB abierto para todos. De esa comunidad nació CONVOYRAMA.</p>
+            <p data-i18n="intro_p1">The LAG'S SPEED Discord server, home of Canteras del Sur and Convoy Nocturno, is still alive as an open HUB for everyone. From that community, CONVOYRAMA was born.</p>
             
-            <p>👉 Si buscas una VTC únete a <a href="https://discord.gg/yS4PQuCkwy" target="_blank">Convoy Nocturno - La Noche</a>.</p>
+            <p data-i18n="intro_p2">👉 Si buscas una VTC únete a <a href="https://discord.gg/yS4PQuCkwy" target="_blank">Convoy Nocturno - La Noche</a>.</p>
 
             <div style="margin: 25px 0;">
-                <a href="https://discord.gg/hjJcyREthH" target="_blank" class="btn-discord">Discord de LAG'S SPEED</a>
+                <a href="https://discord.gg/hjJcyREthH" target="_blank" class="btn-discord" data-i18n="btn_discord">Discord de LAG'S SPEED</a>
                 <div class="btn-group">
                     <a href="https://truckersmp.com/vtc/78865" target="_blank" class="btn-small">TMP</a>
                     <a href="https://pickupvtm.com/companies/8203" target="_blank" class="btn-small">PICKUP</a>
@@ -395,7 +409,7 @@
             </div>
 
             <div style="margin-top:20px">
-                <span id="play-music" class="music-trigger" title="Reproducir Música">▶</span>
+                <span id="play-music" class="music-trigger" title="Reproducir Música" data-i18n-title="play_music_title">▶</span>
             </div>
         </section>
 
@@ -403,27 +417,27 @@
             <div class="feature-grid">
                 <a href="pitstop.html" class="feature-card">
                     <h3>PitStop</h3>
-                    <p>Tu parada técnica rápida para ATS y ETS2. Repara, reposta y gestiona tu carga en segundos.</p>
+                    <p data-i18n="feature_pitstop_desc">Tu parada técnica rápida para ATS y ETS2. Repara, reposta y gestiona tu carga en segundos.</p>
                 </a>
                 <a href="lagdrive.html" class="feature-card">
                     <h3>LAGDrive</h3>
-                    <p>Sincronización directa de mods. La forma más rápida de compartir archivos con tu equipo.</p>
+                    <p data-i18n="feature_lagdrive_desc">Sincronización directa de mods. La forma más rápida de compartir archivos con tu equipo.</p>
                 </a>
                 <a href="lagfm.html" class="feature-card">
                     <h3>LAG·FM</h3>
-                    <p>La radio oficial de la comunidad. Disfruta de la mejor música mientras recorres las rutas.</p>
+                    <p data-i18n="feature_lagfm_desc">La radio oficial de la comunidad. Disfruta de la mejor música mientras recorres las rutas.</p>
                 </a>
                 <a href="lagid.html" class="feature-card" style="border-color: rgba(146, 102, 204, 0.4);">
                     <h3 style="color: #9266cc;">LAG-ID</h3>
-                    <p>Un nuevo paso al roleplay. Identidad y economía comunitaria verificada. Próximamente.</p>
+                    <p data-i18n="feature_lagid_desc">Un nuevo paso al roleplay. Identidad y economía comunitaria verificada. Próximamente.</p>
                 </a>
                 <a href="event.html" class="feature-card">
                     <h3>Flyer de Evento</h3>
-                    <p>Crea invitaciones profesionales para tus convoys y eventos de forma automática.</p>
+                    <p data-i18n="feature_flyer_desc">Crea invitaciones profesionales para tus convoys y eventos de forma automática.</p>
                 </a>
                 <a href="tuppertruck.html" class="feature-card">
                     <h3>TupperTruck</h3>
-                    <p>¿Te gusta tu camión? ¡Empaquétalo! Convierte tu configuración actual en un mod listo para el concesionario.</p>
+                    <p data-i18n="feature_tuppertruck_desc">¿Te gusta tu camión? ¡Empaquétalo! Convierte tu configuración actual en un mod listo para el concesionario.</p>
                 </a>
             </div>
         </div>
@@ -433,10 +447,10 @@
         <div class="footer-content">
             <div class="footer-brand">
                 <h2>CONVOYRAMA</h2>
-                <p>Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
+                <p data-i18n="footer_tagline">Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
             </div>
             <div class="footer-links">
-                <h4>Gadgets</h4>
+                <h4 data-i18n="footer_gadgets">Gadgets</h4>
                 <ul>
                     <li><a href="pitstop.html">PitStop</a></li>
                     <li><a href="tuppertruck.html">TupperTruck</a></li>
@@ -447,7 +461,7 @@
                 </ul>
             </div>
             <div class="footer-links">
-                <h4>Comunidad</h4>
+                <h4 data-i18n="footer_community">Comunidad</h4>
                 <ul>
                     <li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li>
                     <li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li>
@@ -455,16 +469,16 @@
                 </ul>
             </div>
             <div class="footer-links">
-                <h4>Cosas Serias</h4>
+                <h4 data-i18n="footer_serious">Cosas Serias</h4>
                 <ul>
                     <li><a href="developers.html">API / Developers</a></li>
-                    <li><a href="#" id="helpLink">¿Necesitas ayuda?</a></li>
-                    <li><a href="mantenimiento.html">Estado</a></li>
+                    <li><a href="#" id="helpLink" data-i18n="footer_help">¿Necesitas ayuda?</a></li>
+                    <li><a href="mantenimiento.html" data-i18n="footer_status">Estado</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <div>© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
+            <div data-i18n="footer_rights">© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
             <div style="display:flex; gap:10px;">
                 <a href="https://github.com/convoyrama/convoyrama.github.io" style="text-decoration:none;">💻</a>
             </div>
@@ -486,6 +500,7 @@
 
     <audio id="background-audio" loop><source src="LAG'S SPEED.mp3" type="audio/mpeg"></audio>
 
+    <script src="assets/js/main-i18n.js"></script>
     <script>
         // Hamburguesa
         const mobileMenu = document.getElementById('mobile-menu');
