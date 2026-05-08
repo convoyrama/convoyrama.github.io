@@ -37,5 +37,19 @@
     "ps_f3_title": "Cargo Management",
     "ps_f3_desc": "Remove the weight from your current cargo for a lighter drive.",
     "ps_f4_title": "Compatible",
-    "ps_f4_desc": "Works with both American Truck Simulator and Euro Truck Simulator 2."
+    "ps_f4_desc": "Works with both American Truck Simulator and Euro Truck Simulator 2.",
+
+    "ld_tagline": "CONNECT. SYNC. DRIVE.",
+    "ld_desc": "The ultimate solution for direct mod sharing. Connect with other drivers and keep your files updated instantly.",
+    "ld_alpha_title": "⚠️ EXPERIMENTAL ALPHA VERSION",
+    "ld_alpha_desc": "Version 0.2.1 is experimental. Report bugs on LAG'S SPEED Discord.",
+    "ld_download": "Download LAGDrive 0.2.1",
+    "ld_f1_title": "No Intermediaries",
+    "ld_f1_desc": "Direct transfer between players using P2P.",
+    "ld_f2_title": "Ideal for VTCs",
+    "ld_f2_desc": "Keep your entire team on the same version of mods.",
+    "ld_f3_title": "Direct Chat",
+    "ld_f3_desc": "Instant communication to resolve questions.",
+    "ld_f4_title": "Total Control",
+    "ld_f4_desc": "You decide which folders to share and when to sync."
 }

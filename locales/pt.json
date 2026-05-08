@@ -11,7 +11,7 @@
     "intro_p2": "Não somos uma VTC; somos um HUB impulsionado pela comunidade. Se você tiver dúvidas ou quiser colaborar, poderá encontrar <span class='architect'>dr.will</span> em nosso servidor central do Discord.",
     "btn_discord": "ENTRAR NO DISCORD DO LAG'S SPEED",
     "feature_pitstop_desc": "Sua parada técnica rápida para ATS e ETS2. Repare, reabasteça e gerencie sua carga em segundos.",
-    "feature_lagdrive_desc": "Sincronização direta de mods. La maneira mais rápida de compartilhar arquivos com sua equipe.",
+    "feature_lagdrive_desc": "Sincronização directa de mods. La maneira mais rápida de compartilhar arquivos com sua equipe.",
     "feature_lagfm_desc": "A rádio oficial da comunidade. Curta a melhor música enquanto percorre as rotas.",
     "feature_lagid_desc": "Um novo passo para o roleplay. Identidade e economia comunitária verificada. Em breve.",
     "feature_flyer_desc": "Crie convites profissionais para seus comboios e eventos de forma automática.",
@@ -36,5 +36,19 @@
     "ps_f3_title": "Gestão de Carga",
     "ps_f3_desc": "Remova o peso da sua carga atual para uma condução mais leve.",
     "ps_f4_title": "Compatível",
-    "ps_f4_desc": "Funciona tanto com American Truck Simulator quanto com Euro Truck Simulator 2."
+    "ps_f4_desc": "Funciona tanto com American Truck Simulator quanto com Euro Truck Simulator 2.",
+
+    "ld_tagline": "CONECTA. SINCRONIZA. CONDUZ.",
+    "ld_desc": "A solução definitiva para compartilhar mods de forma direta. Conecte-se com outros motoristas e mantenha seus arquivos atualizados instantaneamente.",
+    "ld_alpha_title": "⚠️ VERSÃO ALPHA EXPERIMENTAL",
+    "ld_alpha_desc": "A versão 0.2.1 é experimental. Reporte erros no Discord do LAG'S SPEED.",
+    "ld_download": "Baixar LAGDrive 0.2.1",
+    "ld_f1_title": "Sem Intermediários",
+    "ld_f1_desc": "Transferência direta entre jogadores via P2P.",
+    "ld_f2_title": "Ideal para VTCs",
+    "ld_f2_desc": "Mantenha toda a sua equipe na mesma versão de mods.",
+    "ld_f3_title": "Chat Direto",
+    "ld_f3_desc": "Comunicação instantânea para resolver dúvidas.",
+    "ld_f4_title": "Controle Total",
+    "ld_f4_desc": "Você decide quais pastas compartilhar e quando sincronizar."
 }
