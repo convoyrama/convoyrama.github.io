@@ -6,7 +6,7 @@ async function loadLanguage(lang) {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (translations[key]) {
-                el.innerText = translations[key];
+                el.innerHTML = translations[key];
             }
         });
 
