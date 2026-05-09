@@ -1,16 +1,36 @@
-// test
-const loadCountries = async () => {
+// Hook into global i18n system
+window.addEventListener('languageChanged', (e) => {
+    const { lang, translations } = e.detail;
+    // Update dynamic labels that are not handled by data-i18n directly (like company font label)
+    const v3 = v1[a1.value];
+    if (v3) {
+        f1.textContent = v3.font.split(",")[0].replace(/'/g, "");
+    }
+    
+    // Reload countries to update names
+    loadCountries(lang);
+    
+    f2(); // Redraw canvas with new potential translations
+});
+
+const loadCountries = async (lang = 'en') => {
     try {
         const response = await fetch('../license_generator/data/countries.json');
         const countries = await response.json();
         const countrySelect = document.getElementById('a4');
+        const currentVal = countrySelect.value;
+        countrySelect.innerHTML = '';
+        
         countries.forEach(country => {
             const option = document.createElement('option');
             option.value = country.emoji;
-            option.textContent = country.name_es;
+            // Use current language for country name, fallback to English
+            option.textContent = country[`name_${lang}`] || country.name_en;
             countrySelect.appendChild(option);
         });
-        f8(); // Set default country after loading
+        
+        if (currentVal) countrySelect.value = currentVal;
+        else f8(); // Set default country after loading if no selection yet
     } catch (error) {
         console.error('Error loading countries:', error);
     }
@@ -132,6 +152,10 @@ customBg.addEventListener('change', () => {
 const textColorSelector = document.getElementById('text-color-selector');
 textColorSelector.addEventListener('change', f2);
 
+const initPC = async () => {
+    const savedLang = localStorage.getItem('preferred-lang') || 'en';
+    await loadCountries(savedLang);
+    f3();
+};
 
-loadCountries();
-f3();
+initPC();
