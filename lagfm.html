@@ -63,31 +63,53 @@
 
         /* CONTENT */
         .app-container { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; text-align: center; }
-        .app-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 25px; padding: 40px; max-width: 550px; width: 100%; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .app-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 25px; padding: 40px; max-width: 900px; width: 100%; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
         
-        .app-screenshot { max-width: 260px; border-radius: 20px; border: 4px solid #222; margin: 25px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.3s; filter: grayscale(20%); }
+        .app-screenshot { max-width: 240px; border-radius: 20px; border: 4px solid #222; margin: 0 auto 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.3s; filter: grayscale(20%); display: block; }
         .app-screenshot:hover { border-color: var(--accent); transform: scale(1.03) rotate(1deg); filter: grayscale(0%); cursor: pointer; }
 
         .app-title { font-size: 2.5rem; font-weight: 900; margin: 0; color: #fff; font-style: italic; text-transform: uppercase; }
-        .app-description { font-size: 1.1rem; color: var(--text-muted); margin: 15px 0 30px; line-height: 1.5; }
+        .app-description { font-size: 1.1rem; color: var(--text-muted); margin: 15px 0 35px; line-height: 1.5; }
 
+        .btn-row { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 40px; }
         .download-btn {
-            display: inline-block; background: var(--accent); color: white !important; padding: 16px 35px;
-            font-size: 1.2rem; text-decoration: none; border-radius: 12px; font-weight: 900; margin-top: 10px;
+            background: var(--accent); color: white !important; padding: 16px 30px;
+            font-size: 1rem; text-decoration: none; border-radius: 12px; font-weight: 900;
             transition: all 0.2s; box-shadow: 0 5px 15px rgba(0, 170, 255, 0.3); text-transform: uppercase;
         }
         .download-btn:hover { background: #0088cc; transform: translateY(-3px); }
 
         .web-btn {
-            display: inline-block; background: transparent; color: var(--accent) !important; padding: 12px 30px;
-            font-size: 1rem; text-decoration: none; border-radius: 12px; font-weight: 700; margin-top: 15px;
+            background: transparent; color: var(--accent) !important; padding: 14px 30px;
+            font-size: 1rem; text-decoration: none; border-radius: 12px; font-weight: 700;
             border: 2px solid var(--accent); transition: all 0.2s; text-transform: uppercase;
         }
         .web-btn:hover { background: rgba(0, 170, 255, 0.1); transform: translateY(-2px); }
 
-        .app-features { margin: 30px 0; text-align: left; list-style: none; padding: 0; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
-        .app-features li { margin: 12px 0; display: flex; align-items: center; gap: 12px; color: var(--text-muted); font-size: 0.95rem; }
-        .app-features li::before { content: "✓"; color: var(--accent); font-weight: 900; }
+        /* FEATURE GRID */
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: left; margin-top: 20px; }
+        .feature-item {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .feature-item::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+        }
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-8px);
+            border-color: rgba(0, 170, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .feature-item:hover::before { transform: scaleX(1); }
+        .feature-item strong { display: block; color: var(--accent); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 8px; font-style: italic; }
+        .feature-item p { margin: 0; font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
 
         .debug-btn { display: inline-block; background: #1a1a1a; color: #555 !important; padding: 6px 15px; font-size: 0.75rem; text-decoration: none; border-radius: 6px; margin-top: 25px; border: 1px solid #333; transition: all 0.2s; }
         .debug-btn:hover { color: #888 !important; border-color: #444; }
@@ -156,21 +178,33 @@
             <a href="lagfm/lagfm_web.html" title="Abrir Sintonizador Web (PWA)" data-i18n-title="fm_screenshot_title">
                 <img src="lagfm/ui3.png" alt="LAG FM App Screenshot" class="app-screenshot">
             </a>
+
+            <div class="btn-row">
+                <a href="lagfm/LAG·FM_Setup_v1.1.5.exe" class="download-btn" style="background: #0078d4;" data-i18n="fm_win_download">Descargar para Windows</a>
+                <a href="lagfm/lagfmlatest.apk" class="download-btn" id="android-download" data-i18n="fm_android_download">Descargar para Android</a>
+                <a href="lagfm/lagfm_web.html" class="web-btn" data-i18n="fm_web_player">Abrir Reproductor Web</a>
+            </div>
             
-            <ul class="app-features">
-                <li data-i18n="fm_f1">Sintonización en tiempo real sin cortes.</li>
-                <li data-i18n="fm_f2">Interfaz minimalista optimizada para móvil.</li>
-                <li data-i18n="fm_f3">Consumo de datos extremadamente bajo.</li>
-                <li data-i18n="fm_f4">100% libre de anuncios y rastreadores.</li>
-            </ul>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <strong data-i18n="fm_f1_title">EMISORAS CURADAS</strong>
+                    <p data-i18n="fm_f1_desc">Una lista probada y verificada de las mejores radios de la comunidad, listas para sonar.</p>
+                </div>
+                <div class="feature-item">
+                    <strong data-i18n="fm_f2_title">STREAMS PROPIOS</strong>
+                    <p data-i18n="fm_f2_desc">Añade tus propias URLs de streaming y personaliza tu sintonizador a tu gusto.</p>
+                </div>
+                <div class="feature-item">
+                    <strong data-i18n="fm_f3_title">RASTREADOR DE EVENTOS</strong>
+                    <p data-i18n="fm_f3_desc">Vista en tiempo real de los eventos de TruckersMP del día directamente en la app.</p>
+                </div>
+                <div class="feature-item">
+                    <strong data-i18n="fm_f4_title">MULTIPLATAFORMA</strong>
+                    <p data-i18n="fm_f4_desc">Disponible para Windows y Android, con un Web Player dedicado para iOS.</p>
+                </div>
+            </div>
 
-            <a href="lagfm/LAG·FM_Setup_v1.1.5.exe" class="download-btn" style="background: #0078d4; margin-bottom: 5px;" data-i18n="fm_win_download">Descargar para Windows</a>
-            <br>
-            <a href="lagfm/lagfmlatest.apk" class="download-btn" id="android-download" data-i18n="fm_android_download">Descargar para Android</a>
-            <br>
-            <a href="lagfm/lagfm_web.html" class="web-btn" data-i18n="fm_web_player">Abrir Reproductor Web</a>
-
-            <p style="margin-top: 25px; margin-bottom: 5px;"><small style="color:#444; font-weight: 700; text-transform: uppercase;" data-i18n="fm_version_status">Estado de la versión</small></p>
+            <p style="margin-top: 40px; margin-bottom: 5px;"><small style="color:#444; font-weight: 700; text-transform: uppercase;" data-i18n="fm_version_status">Estado de la versión</small></p>
             <p id="md5-status" style="font-family: monospace; font-size: 0.75rem; color: #444; margin: 0; word-break: break-all;" data-i18n="fm_verifying">Verificando integridad...</p>
 
             <a href="lagfm/app-debug.apk" class="debug-btn" data-i18n="fm_debug">Versión Debug (Testing)</a>
@@ -185,7 +219,7 @@
             </div>
             <div class="footer-links">
                 <h4 data-i18n="footer_gadgets">Gadgets</h4>
-                <ul><li><a href="tuppertruck.html">TupperTruck</a></li><li><a href="lagdrive.html">LAGDrive</a></li><li><a href="lagfm.html">LAG·FM</a></li><li><a href="event.html">Flyer</a></li><li><a href="lagid.html">LAG-ID</a></li></ul>
+                <ul><li><a href="pitstop.html">PitStop</a></li><li><a href="tuppertruck.html">TupperTruck</a></li><li><a href="lagdrive.html">LAGDrive</a></li><li><a href="lagfm.html">LAG·FM</a></li><li><a href="event.html">Flyer</a></li><li><a href="lagid.html">LAG-ID</a></li></ul>
             </div>
             <div class="footer-links">
                 <h4 data-i18n="footer_community">Comunidad</h4>
@@ -207,29 +241,17 @@
         const navList = document.getElementById('nav-list');
         mobileMenu.addEventListener('click', () => { mobileMenu.classList.toggle('open'); navList.classList.toggle('open'); });
 
-        // Cargar MD5 desde la subcarpeta
         fetch('lagfm/md5')
-            .then(response => {
-                if (!response.ok) throw new Error('Error');
-                return response.text();
-            })
-            .then(text => {
-                const md5sum = text.split(' ')[0].trim();
-                document.getElementById('md5-status').textContent = "MD5: " + md5sum;
-            })
-            .catch(err => {
-                // document.getElementById('md5-status').textContent = "";
-            });
+            .then(response => { if (!response.ok) throw new Error('Error'); return response.text(); })
+            .then(text => { const md5sum = text.split(' ')[0].trim(); document.getElementById('md5-status').textContent = "MD5: " + md5sum; })
+            .catch(err => {});
 
-        // Cargar versión desde la subcarpeta
         fetch('lagfm/version.txt')
             .then(response => response.text())
             .then(version => {
                 const cleanVersion = version.trim();
                 const downloadBtn = document.getElementById('android-download');
-                if (downloadBtn && cleanVersion) {
-                    downloadBtn.setAttribute('download', `lagfm-${cleanVersion}.apk`);
-                }
+                if (downloadBtn && cleanVersion) { downloadBtn.setAttribute('download', `lagfm-${cleanVersion}.apk`); }
             })
             .catch(err => console.error(err));
     </script>
