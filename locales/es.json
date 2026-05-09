@@ -159,5 +159,9 @@
 
     "maint_title": "Convoyrama | Mantenimiento",
     "maint_h": "En Mantenimiento",
-    "maint_p": "Estamos aceitando los engranajes y cargando combustible. CONVOYRAMA estará de vuelta en la ruta muy pronto."
+    "maint_p": "Estamos aceitando los engranajes y cargando combustible. CONVOYRAMA estará de vuelta en la ruta muy pronto.",
+
+    "id_tagline": "DEJA TU HUELLA EN LA RUTA",
+    "id_desc": "El camino recuerda a cada conductor, pero tu identidad define el legado. Toma el mando de tu viaje y construye tu futuro soberano dentro de la simulación.",
+    "id_status": "PRÓXIMAMENTE..."
 }
