@@ -15,7 +15,7 @@ window.addEventListener('languageChanged', (e) => {
 
 const loadCountries = async (lang = 'en') => {
     try {
-        const response = await fetch('../license_generator/data/countries.json');
+        const response = await fetch('../assets/data/countries.json');
         const countries = await response.json();
         const countrySelect = document.getElementById('a4');
         const currentVal = countrySelect.value;
