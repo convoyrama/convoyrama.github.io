@@ -6,6 +6,7 @@
     <title data-i18n="id_title">LAG-ID | Convoyrama</title>
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="icon" href="./assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/images/favicon.png">
     <style>
         :root {
             --nav-bg: rgba(18, 18, 18, 0.85);
@@ -56,15 +57,15 @@
             border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s; user-select: none;
             background: rgba(255, 255, 255, 0.05); text-decoration: none; line-height: 1;
         }
-        .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
-        .lang-btn.active { color: #fff; background: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+        .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: var(--lagid-violet); }
+        .lang-btn.active { color: #fff; background: var(--lagid-violet); border-color: var(--lagid-violet); box-shadow: 0 0 10px rgba(146, 102, 204, 0.3); }
 
         .architect { color: var(--accent); font-weight: bold; }
 
         /* COMING SOON CONTENT */
         .coming-soon-hero {
-            flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 40px 20px; background: radial-gradient(circle at center, rgba(146, 102, 204, 0.08) 0%, transparent 70%);
+            padding: 80px 20px 40px; text-align: center;
+            background: radial-gradient(circle at center, rgba(146, 102, 204, 0.1) 0%, transparent 70%);
         }
 
         .lagid-logo-big {
@@ -83,9 +84,30 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .description { max-width: 700px; font-size: 1.1rem; line-height: 1.6; color: var(--text-muted); margin: 20px 0 30px; opacity: 0.9; font-weight: 400; }
+        .description { max-width: 700px; font-size: 1.1rem; line-height: 1.6; color: var(--text-muted); margin: 20px auto 30px; opacity: 0.9; font-weight: 400; }
+        .proximamente { font-size: 1rem; font-weight: 600; color: var(--text-muted); font-style: italic; letter-spacing: 8px; text-transform: uppercase; opacity: 0.6; margin-bottom: 60px; }
 
-        .proximamente { font-size: 1rem; font-weight: 600; color: var(--text-muted); font-style: italic; letter-spacing: 8px; text-transform: uppercase; opacity: 0.6; }
+        /* FEATURE GRID */
+        .feature-container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(146, 102, 204, 0.1);
+            border-radius: 16px; padding: 30px; text-decoration: none; color: inherit;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; position: relative; overflow: hidden;
+            text-align: left;
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: var(--lagid-violet); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            background: rgba(146, 102, 204, 0.05); transform: translateY(-8px);
+            border-color: rgba(146, 102, 204, 0.4); box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        .feature-card:hover::before { transform: scaleX(1); }
+        .feature-card h3 { color: var(--lagid-violet); margin: 0 0 12px; font-weight: 900; font-style: italic; text-transform: uppercase; font-size: 1rem; letter-spacing: 1px; }
+        .feature-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; }
 
         /* FOOTER */
         .modern-footer { background: var(--footer-bg); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 20px 20px; margin-top: 80px; }
@@ -150,6 +172,27 @@
             The road remembers every driver, but your identity defines the legacy. Take command of your journey and build your sovereign future within the simulation.
         </div>
         <div class="proximamente" data-i18n="id_status">COMING SOON...</div>
+
+        <div class="feature-container">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3 data-i18n="id_f1_title">SOVEREIGN IDENTITY</h3>
+                    <p data-i18n="id_f1_desc">A unique profile that unifies your Steam and TruckersMP presence into a single simulation legacy.</p>
+                </div>
+                <div class="feature-card">
+                    <h3 data-i18n="id_f2_title">GLOBAL ECONOMY</h3>
+                    <p data-i18n="id_f2_desc">Earn unique virtual currency and trade mods or items in a secure P2P market.</p>
+                </div>
+                <div class="feature-card">
+                    <h3 data-i18n="id_f3_title">VTC COMMAND</h3>
+                    <p data-i18n="id_f3_desc">Professional administration tools: manage your team, assign ranks, and pay salaries automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <h3 data-i18n="id_f4_title">COMMUNITY HUB</h3>
+                    <p data-i18n="id_f4_desc">A central message board for announcements, recruitment, and exclusive community rewards.</p>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="modern-footer">
@@ -166,6 +209,7 @@
                     <li><a href="lagdrive.html">LAGDrive</a></li>
                     <li><a href="lagfm.html">LAG·FM</a></li>
                     <li><a href="event.html">Flyer</a></li>
+                    <li><a href="lagid.html">LAG-ID</a></li>
                 </ul>
             </div>
             <div class="footer-links">
