@@ -23,9 +23,9 @@ const loadCountries = async (lang = 'en') => {
         
         countries.forEach(country => {
             const option = document.createElement('option');
-            option.value = country.emoji;
+            option.value = country.code; // Use code instead of emoji for flag loading
             // Use current language for country name, fallback to English
-            option.textContent = country[`name_${lang}`] || country.name_en;
+            option.textContent = `${country.emoji} ${country[`name_${lang}`] || country.name_en}`;
             countrySelect.appendChild(option);
         });
         

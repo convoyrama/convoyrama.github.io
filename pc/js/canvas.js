@@ -1,17 +1,18 @@
-
-// test
-const f0 = a => new Promise(b => {
+// Carga de bandera desde CDN (alternativa ligera a twemoji)
+const f0 = code => new Promise(b => {
+    if (!code) return b(null);
     let c = new Image();
     c.onload = () => b(c);
     c.onerror = () => b(null);
-    c.src = twemoji.parse(a, { base: './twemoji-14.0.2/assets/', folder: 'svg', ext: '.svg' }).match(/src="([^"]+)"/)[1];
+    // Usamos Flagpedia para obtener banderas PNG de alta calidad mediante código ISO
+    c.src = `https://flagcdn.com/w160/${code.toLowerCase()}.png`;
     c.crossOrigin = "anonymous";
 });
 
 const f2 = async () => {
     const v4 = v1[a1.value];
     const v5 = a2.value || "Sin_nombre";
-    const v6 = a4.value || "";
+    const v6 = a4.value || ""; // Now contains the country code
     const v7 = parseInt(a3.value);
     const v8 = parseInt(a5.value);
     const v9 = parseInt(a6.value);
@@ -132,9 +133,13 @@ const f2 = async () => {
     }
 
     if (v6) {
-        const v17 = await f0(v6, v8);
+        const v17 = await f0(v6);
         if (v17) {
-            x.drawImage(v17, w.width / 2 - v8 / 2, v9 - v8, v8, v8);
+            // Draw flag proportional to its aspect ratio
+            const ratio = v17.width / v17.height;
+            const drawHeight = v8;
+            const drawWidth = v8 * ratio;
+            x.drawImage(v17, w.width / 2 - drawWidth / 2, v9 - drawHeight, drawWidth, drawHeight);
         }
     }
 
