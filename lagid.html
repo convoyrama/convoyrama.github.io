@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>LAG-ID | Próximamente en Convoyrama</title>
+    <title data-i18n="id_title">LAG-ID | Convoyrama</title>
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="icon" href="./assets/images/favicon.png">
     <style>
@@ -29,103 +29,47 @@
             overflow-x: hidden;
         }
 
-        /* HEADER PREMIUM (Copiado de index para consistencia) */
+        /* HEADER PREMIUM */
         .modern-header {
-            position: fixed;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            max-width: 1200px;
-            z-index: 1000;
-            background: var(--nav-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 50px;
-            transition: all 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            padding: 0 !important;
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 1200px;
+            z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 50px; transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding: 0 !important;
         }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 25px;
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            gap: 12px;
-        }
-
-        .nav-logo {
-            width: auto;
-            height: 24px;
-            filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.4));
-        }
-
-        .nav-name {
-            color: #fff;
-            font-weight: 900;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            font-style: italic;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 8px;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 8px 25px; }
+        .nav-brand { display: flex; align-items: center; text-decoration: none; gap: 12px; }
+        .nav-logo { width: auto; height: 24px; filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.4)); }
+        .nav-name { color: #fff; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; font-style: italic; letter-spacing: -0.5px; }
+        .nav-links { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; }
         .nav-links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            transition: all 0.3s;
-            border: 1px solid transparent !important;
-            margin: 0 !important;
-            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7); text-decoration: none; padding: 8px 16px; border-radius: 30px;
+            font-size: 0.85rem; font-weight: 700; transition: all 0.3s; border: 1px solid transparent !important;
+            margin: 0 !important; text-transform: uppercase;
         }
+        .nav-links a:hover { background: rgba(255, 255, 255, 0.05); color: #fff !important; }
+        .nav-links a.active { background: var(--accent); color: #fff !important; }
 
-        .nav-links a:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff !important;
+        /* Lang Selector Styles */
+        .lang-selector { display: flex; gap: 6px; margin-left: 15px; align-items: center; }
+        .lang-btn {
+            color: rgba(255, 255, 255, 0.5); font-size: 0.7rem; font-weight: 800; cursor: pointer; padding: 4px 8px;
+            border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s; user-select: none;
+            background: rgba(255, 255, 255, 0.05); text-decoration: none; line-height: 1;
         }
+        .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
+        .lang-btn.active { color: #fff; background: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
 
-        .nav-links a.active {
-            background: var(--accent);
-            color: #fff !important;
-        }
+        .architect { color: var(--accent); font-weight: bold; }
 
         /* COMING SOON CONTENT */
         .coming-soon-hero {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px 20px;
-            background: radial-gradient(circle at center, rgba(146, 102, 204, 0.08) 0%, transparent 70%);
+            flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 40px 20px; background: radial-gradient(circle at center, rgba(146, 102, 204, 0.08) 0%, transparent 70%);
         }
 
         .lagid-logo-big {
-            width: 350px;
-            max-width: 80vw;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 0 20px rgba(146, 102, 204, 0.4));
-            animation: breathe 4s ease-in-out infinite;
+            width: 350px; max-width: 80vw; margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(146, 102, 204, 0.4)); animation: breathe 4s ease-in-out infinite;
         }
 
         @keyframes breathe {
@@ -134,116 +78,26 @@
         }
 
         .tagline {
-            font-size: 1.5rem;
-            font-weight: 900;
-            font-style: italic;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            background: linear-gradient(to right, #fff, var(--lagid-violet), var(--lagid-amber));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem; font-weight: 900; font-style: italic; letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 5px; background: linear-gradient(to right, #fff, var(--lagid-violet), var(--lagid-amber));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .description {
-            max-width: 700px;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-muted);
-            margin: 20px 0 30px;
-            opacity: 0.9;
-            font-weight: 400;
-        }
+        .description { max-width: 700px; font-size: 1.1rem; line-height: 1.6; color: var(--text-muted); margin: 20px 0 30px; opacity: 0.9; font-weight: 400; }
 
-        .dynamic-feature {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: var(--lagid-amber);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            height: 40px;
-            margin-bottom: 15px;
-            text-shadow: 0 0 15px rgba(255, 179, 0, 0.4);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            opacity: 0;
-            transform: translateY(10px);
-        }
+        .proximamente { font-size: 1rem; font-weight: 600; color: var(--text-muted); font-style: italic; letter-spacing: 8px; text-transform: uppercase; opacity: 0.6; }
 
-        .dynamic-feature.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .proximamente {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            font-style: italic;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            opacity: 0.6;
-        }
-
-        /* FOOTER MODERN COMPACT (Copiado de index para consistencia) */
-        .modern-footer {
-            background: var(--footer-bg);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 40px 20px 20px;
-            margin-top: 80px;
-        }
-
-        .footer-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr;
-            gap: 30px;
-        }
-
-        .footer-brand h2 {
-            margin: 0 0 10px 0;
-            font-size: 1.2rem;
-            color: var(--accent);
-            font-style: italic;
-            font-weight: 900;
-        }
-
-        .footer-brand p {
-            color: #666;
-            font-size: 0.75rem;
-            line-height: 1.4;
-            max-width: 250px;
-        }
-
-        .footer-links h4 {
-            margin: 0 0 12px 0;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #888;
-        }
-
+        /* FOOTER */
+        .modern-footer { background: var(--footer-bg); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 20px 20px; margin-top: 80px; }
+        .footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; }
+        .footer-brand h2 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--accent); font-style: italic; font-weight: 900; }
+        .footer-brand p { color: #666; font-size: 0.75rem; line-height: 1.4; max-width: 250px; }
+        .footer-links h4 { margin: 0 0 12px 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: #888; }
         .footer-links ul { list-style: none; padding: 0; margin: 0; }
         .footer-links li { margin-bottom: 6px; }
-        .footer-links a {
-            color: #666;
-            text-decoration: none;
-            font-size: 0.75rem;
-            transition: color 0.2s;
-        }
+        .footer-links a { color: #666; text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
         .footer-links a:hover { color: var(--accent); }
-
-        .footer-bottom {
-            max-width: 1000px;
-            margin: 30px auto 0;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.7rem;
-            color: #444;
-        }
+        .footer-bottom { max-width: 1000px; margin: 30px auto 0; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.03); display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #444; }
 
         .menu-toggle { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 10px; }
         .menu-toggle span { width: 20px; height: 2px; background: #fff; border-radius: 2px; transition: 0.3s; }
@@ -259,11 +113,7 @@
             .nav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
             .footer-content { grid-template-columns: 1fr 1fr; }
         }
-        @media (max-width: 600px) {
-            .footer-content { grid-template-columns: 1fr; text-align: center; }
-            .footer-brand p { margin: 0 auto; }
-            .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
-        }
+        @media (max-width: 600px) { .footer-content { grid-template-columns: 1fr; text-align: center; } .footer-brand p { margin: 0 auto; } .footer-bottom { flex-direction: column; gap: 15px; text-align: center; } }
     </style>
 </head>
 <body>
@@ -273,40 +123,43 @@
                 <img src="assets/images/cr.png" alt="Convoyrama Logo" class="nav-logo">
                 <span class="nav-name">Convoyrama</span>
             </a>
-
-            <div class="menu-toggle" id="mobile-menu">
-                <span></span><span></span><span></span>
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+                <div class="lang-selector">
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="es">ES</button>
+                    <button class="lang-btn" data-lang="pt">PT</button>
+                </div>
             </div>
-
             <nav class="nav-links" id="nav-list">
-                <a href="index.html">Home</a>
-                <a href="pitstop.html">PitStop</a>
-                <a href="lagdrive.html">LAGDrive</a>
-                <a href="lagfm.html">LAG·FM</a>
-                <a href="tuppertruck.html">TupperTruck</a>
-                <a href="event.html">Flyer</a>
-                <a href="lagid.html" class="active">LAG-ID</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="pitstop.html" data-i18n="nav_pitstop">PitStop</a>
+                <a href="lagdrive.html" data-i18n="nav_lagdrive">LAGDrive</a>
+                <a href="lagfm.html" data-i18n="nav_lagfm">LAG·FM</a>
+                <a href="tuppertruck.html" data-i18n="nav_tuppertruck">TupperTruck</a>
+                <a href="event.html" data-i18n="nav_flyer">Flyer</a>
+                <a href="lagid.html" class="active" data-i18n="nav_lagid">LAG-ID</a>
             </nav>
         </div>
     </header>
 
     <main class="coming-soon-hero">
         <img src="lagid/branding/lagid_full.png" alt="LAG-ID Logo" class="lagid-logo-big">
-        <div class="tagline">Tu huella grabada en el asfalto</div>
-        <div class="description">
-            El camino no olvida a quién lo recorre. Tu voluntad es lo único que marca el rumbo.
+        <div class="tagline" data-i18n="id_tagline">LEAVE YOUR MARK ON THE ROAD</div>
+        <div class="description" data-i18n="id_desc">
+            The road remembers every driver, but your identity defines the legacy. Take command of your journey and build your sovereign future within the simulation.
         </div>
-        <div class="proximamente" style="opacity: 1; letter-spacing: 8px;">PRÓXIMAMENTE...</div>
+        <div class="proximamente" data-i18n="id_status">COMING SOON...</div>
     </main>
 
     <footer class="modern-footer">
         <div class="footer-content">
             <div class="footer-brand">
                 <h2>CONVOYRAMA</h2>
-                <p>Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
+                <p data-i18n="footer_tagline">Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
             </div>
             <div class="footer-links">
-                <h4>Gadgets</h4>
+                <h4 data-i18n="footer_gadgets">Gadgets</h4>
                 <ul>
                     <li><a href="pitstop.html">PitStop</a></li>
                     <li><a href="tuppertruck.html">TupperTruck</a></li>
@@ -316,7 +169,7 @@
                 </ul>
             </div>
             <div class="footer-links">
-                <h4>Comunidad</h4>
+                <h4 data-i18n="footer_community">Comunidad</h4>
                 <ul>
                     <li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li>
                     <li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li>
@@ -324,29 +177,24 @@
                 </ul>
             </div>
             <div class="footer-links">
-                <h4>Cosas Serias</h4>
+                <h4 data-i18n="footer_serious">Cosas Serias</h4>
                 <ul>
                     <li><a href="developers.html">API / Developers</a></li>
-                    <li><a href="#" id="helpLink">¿Necesitas ayuda?</a></li>
-                    <li><a href="mantenimiento.html">Estado</a></li>
+                    <li><a href="#" id="helpLink" data-i18n="footer_help">¿Necesitas ayuda?</a></li>
+                    <li><a href="mantenimiento.html" data-i18n="footer_status">Estado</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <div>© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
-            <div style="display:flex; gap:10px;">
-                <a href="https://github.com/convoyrama/convoyrama.github.io" style="text-decoration:none;">💻</a>
-            </div>
+            <div data-i18n="footer_rights">© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
         </div>
     </footer>
 
+    <script src="assets/js/main-i18n.js"></script>
     <script>
         const mobileMenu = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
-        mobileMenu.addEventListener('click', () => {
-            mobileMenu.classList.toggle('open');
-            navList.classList.toggle('open');
-        });
+        mobileMenu.addEventListener('click', () => { mobileMenu.classList.toggle('open'); navList.classList.toggle('open'); });
     </script>
 </body>
 </html>
