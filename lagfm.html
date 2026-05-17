@@ -180,8 +180,7 @@
             </a>
 
             <div class="btn-row">
-                <a href="lagfm/LAG·FM_Setup_v1.1.5.exe" class="download-btn" style="background: #0078d4;" data-i18n="fm_win_download">Descargar para Windows</a>
-                <a href="lagfm/lagfmlatest.apk" class="download-btn" id="android-download" data-i18n="fm_android_download">Descargar para Android</a>
+                <a href="https://github.com/CONVOYRAMA/lagfm/releases" target="_blank" class="download-btn" data-i18n="fm_download_suite">Descargar Suite (Win/Android/Linux)</a>
                 <a href="lagfm/lagfm_web.html" class="web-btn" data-i18n="fm_web_player">Abrir Reproductor Web</a>
             </div>
             
@@ -203,11 +202,6 @@
                     <p data-i18n="fm_f4_desc">Disponible para Windows y Android, con un Web Player dedicado para iOS.</p>
                 </div>
             </div>
-
-            <p style="margin-top: 40px; margin-bottom: 5px;"><small style="color:#444; font-weight: 700; text-transform: uppercase;" data-i18n="fm_version_status">Estado de la versión</small></p>
-            <p id="md5-status" style="font-family: monospace; font-size: 0.75rem; color: #444; margin: 0; word-break: break-all;" data-i18n="fm_verifying">Verificando integridad...</p>
-
-            <a href="lagfm/app-debug.apk" class="debug-btn" data-i18n="fm_debug">Versión Debug (Testing)</a>
         </div>
     </main>
 
@@ -240,20 +234,6 @@
         const mobileMenu = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         mobileMenu.addEventListener('click', () => { mobileMenu.classList.toggle('open'); navList.classList.toggle('open'); });
-
-        fetch('lagfm/md5')
-            .then(response => { if (!response.ok) throw new Error('Error'); return response.text(); })
-            .then(text => { const md5sum = text.split(' ')[0].trim(); document.getElementById('md5-status').textContent = "MD5: " + md5sum; })
-            .catch(err => {});
-
-        fetch('lagfm/version.txt')
-            .then(response => response.text())
-            .then(version => {
-                const cleanVersion = version.trim();
-                const downloadBtn = document.getElementById('android-download');
-                if (downloadBtn && cleanVersion) { downloadBtn.setAttribute('download', `lagfm-${cleanVersion}.apk`); }
-            })
-            .catch(err => console.error(err));
     </script>
 </body>
 </html>
