@@ -8,9 +8,9 @@
   "theme_color": "#5AA519",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "isotipocircleblack512.svg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ]
