@@ -1,8 +1,8 @@
-const CACHE_NAME = 'lagfm-v2'; // Incrementamos versión para forzar actualización
+const CACHE_NAME = 'lagfm-v4'; // Incrementamos versión para forzar actualización
 const ASSETS = [
   'lagfm_web.html',
   'streams.json',
-  'icon.png'
+  'isotipocircleblack512.svg'
 ];
 
 self.addEventListener('install', (e) => {
