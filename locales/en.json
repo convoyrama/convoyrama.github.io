@@ -84,7 +84,7 @@
     "tt_desc": "Got a perfect truck? With <strong>TupperTruck</strong> you can capture its exact configuration from your ATS or ETS2 save game and convert it into a Standalone Mod (.scs).",
     "tt_alpha_title": "⚠️ CONSERVATION NOTICE (ALPHA VERSION)",
     "tt_alpha_desc": "TupperTruck is experimental. Keep in mind that the tupper seal might not be 100% airtight: some accessories might not copy correctly. Use at your own risk.",
-    "tt_download": "Download TupperTruck 0.1.3",
+    "tt_download": "Download TupperTruck 0.1.5",
     "tt_disclaimer": "Note: We are not responsible if your truck becomes self-aware after packaging, if it tries to eat other trucks' mods, or if the dealership looks at you weird for trying to buy a truck you already had.",
     "tt_f1_title": "Vacuum Packaging",
     "tt_f1_desc": "Captures all technical components directly from the save file.",
