@@ -87,6 +87,12 @@
             box-shadow: 0 4px 15px rgba(0, 170, 255, 0.3); transition: transform 0.2s, background-color 0.2s; margin-top: 10px;
         }
         .download-button:hover { transform: translateY(-3px); background-color: #0088cc; }
+        .download-button-testing {
+            display: inline-block; background-color: #1a1a1a; color: #888 !important; padding: 10px 20px;
+            font-size: 0.8rem; font-weight: 900; text-transform: uppercase; text-decoration: none; border-radius: 6px;
+            transition: all 0.2s; margin-top: 15px; border: 1px solid #333;
+        }
+        .download-button-testing:hover { background-color: #222; color: #fff !important; border-color: #444; }
         
         .alpha-notice { background: rgba(0, 170, 255, 0.05); border: 1px dashed var(--accent); padding: 15px; margin: 20px auto; max-width: 600px; font-size: 0.9rem; border-radius: 6px; }
         .alpha-notice strong { color: var(--accent); display: block; margin-bottom: 5px; text-transform: uppercase; }
@@ -189,17 +195,19 @@
                 <img src="lagdrive/2.png" alt="LAGDrive 2">
                 <img src="lagdrive/3.png" alt="LAGDrive 3">
             </div>
-            <h1 class="app-title"><span id="version-badge" class="version-badge">v0.2.1</span></h1>
+            <h1 class="app-title"><span id="version-badge" class="version-badge">v0.2.2</span></h1>
             <p class="app-tagline" data-i18n="ld_tagline">CONECTA. SINCRONIZA. CONDUCE.</p>
             
             <div class="app-description" data-i18n="ld_desc">La solución definitiva para compartir mods de forma directa. Conecta con otros conductores y mantén tus archivos actualizados al instante.</div>
 
             <div class="alpha-notice">
                 <strong data-i18n="ld_alpha_title">⚠️ VERSIÓN ALPHA EXPERIMENTAL</strong>
-                <span data-i18n="ld_alpha_desc">La versión 0.2.1 es experimental. Reporta errores en el Discord de LAG'S SPEED.</span>
+                <span data-i18n="ld_alpha_desc">La versión 0.2.2 es experimental. Reporta errores en el Discord de LAG'S SPEED.</span>
             </div>
             
-            <a href="./lagdrive/LAGDrive_0.2.1_x64-setup.exe" id="download-link" class="download-button" data-i18n="ld_download">Descarga LAGDrive 0.2.1</a>
+            <a href="./lagdrive/LAGDrive_0.2.2_x64-setup.exe" id="download-link" class="download-button" data-i18n="ld_download">Descarga LAGDrive 0.2.2</a>
+            <br>
+            <a href="./lagdrive/LAGDrive_testing.exe" class="download-button-testing">Versión Testing (Beta)</a>
 
             <div class="feature-grid">
                 <div class="feature-item"><strong data-i18n="ld_f1_title">Sin Intermediarios</strong><p data-i18n="ld_f1_desc">Transferencia directa entre jugadores mediante P2P.</p></div>
@@ -262,10 +270,9 @@
                 if (version) {
                     const downloadLink = document.getElementById('download-link');
                     const versionBadge = document.getElementById('version-badge');
-                    downloadLink.href = `./lagdrive/LAGDrive-${version}.exe`;
-                    // Note: textContent update is handled by i18n initially, 
-                    // but we can manually update it here if needed with a template string.
-                    // versionBadge.textContent = `v${version}`;
+                    downloadLink.href = `./lagdrive/LAGDrive_${version}_x64-setup.exe`;
+                    downloadLink.textContent = `Descarga LAGDrive ${version}`;
+                    versionBadge.textContent = `v${version}`;
                 }
             } catch (error) { console.log('Nota: No se pudo actualizar la versión dinámicamente.'); }
         }
