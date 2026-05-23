@@ -193,7 +193,7 @@
     <main>
         <div class="download-container">
             <img src="pitstop/isologoalt512.svg" alt="PitStop Logo" class="app-logo">
-            <h1 class="app-title"><span style="font-size:0.4em; vertical-align:middle; border:1px solid var(--accent); padding:2px 8px; border-radius:4px; color:var(--accent);">v0.8.6</span></h1>
+            <h1 class="app-title"><span id="version-badge" style="font-size:0.4em; vertical-align:middle; border:1px solid var(--accent); padding:2px 8px; border-radius:4px; color:var(--accent);">v0.8.6</span></h1>
             <p class="app-tagline" data-i18n="ps_tagline">REPARA. REPOSTA. CONTINÚA.</p>
             <div class="app-description" data-i18n="ps_desc">PitStop es una utilidad esencial para conductores de ATS y ETS2. Modifica tu partida guardada al instante para ahorrar tiempo en tareas de mantenimiento.</div>
 
@@ -203,9 +203,9 @@
                 <img src="pitstop/imagen2.png" alt="PitStop Screenshot 2">
             </div>
             
-            <a href="pitstop/PitStop_v0.8.6.msi" class="download-button" data-i18n="ps_download">Descarga PitStop 0.8.6</a>
+            <a id="download-link" href="pitstop/PitStop_v0.8.6.msi" class="download-button" data-i18n="ps_download">Descarga</a>
             <br>
-            <a href="pitstop/PitStop_v0.8.6.msi" class="download-button-testing" data-i18n="ps_testing">Versión Testing</a>
+            <a id="testing-link" href="pitstop/PitStop_v0.8.6.msi" class="download-button-testing" data-i18n="ps_testing">Versión Testing</a>
 
             <div class="recommendation-note" data-i18n="ps_note">Nota: La aplicación incluye una pequeña muesca ingame. Usa Alt + 1 para reabastecer, reparar y quitar el peso al instante sobre tu último guardado. Recomendamos usar F9 (guardado rápido), presionar Alt + 1 y luego F10 (cargar partida).</div>
 
@@ -279,11 +279,17 @@
                     const filename = (await response.text()).trim();
                     if (filename) {
                         const versionMatch = filename.match(/v(\d+\.\d+\.\d+)/);
-                        if (versionMatch) {
-                            document.getElementById('version-badge').textContent = `v${versionMatch[1]}`;
+                        const vBadge = document.getElementById('version-badge');
+                        const dLink = document.getElementById('download-link');
+                        const tLink = document.getElementById('testing-link');
+
+                        if (versionMatch && vBadge) {
+                            vBadge.textContent = `v${versionMatch[1]}`;
                         }
-                        document.getElementById('download-link').href = `pitstop/${filename}`;
-                        document.getElementById('testing-link').href = `pitstop/${filename}`;
+                        if (dLink) dLink.href = `pitstop/${filename}`;
+                        if (tLink) tLink.href = `pitstop/${filename}`;
+                        
+                        console.log(`PitStop version loaded: ${filename}`);
                     }
                 }
             } catch (error) {
