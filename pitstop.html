@@ -270,6 +270,27 @@
             images[currentIndex].classList.add('active');
         }
         setInterval(showNextImage, 4000);
+
+        // Version Auto-loader
+        async function loadVersion() {
+            try {
+                const response = await fetch('pitstop/version.txt');
+                if (response.ok) {
+                    const filename = (await response.text()).trim();
+                    if (filename) {
+                        const versionMatch = filename.match(/v(\d+\.\d+\.\d+)/);
+                        if (versionMatch) {
+                            document.getElementById('version-badge').textContent = `v${versionMatch[1]}`;
+                        }
+                        document.getElementById('download-link').href = `pitstop/${filename}`;
+                        document.getElementById('testing-link').href = `pitstop/${filename}`;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading version:', error);
+            }
+        }
+        loadVersion();
     </script>
 </body>
 </html>
