@@ -36,10 +36,10 @@
   },
   {
     "id": 190,
-    "title": "Radio Disney AR 🔉",
+    "title": "Radio Disney AR 🔊",
     "src": "https://playerservices.streamtheworld.com/api/livestream-redirect/DISNEY_ARG_BA.mp3",
     "desc": "Música FM pura las 24 horas. Éxitos actuales y clásicos del pop en español e inglés para que no pares de conducir.",
-    "signal_health": 80
+    "signal_health": 100
   },
   {
     "id": 105,
@@ -274,10 +274,10 @@
   },
   {
     "id": 180,
-    "title": "Antenne 1 FM 🔉",
+    "title": "Antenne 1 FM 🔊",
     "src": "https://stream.antenne1.de/a1stg/livestream2.mp3",
     "desc": "Pop, hits actuales y energía positiva desde Alemania. La selección perfecta para mantener el ritmo en la carretera.",
-    "signal_health": 80
+    "signal_health": 100
   },
   {
     "id": 201,
@@ -319,6 +319,34 @@
     "title": "Secret Agent 🔉",
     "src": "https://ice1.somafm.com/secretagent-128-mp3",
     "desc": "Música de espías y surf-rock de los 60. Para conductores con estilo.",
+    "signal_health": 80
+  },
+  {
+    "id": 207,
+    "title": "Japan City Pop 🔉",
+    "src": "https://play.streamafrica.net/japancitypop",
+    "desc": "El sonido retro-futurista de Tokyo. Melodías urbanas de los 80 perfectas para rutas nocturnas.",
+    "signal_health": 80
+  },
+  {
+    "id": 208,
+    "title": "JPop Powerplay Kawaii 🔉",
+    "src": "https://kathy.torontocast.com:3060/stream",
+    "desc": "La energía pura del pop japonés. Éxitos alegres y rítmicos para mantener el ánimo arriba.",
+    "signal_health": 80
+  },
+  {
+    "id": 209,
+    "title": "The Dark Zone (SomaFM) 🔉",
+    "src": "https://ice1.somafm.com/darkzone-128-mp3",
+    "desc": "Música ambiental oscura e industrial. Texturas profundas para rutas solitarias y misteriosas.",
+    "signal_health": 80
+  },
+  {
+    "id": 210,
+    "title": "Doomed (SomaFM) 🔉",
+    "src": "https://ice1.somafm.com/doomed-128-mp3",
+    "desc": "Ambiental denso y opresivo. Para una inmersión atmosférica total en climas extremos.",
     "signal_health": 80
   }
 ]
