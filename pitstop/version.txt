@@ -1,1 +1,1 @@
-PitStop_v0.8.6.msi
+PitStop_v0.8.7.msi
