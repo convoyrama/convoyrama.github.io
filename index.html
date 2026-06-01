@@ -171,6 +171,20 @@
         }
         .btn-discord:hover { transform: translateY(-3px); }
 
+        .btn-youtube {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #ff0000;
+            color: #fff !important;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+        .btn-youtube:hover { transform: translateY(-3px); }
+
         .btn-group { display: flex; gap: 10px; justify-content: center; }
         .btn-small {
             padding: 8px 20px;
@@ -420,8 +434,9 @@
             
             <p data-i18n="intro_p2">No somos una VTC; somos un HUB impulsado por la comunidad. Si tienes preguntas o quieres colaborar, puedes encontrar a dr.will en nuestro servidor central de Discord.</p>
 
-            <div style="margin: 25px 0;">
+            <div class="btn-group" style="margin: 25px 0;">
                 <a href="https://discord.gg/hjJcyREthH" target="_blank" class="btn-discord" data-i18n="btn_discord">UNIRSE AL DISCORD DE LAG'S SPEED</a>
+                <a href="https://www.youtube.com/@convoyrama" target="_blank" class="btn-youtube" data-i18n="btn_youtube">VISITAR CANAL DE YOUTUBE</a>
             </div>
         </section>
 
