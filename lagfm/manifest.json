@@ -1,7 +1,7 @@
 {
   "name": "LAG FM Online",
   "short_name": "LAG FM",
-  "description": "Sintonizador web oficial de LAG'S SPEED",
+  "description": "Sintonizador web oficial de CONVOYRAMA",
   "start_url": "lagfm_web.html",
   "display": "standalone",
   "background_color": "#141414",
