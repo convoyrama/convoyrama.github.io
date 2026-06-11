@@ -204,7 +204,7 @@
 
             <div class="alpha-notice">
                 <strong data-i18n="ld_alpha_title">⚠️ VERSIÓN ALPHA EXPERIMENTAL</strong>
-                <span data-i18n="ld_alpha_desc">La versión 0.3.0 es experimental. Reporta errores en el Discord de LAG'S SPEED.</span>
+                <span data-i18n="ld_alpha_desc">La versión 0.3.0 es experimental. Reporta errores en el Discord de CONVOYRAMA.</span>
             </div>
             
             <a href="./lagdrive/LAGDrive_0.3.0_x64-setup.exe" id="download-link" class="download-button" data-i18n="ld_download">Descarga LAGDrive</a>
@@ -239,7 +239,7 @@
             <div class="footer-links">
                 <h4 data-i18n="footer_community">Comunidad</h4>
                 <ul>
-                    <li><a href="https://discord.gg/hjJcyREthH">LAG'S SPEED</a></li>
+                    <li><a href="https://discord.gg/hjJcyREthH">CONVOYRAMA</a></li>
                     <li><a href="https://discord.gg/PrHd3pA6Ev">Costa Sudamericana</a></li>
                     <li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li>
                 </ul>
@@ -274,8 +274,14 @@
                     const downloadLink = document.getElementById('download-link');
                     const versionBadge = document.getElementById('version-badge');
                     downloadLink.href = `./lagdrive/LAGDrive_${version}_x64-setup.exe`;
-                    downloadLink.textContent = `Descarga LAGDrive ${version}`;
                     versionBadge.textContent = `v${version}`;
+                    
+                    // Update version in text if it exists (like "Download 0.2.1")
+                    const currentText = downloadLink.textContent;
+                    const versionRegex = /\d+\.\d+\.\d+/;
+                    if (versionRegex.test(currentText)) {
+                        downloadLink.textContent = currentText.replace(versionRegex, version);
+                    }
                 }
             } catch (error) { console.log('Nota: No se pudo actualizar la versión dinámicamente.'); }
         }
