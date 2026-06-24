@@ -6,6 +6,7 @@
     "nav_tuppertruck": "TupperTruck",
     "nav_flyer": "Flyer",
     "nav_lagid": "LAG-ID",
+    "nav_lagtmp": "LAGTMP",
     "hero_motto": "DE LA COMUNIDAD PARA LA COMUNIDAD",
     "intro_p1": "CONVOYRAMA es un proyecto nacido dentro de la comunidad de TruckersMP. Creamos este espacio para ofrecer un lugar neutral, abierto a todos los jugadores y VTCs, donde cualquiera pueda encontrar herramientas para mejorar su experiencia de juego.",
     "intro_p2": "No somos una VTC; somos un HUB impulsado por la comunidad. Si tienes preguntas o quieres colaborar, puedes encontrar a <span class='architect'>dr.will</span> en nuestro servidor central de Discord.",
@@ -208,5 +209,18 @@
     "pc_color_orange_black": "Naranja (sombra negra)",
     "pc_color_purple_white": "Púrpura (sombra blanca)",
     "pc_color_lightgreen_black": "Verde claro (sombra negra)",
-    "pc_color_pink_black": "Rosa (sombra negra)"
+    "pc_color_pink_black": "Rosa (sombra negra)",
+
+    "lt_tagline": "TRUCKERSMP EN LINUX, SIN DOLOR DE CABEZA",
+    "lt_desc": "El launcher nativo de Linux para TruckersMP. Gestiona el motor multijugador y lanza el juego con un solo clic.",
+    "lt_download": "Descargar LAGTMP",
+    "lt_source": "Ver Código Fuente",
+    "lt_f1_title": "Un Solo Click",
+    "lt_f1_desc": "Selecciona ETS2 o ATS y presiona PLAY. LAGTMP se encarga del resto.",
+    "lt_f2_title": "Motor Gestionado",
+    "lt_f2_desc": "Descarga y mantiene su propia instancia de truckersmp-cli-lag automáticamente.",
+    "lt_f3_title": "Detección de Proton",
+    "lt_f3_desc": "Detecta Proton instalado y fuerza la versión Windows del juego para compatibilidad.",
+    "lt_f4_title": "Multi-Idioma",
+    "lt_f4_desc": "Interfaz completa en Inglés, Español y Portugués."
 }
