@@ -1,1 +1,1 @@
-PitStop_v1.3.1.msi
+PitStop_Setup_v1.60.0.exe

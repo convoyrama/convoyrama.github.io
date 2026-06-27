@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Convoyrama | PitStop</title>
     <meta name="description" content="PitStop - ATS and ETS2 Utility. Repair, refuel, and manage your cargo instantly.">
-    <meta http-equiv="refresh" content="0; url=mantenimiento.html">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="icon" href="./assets/images/favicon.png">
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
@@ -195,9 +194,9 @@
     <main>
         <div class="download-container">
             <img src="pitstop/isologoalt512.svg" alt="PitStop Logo" class="app-logo">
-            <h1 class="app-title"><span id="version-badge" style="font-size:0.4em; vertical-align:middle; border:1px solid var(--accent); padding:2px 8px; border-radius:4px; color:var(--accent);">v1.0.0</span></h1>
+            <h1 class="app-title"><span id="version-badge" style="font-size:0.4em; vertical-align:middle; border:1px solid var(--accent); padding:2px 8px; border-radius:4px; color:var(--accent);">v1.60.0</span></h1>
             <p class="app-tagline" data-i18n="ps_tagline">REPARA. REPOSTA. CONTINÚA.</p>
-            <div class="app-description" data-i18n="ps_desc">PitStop es una utilidad esencial para conductores de ATS y ETS2. Modifica tu partida guardada al instante para ahorrar tiempo en tareas de mantenimiento.</div>
+            <div class="app-description" data-i18n="ps_desc">PitStop es un editor de partidas experimental para ATS y ETS2. Modifica tu archivo de guardado directamente para reparar, repostar y más. Es experimental — úsala con cuidado.</div>
 
             <div class="screenshot-container" id="slideshow">
                 <img src="pitstop/imagen.png" alt="PitStop Screenshot" class="active">
@@ -205,11 +204,14 @@
                 <img src="pitstop/imagen2.png" alt="PitStop Screenshot 2">
             </div>
             
-            <a id="download-link" href="pitstop/PitStop_v1.0.0.msi" class="download-button" data-i18n="ps_download">Descarga</a>
-            <br>
-            <a id="testing-link" href="pitstop/PitStop_testing.msi" class="download-button-testing" data-i18n="ps_testing">Versión Testing</a>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="pitstop/PitStop_Setup_v1.60.0.exe" class="download-button">PitStop 1.60 Windows</a>
+                <a href="pitstop/PitStop_linux_v1.60.0" class="download-button">PitStop 1.60 Linux</a>
+            </div>
 
             <div class="recommendation-note" data-i18n="ps_note">Nota: La aplicación incluye una pequeña muesca ingame. Usa Alt + 1 para reabastecer, reparar y quitar el peso al instante sobre tu último guardado. Recomendamos usar F9 (guardado rápido), presionar Alt + 1 y luego F10 (cargar partida).</div>
+
+            <div class="recommendation-note" data-i18n="ps_credits">Agradecimientos especiales a <a href="https://discord.gg/yS4PQuCkwy" target="_blank">Christian Mono</a> de <a href="https://discord.gg/yS4PQuCkwy" target="_blank">Convoy Nocturno</a> por su ayuda invaluable en testing y QA. Y a <a href="https://github.com/CoffeSiberian" target="_blank">Siberian Coffee</a> de <a href="https://www.andesvtc.com/" target="_blank">Los Andes Unidos</a> por la inspiración y su incansable trabajo para la comunidad.</div>
 
             <div class="feature-grid">
                 <div class="feature-item"><strong data-i18n="ps_f1_title">Reparación Instantánea</strong><p data-i18n="ps_f1_desc">Repara tu camión y remolque al 100% sin buscar un taller.</p></div>
@@ -275,31 +277,7 @@
         }
         setInterval(showNextImage, 4000);
 
-        // Version Auto-loader
-        async function loadVersion() {
-            try {
-                const response = await fetch('pitstop/version.txt');
-                if (response.ok) {
-                    const filename = (await response.text()).trim();
-                    if (filename) {
-                        const versionMatch = filename.match(/v(\d+\.\d+\.\d+)/);
-                        const vBadge = document.getElementById('version-badge');
-                        const dLink = document.getElementById('download-link');
-                        const tLink = document.getElementById('testing-link');
-
-                        if (versionMatch && vBadge) {
-                            vBadge.textContent = `v${versionMatch[1]}`;
-                        }
-                        if (dLink) dLink.href = `pitstop/${filename}`;
-                        
-                        console.log(`PitStop version loaded: ${filename}`);
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading version:', error);
-            }
-        }
-        loadVersion();
+        console.log('PitStop v1.60.0 loaded');
     </script>
 </body>
 </html>

@@ -28,10 +28,12 @@
     "footer_rights": "© 2026 CONVOYRAMA. Quase todos los direitos reservados.",
 
     "ps_tagline": "REPARE. REABASTEÇA. CONTINUE.",
-    "ps_desc": "PitStop é uma utilidade essencial para motoristas de ATS e ETS2. Modifica o seu jogo salvo instantaneamente para economizar tempo em tarefas de manutenção.",
+    "ps_desc": "PitStop é um editor de saves experimental para ATS e ETS2. Modifica seu arquivo de save diretamente para reparar, reabastecer e mais. É experimental — use com cuidado.",
     "ps_download": "Baixar",
     "ps_testing": "Versão de Teste",
     "ps_note": "Nota: O aplicativo incluye uma pequena interface in-game. Use Alt + 1 para reabastecer, reparar e remover o peso da carga instantaneamente no seu seu último save. Recomendamos usar F9 (save rápido), pressionar Alt + 1 e depois F10 (carregar jogo).",
+    "ps_credits": "Agradecimentos especiais a <a href='https://discord.gg/yS4PQuCkwy' target='_blank'>Christian Mono</a> da <a href='https://discord.gg/yS4PQuCkwy' target='_blank'>Convoy Nocturno</a> por sua ajuda inestimável em testes e QA. E a <a href='https://github.com/CoffeSiberian' target='_blank'>Siberian Coffee</a> da <a href='https://www.andesvtc.com/' target='_blank'>Los Andes Unidos</a> pela inspiração e seu trabalho incansável pela comunidade.",
+
     "ps_f1_title": "Reparo Instantâneo",
     "ps_f1_desc": "Repare seu caminhão e reboque a 100% sem procurar uma oficina.",
     "ps_f2_title": "Combustível ao Máximo",

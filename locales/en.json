@@ -29,10 +29,12 @@
     "footer_rights": "© 2026 CONVOYRAMA. Almost all rights reserved.",
 
     "ps_tagline": "REPAIR. REFUEL. CONTINUE.",
-    "ps_desc": "PitStop is an essential utility for ATS and ETS2 drivers. Modify your saved game instantly to save time on maintenance tasks.",
+    "ps_desc": "PitStop is an experimental save editor for ATS and ETS2. It modifies your save file directly to repair, refuel, and more. It's experimental — use it with care.",
     "ps_download": "Download",
     "ps_testing": "Testing Version",
     "ps_note": "Note: The application includes a small in-game overlay. Use Alt + 1 to refuel, repair, and remove cargo weight instantly on your last save. We recommend using F9 (quick save), pressing Alt + 1, and then F10 (load game).",
+    "ps_credits": "Special thanks to <a href='https://discord.gg/yS4PQuCkwy' target='_blank'>Christian Mono</a> from <a href='https://discord.gg/yS4PQuCkwy' target='_blank'>Convoy Nocturno</a> for his invaluable help in testing and QA. And to <a href='https://github.com/CoffeSiberian' target='_blank'>Siberian Coffee</a> from <a href='https://www.andesvtc.com/' target='_blank'>Los Andes Unidos</a> for the inspiration and his tireless work for the community.",
+
     "ps_f1_title": "Instant Repair",
     "ps_f1_desc": "Repair your truck and trailer to 100% without looking for a workshop.",
     "ps_f2_title": "Max Fuel",
