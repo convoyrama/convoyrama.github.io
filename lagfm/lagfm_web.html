@@ -112,6 +112,16 @@
             font-family: monospace;
         }
 
+        #live-song {
+            font-size: 0.75rem;
+            color: var(--vtc-green);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 1em;
+        }
+
         .controls-row {
             display: flex;
             justify-content: center;
@@ -305,6 +315,7 @@
         <div class="display-area">
             <div id="status-label" data-i18n="fm_web_status_ready">READY</div>
             <div id="current-station" data-i18n="fm_web_select_station">SELECT STATION</div>
+            <div id="live-song"></div>
         </div>
 
         <div class="controls-row">
@@ -404,11 +415,93 @@
         const dialWrapper = document.getElementById('dial-wrapper');
         const ringFill = document.getElementById('volume-ring-fill');
         const volumeOverlay = document.getElementById('volume-overlay');
+        const liveSongLabel = document.getElementById('live-song');
 
         let isPlaying = false;
         let currentId = null;
         let volume = 0.7;
         let volumeTimeout;
+
+        // --- Now Playing (best-effort, no hay estandar entre proveedores) ---
+        let nowPlayingTimer = null;
+        let nowPlayingConfig = null;
+
+        function splitTitle(raw) {
+            if (!raw) return null;
+            const parts = raw.split(' - ');
+            if (parts.length >= 2) {
+                return { artist: parts[0].trim(), title: parts.slice(1).join(' - ').trim() };
+            }
+            return { artist: '', title: raw.trim() };
+        }
+
+        function parseNowPlaying(type, data, mount) {
+            try {
+                if (type === 'icecast') {
+                    const raw = data?.icestats?.source;
+                    const sources = Array.isArray(raw) ? raw : [raw].filter(Boolean);
+                    const src = (mount && sources.find(s => s.mount === mount)) || sources[0];
+                    if (!src) return null;
+                    const combined = src.title || src['display-title'] || '';
+                    if (src.artist) return { artist: src.artist, title: combined || '' };
+                    return splitTitle(combined);
+                }
+                if (type === 'azuracast') {
+                    const song = data?.now_playing?.song;
+                    if (!song) return null;
+                    return { artist: song.artist || '', title: song.title || song.text || '' };
+                }
+                if (type === 'lautfm') {
+                    if (!data?.title) return null;
+                    return { artist: data.artist?.name || '', title: data.title };
+                }
+                if (type === 'shoutcast') return splitTitle(data);
+                if (type === 'kexp') {
+                    const play = data?.results?.[0];
+                    if (!play?.song) return null;
+                    return { artist: play.artist || '', title: play.song };
+                }
+                if (type === 'somafm') {
+                    const song = data?.songs?.[0];
+                    if (!song?.title) return null;
+                    return { artist: song.artist || '', title: song.title };
+                }
+            } catch (e) {
+                return null;
+            }
+            return null;
+        }
+
+        async function pollNowPlaying() {
+            if (!nowPlayingConfig) return;
+            try {
+                const res = await fetch(nowPlayingConfig.statusUrl);
+                if (!res.ok) return;
+                const raw = nowPlayingConfig.type === 'shoutcast' ? await res.text() : await res.json();
+                const song = parseNowPlaying(nowPlayingConfig.type, raw, nowPlayingConfig.mount);
+                if (song?.title) {
+                    liveSongLabel.innerText = song.artist ? `${song.artist} - ${song.title}` : song.title;
+                } else {
+                    liveSongLabel.innerText = '';
+                }
+            } catch (e) {
+                liveSongLabel.innerText = '';
+            }
+        }
+
+        function stopNowPlayingPolling() {
+            if (nowPlayingTimer) clearInterval(nowPlayingTimer);
+            nowPlayingTimer = null;
+            liveSongLabel.innerText = '';
+        }
+
+        function startNowPlayingPolling(config) {
+            stopNowPlayingPolling();
+            nowPlayingConfig = config || null;
+            if (!nowPlayingConfig) return;
+            pollNowPlaying();
+            nowPlayingTimer = setInterval(pollNowPlaying, 20000);
+        }
 
         function updateVolume(vol) {
             volume = Math.min(Math.max(vol, 0.01), 1);
@@ -491,18 +584,27 @@
             });
         }
 
+        let currentNowPlaying = null;
+
         function setupStream(s, autoPlay) {
             currentId = s.id;
+            currentNowPlaying = s.nowPlaying || null;
             document.querySelectorAll('.list-item').forEach(el => el.classList.remove('active'));
             document.getElementById(`item-${s.id}`)?.classList.add('active');
-            
+
             stationLabel.innerText = s.title;
             stationLabel.removeAttribute('data-i18n'); // Remove placeholder key
             audio.src = s.src;
-            
+
             if (autoPlay) {
-                if (!isPlaying) togglePlay();
-                else audio.play();
+                if (!isPlaying) {
+                    togglePlay();
+                } else {
+                    audio.play();
+                    startNowPlayingPolling(currentNowPlaying);
+                }
+            } else {
+                stopNowPlayingPolling();
             }
         }
 
@@ -513,6 +615,7 @@
                 pauseIcon.style.display = 'none';
                 playerRoot.classList.remove('playing');
                 statusLabel.innerText = translations.fm_web_paused || "PAUSED";
+                stopNowPlayingPolling();
             } else {
                 audio.play().catch(e => {
                     statusLabel.innerText = translations.fm_web_load_error || "LOAD ERROR";
@@ -521,6 +624,7 @@
                 pauseIcon.style.display = 'block';
                 playerRoot.classList.add('playing');
                 statusLabel.innerText = translations.fm_web_loading || "TUNING...";
+                startNowPlayingPolling(currentNowPlaying);
             }
             isPlaying = !isPlaying;
         }

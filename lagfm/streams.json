@@ -4,14 +4,16 @@
     "title": "Truckers.FM 🔊",
     "src": "https://live.truckers.fm/",
     "desc": "La emisora líder para la comunidad de simulación (ETS2/ATS). DJs en vivo y tráfico virtual 24/7.",
-    "signal_health": 100
+    "signal_health": 100,
+    "nowPlaying": { "type": "icecast", "statusUrl": "https://live.truckers.fm/status-json.xsl", "mount": "/radio" }
   },
   {
     "id": 102,
     "title": "TruckSimFM 🔊",
     "src": "https://radio.trucksim.fm/radio/8000/radio.mp3",
     "desc": "La radio oficial de la comunidad de simulación. Programación dinámica, noticias de TruckersMP y los mejores hits para tu ruta.",
-    "signal_health": 100
+    "signal_health": 100,
+    "nowPlaying": { "type": "azuracast", "statusUrl": "https://radio.trucksim.fm/api/nowplaying" }
   },
   {
     "id": 103,
@@ -25,7 +27,8 @@
     "title": "Truckstop Radio 🔊",
     "src": "https://oreo.truckstopradio.co.uk/listen/truckstopradio/radio.mp3",
     "desc": "Conectando a la comunidad global de conductores. Pop, rock y programas en vivo para amenizar tus entregas en ETS2 y ATS.",
-    "signal_health": 100
+    "signal_health": 100,
+    "nowPlaying": { "type": "azuracast", "statusUrl": "https://oreo.truckstopradio.co.uk/api/nowplaying/truckstopradio" }
   },
   {
     "id": 181,
@@ -95,21 +98,24 @@
     "title": "Anime FM 🔉",
     "src": "https://stream.laut.fm/animefm",
     "desc": "Openings y Endings clásicos de Dragon Ball, Naruto y más. La compañía perfecta para elevar tu cosmos al volante.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "lautfm", "statusUrl": "https://api.laut.fm/station/animefm/current_song" }
   },
   {
     "id": 160,
     "title": "Radio 1920 🔉",
     "src": "https://stream.laut.fm/radio1920",
     "desc": "Viaje directo a la era del Swing y los gramófonos. Sonido auténtico de los años 20 y 30 para una experiencia vintage única.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "lautfm", "statusUrl": "https://api.laut.fm/station/radio1920/current_song" }
   },
   {
     "id": 161,
     "title": "Rumsey Retro AM 🔉",
     "src": "https://maggie.torontocast.com:9004/stream",
     "desc": "Clásicos de los 40 y 50 con el inconfundible sonido de la radio AM. Música, anuncios y nostalgia de la edad de oro.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "shoutcast", "statusUrl": "https://maggie.torontocast.com:9004/currentsong" }
   },
   {
     "id": 123,
@@ -172,14 +178,16 @@
     "title": "KEXP 90.3 FM 🔉",
     "src": "https://kexp-mp3-128.streamguys1.com/kexp128.mp3",
     "desc": "Desde Seattle, el referente mundial del indie y la música alternativa. Sesiones en vivo y una selección única para tus rutas por el Noroeste.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "kexp", "statusUrl": "https://api.kexp.org/v2/plays/?limit=1&ordering=-airdate" }
   },
   {
     "id": 115,
     "title": "Galaxy News Radio 🔈",
     "src": "https://fallout.fm:8444/falloutfm3.ogg",
     "desc": "Trayendo las noticias y la música del Yermo a tu cabina. Clásicos de los 40 y 50 con el inconfundible estilo de Three Dog.",
-    "signal_health": 40
+    "signal_health": 40,
+    "nowPlaying": { "type": "icecast", "statusUrl": "https://fallout.fm:8444/status-json.xsl", "mount": "/falloutfm3.ogg" }
   },
   {
     "id": 113,
@@ -193,21 +201,24 @@
     "title": "Nightride.fm 🔈",
     "src": "https://stream.nightride.fm/nightride.mp3",
     "desc": "Especializada en Synthwave y Retrowave. Perfecta para la conducción nocturna bajo luces neón.",
-    "signal_health": 40
+    "signal_health": 40,
+    "nowPlaying": { "type": "icecast", "statusUrl": "https://stream.nightride.fm/status-json.xsl", "mount": "/nightride.mp3" }
   },
   {
     "id": 116,
     "title": "Synthwave 🔊",
     "src": "https://synthwave.stream.laut.fm/synthwave",
     "desc": "El futuro es ahora. Una selección curada de Synthwave, Darksynth y New Retro Wave para tus rutas más futuristas.",
-    "signal_health": 100
+    "signal_health": 100,
+    "nowPlaying": { "type": "lautfm", "statusUrl": "https://api.laut.fm/station/synthwave/current_song" }
   },
   {
     "id": 173,
     "title": "Mystery Play 🔊",
     "src": "https://streaming.brol.tech/rtfmlounge",
     "desc": "Relatos de misterio, crimen y ciencia ficción de la radio clásica. Una atmósfera inmersiva para los viajes nocturnos.",
-    "signal_health": 100
+    "signal_health": 100,
+    "nowPlaying": { "type": "icecast", "statusUrl": "https://streaming.brol.tech/status-json.xsl", "mount": "/rtfmlounge" }
   },
   {
     "id": 106,
@@ -242,42 +253,48 @@
     "title": "Space Station Soma 🔉",
     "src": "https://ice1.somafm.com/spacestation-128-mp3",
     "desc": "Música ambiental para viajar por el espacio. Perfecta para la inmersión total en la cabina.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "somafm", "statusUrl": "https://somafm.com/songs/spacestation.json" }
   },
   {
     "id": 202,
     "title": "Drone Zone 🔉",
     "src": "https://ice1.somafm.com/dronezone-128-mp3",
     "desc": "Paisajes sonoros minimalistas y oscuros. Muy atmosférica para rutas nocturnas.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "somafm", "statusUrl": "https://somafm.com/songs/dronezone.json" }
   },
   {
     "id": 203,
     "title": "Deep Space One 🔉",
     "src": "https://ice1.somafm.com/deepspaceone-128-mp3",
     "desc": "Ambientación de espacio profundo. Inmersión total en el vacío del camino.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "somafm", "statusUrl": "https://somafm.com/songs/deepspaceone.json" }
   },
   {
     "id": 204,
     "title": "Cinematic Radio 🔉",
     "src": "https://streaming.brol.tech/cinematic",
     "desc": "Bandas sonoras de cine épicas. Haz que tu ruta parezca una película.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "icecast", "statusUrl": "https://streaming.brol.tech/status-json.xsl", "mount": "/cinematic" }
   },
   {
     "id": 205,
     "title": "Vaporwaves 🔉",
     "src": "https://ice1.somafm.com/vaporwaves-128-mp3",
     "desc": "Estética retro-futurista de los 80/90. Relajación pura al volante.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "somafm", "statusUrl": "https://somafm.com/songs/vaporwaves.json" }
   },
   {
     "id": 206,
     "title": "Secret Agent 🔉",
     "src": "https://ice1.somafm.com/secretagent-128-mp3",
     "desc": "Música de espías y surf-rock de los 60. Para conductores con estilo.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "somafm", "statusUrl": "https://somafm.com/songs/secretagent.json" }
   },
   {
     "id": 207,
@@ -291,20 +308,23 @@
     "title": "JPop Powerplay Kawaii 🔉",
     "src": "https://kathy.torontocast.com:3060/stream",
     "desc": "La energía pura del pop japonés. Éxitos alegres y rítmicos para mantener el ánimo arriba.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "shoutcast", "statusUrl": "https://kathy.torontocast.com:3060/currentsong" }
   },
   {
     "id": 209,
     "title": "The Dark Zone (SomaFM) 🔉",
     "src": "https://ice1.somafm.com/darkzone-128-mp3",
     "desc": "Música ambiental oscura e industrial. Texturas profundas para rutas solitarias y misteriosas.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "somafm", "statusUrl": "https://somafm.com/songs/darkzone.json" }
   },
   {
     "id": 210,
     "title": "Doomed (SomaFM) 🔉",
     "src": "https://ice1.somafm.com/doomed-128-mp3",
     "desc": "Ambiental denso y opresivo. Para una inmersión atmosférica total en climas extremos.",
-    "signal_health": 80
+    "signal_health": 80,
+    "nowPlaying": { "type": "somafm", "statusUrl": "https://somafm.com/songs/doomed.json" }
   }
 ]
