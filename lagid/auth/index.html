@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAG-ID · Verificando Steam</title>
+<style>
+  body { background:#0a0a0a; color:#fff; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; text-align:center; }
+  .container { padding:24px; border:1px solid #222; border-radius:14px; background:#0d0d0d; box-shadow:0 10px 30px rgba(0,0,0,.5); max-width:320px; }
+  h1 { color:#9266cc; font-size:1.1rem; margin-bottom:8px; }
+  p { color:#888; font-size:.85rem; line-height:1.4; }
+  a.btn { display:inline-block; margin-top:16px; padding:10px 20px; background:#9266cc; color:#fff; text-decoration:none; border-radius:12px; font-size:.8rem; font-weight:bold; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>LAG-ID</h1>
+    <p id="msg">Si la app LAG-ID está instalada, se debería haber abierto sola. Si ves esta página, tocá el botón para volver a intentar.</p>
+    <a class="btn" id="openApp" href="#">Abrir en la app</a>
+  </div>
+  <script>
+    // Fallback para navegadores/dispositivos donde el Android App Link
+    // (verificado vía /.well-known/assetlinks.json) no pudo interceptar la
+    // navegación. Reintenta con el custom scheme como último recurso.
+    var params = new URLSearchParams(window.location.search);
+    var steamid = params.get("steamid");
+    var state = params.get("state");
+    if (steamid) {
+      var fallback = "com.convoyrama.lagid://auth?steamid=" + encodeURIComponent(steamid) +
+        (state ? "&state=" + encodeURIComponent(state) : "");
+      document.getElementById("openApp").href = fallback;
+      window.location.href = fallback;
+    } else {
+      document.getElementById("msg").textContent = "Enlace inválido o expirado. Volvé a la app e iniciá sesión de nuevo.";
+      document.getElementById("openApp").style.display = "none";
+    }
+  </script>
+</body>
+</html>
