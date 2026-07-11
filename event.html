@@ -25,12 +25,16 @@ body { background-color: #0f0f0f !important; color: #fff !important; padding-top
 .nav-brand { display: flex; align-items: center; text-decoration: none; gap: 12px; }
 .nav-logo { width: auto !important; height: 24px !important; filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.4)); }
 .nav-name { color: #fff !important; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; font-style: italic; letter-spacing: -0.5px; }
-.nav-links { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.nav-links {
+            display: flex; gap: 6px; list-style: none; margin: 0; padding: 0;
+            flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+        }
+        .nav-links::-webkit-scrollbar { display: none; }
 .nav-links a {
-    color: rgba(255, 255, 255, 0.7) !important; text-decoration: none !important; padding: 8px 16px !important; border-radius: 30px !important;
-    font-size: 0.85rem !important; font-weight: 700 !important; transition: all 0.3s !important; border: 1px solid transparent !important;
-    margin: 0 !important; text-transform: uppercase !important;
-}
+    color: rgba(255, 255, 255, 0.7) !important; text-decoration: none !important; padding: 8px 14px !important; border-radius: 30px !important;
+    font-size: 0.8rem !important; font-weight: 700 !important; transition: all 0.3s !important; border: 1px solid transparent !important;
+    margin: 0 !important; text-transform: uppercase !important; white-space: nowrap; flex-shrink: 0;
+        }
 .nav-links a:hover { background: rgba(255, 255, 255, 0.05) !important; color: #fff !important; }
 .nav-links a.active { background: #00aaff !important; color: #fff !important; }
 

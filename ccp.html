@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title data-i18n="ccp_page_title">CCP | Convoyrama</title>
+    <meta name="description" content="CCP - Convoyrama Convoy Protocol. Estandar para convoys en ATS y ETS2.">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="icon" href="./assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/images/favicon.png">
+    <style>
+        :root {
+            --nav-bg: rgba(18, 18, 18, 0.85);
+            --accent: #00aaff;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --footer-bg: #0a0a0a;
+        }
+
+        body {
+            background-color: #0f0f0f;
+            margin: 0;
+            padding-top: 100px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: var(--text-main);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .modern-header {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 1200px;
+            z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 50px; transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding: 0 !important;
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 8px 25px; }
+        .nav-brand { display: flex; align-items: center; text-decoration: none; gap: 12px; }
+        .nav-logo { width: auto; height: 24px; filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.4)); }
+        .nav-name { color: #fff; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; font-style: italic; letter-spacing: -0.5px; }
+        .nav-links {
+            display: flex; gap: 6px; list-style: none; margin: 0; padding: 0;
+            flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+        }
+        .nav-links::-webkit-scrollbar { display: none; }
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7); text-decoration: none; padding: 8px 14px; border-radius: 30px;
+            font-size: 0.8rem; font-weight: 700; transition: all 0.3s; border: 1px solid transparent !important;
+            margin: 0 !important; text-transform: uppercase; white-space: nowrap; flex-shrink: 0;
+        }
+        .nav-links a:hover { background: rgba(255, 255, 255, 0.05); color: #fff !important; }
+        .nav-links a.active { background: var(--accent); color: #fff !important; }
+
+        .lang-selector { display: flex; gap: 6px; margin-left: 15px; align-items: center; }
+        .lang-btn {
+            color: rgba(255, 255, 255, 0.5); font-size: 0.7rem; font-weight: 800; cursor: pointer; padding: 4px 8px;
+            border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s; user-select: none;
+            background: rgba(255, 255, 255, 0.05); text-decoration: none; line-height: 1;
+        }
+        .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
+        .lang-btn.active { color: #fff; background: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+
+        /* HERO */
+        .ccp-hero { padding: 60px 20px 20px; text-align: center; background: radial-gradient(circle at center, rgba(0, 170, 255, 0.08) 0%, transparent 70%); }
+        .ccp-badge {
+            display: inline-block; background: rgba(0, 170, 255, 0.1); border: 1px solid var(--accent); color: var(--accent);
+            font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px;
+            border-radius: 20px; margin-bottom: 22px;
+        }
+        .ccp-title { font-size: 4rem; font-weight: 900; font-style: italic; letter-spacing: -2px; margin: 0; text-transform: uppercase; color: #fff; text-shadow: 0 0 30px rgba(0, 170, 255, 0.35); }
+        .ccp-hero-subtitle { color: var(--accent); font-weight: 900; font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase; margin: 6px 0 22px; font-style: italic; }
+        .ccp-tagline { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.05em; font-style: italic; text-transform: uppercase; color: #fff; margin: 0 0 16px; }
+        .ccp-intro { font-weight: 400; font-size: 1rem; line-height: 1.7; margin: 0 auto; max-width: 680px; color: var(--text-muted); }
+
+        /* TABS */
+        .ccp-tabs-container { max-width: 900px; margin: 40px auto 0; padding: 0 20px 70px; }
+        .ccp-tabs { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 34px; }
+        .ccp-tab {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-muted);
+            padding: 10px 20px; border-radius: 30px; font-weight: 800; font-size: 0.78rem; text-transform: uppercase;
+            letter-spacing: 0.4px; cursor: pointer; transition: all 0.25s; font-style: italic; font-family: inherit;
+        }
+        .ccp-tab:hover { color: #fff; border-color: var(--accent); }
+        .ccp-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 15px rgba(0, 170, 255, 0.3); }
+
+        .ccp-panel { display: none; text-align: left; }
+        .ccp-panel.active { display: block; animation: ccpFadeIn 0.3s ease; }
+        @keyframes ccpFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .ccp-panel-desc { color: var(--text-muted); font-size: 1rem; line-height: 1.65; margin: 0 0 22px; padding-bottom: 22px; border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+
+        .ccp-note { background: rgba(0, 170, 255, 0.05); border: 1px dashed var(--accent); padding: 14px 18px; border-radius: 8px; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 26px; line-height: 1.5; }
+        .ccp-note strong { color: var(--accent); display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
+
+        .ccp-group-label { color: #666; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin: 34px 0 14px; }
+        .ccp-group-label:first-of-type { margin-top: 0; }
+
+        .ccp-section {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 14px;
+            padding: 20px 22px; margin-bottom: 16px;
+        }
+        .ccp-section h3 { color: var(--accent); font-size: 0.9rem; text-transform: uppercase; font-style: italic; font-weight: 900; margin: 0 0 14px; letter-spacing: 0.4px; }
+        .ccp-section ul { margin: 0; padding: 0; list-style: none; }
+        .ccp-section li { position: relative; padding-left: 20px; margin-bottom: 9px; font-size: 0.88rem; line-height: 1.55; color: #ddd; }
+        .ccp-section li:last-child { margin-bottom: 0; }
+        .ccp-section li::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-weight: 900; }
+
+        .architect { color: #00ff41; font-family: 'Roboto Mono', monospace; font-weight: bold; text-shadow: 0 0 5px rgba(0, 255, 65, 0.3); }
+
+        .modern-footer { background: var(--footer-bg); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 20px 20px; margin-top: 80px; }
+        .footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; }
+        .footer-brand h2 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--accent); font-style: italic; font-weight: 900; }
+        .footer-brand p { color: #666; font-size: 0.75rem; line-height: 1.4; max-width: 250px; }
+        .footer-links h4 { margin: 0 0 12px 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: #888; }
+        .footer-links ul { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 6px; }
+        .footer-links a { color: #666; text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-bottom { max-width: 1000px; margin: 30px auto 0; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.03); display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #444; }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 10px; }
+        .menu-toggle span { width: 20px; height: 2px; background: #fff; border-radius: 2px; transition: 0.3s; }
+
+        @media (max-width: 950px) {
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: absolute; top: 70px; right: 0; width: 200px; background: rgba(18,18,18,0.95);
+                backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+                flex-direction: column; padding: 15px; gap: 5px; opacity: 0; transform: translateY(-10px);
+                pointer-events: none; transition: all 0.3s ease;
+            }
+            .nav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+            .ccp-title { font-size: 2.6rem; }
+        }
+        @media (max-width: 600px) { .footer-content { grid-template-columns: 1fr; text-align: center; } .footer-brand p { margin: 0 auto; } .footer-bottom { flex-direction: column; gap: 15px; text-align: center; } }
+    </style>
+</head>
+<body>
+    <header class="modern-header">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <img src="assets/images/cr.png" alt="Convoyrama Logo" class="nav-logo">
+                <span class="nav-name">Convoyrama</span>
+            </a>
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+                <div class="lang-selector">
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="es">ES</button>
+                    <button class="lang-btn" data-lang="pt">PT</button>
+                </div>
+            </div>
+            <nav class="nav-links" id="nav-list">
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="pitstop.html" data-i18n="nav_pitstop">PitStop</a>
+                <a href="lagdrive.html" data-i18n="nav_lagdrive">LAGDrive</a>
+                <a href="lagfm.html" data-i18n="nav_lagfm">LAG·FM</a>
+                <a href="tuppertruck.html" data-i18n="nav_tuppertruck">TupperTruck</a>
+                <a href="event.html" data-i18n="nav_flyer">Flyer</a>
+                <a href="lagid.html" data-i18n="nav_lagid">LAG-ID</a>
+                <a href="lagtmp.html" data-i18n="nav_lagtmp">LAGTMP</a>
+                <a href="ccp.html" class="active" data-i18n="nav_ccp">CCP</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="ccp-hero">
+            <div class="ccp-badge" data-i18n="ccp_status">BORRADOR — EN REVISIÓN</div>
+            <h1 class="ccp-title">CCP</h1>
+            <div class="ccp-hero-subtitle" data-i18n="ccp_hero_subtitle">CONVOYRAMA CONVOY PROTOCOL</div>
+            <div class="ccp-tagline" data-i18n="ccp_tagline">UN SOLO ESTÁNDAR PARA RODAR JUNTOS</div>
+            <p class="ccp-intro" data-i18n="ccp_intro">El CCP es un protocolo independiente de CONVOYRAMA para estandarizar convoys, tanto en servidores de TruckersMP como fuera de él. En servidores de TMP, las reglas oficiales de TruckersMP siempre tienen prioridad sobre el CCP.</p>
+        </div>
+
+        <div class="ccp-tabs-container">
+            <div class="ccp-tabs" role="tablist">
+                <button class="ccp-tab active" data-tab="clasico" data-i18n="ccp_tab_clasico">Convoy Clásico</button>
+                <button class="ccp-tab" data-tab="ciegas" data-i18n="ccp_tab_ciegas">Convoy a Ciegas</button>
+                <button class="ccp-tab" data-tab="deriva" data-i18n="ccp_tab_deriva">Convoy a la Deriva</button>
+                <button class="ccp-tab" data-tab="cruzado" data-i18n="ccp_tab_cruzado">Convoy Cruzado</button>
+            </div>
+
+            <!-- CONVOY CLÁSICO -->
+            <div class="ccp-panel active" id="panel-clasico">
+                <p class="ccp-panel-desc" data-i18n="ccp_desc_clasico">Todos los participantes salen juntos, siguen los puntos de ruta designados y llegan al lugar designado. Es la modalidad base del convoy.</p>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_time">Puntualidad y Tiempos</h3>
+                    <ul>
+                        <li data-i18n="ccp_time_1">Salir puntual a la hora acordada.</li>
+                        <li data-i18n="ccp_time_2">Entre la hora de reunión y la salida debe haber entre 15 y 30 minutos como máximo.</li>
+                        <li data-i18n="ccp_time_3">El convoy no debe demorar más de 1 hora desde la partida hasta la llegada a destino.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_dep">Lugar de Salida</h3>
+                    <ul>
+                        <li data-i18n="ccp_dep_1">El punto de salida debe tener viaje rápido directo disponible. No debe requerir conducir largos tramos para llegar a él.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-group-label" data-i18n="ccp_h_during">Durante el Convoy</div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_marcha">Marcha</h3>
+                    <ul>
+                        <li data-i18n="ccp_marcha_1">Una vez que el convoy parte, no se detiene.</li>
+                        <li data-i18n="ccp_marcha_2">Mantener una velocidad adecuada y conducción predecible. Prohibidas las frenadas bruscas.</li>
+                        <li data-i18n="ccp_marcha_3">Conocer y seguir las reglas de tránsito universales.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_formacion">Formación</h3>
+                    <ul>
+                        <li data-i18n="ccp_form_1">Los vehículos lentos o inestables (ej. dobles/triples remolques, cargas especiales) deben ir hacia el final del convoy, para no frenar al grupo.</li>
+                        <li data-i18n="ccp_form_2">No se deben formar "barrigas": espacios grandes entre miembros en medio del convoy.</li>
+                        <li data-i18n="ccp_form_3">Si alguien se atrasa y deja un espacio, debe acelerar y pegarse a la cola del convoy.</li>
+                        <li data-i18n="ccp_form_4">Si no lo hace, los que van detrás pueden adelantarlo para cerrar el espacio y quedar pegados a la cola.</li>
+                        <li data-i18n="ccp_form_5">Si el espacio se vuelve demasiado grande, se considera que ese participante ya no forma parte del convoy.</li>
+                        <li data-i18n="ccp_form_6">El último debe ir pegado a la cola del convoy.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_fuga">Adelantamientos ("Fuga")</h3>
+                    <ul>
+                        <li data-i18n="ccp_fuga_1">Solo se puede adelantar cuando el o los líderes del convoy cantan "fuga", liberando el convoy.</li>
+                        <li data-i18n="ccp_fuga_2">No adelantar en curvas ni en zonas de peligro.</li>
+                        <li data-i18n="ccp_fuga_3">El que es adelantado debe bajar la velocidad y permitir la maniobra, no competir con quien lo está adelantando una vez que la maniobra comenzó.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_incidencias">Incidencias</h3>
+                    <ul>
+                        <li data-i18n="ccp_inc_1">Si alguien se queda atrás o se desconecta, se debe tener un protocolo acordado (ej: esperar en un lugar seguro, continuar y que se reincorpore, etc.).</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_comm">Comunicación</h3>
+                    <ul>
+                        <li data-i18n="ccp_comm_1">Silenciar el micrófono cuando no se habla.</li>
+                        <li data-i18n="ccp_comm_2">No hacer ruidos molestos ni interrumpir.</li>
+                        <li data-i18n="ccp_comm_3">En los momentos de organización (dar la orden de salida, despedida, etc.) mantener silencio de radio salvo lo estrictamente necesario, para no tapar con charla sin razón al organizador o líder que está dando indicaciones.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CONVOY A CIEGAS -->
+            <div class="ccp-panel" id="panel-ciegas">
+                <p class="ccp-panel-desc" data-i18n="ccp_desc_ciegas">El o los líderes conocen la ruta de antemano. El resto de los participantes no la conoce: solo deben seguir al líder sin saber a dónde se dirigen hasta llegar.</p>
+
+                <div class="ccp-note"><strong data-i18n="ccp_note_label">Variaciones respecto al Convoy Clásico</strong><span data-i18n="ccp_note_ciegas">Ninguna. Cambia únicamente el conocimiento de la ruta por parte de los seguidores — el resto del protocolo se mantiene igual.</span></div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_time">Puntualidad y Tiempos</h3>
+                    <ul>
+                        <li data-i18n="ccp_time_1">Salir puntual a la hora acordada.</li>
+                        <li data-i18n="ccp_time_2">Entre la hora de reunión y la salida debe haber entre 15 y 30 minutos como máximo.</li>
+                        <li data-i18n="ccp_time_3">El convoy no debe demorar más de 1 hora desde la partida hasta la llegada a destino.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_dep">Lugar de Salida</h3>
+                    <ul>
+                        <li data-i18n="ccp_dep_1">El punto de salida debe tener viaje rápido directo disponible. No debe requerir conducir largos tramos para llegar a él.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-group-label" data-i18n="ccp_h_during">Durante el Convoy</div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_marcha">Marcha</h3>
+                    <ul>
+                        <li data-i18n="ccp_marcha_1">Una vez que el convoy parte, no se detiene.</li>
+                        <li data-i18n="ccp_marcha_2">Mantener una velocidad adecuada y conducción predecible. Prohibidas las frenadas bruscas.</li>
+                        <li data-i18n="ccp_marcha_3">Conocer y seguir las reglas de tránsito universales.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_formacion">Formación</h3>
+                    <ul>
+                        <li data-i18n="ccp_form_1">Los vehículos lentos o inestables (ej. dobles/triples remolques, cargas especiales) deben ir hacia el final del convoy, para no frenar al grupo.</li>
+                        <li data-i18n="ccp_form_2">No se deben formar "barrigas": espacios grandes entre miembros en medio del convoy.</li>
+                        <li data-i18n="ccp_form_3">Si alguien se atrasa y deja un espacio, debe acelerar y pegarse a la cola del convoy.</li>
+                        <li data-i18n="ccp_form_4">Si no lo hace, los que van detrás pueden adelantarlo para cerrar el espacio y quedar pegados a la cola.</li>
+                        <li data-i18n="ccp_form_5">Si el espacio se vuelve demasiado grande, se considera que ese participante ya no forma parte del convoy.</li>
+                        <li data-i18n="ccp_form_6">El último debe ir pegado a la cola del convoy.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_fuga">Adelantamientos ("Fuga")</h3>
+                    <ul>
+                        <li data-i18n="ccp_fuga_1">Solo se puede adelantar cuando el o los líderes del convoy cantan "fuga", liberando el convoy.</li>
+                        <li data-i18n="ccp_fuga_2">No adelantar en curvas ni en zonas de peligro.</li>
+                        <li data-i18n="ccp_fuga_3">El que es adelantado debe bajar la velocidad y permitir la maniobra, no competir con quien lo está adelantando una vez que la maniobra comenzó.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_incidencias">Incidencias</h3>
+                    <ul>
+                        <li data-i18n="ccp_inc_1">Si alguien se queda atrás o se desconecta, se debe tener un protocolo acordado (ej: esperar en un lugar seguro, continuar y que se reincorpore, etc.).</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_comm">Comunicación</h3>
+                    <ul>
+                        <li data-i18n="ccp_comm_1">Silenciar el micrófono cuando no se habla.</li>
+                        <li data-i18n="ccp_comm_2">No hacer ruidos molestos ni interrumpir.</li>
+                        <li data-i18n="ccp_comm_3">En los momentos de organización (dar la orden de salida, despedida, etc.) mantener silencio de radio salvo lo estrictamente necesario, para no tapar con charla sin razón al organizador o líder que está dando indicaciones.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CONVOY A LA DERIVA -->
+            <div class="ccp-panel" id="panel-deriva">
+                <p class="ccp-panel-desc" data-i18n="ccp_desc_deriva">Ni siquiera el líder conoce la ruta de antemano: la va improvisando sobre la marcha, doblando donde se le ocurre. Solo se conoce el destino final.</p>
+
+                <div class="ccp-note"><strong data-i18n="ccp_note_label">Variaciones respecto al Convoy Clásico</strong><span data-i18n="ccp_note_deriva">Ninguna. Igual que en Convoy a Ciegas, solo cambia cómo se define la ruta — el resto del protocolo se mantiene igual.</span></div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_time">Puntualidad y Tiempos</h3>
+                    <ul>
+                        <li data-i18n="ccp_time_1">Salir puntual a la hora acordada.</li>
+                        <li data-i18n="ccp_time_2">Entre la hora de reunión y la salida debe haber entre 15 y 30 minutos como máximo.</li>
+                        <li data-i18n="ccp_time_3">El convoy no debe demorar más de 1 hora desde la partida hasta la llegada a destino.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_dep">Lugar de Salida</h3>
+                    <ul>
+                        <li data-i18n="ccp_dep_1">El punto de salida debe tener viaje rápido directo disponible. No debe requerir conducir largos tramos para llegar a él.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-group-label" data-i18n="ccp_h_during">Durante el Convoy</div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_marcha">Marcha</h3>
+                    <ul>
+                        <li data-i18n="ccp_marcha_1">Una vez que el convoy parte, no se detiene.</li>
+                        <li data-i18n="ccp_marcha_2">Mantener una velocidad adecuada y conducción predecible. Prohibidas las frenadas bruscas.</li>
+                        <li data-i18n="ccp_marcha_3">Conocer y seguir las reglas de tránsito universales.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_formacion">Formación</h3>
+                    <ul>
+                        <li data-i18n="ccp_form_1">Los vehículos lentos o inestables (ej. dobles/triples remolques, cargas especiales) deben ir hacia el final del convoy, para no frenar al grupo.</li>
+                        <li data-i18n="ccp_form_2">No se deben formar "barrigas": espacios grandes entre miembros en medio del convoy.</li>
+                        <li data-i18n="ccp_form_3">Si alguien se atrasa y deja un espacio, debe acelerar y pegarse a la cola del convoy.</li>
+                        <li data-i18n="ccp_form_4">Si no lo hace, los que van detrás pueden adelantarlo para cerrar el espacio y quedar pegados a la cola.</li>
+                        <li data-i18n="ccp_form_5">Si el espacio se vuelve demasiado grande, se considera que ese participante ya no forma parte del convoy.</li>
+                        <li data-i18n="ccp_form_6">El último debe ir pegado a la cola del convoy.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_fuga">Adelantamientos ("Fuga")</h3>
+                    <ul>
+                        <li data-i18n="ccp_fuga_1">Solo se puede adelantar cuando el o los líderes del convoy cantan "fuga", liberando el convoy.</li>
+                        <li data-i18n="ccp_fuga_2">No adelantar en curvas ni en zonas de peligro.</li>
+                        <li data-i18n="ccp_fuga_3">El que es adelantado debe bajar la velocidad y permitir la maniobra, no competir con quien lo está adelantando una vez que la maniobra comenzó.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_incidencias">Incidencias</h3>
+                    <ul>
+                        <li data-i18n="ccp_inc_1">Si alguien se queda atrás o se desconecta, se debe tener un protocolo acordado (ej: esperar en un lugar seguro, continuar y que se reincorpore, etc.).</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_comm">Comunicación</h3>
+                    <ul>
+                        <li data-i18n="ccp_comm_1">Silenciar el micrófono cuando no se habla.</li>
+                        <li data-i18n="ccp_comm_2">No hacer ruidos molestos ni interrumpir.</li>
+                        <li data-i18n="ccp_comm_3">En los momentos de organización (dar la orden de salida, despedida, etc.) mantener silencio de radio salvo lo estrictamente necesario, para no tapar con charla sin razón al organizador o líder que está dando indicaciones.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CONVOY CRUZADO -->
+            <div class="ccp-panel" id="panel-cruzado">
+                <p class="ccp-panel-desc" data-i18n="ccp_desc_cruzado">En lugar de un único punto de salida, se designan de antemano varios puntos de salida controlados. No es que cada quien salga de donde quiera: los puntos son fijos y acordados igual que en el Clásico, solo que hay más de uno. Pensado principalmente para facilitar la participación de quienes no tienen ciertos DLCs de mapa, permitiendo que cada grupo salga desde un punto dentro de su territorio disponible. El tramo final de la ruta se hace en conjunto, todos como un solo convoy, hasta el destino.</p>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_time">Puntualidad y Tiempos</h3>
+                    <ul>
+                        <li data-i18n="ccp_cruz_time_1">Salir puntual a la hora acordada desde tu punto de origen.</li>
+                        <li data-i18n="ccp_cruz_time_2">Cada punto designado tiene su propia hora de reunión y salida, calculadas para que todos los grupos lleguen al punto de confluencia a la misma hora.</li>
+                        <li data-i18n="ccp_time_3">El convoy no debe demorar más de 1 hora desde la partida hasta la llegada a destino.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_dep">Lugar de Salida</h3>
+                    <ul>
+                        <li data-i18n="ccp_cruz_dep_1">En vez de un único punto, se designan de antemano varios puntos de salida controlados (nunca "cada quien desde donde quiera"). Pensado principalmente para facilitar la participación de quienes no tienen ciertos DLCs de mapa.</li>
+                        <li data-i18n="ccp_cruz_dep_2">Cada punto designado debe cumplir igual la regla de viaje rápido directo disponible.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-group-label" data-i18n="ccp_h_during">Durante el Convoy</div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_marcha">Marcha</h3>
+                    <ul>
+                        <li data-i18n="ccp_marcha_1">Una vez que el convoy parte, no se detiene.</li>
+                        <li data-i18n="ccp_marcha_2">Mantener una velocidad adecuada y conducción predecible. Prohibidas las frenadas bruscas.</li>
+                        <li data-i18n="ccp_marcha_3">Conocer y seguir las reglas de tránsito universales.</li>
+                        <li data-i18n="ccp_cruz_marcha_note">Estas reglas aplican a cada tramo individual hasta el punto de confluencia, y luego al convoy ya unido en el tramo final.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_formacion">Formación</h3>
+                    <ul>
+                        <li data-i18n="ccp_cruz_form_note">Las reglas de formación aplican desde el punto de confluencia en adelante, ya que ahí es cuando todos los grupos pasan a ser un solo convoy hasta el destino.</li>
+                        <li data-i18n="ccp_form_1">Los vehículos lentos o inestables (ej. dobles/triples remolques, cargas especiales) deben ir hacia el final del convoy, para no frenar al grupo.</li>
+                        <li data-i18n="ccp_form_2">No se deben formar "barrigas": espacios grandes entre miembros en medio del convoy.</li>
+                        <li data-i18n="ccp_form_3">Si alguien se atrasa y deja un espacio, debe acelerar y pegarse a la cola del convoy.</li>
+                        <li data-i18n="ccp_form_4">Si no lo hace, los que van detrás pueden adelantarlo para cerrar el espacio y quedar pegados a la cola.</li>
+                        <li data-i18n="ccp_form_5">Si el espacio se vuelve demasiado grande, se considera que ese participante ya no forma parte del convoy.</li>
+                        <li data-i18n="ccp_form_6">El último debe ir pegado a la cola del convoy.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_fuga">Adelantamientos ("Fuga")</h3>
+                    <ul>
+                        <li data-i18n="ccp_fuga_1">Solo se puede adelantar cuando el o los líderes del convoy cantan "fuga", liberando el convoy.</li>
+                        <li data-i18n="ccp_fuga_2">No adelantar en curvas ni en zonas de peligro.</li>
+                        <li data-i18n="ccp_fuga_3">El que es adelantado debe bajar la velocidad y permitir la maniobra, no competir con quien lo está adelantando una vez que la maniobra comenzó.</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_incidencias">Incidencias</h3>
+                    <ul>
+                        <li data-i18n="ccp_inc_1">Si alguien se queda atrás o se desconecta, se debe tener un protocolo acordado (ej: esperar en un lugar seguro, continuar y que se reincorpore, etc.).</li>
+                    </ul>
+                </div>
+
+                <div class="ccp-section">
+                    <h3 data-i18n="ccp_h_comm">Comunicación</h3>
+                    <ul>
+                        <li data-i18n="ccp_comm_1">Silenciar el micrófono cuando no se habla.</li>
+                        <li data-i18n="ccp_comm_2">No hacer ruidos molestos ni interrumpir.</li>
+                        <li data-i18n="ccp_comm_3">En los momentos de organización (dar la orden de salida, despedida, etc.) mantener silencio de radio salvo lo estrictamente necesario, para no tapar con charla sin razón al organizador o líder que está dando indicaciones.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>CONVOYRAMA</h2>
+                <p data-i18n="footer_tagline">Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="footer_gadgets">Gadgets</h4>
+                <ul>
+                    <li><a href="pitstop.html">PitStop</a></li>
+                    <li><a href="tuppertruck.html">TupperTruck</a></li>
+                    <li><a href="lagdrive.html">LAGDrive</a></li>
+                    <li><a href="lagfm.html">LAG·FM</a></li>
+                    <li><a href="event.html">Flyer</a></li>
+                    <li><a href="lagid.html">LAG-ID</a></li>
+                    <li><a href="lagtmp.html">LAGTMP</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="footer_community">Comunidad</h4>
+                <ul>
+                    <li><a href="https://discord.gg/hjJcyREthH">CONVOYRAMA</a></li>
+                    <li><a href="https://truckersmp.com">TruckersMP</a></li>
+                    <li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="footer_serious">Cosas Serias</h4>
+                <ul>
+                    <li><a href="developers.html">API / Developers</a></li>
+                    <li><a href="#" id="helpLink" data-i18n="footer_help">¿Necesitas ayuda?</a></li>
+                    <li><a href="mantenimiento.html" data-i18n="footer_status">Estado</a></li>
+                    <li><a href="https://github.com/convoyrama/archive" target="_blank" data-i18n="footer_archive">Archivo</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div data-i18n="footer_rights">© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main-i18n.js"></script>
+    <script>
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+        mobileMenu.addEventListener('click', () => { mobileMenu.classList.toggle('open'); navList.classList.toggle('open'); });
+
+        const ccpTabs = document.querySelectorAll('.ccp-tab');
+        const ccpPanels = document.querySelectorAll('.ccp-panel');
+        ccpTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                ccpTabs.forEach(t => t.classList.remove('active'));
+                ccpPanels.forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
