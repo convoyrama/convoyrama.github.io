@@ -197,6 +197,69 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* UPDATES / BITÁCORA */
+        .section-updates {
+            max-width: 1000px;
+            margin: 10px auto 50px;
+            padding: 0 20px;
+        }
+
+        .updates-title {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin: 0 0 20px;
+        }
+
+        .updates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .update-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--accent);
+            border-radius: 10px;
+            padding: 18px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .update-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .update-date {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .update-card h3 {
+            margin: 0 0 8px;
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .update-card p {
+            margin: 0;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
         /* FEATURE GRID */
         .main-content {
             max-width: 1100px;
@@ -438,6 +501,32 @@
             <div class="btn-group" style="margin: 25px 0;">
                 <a href="https://discord.gg/hjJcyREthH" target="_blank" class="btn-discord" data-i18n="btn_discord">UNIRSE AL DISCORD DE CONVOYRAMA</a>
                 <a href="https://www.youtube.com/@convoyrama" target="_blank" class="btn-youtube" data-i18n="btn_youtube">VISITAR CANAL DE YOUTUBE</a>
+            </div>
+        </section>
+
+        <section class="section-updates">
+            <h2 class="updates-title" data-i18n="updates_title">Últimas Novedades</h2>
+            <div class="updates-grid">
+                <div class="update-card">
+                    <span class="update-date">11 JUL 2026</span>
+                    <h3 data-i18n="update_1_title">LAGDrive es de Código Abierto</h3>
+                    <p data-i18n="update_1_desc">El repositorio ya es público en GitHub, con soporte nativo para Windows y Linux.</p>
+                </div>
+                <div class="update-card">
+                    <span class="update-date">24 JUN 2026</span>
+                    <h3 data-i18n="update_2_title">LAGTMP es de Código Abierto</h3>
+                    <p data-i18n="update_2_desc">El launcher nativo de TruckersMP para Linux también abrió su repositorio al público.</p>
+                </div>
+                <div class="update-card">
+                    <span class="update-date">01 JUN 2026</span>
+                    <h3 data-i18n="update_3_title">Videos con IA en YouTube</h3>
+                    <p data-i18n="update_3_desc">Arrancamos una serie de videos musicales hechos con IA, humorísticos, como homenaje a la comunidad.</p>
+                </div>
+                <div class="update-card">
+                    <span class="update-date">20 MAY 2026</span>
+                    <h3 data-i18n="update_4_title">LAG·FM es de Código Abierto</h3>
+                    <p data-i18n="update_4_desc">La radio oficial de la comunidad abrió su repositorio al público en GitHub.</p>
+                </div>
             </div>
         </section>
 

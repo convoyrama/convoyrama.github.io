@@ -88,12 +88,12 @@
             box-shadow: 0 4px 15px rgba(0, 170, 255, 0.3); transition: transform 0.2s, background-color 0.2s; margin-top: 10px;
         }
         .download-button:hover { transform: translateY(-3px); background-color: #0088cc; }
-        .download-button-testing {
+        .github-info {
             display: inline-block; background-color: #1a1a1a; color: #888 !important; padding: 10px 20px;
             font-size: 0.8rem; font-weight: 900; text-transform: uppercase; text-decoration: none; border-radius: 6px;
             transition: all 0.2s; margin-top: 15px; border: 1px solid #333;
         }
-        .download-button-testing:hover { background-color: #222; color: #fff !important; border-color: #444; }
+        .github-info:hover { background-color: #222; color: #fff !important; border-color: #444; }
         
         .alpha-notice { background: rgba(0, 170, 255, 0.05); border: 1px dashed var(--accent); padding: 15px; margin: 20px auto; max-width: 600px; font-size: 0.9rem; border-radius: 6px; }
         .alpha-notice strong { color: var(--accent); display: block; margin-bottom: 5px; text-transform: uppercase; }
@@ -129,8 +129,6 @@
         .feature-item:hover::before { transform: scaleX(1); }
         .feature-item strong { display: block; color: var(--accent); font-size: 0.95rem; text-transform: uppercase; margin-bottom: 8px; font-style: italic; }
         .feature-item p { margin: 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
-
-        .version-badge { background-color: #141414; color: #fff; padding: 2px 8px; font-size: 0.7rem; font-weight: 900; vertical-align: middle; margin-left: 10px; border: 1px solid var(--accent); border-radius: 4px; }
 
         /* FOOTER */
         .modern-footer { background: var(--footer-bg); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 20px 20px; margin-top: 80px; }
@@ -198,19 +196,18 @@
                 <img src="lagdrive/2.png" alt="LAGDrive 2">
                 <img src="lagdrive/3.png" alt="LAGDrive 3">
             </div>
-            <h1 class="app-title"><span id="version-badge" class="version-badge">v0.3.0</span></h1>
             <p class="app-tagline" data-i18n="ld_tagline">CONECTA. SINCRONIZA. CONDUCE.</p>
-            
+
             <div class="app-description" data-i18n="ld_desc">La solución definitiva para compartir mods de forma directa. Conecta con otros conductores y mantén tus archivos actualizados al instante.</div>
 
             <div class="alpha-notice">
                 <strong data-i18n="ld_alpha_title">⚠️ VERSIÓN ALPHA EXPERIMENTAL</strong>
-                <span data-i18n="ld_alpha_desc">La versión 0.3.0 es experimental. Reporta errores en el Discord de CONVOYRAMA.</span>
+                <span data-i18n="ld_alpha_desc">LAGDrive es experimental. Reporta errores en el Discord de CONVOYRAMA.</span>
             </div>
-            
-            <a href="./lagdrive/LAGDrive_0.3.0_x64-setup.exe" id="download-link" class="download-button" data-i18n="ld_download">Descarga LAGDrive</a>
+
+            <a href="https://github.com/convoyrama/lagdrive/releases" target="_blank" class="download-button" data-i18n="ld_download">Descargar LAGDrive (Windows/Linux)</a>
             <br>
-            <a href="./lagdrive/LAGDrive_testing.exe" class="download-button-testing">Versión Testing (Beta)</a>
+            <a href="https://github.com/convoyrama/lagdrive" target="_blank" class="github-info" data-i18n="ld_source">Ver Código Fuente</a>
 
             <div class="feature-grid">
                 <div class="feature-item"><strong data-i18n="ld_f1_title">Sin Intermediarios</strong><p data-i18n="ld_f1_desc">Transferencia directa entre jugadores mediante P2P.</p></div>
@@ -266,32 +263,6 @@
         const mobileMenu = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         mobileMenu.addEventListener('click', () => { mobileMenu.classList.toggle('open'); navList.classList.toggle('open'); });
-
-        async function updateDownloadInfo() {
-            try {
-                const response = await fetch('./lagdrive/version');
-                if (!response.ok) return;
-                const version = (await response.text()).trim();
-                if (version) {
-                    const downloadLink = document.getElementById('download-link');
-                    const versionBadge = document.getElementById('version-badge');
-                    downloadLink.href = `./lagdrive/LAGDrive_${version}_x64-setup.exe`;
-                    versionBadge.textContent = `v${version}`;
-                    
-                    // Update version in text if it exists (like "Download 0.2.1")
-                    const currentText = downloadLink.textContent;
-                    const versionRegex = /\d+\.\d+\.\d+/;
-                    if (versionRegex.test(currentText)) {
-                        downloadLink.textContent = currentText.replace(versionRegex, version);
-                    }
-                }
-            } catch (error) { console.log('Nota: No se pudo actualizar la versión dinámicamente.'); }
-        }
-        updateDownloadInfo();
-    </script>
-</body>
-</html>
-);
     </script>
 </body>
 </html>
