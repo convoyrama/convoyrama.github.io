@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Convoyrama | ConvoyRun</title>
+    <meta name="description" content="ConvoyRun - Convoy event flyer generator for ATS/ETS2">
+    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="icon" href="./assets/images/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/images/favicon.png">
+    <style>
+        :root {
+            --nav-bg: rgba(18, 18, 18, 0.85);
+            --accent: #00aaff;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --footer-bg: #0a0a0a;
+        }
+
+        body {
+            background-color: #0f0f0f;
+            margin: 0;
+            padding-top: 100px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: var(--text-main);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .modern-header {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 1200px;
+            z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 50px; transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding: 0 !important;
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 8px 25px; }
+        .nav-brand { display: flex; align-items: center; text-decoration: none; gap: 12px; }
+        .nav-logo { width: auto; height: 24px; filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.4)); }
+        .nav-name { color: #fff; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; font-style: italic; letter-spacing: -0.5px; }
+        .nav-links {
+            display: flex; gap: 6px; list-style: none; margin: 0; padding: 0;
+            flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+        }
+        .nav-links::-webkit-scrollbar { display: none; }
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7); text-decoration: none; padding: 8px 14px; border-radius: 30px;
+            font-size: 0.8rem; font-weight: 700; transition: all 0.3s; border: 1px solid transparent !important;
+            margin: 0 !important; text-transform: uppercase; white-space: nowrap; flex-shrink: 0;
+        }
+        .nav-links a:hover { background: rgba(255, 255, 255, 0.05); color: #fff !important; }
+        .nav-links a.active { background: var(--accent); color: #fff !important; }
+
+        .lang-selector { display: flex; gap: 6px; margin-left: 15px; align-items: center; }
+        .lang-btn {
+            color: rgba(255, 255, 255, 0.5); font-size: 0.7rem; font-weight: 800; cursor: pointer; padding: 4px 8px;
+            border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s; user-select: none;
+            background: rgba(255, 255, 255, 0.05); text-decoration: none; line-height: 1;
+        }
+        .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: var(--accent); }
+        .lang-btn.active { color: #fff; background: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+
+        .architect { color: #00ff41; font-family: 'Roboto Mono', monospace; font-weight: bold; text-shadow: 0 0 5px rgba(0, 255, 65, 0.3); }
+
+        .download-container { text-align: center; padding: 10px 20px; max-width: 800px; margin: 0 auto; }
+        .app-logo { width: 320px; height: auto; margin: 0 auto 15px; display: block; }
+
+        .app-title { font-size: 3rem; font-weight: 900; margin: 0; text-transform: uppercase; font-style: italic; letter-spacing: -2px; color: #fff; }
+        .app-tagline { color: var(--accent); font-weight: 900; font-size: 1.4rem; letter-spacing: 0.1em; font-style: italic; text-transform: uppercase; margin: 4px 0; }
+        .app-description { font-weight: 400; font-size: 1.1rem; line-height: 1.6; margin: 10px auto 15px; max-width: 600px; color: var(--text-muted); }
+
+        .download-button {
+            display: inline-block; background-color: var(--accent); color: white !important; padding: 18px 45px;
+            font-size: 1.3rem; font-weight: 900; text-transform: uppercase; text-decoration: none; border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 170, 255, 0.3); transition: transform 0.2s, background-color 0.2s; margin-top: 10px;
+        }
+        .download-button:hover { transform: translateY(-3px); background-color: #0088cc; }
+
+        .github-info {
+            display: inline-block; background-color: #1a1a1a; color: #888 !important; padding: 10px 20px;
+            font-size: 0.8rem; font-weight: 900; text-transform: uppercase; text-decoration: none; border-radius: 6px;
+            transition: all 0.2s; margin-top: 15px; border: 1px solid #333;
+        }
+        .github-info:hover { background-color: #222; color: #fff !important; border-color: #444; }
+
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; text-align: left; }
+        .feature-item {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-8px);
+            border-color: rgba(0, 170, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .feature-item:hover::before { transform: scaleX(1); }
+        .feature-item strong { display: block; color: var(--accent); font-size: 0.95rem; text-transform: uppercase; margin-bottom: 8px; font-style: italic; }
+        .feature-item p { margin: 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+        .modern-footer { background: var(--footer-bg); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 20px 20px; margin-top: 80px; }
+        .footer-content { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; }
+        .footer-brand h2 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--accent); font-style: italic; font-weight: 900; }
+        .footer-brand p { color: #666; font-size: 0.75rem; line-height: 1.4; max-width: 250px; }
+        .footer-links h4 { margin: 0 0 12px 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: #888; }
+        .footer-links ul { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 6px; }
+        .footer-links a { color: #666; text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-bottom { max-width: 1000px; margin: 30px auto 0; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.03); display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: #444; }
+
+        .menu-toggle { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: 10px; }
+        .menu-toggle span { width: 20px; height: 2px; background: #fff; border-radius: 2px; transition: 0.3s; }
+
+        @media (max-width: 950px) {
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: absolute; top: 70px; right: 0; width: 200px; background: rgba(18,18,18,0.95);
+                backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+                flex-direction: column; padding: 15px; gap: 5px; opacity: 0; transform: translateY(-10px);
+                pointer-events: none; transition: all 0.3s ease;
+            }
+            .nav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) { .footer-content { grid-template-columns: 1fr; text-align: center; } .footer-brand p { margin: 0 auto; } .footer-bottom { flex-direction: column; gap: 15px; text-align: center; } }
+    </style>
+</head>
+<body>
+    <header class="modern-header">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <img src="assets/images/cr.png" alt="Convoyrama Logo" class="nav-logo">
+                <span class="nav-name">Convoyrama</span>
+            </a>
+            <div style="display: flex; align-items: center;">
+                <div class="menu-toggle" id="mobile-menu"><span></span><span></span><span></span></div>
+                <div class="lang-selector">
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="es">ES</button>
+                    <button class="lang-btn" data-lang="pt">PT</button>
+                </div>
+            </div>
+            <nav class="nav-links" id="nav-list">
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="pitstop.html" data-i18n="nav_pitstop">PitStop</a>
+                <a href="lagdrive.html" data-i18n="nav_lagdrive">LAGDrive</a>
+                <a href="lagfm.html" data-i18n="nav_lagfm">LAG·FM</a>
+                <a href="tuppertruck.html" data-i18n="nav_tuppertruck">TupperTruck</a>
+                <a href="convoyrun.html" class="active" data-i18n="nav_convoyrun">ConvoyRun</a>
+                <a href="lagid.html" data-i18n="nav_lagid">LAG-ID</a>
+                <a href="lagtmp.html" data-i18n="nav_lagtmp">LAGTMP</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="download-container">
+            <img src="convoyrun/texto.png" alt="ConvoyRun" class="app-logo">
+            <p class="app-tagline" data-i18n="cr_tagline">FLYERS DE CONVOY PARA ATS/ETS2</p>
+
+            <div class="app-description" data-i18n="cr_desc">Arma el flyer de tu convoy y obtén el texto listo para Discord y TruckersMP, todo desde tu escritorio.</div>
+
+            <a href="https://github.com/convoyrama/convoyrun/releases" target="_blank" class="download-button" data-i18n="cr_download">Descargar ConvoyRun (Windows/Linux)</a>
+            <br>
+            <a href="https://github.com/convoyrama/convoyrun" target="_blank" class="github-info" data-i18n="cr_source">Ver Código Fuente</a>
+
+            <div class="feature-grid">
+                <div class="feature-item"><strong data-i18n="cr_f1_title">Horarios Multi-Zona</strong><p data-i18n="cr_f1_desc">Timestamps de Discord que cada quien ve en su propia hora, y resumen para TMP agrupado por zona horaria.</p></div>
+                <div class="feature-item"><strong data-i18n="cr_f2_title">Canvas Editable</strong><p data-i18n="cr_f2_desc">Mapa, círculos de partida/destino, logo de tu VTC y 27 estilos de texto, todo ajustable a mano.</p></div>
+                <div class="feature-item"><strong data-i18n="cr_f3_title">Copiar y Listo</strong><p data-i18n="cr_f3_desc">Un clic genera el texto formateado para Discord y para TruckersMP, sin retipear horarios.</p></div>
+                <div class="feature-item"><strong data-i18n="cr_f4_title">Reutilizable</strong><p data-i18n="cr_f4_desc">Recargá un flyer viejo para reusar los datos si cambia la ruta o el mapa.</p></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>CONVOYRAMA</h2>
+                <p data-i18n="footer_tagline">Si el mod explota o tu camión cobra vida, nosotros no estábamos aquí.</p>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="footer_gadgets">Gadgets</h4>
+                <ul>
+                    <li><a href="pitstop.html">PitStop</a></li>
+                    <li><a href="tuppertruck.html">TupperTruck</a></li>
+                    <li><a href="lagdrive.html">LAGDrive</a></li>
+                    <li><a href="lagfm.html">LAG·FM</a></li>
+                    <li><a href="convoyrun.html">ConvoyRun</a></li>
+                    <li><a href="lagid.html">LAG-ID</a></li>
+                    <li><a href="lagtmp.html">LAGTMP</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="footer_community">Comunidad</h4>
+                <ul>
+                    <li><a href="https://discord.gg/hjJcyREthH">CONVOYRAMA</a></li>
+                    <li><a href="https://truckersmp.com">TruckersMP</a></li>
+                    <li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="footer_serious">Cosas Serias</h4>
+                <ul>
+                    <li><a href="developers.html">API / Developers</a></li>
+                    <li><a href="#" id="helpLink" data-i18n="footer_help">¿Necesitas ayuda?</a></li>
+                    <li><a href="mantenimiento.html" data-i18n="footer_status">Estado</a></li>
+                    <li><a href="https://github.com/convoyrama/archive" target="_blank" data-i18n="footer_archive">Archivo</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div data-i18n="footer_rights">© 2026 CONVOYRAMA. Casi todos los derechos reservados.</div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main-i18n.js"></script>
+    <script>
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+        mobileMenu.addEventListener('click', () => { mobileMenu.classList.toggle('open'); navList.classList.toggle('open'); });
+    </script>
+</body>
+</html>
