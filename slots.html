@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TURBO - Time Unified Reservation & Booking Organizer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a1a;
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(243, 156, 18, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(46, 204, 113, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        h1 .truck {
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        h1 .mp {
+            background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #4a5568;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .timezone-selector {
+            background: rgba(255,255,255,0.03);
+            padding: 14px 24px;
+            border-radius: 50px;
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
+        }
+
+        .timezone-selector label {
+            font-weight: 500;
+            color: #718096;
+            font-size: 0.85rem;
+        }
+
+        .timezone-selector select {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .timezone-selector select:hover {
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .timezone-selector select option {
+            background: #1a1a3e;
+            color: #fff;
+        }
+
+        .timezone-selector select:focus {
+            outline: none;
+            border-color: #f39c12;
+            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.15);
+        }
+
+        .current-display {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .current-time {
+            font-size: 6rem;
+            font-weight: 300;
+            color: #fff;
+            letter-spacing: 4px;
+            line-height: 1;
+            position: relative;
+            display: inline-block;
+        }
+
+        .current-time::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #2ecc71, transparent);
+            border-radius: 2px;
+        }
+
+        .current-time .blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0.3; }
+        }
+
+        .current-slot-info {
+            font-size: 1rem;
+            color: #718096;
+            margin-top: 25px;
+            font-weight: 400;
+        }
+
+        .current-slot-info strong {
+            color: #2ecc71;
+            font-weight: 600;
+        }
+
+        .current-slot-info .slot-range {
+            color: #4a5568;
+        }
+
+        .timeline-section {
+            position: relative;
+            padding: 0 70px;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            color: #718096;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(243, 156, 18, 0.1);
+            border-color: rgba(243, 156, 18, 0.3);
+            color: #f39c12;
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .nav-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .nav-btn.prev {
+            left: 0;
+        }
+
+        .nav-btn.next {
+            right: 0;
+        }
+
+        .timeline-container {
+            overflow: hidden;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .timeline {
+            display: flex;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .slot {
+            flex: 0 0 180px;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            border-right: 1px solid rgba(255,255,255,0.04);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .slot::before {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .slot::after {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 20px;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .slot:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .slot.current {
+            background: linear-gradient(180deg, rgba(46, 204, 113, 0.12) 0%, rgba(46, 204, 113, 0.02) 100%);
+        }
+
+        .slot.current::before {
+            background: #2ecc71;
+            box-shadow: 0 0 12px rgba(46, 204, 113, 0.6);
+            width: 8px;
+            height: 8px;
+        }
+
+        .slot.past {
+            opacity: 0.25;
+        }
+
+        .slot-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            margin-top: 15px;
+        }
+
+        .slot-start {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            letter-spacing: 0.5px;
+        }
+
+        .slot-end {
+            font-size: 0.85rem;
+            color: #4a5568;
+            font-weight: 400;
+        }
+
+        .slot.current .slot-start {
+            color: #2ecc71;
+        }
+
+        .slot-number {
+            font-size: 0.65rem;
+            color: #2d3748;
+            margin-top: 12px;
+            padding: 3px 10px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .slot.current .slot-number {
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.current {
+            background: #2ecc71;
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+        }
+
+        .legend-dot.past {
+            background: #2d3748;
+        }
+
+        .legend-dot.future {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .footer p {
+            color: #2d3748;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .slots-grid-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .slots-grid-title {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #4a5568;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .slots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .grid-slot {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: default;
+        }
+
+        .grid-slot:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .grid-slot.current {
+            background: rgba(46, 204, 113, 0.1);
+            border-color: rgba(46, 204, 113, 0.3);
+        }
+
+        .grid-slot-number {
+            font-size: 0.65rem;
+            color: #4a5568;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .grid-slot.current .grid-slot-number {
+            color: #2ecc71;
+        }
+
+        .grid-slot-times {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .grid-slot-start {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .grid-slot.current .grid-slot-start {
+            color: #2ecc71;
+        }
+
+        .grid-slot-end {
+            font-size: 0.8rem;
+            color: #4a5568;
+        }
+
+        @media (max-width: 700px) {
+            h1 { font-size: 2rem; }
+            .current-time { font-size: 4rem; }
+            .slot { flex: 0 0 150px; height: 120px; }
+            .slot-start { font-size: 1.2rem; }
+            .nav-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+            .timeline-section { padding: 0 50px; }
+            .legend { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="mp">TURBO</span></h1>
+            <p class="subtitle">Time Unified Reservation & Booking Organizer</p>
+        </header>
+
+        <div class="timezone-selector">
+            <label for="timezone">Timezone</label>
+            <select id="timezone">
+                <option value="America/Montevideo">GMT-3 (Uruguay)</option>
+                <option value="America/Buenos_Aires">GMT-3 (Argentina)</option>
+                <option value="America/Sao_Paulo">GMT-3 (Brazil)</option>
+                <option value="America/Asuncion">GMT-3 (Paraguay)</option>
+                <option value="America/Santiago">GMT-3/-4 (Chile)</option>
+                <option value="America/Lima">GMT-5 (Peru)</option>
+                <option value="America/Bogota">GMT-5 (Colombia)</option>
+                <option value="America/Guayaquil">GMT-5 (Ecuador)</option>
+                <option value="America/Caracas">GMT-4 (Venezuela)</option>
+                <option value="America/Panama">GMT-5 (Panama)</option>
+                <option value="America/Mexico_City">GMT-6 (Mexico)</option>
+                <option value="America/Havana">GMT-5 (Cuba)</option>
+                <option value="America/Santo_Domingo">GMT-4 (Dominican Republic)</option>
+                <option value="America/Puerto_Rico">GMT-4 (Puerto Rico)</option>
+                <option value="Europe/Madrid">GMT+1/+2 (Spain)</option>
+                <option value="America/New_York">GMT-5/-4 (US East)</option>
+                <option value="America/Chicago">GMT-6/-5 (US Central)</option>
+                <option value="America/Denver">GMT-7/-6 (US Mountain)</option>
+                <option value="America/Los_Angeles">GMT-8/-7 (US Pacific)</option>
+            </select>
+        </div>
+
+        <div class="current-display">
+            <div class="current-time" id="current-time">--:--</div>
+            <div class="current-slot-info" id="current-slot-info"></div>
+        </div>
+
+        <div class="timeline-section">
+            <button class="nav-btn prev" id="btn-prev">‹</button>
+            <div class="timeline-container">
+                <div class="timeline" id="timeline"></div>
+            </div>
+            <button class="nav-btn next" id="btn-next">›</button>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot current"></div>
+                <span>Current</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot past"></div>
+                <span>Past</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot future"></div>
+                <span>Upcoming</span>
+            </div>
+        </div>
+
+        <div class="slots-grid-section">
+            <div class="slots-grid-title">All Available Slots</div>
+            <div class="slots-grid" id="slots-grid"></div>
+        </div>
+
+        <div class="footer">
+            <p>1h 30min slots · Times in your timezone</p>
+        </div>
+    </div>
+
+    <script>
+        const slots = [
+            { inicio: { h: 0, m: 30 }, fin: { h: 2, m: 0 } },
+            { inicio: { h: 2, m: 0 }, fin: { h: 3, m: 30 } },
+            { inicio: { h: 3, m: 30 }, fin: { h: 5, m: 0 } },
+            { inicio: { h: 5, m: 0 }, fin: { h: 6, m: 30 } },
+            { inicio: { h: 6, m: 30 }, fin: { h: 8, m: 0 } },
+            { inicio: { h: 8, m: 0 }, fin: { h: 9, m: 30 } },
+            { inicio: { h: 9, m: 30 }, fin: { h: 11, m: 0 } },
+            { inicio: { h: 11, m: 0 }, fin: { h: 12, m: 30 } },
+            { inicio: { h: 12, m: 30 }, fin: { h: 14, m: 0 } },
+            { inicio: { h: 14, m: 0 }, fin: { h: 15, m: 30 } },
+            { inicio: { h: 15, m: 30 }, fin: { h: 17, m: 0 } },
+            { inicio: { h: 17, m: 0 }, fin: { h: 18, m: 30 } },
+            { inicio: { h: 18, m: 30 }, fin: { h: 20, m: 0 } },
+            { inicio: { h: 20, m: 0 }, fin: { h: 21, m: 30 } },
+            { inicio: { h: 21, m: 30 }, fin: { h: 23, m: 0 } },
+            { inicio: { h: 23, m: 0 }, fin: { h: 0, m: 30 } }
+        ];
+
+        const timezoneSelect = document.getElementById('timezone');
+        const timeline = document.getElementById('timeline');
+        const currentTimeEl = document.getElementById('current-time');
+        const currentSlotInfoEl = document.getElementById('current-slot-info');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const slotsGrid = document.getElementById('slots-grid');
+
+        let currentOffset = 0;
+        const slotWidth = 180;
+        const slotsExtended = [...slots, ...slots, ...slots];
+
+        function detectTimezone() {
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const options = timezoneSelect.options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value === tz) {
+                    timezoneSelect.selectedIndex = i;
+                    return tz;
+                }
+            }
+            return 'America/Montevideo';
+        }
+
+        function formatTime(h, m) {
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        }
+
+        function convertTime(time, fromTz, toTz) {
+            const now = new Date();
+            const dateFrom = new Date(now.toLocaleString('en-US', { timeZone: fromTz }));
+            dateFrom.setHours(time.h, time.m, 0, 0);
+            const dateTo = new Date(dateFrom.toLocaleString('en-US', { timeZone: toTz }));
+            return { h: dateTo.getHours(), m: dateTo.getMinutes() };
+        }
+
+        function toMinutes(h, m) {
+            return h * 60 + m;
+        }
+
+        function getCurrentTime(tz) {
+            const now = new Date();
+            return {
+                h: parseInt(now.toLocaleString('en-US', { hour: 'numeric', hour12: false, timeZone: tz })),
+                m: parseInt(now.toLocaleString('en-US', { minute: 'numeric', timeZone: tz }))
+            };
+        }
+
+        function getCurrentSlotIndex(tz) {
+            const current = getCurrentTime(tz);
+            const currentMin = toMinutes(current.h, current.m);
+
+            for (let i = 0; i < slots.length; i++) {
+                const s = slots[i];
+                const inicio = convertTime(s.inicio, 'America/Montevideo', tz);
+                const fin = convertTime(s.fin, 'America/Montevideo', tz);
+                const inicioMin = toMinutes(inicio.h, inicio.m);
+                const finMin = toMinutes(fin.h, fin.m);
+
+                if (finMin < inicioMin) {
+                    if (currentMin >= inicioMin || currentMin < finMin) return i;
+                } else {
+                    if (currentMin >= inicioMin && currentMin < finMin) return i;
+                }
+            }
+
+            for (let i = 0; i < slots.length; i++) {
+                const s = slots[i];
+                const inicio = convertTime(s.inicio, 'America/Montevideo', tz);
+                if (currentMin < toMinutes(inicio.h, inicio.m)) return i;
+            }
+
+            return 0;
+        }
+
+        function renderTimeline(tz) {
+            timeline.innerHTML = '';
+
+            const currentSlotIndex = getCurrentSlotIndex(tz);
+            const current = getCurrentTime(tz);
+
+            currentTimeEl.innerHTML = formatTime(current.h, current.m).replace(':', '<span class="blink">:</span>');
+
+            const slot = slots[currentSlotIndex];
+            const inicio = convertTime(slot.inicio, 'America/Montevideo', tz);
+            const fin = convertTime(slot.fin, 'America/Montevideo', tz);
+
+            currentSlotInfoEl.innerHTML = `Slot <strong>${currentSlotIndex + 1}</strong> <span class="slot-range">· ${formatTime(inicio.h, inicio.m)} → ${formatTime(fin.h, fin.m)}</span>`;
+
+            for (let i = 0; i < slotsExtended.length; i++) {
+                const s = slotsExtended[i];
+                const slotEl = document.createElement('div');
+                slotEl.className = 'slot';
+
+                const realIndex = i % slots.length;
+
+                if (realIndex === currentSlotIndex) {
+                    slotEl.classList.add('current');
+                } else {
+                    const diff = realIndex - currentSlotIndex;
+                    const wrappedDiff = ((diff + slots.length) % slots.length);
+                    if (wrappedDiff > slots.length / 2 || (wrappedDiff === 0 && i !== slots.length + currentSlotIndex)) {
+                        slotEl.classList.add('past');
+                    }
+                }
+
+                const slotInicio = convertTime(s.inicio, 'America/Montevideo', tz);
+                const slotFin = convertTime(s.fin, 'America/Montevideo', tz);
+
+                slotEl.innerHTML = `
+                    <div class="slot-content">
+                        <span class="slot-start">${formatTime(slotInicio.h, slotInicio.m)}</span>
+                        <span class="slot-end">→ ${formatTime(slotFin.h, slotFin.m)}</span>
+                    </div>
+                    <span class="slot-number">#${realIndex + 1}</span>
+                `;
+
+                timeline.appendChild(slotEl);
+            }
+
+            currentOffset = slots.length + currentSlotIndex;
+            updatePosition();
+
+            renderGrid(tz, currentSlotIndex);
+        }
+
+        function renderGrid(tz, currentSlotIndex) {
+            slotsGrid.innerHTML = '';
+
+            for (let i = 0; i < slots.length; i++) {
+                const s = slots[i];
+                const gridSlot = document.createElement('div');
+                gridSlot.className = 'grid-slot';
+
+                if (i === currentSlotIndex) {
+                    gridSlot.classList.add('current');
+                }
+
+                const inicio = convertTime(s.inicio, 'America/Montevideo', tz);
+                const fin = convertTime(s.fin, 'America/Montevideo', tz);
+
+                gridSlot.innerHTML = `
+                    <div class="grid-slot-number">SLOT ${i + 1}</div>
+                    <div class="grid-slot-times">
+                        <span class="grid-slot-start">${formatTime(inicio.h, inicio.m)}</span>
+                        <span class="grid-slot-end">→ ${formatTime(fin.h, fin.m)}</span>
+                    </div>
+                `;
+
+                slotsGrid.appendChild(gridSlot);
+            }
+        }
+
+        function updatePosition() {
+            const offset = -currentOffset * slotWidth + (timeline.parentElement.offsetWidth / 2 - slotWidth / 2);
+            timeline.style.transform = `translateX(${offset}px)`;
+        }
+
+        btnPrev.addEventListener('click', () => {
+            if (currentOffset > 0) {
+                currentOffset--;
+                updatePosition();
+            }
+        });
+
+        btnNext.addEventListener('click', () => {
+            if (currentOffset < slotsExtended.length - 1) {
+                currentOffset++;
+                updatePosition();
+            }
+        });
+
+        timezoneSelect.addEventListener('change', function() {
+            renderTimeline(this.value);
+        });
+
+        const detectedTz = detectTimezone();
+        renderTimeline(detectedTz);
+
+        setInterval(() => renderTimeline(timezoneSelect.value), 60000);
+
+        window.addEventListener('resize', updatePosition);
+    </script>
+</body>
+</html>
