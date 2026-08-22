@@ -79,13 +79,6 @@
         }
         .download-button:hover { transform: translateY(-3px); background-color: #0088cc; }
 
-        .github-info {
-            display: inline-block; background-color: #1a1a1a; color: #888 !important; padding: 10px 20px;
-            font-size: 0.8rem; font-weight: 900; text-transform: uppercase; text-decoration: none; border-radius: 6px;
-            transition: all 0.2s; margin-top: 15px; border: 1px solid #333;
-        }
-        .github-info:hover { background-color: #222; color: #fff !important; border-color: #444; }
-
         .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; text-align: left; }
         .feature-item {
             background: rgba(255,255,255,0.03);
@@ -183,9 +176,9 @@
 
             <img src="convoyrun/convoy-map-2026-08-20.png" alt="Vista previa del canvas de ConvoyRun" class="app-preview" loading="lazy">
 
-            <a href="https://github.com/convoyrama/convoyrun/releases" target="_blank" class="download-button" data-i18n="cr_download">Descargar ConvoyRun (Windows/Linux)</a>
-            <br>
-            <a href="https://github.com/convoyrama/convoyrun" target="_blank" class="github-info" data-i18n="cr_source">Ver Código Fuente</a>
+            <div style="background: rgba(255,255,255,0.03); border-left: 4px solid var(--accent); padding: 20px; margin: 20px auto; text-align: left; font-size: 0.9rem; line-height: 1.5; color: var(--text-muted); max-width: 600px;">
+                <strong style="color: var(--accent);">Próximamente.</strong> <span data-i18n="cr_reworking">Estamos modificando ConvoyRun para el siguiente release. La descarga no está disponible por el momento.</span>
+            </div>
 
             <div class="feature-grid">
                 <div class="feature-item"><strong data-i18n="cr_f1_title">Horarios Multi-Zona</strong><p data-i18n="cr_f1_desc">Timestamps de Discord que cada quien ve en su propia hora, y resumen para TMP agrupado por zona horaria.</p></div>
@@ -220,6 +213,7 @@
                     <li><a href="https://discord.gg/hjJcyREthH">CONVOYRAMA</a></li>
                     <li><a href="https://truckersmp.com">TruckersMP</a></li>
                     <li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li>
+                    <li><a href="https://www.patreon.com/convoyrama" target="_blank">Patreon</a></li>
                 </ul>
             </div>
             <div class="footer-links">

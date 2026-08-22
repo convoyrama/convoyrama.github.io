@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title data-i18n="cardan_title">Cardan | Convoyrama</title>
+    <title>Cardan | Convoyrama</title>
+    <meta name="description" content="Cardan - P2P collectible cards for TruckersMP VTCs. Collect, trade, and battle with real VTC cards.">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="icon" href="./assets/images/favicon.png">
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
@@ -63,53 +65,72 @@
         .lang-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: var(--cardan-violet); }
         .lang-btn.active { color: #fff; background: var(--cardan-violet); border-color: var(--cardan-violet); box-shadow: 0 0 10px rgba(212, 0, 149, 0.3); }
 
-        /* COMING SOON CONTENT */
-        .coming-soon-hero {
-            padding: 80px 20px 40px; text-align: center;
-            background: radial-gradient(circle at center, rgba(212, 0, 149, 0.1) 0%, transparent 70%);
+        /* CONTENT */
+        .download-container { text-align: center; padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+        .app-logo { width: 250px; height: auto; margin: 0 auto 20px; display: block; filter: drop-shadow(0 0 15px rgba(212, 0, 149, 0.4)); }
+
+        .app-title { font-size: 3rem; font-weight: 900; margin: 0; text-transform: uppercase; font-style: italic; letter-spacing: -2px; color: #fff; }
+        .app-tagline { color: var(--cardan-violet); font-weight: 900; font-size: 1.5rem; letter-spacing: 0.1em; font-style: italic; text-transform: uppercase; margin: 10px 0; }
+        .app-description { font-weight: 400; font-size: 1.1rem; line-height: 1.6; margin: 20px auto 40px; max-width: 600px; color: var(--text-muted); }
+
+        .download-button {
+            display: inline-block; background-color: var(--cardan-violet); color: white !important; padding: 18px 45px;
+            font-size: 1.3rem; font-weight: 900; text-transform: uppercase; text-decoration: none; border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(212, 0, 149, 0.3); transition: transform 0.2s, background-color 0.2s; margin-top: 10px;
         }
+        .download-button:hover { transform: translateY(-3px); background-color: #b8007d; }
 
-        .cardan-logo-big {
-            width: 350px; max-width: 80vw; margin-bottom: 30px;
-            filter: drop-shadow(0 0 20px rgba(212, 0, 149, 0.4)); animation: breathe 4s ease-in-out infinite;
+        .recommendation-note {
+            background: rgba(255, 255, 255, 0.03); border-left: 4px solid var(--cardan-violet);
+            padding: 20px; margin: 30px auto; text-align: left; font-size: 0.9rem; line-height: 1.5; color: var(--text-muted);
         }
+        .recommendation-note strong { color: var(--cardan-violet); }
 
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(212, 0, 149, 0.4)); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 35px rgba(212, 0, 149, 0.6)); }
+        .screenshot-container {
+            display: grid; width: 220px; max-width: 100%; margin: 30px auto; border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(212,0,149,0.2);
+            background: #111; position: relative; z-index: 1; overflow: hidden;
         }
-
-        .tagline {
-            font-size: 1.5rem; font-weight: 900; font-style: italic; letter-spacing: 2px; text-transform: uppercase;
-            margin-bottom: 5px; background: linear-gradient(to right, #fff, var(--cardan-violet));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .screenshot-container img {
+            grid-area: 1 / 1; display: block; margin: 0 auto; width: 100%; height: auto;
+            transition: opacity 1s ease-in-out, transform 0.3s ease;
+            border-radius: 16px; opacity: 0; pointer-events: none;
         }
+        .screenshot-container img.active { opacity: 1; pointer-events: auto; }
+        .screenshot-container:hover { z-index: 10; }
+        .screenshot-container:hover img.active { transform: scale(1.5); }
 
-        .description { max-width: 700px; font-size: 1.1rem; line-height: 1.6; color: var(--text-muted); margin: 20px auto 30px; opacity: 0.9; font-weight: 400; }
-        .proximamente { font-size: 1rem; font-weight: 600; color: var(--text-muted); font-style: italic; letter-spacing: 8px; text-transform: uppercase; opacity: 0.6; margin-bottom: 20px; }
-        .disclaimer { max-width: 600px; font-size: 0.75rem; line-height: 1.5; color: #555; margin: 0 auto 60px; }
-
-        /* FEATURE GRID */
-        .feature-container { max-width: 1100px; margin: 0 auto; padding: 20px; }
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
-        .feature-card {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(212, 0, 149, 0.15);
-            border-radius: 16px; padding: 30px; text-decoration: none; color: inherit;
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; text-align: left; }
+        .feature-item {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 0, 149, 0.1);
+            position: relative;
+            overflow: hidden;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; flex-direction: column; position: relative; overflow: hidden;
-            text-align: left;
         }
-        .feature-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-            background: var(--cardan-violet); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--cardan-violet);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
-        .feature-card:hover {
-            background: rgba(212, 0, 149, 0.05); transform: translateY(-8px);
-            border-color: rgba(212, 0, 149, 0.4); box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        .feature-item:hover {
+            background: rgba(212, 0, 149, 0.05);
+            transform: translateY(-8px);
+            border-color: rgba(212, 0, 149, 0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
-        .feature-card:hover::before { transform: scaleX(1); }
-        .feature-card h3 { color: var(--cardan-violet); margin: 0 0 12px; font-weight: 900; font-style: italic; text-transform: uppercase; font-size: 1rem; letter-spacing: 1px; }
-        .feature-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; }
+        .feature-item:hover::before { transform: scaleX(1); }
+        .feature-item strong { display: block; color: var(--cardan-violet); font-size: 0.95rem; text-transform: uppercase; margin-bottom: 8px; font-style: italic; }
+        .feature-item p { margin: 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
 
         /* FOOTER */
         .modern-footer { background: var(--footer-bg); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 40px 20px 20px; margin-top: 80px; }
@@ -135,6 +156,7 @@
                 pointer-events: none; transition: all 0.3s ease;
             }
             .nav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+            .feature-grid { grid-template-columns: 1fr; }
             .footer-content { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 600px) { .footer-content { grid-template-columns: 1fr; text-align: center; } .footer-brand p { margin: 0 auto; } .footer-bottom { flex-direction: column; gap: 15px; text-align: center; } }
@@ -167,33 +189,36 @@
         </div>
     </header>
 
-    <main class="coming-soon-hero">
-        <img src="cardan/branding/cardan_full.png" alt="Cardan Logo" class="cardan-logo-big">
-        <div class="tagline" data-i18n="cardan_tagline">CADA VTC, UNA CARTA</div>
-        <div class="description" data-i18n="cardan_desc">
-            Cardan convierte cada VTC de TruckersMP en una carta coleccionable real, que sorteás e intercambiás de igual a igual con tus amigos — sin servidores ni cuentas centrales.
-        </div>
-        <div class="proximamente" data-i18n="cardan_status">PRÓXIMAMENTE...</div>
-        <div class="disclaimer" data-i18n="cardan_disclaimer">Proyecto experimental hecho por fans, sin afiliación con TruckersMP ni SCS Software.</div>
+    <main>
+        <div class="download-container">
+            <img src="cardan/branding/cardan_full.png" alt="Cardan Logo" class="app-logo">
+            <h1 class="app-title"><span id="version-badge" style="font-size:0.4em; vertical-align:middle; border:1px solid var(--cardan-violet); padding:2px 8px; border-radius:4px; color:var(--cardan-violet);">v0.5.0</span></h1>
+            <p class="app-tagline" data-i18n="cardan_tagline">CADA VTC, UNA CARTA</p>
+            <div class="app-description" data-i18n="cardan_desc">
+                Cardan convierte cada VTC de TruckersMP en una carta coleccionable real, que sorteás e intercambiás de igual a igual con tus amigos — sin servidores ni cuentas centrales.
+            </div>
 
-        <div class="feature-container">
+            <div class="screenshot-container" id="slideshow">
+                <img src="cardan/1.png" alt="Cardan Screenshot 1" class="active">
+                <img src="cardan/2.png" alt="Cardan Screenshot 2">
+                <img src="cardan/3.png" alt="Cardan Screenshot 3">
+            </div>
+
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="https://www.patreon.com/convoyrama/posts/cardan-v0-5-0-167410898" target="_blank" class="download-button" data-i18n="cardan_download">DESCARGAR APK</a>
+            </div>
+
+            <div class="recommendation-note" data-i18n="cardan_testing_note">
+                <strong>Testing release.</strong> Esta es la primera versión pública. Va a tener bugs. No hay backup de tu colección — si perdés el teléfono o desinstalás la app, tus cartas se pierden para siempre (por diseño, no es un bug). Tradeá cartas a amigos para guardarlas.
+            </div>
+
             <div class="feature-grid">
-                <div class="feature-card">
-                    <h3 data-i18n="cardan_f1_title">SORTEO DIARIO</h3>
-                    <p data-i18n="cardan_f1_desc">Un sobre nuevo de cartas para coleccionar cada varias horas.</p>
-                </div>
-                <div class="feature-card">
-                    <h3 data-i18n="cardan_f2_title">TALLER</h3>
-                    <p data-i18n="cardan_f2_desc">Fusioná tus duplicados para subirlos de tier.</p>
-                </div>
-                <div class="feature-card">
-                    <h3 data-i18n="cardan_f3_title">TRADE</h3>
-                    <p data-i18n="cardan_f3_desc">Coleccioná y tradeá cartas con tus amigos.</p>
-                </div>
-                <div class="feature-card">
-                    <h3 data-i18n="cardan_f4_title">SIN SERVIDOR, SIN CUENTA</h3>
-                    <p data-i18n="cardan_f4_desc">Tu colección es tuya de verdad — nadie más la controla, ni siquiera nosotros.</p>
-                </div>
+                <div class="feature-item"><strong data-i18n="cardan_f1_title">SORTEO DIARIO</strong><p data-i18n="cardan_f1_desc">Un sobre nuevo cada 6 horas con 15 cartas de ~14,500 VTCs reales.</p></div>
+                <div class="feature-item"><strong data-i18n="cardan_f3_title">TRADE 1V1</strong><p data-i18n="cardan_f3_desc">Intercambiá hasta 8 cartas por lado con amigos. Sin servidores.</p></div>
+                <div class="feature-item"><strong data-i18n="cardan_f5_title">5 TIERS</strong><p data-i18n="cardan_f5_desc">Bronce, Plata, Oro, Carbón (VTCs extintas) y Diamante (crafteado).</p></div>
+                <div class="feature-item"><strong data-i18n="cardan_f6_title">10 IDIOMAS</strong><p data-i18n="cardan_f6_desc">EN, ES, TR, DE, RU, PT, FR, ZH, JA, PL — la app habla tu idioma.</p></div>
+                <div class="feature-item"><strong data-i18n="cardan_f7_title">FOIL HOLOGRÁFICO</strong><p data-i18n="cardan_f7_desc">Efecto visual que reacciona al inclinar tu teléfono.</p></div>
+                <div class="feature-item"><strong data-i18n="cardan_f8_title">CARTAS ESPECIALES</strong><p data-i18n="cardan_f8_desc">Ediciones de evento: aniversario, Navidad, Halloween y más.</p></div>
             </div>
         </div>
     </main>
@@ -222,6 +247,7 @@
                     <li><a href="https://discord.gg/hjJcyREthH">CONVOYRAMA</a></li>
                     <li><a href="https://truckersmp.com">TruckersMP</a></li>
                     <li><a href="https://discord.gg/yS4PQuCkwy">Convoy Nocturno</a></li>
+                    <li><a href="https://www.patreon.com/convoyrama" target="_blank">Patreon</a></li>
                 </ul>
             </div>
             <div class="footer-links">
@@ -244,6 +270,17 @@
         const mobileMenu = document.getElementById('mobile-menu');
         const navList = document.getElementById('nav-list');
         mobileMenu.addEventListener('click', () => { mobileMenu.classList.toggle('open'); navList.classList.toggle('open'); });
+
+        console.log('Cardan v0.5.0 loaded');
+
+        const images = document.querySelectorAll('#slideshow img');
+        let currentIndex = 0;
+        function showNextImage() {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.add('active');
+        }
+        setInterval(showNextImage, 4000);
     </script>
 </body>
 </html>
