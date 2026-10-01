@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Convoyrama | LAGDrive</title>
-    <meta name="description" content="LAGDrive - Direct mod synchronization for the simulation community">
+    <meta name="description" content="LAGDrive - P2P mod synchronization for ATS and ETS2">
     <link rel="stylesheet" href="./assets/style.css">
     <link rel="icon" href="./assets/images/favicon.png">
     <link rel="apple-touch-icon" href="./assets/images/favicon.png">
@@ -92,12 +92,20 @@
             box-shadow: 0 4px 15px rgba(0, 170, 255, 0.3); transition: transform 0.2s, background-color 0.2s; margin-top: 10px;
         }
         .download-button:hover { transform: translateY(-3px); background-color: #0088cc; }
+        .version-badge {
+            background-color: #141414; color: var(--accent); padding: 4px 12px; font-size: 0.9rem;
+            font-weight: 900; vertical-align: middle; margin-left: 10px; border: 1px solid var(--accent); border-radius: 4px;
+        }
         .github-info {
             display: inline-block; background-color: #1a1a1a; color: #888 !important; padding: 10px 20px;
             font-size: 0.8rem; font-weight: 900; text-transform: uppercase; text-decoration: none; border-radius: 6px;
             transition: all 0.2s; margin-top: 15px; border: 1px solid #333;
         }
         .github-info:hover { background-color: #222; color: #fff !important; border-color: #444; }
+        .recommendation-note {
+            background: rgba(255, 255, 255, 0.03); border-left: 4px solid var(--accent);
+            padding: 20px; margin: 30px auto; text-align: left; font-size: 0.9rem; line-height: 1.5; color: var(--text-muted);
+        }
         
         .alpha-notice { background: rgba(0, 170, 255, 0.05); border: 1px dashed var(--accent); padding: 15px; margin: 20px auto; max-width: 600px; font-size: 0.9rem; border-radius: 6px; }
         .alpha-notice strong { color: var(--accent); display: block; margin-bottom: 5px; text-transform: uppercase; }
@@ -199,6 +207,7 @@
                 <img src="lagdrive/2.png" alt="LAGDrive 2">
                 <img src="lagdrive/3.png" alt="LAGDrive 3">
             </div>
+            <h1 class="app-title">LAGDrive <span class="version-badge">v0.4.0 HateU</span></h1>
             <p class="app-tagline" data-i18n="ld_tagline">CONECTA. SINCRONIZA. CONDUCE.</p>
 
             <div class="app-description" data-i18n="ld_desc">La solución definitiva para compartir mods de forma directa. Conecta con otros conductores y mantén tus archivos actualizados al instante.</div>
@@ -208,9 +217,14 @@
                 <span data-i18n="ld_alpha_desc">LAGDrive es experimental. Reporta errores en el Discord de CONVOYRAMA.</span>
             </div>
 
-            <a href="https://github.com/convoyrama/lagdrive/releases" target="_blank" class="download-button" data-i18n="ld_download">Descargar LAGDrive (Windows/Linux)</a>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="https://www.patreon.com/convoyrama/posts/lagdrive-0-4-0-171158118" target="_blank" rel="noopener" class="download-button" data-i18n="ld_download_windows">Descargar para Windows</a>
+                <a href="https://www.patreon.com/convoyrama/posts/lagdrive-0-4-0-171158118" target="_blank" rel="noopener" class="download-button" data-i18n="ld_download_linux">Descargar para Linux</a>
+            </div>
             <br>
             <a href="https://github.com/convoyrama/lagdrive" target="_blank" class="github-info" data-i18n="ld_source">Ver Código Fuente</a>
+
+            <div class="recommendation-note" data-i18n="ld_note">LAGDrive funciona entre personas conocidas: agrega a tus amigos, configura las carpetas de mods de ATS/ETS2 y compara qué archivos tiene cada uno antes de sincronizar.</div>
 
             <div class="feature-grid">
                 <div class="feature-item"><strong data-i18n="ld_f1_title">Sin Intermediarios</strong><p data-i18n="ld_f1_desc">Transferencia directa entre jugadores mediante P2P.</p></div>
