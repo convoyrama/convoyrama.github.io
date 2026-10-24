@@ -79,6 +79,22 @@
         }
         .download-button:hover { transform: translateY(-3px); background-color: #0088cc; }
 
+        .download-actions { display: flex; justify-content: center; margin: 24px auto 10px; }
+        .download-button .button-subtitle { display: block; margin-top: 5px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: none; opacity: 0.85; }
+        .cc-copy { max-width: 680px; margin: 24px auto 0; text-align: left; color: var(--text-muted); line-height: 1.65; }
+        .cc-copy h2 { color: var(--text-main); font-size: 1.35rem; margin: 0 0 12px; }
+        .cc-copy p { margin: 0 0 14px; }
+        .cc-notice { background: rgba(255,255,255,0.03); border-left: 4px solid var(--accent); padding: 20px; margin: 28px auto 0; text-align: left; font-size: 0.9rem; line-height: 1.5; color: var(--text-muted); max-width: 640px; }
+        .cc-notice strong { display: block; color: var(--accent); margin-bottom: 6px; }
+        .cc-network-note { max-width: 640px; margin: 24px auto 0; padding: 18px 20px; background: rgba(0,170,255,0.08); border: 1px solid rgba(0,170,255,0.25); border-radius: 12px; color: var(--text-main); line-height: 1.55; text-align: left; }
+        .cc-network-note p { margin: 0; }
+        .cc-screenshots { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.65fr); gap: 20px; max-width: 900px; margin: 38px auto 0; align-items: start; }
+        .cc-shot-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 14px; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+        .cc-shot-card h3 { color: var(--accent); font-size: 0.9rem; margin: 2px 4px 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+        .cc-shot-card p { color: var(--text-muted); font-size: 0.82rem; line-height: 1.45; margin: 0 4px 12px; }
+        .cc-shot-card img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); }
+        .cc-shot-card.mobile-shot { max-width: 340px; justify-self: center; }
+
         .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; text-align: left; }
         .feature-item {
             background: rgba(255,255,255,0.03);
@@ -135,6 +151,8 @@
             }
             .nav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
             .feature-grid { grid-template-columns: 1fr; }
+            .cc-screenshots { grid-template-columns: 1fr; }
+            .cc-shot-card.mobile-shot { max-width: none; }
             .footer-content { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 600px) { .footer-content { grid-template-columns: 1fr; text-align: center; } .footer-brand p { margin: 0 auto; } .footer-bottom { flex-direction: column; gap: 15px; text-align: center; } }
@@ -170,13 +188,49 @@
     <main>
         <div class="download-container">
             <img src="convoycast/logo-skyblue.png" alt="ConvoyCast" class="app-logo">
-            <h1 class="app-title">ConvoyCast</h1>
-            <p class="app-tagline" data-i18n="cc_tagline">EVENTOS Y CONVOYES PARA ATS/ETS2</p>
+            <p class="app-tagline" data-i18n="cc_tagline">EVENTOS ABIERTOS PARA TODOS</p>
 
-            <div class="app-description" data-i18n="cc_desc">Organizá, publicá y descubrí eventos de la comunidad desde ConvoyCast.</div>
+            <div class="cc-copy">
+                <h2 data-i18n="cc_intro_title">ConvoyCast: eventos abiertos para todos</h2>
+                <p data-i18n="cc_intro_p1">ConvoyCast es una aplicación experimental para descubrir, crear y compartir eventos de ATS y ETS2.</p>
+                <p data-i18n="cc_intro_p2">Muchos eventos de la comunidad quedan dispersos dentro de servidores de Discord, grupos privados u otras plataformas. Si no estás en el lugar correcto, es posible que nunca llegues a enterarte de que existen. ConvoyCast nace para facilitar ese descubrimiento y hacer que los eventos sean más visibles y accesibles.</p>
+                <p data-i18n="cc_intro_p3">La versión Desktop está pensada principalmente para quienes organizan convoyes y quieren crear eventos, publicarlos y compartirlos con la comunidad. La versión Mobile funciona como un lector práctico para consultar eventos, revisar sus detalles y saber qué actividades están disponibles.</p>
+            </div>
 
-            <div style="background: rgba(255,255,255,0.03); border-left: 4px solid var(--accent); padding: 20px; margin: 20px auto; text-align: left; font-size: 0.9rem; line-height: 1.5; color: var(--text-muted); max-width: 600px;">
-                <strong style="color: var(--accent);" data-i18n="cc_coming_soon">Próximamente.</strong> <span data-i18n="cc_reworking">ConvoyCast está en preparación. La descarga todavía no está disponible.</span>
+            <div class="cc-copy">
+                <h2 data-i18n="cc_open_title">Abierto, independiente y descentralizado</h2>
+                <p data-i18n="cc_open_p1">ConvoyCast no tiene un servidor central, un equipo permanente de moderación ni una autoridad única que decida qué eventos puede ver toda la comunidad.</p>
+                <p data-i18n="cc_open_p2">Cada usuario elige qué personas, comunidades y listas seguir, aceptar, bloquear o ignorar. CONVOYRAMA mantiene el software, pero no controla la red ni los eventos compartidos.</p>
+            </div>
+
+            <div class="cc-network-note">
+                <p data-i18n="cc_network_note">ConvoyCast funciona mejor cuando las personas colaboran entre sí. Para que un evento pueda compartirse, debe existir al menos otro participante en la red. La aplicación no depende de un servidor central que recopile y redistribuya todos los eventos: los usuarios los comparten directamente entre ellos.</p>
+            </div>
+
+            <div class="cc-screenshots">
+                <article class="cc-shot-card">
+                    <h3 data-i18n="cc_desktop_title">Desktop para crear y publicar</h3>
+                    <p data-i18n="cc_desktop_desc">Organizá tus convoyes, publicá eventos y compartilos con la comunidad.</p>
+                    <img src="convoycast/desktop.png" alt="ConvoyCast Desktop mostrando el calendario de eventos">
+                </article>
+                <article class="cc-shot-card mobile-shot">
+                    <h3 data-i18n="cc_mobile_title">Mobile para descubrir</h3>
+                    <p data-i18n="cc_mobile_desc">Consultá eventos y revisá sus detalles desde tu teléfono.</p>
+                    <img src="convoycast/mobile.jpg" alt="ConvoyCast Mobile mostrando la lista de eventos">
+                </article>
+            </div>
+
+            <div class="download-actions" aria-label="ConvoyCast downloads">
+            <a href="https://www.patreon.com/convoyrama/posts/convoycast-0-7-0-173313740" target="_blank" rel="noopener" class="download-button">
+                    <span data-i18n="cc_download">Descargar ConvoyCast 0.7.0</span>
+                    <span class="button-subtitle" data-i18n="cc_download_platforms">Windows · Android · Linux</span>
+                </a>
+            </div>
+            <div style="color: var(--text-muted); font-size: 0.85rem;" data-i18n="cc_version">ConvoyCast 0.7.0</div>
+
+            <div class="cc-notice">
+                <strong data-i18n="cc_experimental_title">Versión experimental</strong>
+                <span data-i18n="cc_experimental_text">ConvoyCast todavía está en desarrollo. Si encuentras un error o tienes una sugerencia, agradecemos que nos lo informes para poder mejorar la aplicación.</span>
             </div>
 
             <div class="feature-grid">
