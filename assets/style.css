@@ -383,6 +383,48 @@ input[type="button"]:enabled:hover {
   flex-shrink: 0;
 }
 
+/* Canonical dimensions for the shared pill header. The pages contain older
+   inline navigation rules, so these values deliberately win where the legacy
+   stylesheet would otherwise add vertical space or link margins. */
+.modern-header {
+  box-sizing: border-box;
+  height: 58px;
+}
+
+.modern-header .nav-container {
+  box-sizing: border-box;
+  height: 58px;
+  min-height: 0 !important;
+  padding: 8px 25px;
+}
+
+.modern-header .nav-links {
+  align-items: center;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.modern-header .nav-links a {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  line-height: 1.2 !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 950px) {
+  .modern-header .nav-links {
+    height: auto;
+    padding: 15px !important;
+    line-height: 1.2 !important;
+  }
+
+  .modern-header .nav-links a {
+    min-height: 34px;
+  }
+}
+
 nav {
   font-size: 1rem;
   line-height: 2;
