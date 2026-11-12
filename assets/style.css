@@ -355,6 +355,28 @@ input[type="button"]:enabled:hover {
 }
 
 /* Format navigation */
+.modern-header .nav-container {
+  min-height: 42px;
+  gap: 16px;
+}
+
+.modern-header .nav-brand {
+  order: 1;
+  flex-shrink: 0;
+}
+
+.modern-header .nav-links {
+  order: 2;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.modern-header .nav-container > div {
+  order: 3;
+  flex-shrink: 0;
+}
+
 nav {
   font-size: 1rem;
   line-height: 2;
