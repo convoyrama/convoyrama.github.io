@@ -360,6 +360,12 @@ input[type="button"]:enabled:hover {
   gap: 16px;
 }
 
+/* The generic header rule above adds extra bottom padding to every header.
+   Keep the modern pill navigation at its intended compact height. */
+.modern-header {
+  padding: 0 !important;
+}
+
 .modern-header .nav-brand {
   order: 1;
   flex-shrink: 0;
